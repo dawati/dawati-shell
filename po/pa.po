@@ -79,23 +79,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"#-#-#-#-#  pa.po (anerley.Dawati2-UI.anerley)  #-#-#-#-#\n"
-"Project-Id-Version: anerley.Dawati2-UI.anerley\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:55+0000\n"
-"PO-Revision-Date: 2010-08-03 08:16+0530\n"
-"Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: testLokalize <punjabi-users@lists.sf.net>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"#-#-#-#-#  pa.po (mutter-dawati.Dawati2-UI.mutter-dawati-netbook-plugin)  #-"
-"#-#-#-#\n"
 "Project-Id-Version: mutter-dawati.Dawati2-UI.mutter-dawati-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-15 13:35+0000\n"
+"POT-Creation-Date: 2011-12-07 19:06+0000\n"
 "PO-Revision-Date: 2010-10-31 07:37+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -103,6 +89,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  pa.po (anerley.Dawati2-UI.anerley)  #-#-#-#-#\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"#-#-#-#-#  pa.po (mutter-dawati.Dawati2-UI.mutter-dawati-netbook-plugin)  #-"
+"#-#-#-#\n"
 "#-#-#-#-#  pa.po (mutter-moblin.Moblin2-UI.mutter-moblin-netbook-plugin)  #-"
 "#-#-#-#\n"
 "X-Generator: Lokalize 1.0\n"
@@ -148,47 +139,6 @@ msgstr ""
 "#-#-#-#\n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
-msgid "Available"
-msgstr "ਉਪਲੱਬਧ"
-
-#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
-msgid "Busy"
-msgstr "ਰੁੱਝੇ"
-
-#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Away"
-msgstr "ਦੂਰ"
-
-#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
-msgid "Offline"
-msgstr "ਆਫਲਾਈਨ"
-
-#: ../anerley/anerley-econtact-item.c:234
-msgid "Unnamed"
-msgstr "ਬਿਨ-ਨਾਂ"
-
-#: ../anerley/anerley-presence-chooser.c:42
-msgid "Unset"
-msgstr "ਅਣ-ਸੈੱਟ"
-
-#: ../anerley/anerley-presence-chooser.c:46
-msgid "Extended Away"
-msgstr "ਪਹੁੰਚ ਤੋਂ ਦੂਰ"
-
-#: ../anerley/anerley-presence-chooser.c:47
-msgid "Hidden"
-msgstr "ਓਹਲੇ"
-
-#: ../anerley/anerley-presence-chooser.c:49
-msgid "Unknown"
-msgstr "ਅਣਜਾਣ"
-
-#: ../anerley/anerley-presence-chooser.c:50
-msgid "Error"
-msgstr "ਗਲਤੀ"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -281,54 +231,54 @@ msgstr ""
 "ਸਿਸਟਮ ਟਰੇ ਦੇ ਢੰਗ ਨੂੰ ਕੋਈ ਪੁਰਾਣੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਵਲੋਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਜਦੋਂ ਕੁਝ "
 "ਵਾਪਰਦਾ ਹੈ ਜਾਂ ਚੱਲਦੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ, ਜਦੋਂ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ।"
 
-#: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
-#: ../callouts/3g/ggg-provider-dialog.c:106
-#: ../callouts/3g/ggg-service-dialog.c:106
+#: ../callouts/3g/ggg-country-dialog.c:75
+#: ../callouts/3g/ggg-manual-dialog.c:72 ../callouts/3g/ggg-plan-dialog.c:113
+#: ../callouts/3g/ggg-provider-dialog.c:108
+#: ../callouts/3g/ggg-service-dialog.c:108
 msgid "Cellular Data Connection Wizard"
 msgstr "ਸੈਲੂਲਰ ਡਾਟਾ ਕੁਨੈਕਸ਼ਨ ਸਹਾਇਕ"
 
-#: ../callouts/3g/ggg-country-dialog.c:93
+#: ../callouts/3g/ggg-country-dialog.c:95
 msgid "Select Country"
 msgstr "ਦੇਸ਼ ਚੁਣੋ"
 
-#: ../callouts/3g/ggg-manual-dialog.c:89
+#: ../callouts/3g/ggg-manual-dialog.c:91
 msgid "Manual Configuration"
 msgstr "ਦਸਤੀ ਸੰਰਚਨਾ"
 
-#: ../callouts/3g/ggg-manual-dialog.c:93
+#: ../callouts/3g/ggg-manual-dialog.c:95
 msgid "Plan Name (required):"
 msgstr "ਪਲੈਨ ਨਾਂ (ਲਾਜ਼ਮੀ):"
 
-#: ../callouts/3g/ggg-manual-dialog.c:96
+#: ../callouts/3g/ggg-manual-dialog.c:98
 msgid "Username:"
 msgstr "ਯੂਜ਼ਰ-ਨਾਂ:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:99
+#: ../callouts/3g/ggg-manual-dialog.c:101
 msgid "Password:"
 msgstr "ਪਾਸਵਰਡ:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:103
+#: ../callouts/3g/ggg-manual-dialog.c:105
 msgid "Gateway:"
 msgstr "ਗੇਟਵੇ:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:106
+#: ../callouts/3g/ggg-manual-dialog.c:108
 msgid "Primary DNS:"
 msgstr "ਪ੍ਰਾਇਮਰੀ DNS:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:109
+#: ../callouts/3g/ggg-manual-dialog.c:111
 msgid "Secondary DNS:"
 msgstr "ਸੈਕੰਡਰ DNS:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:112
+#: ../callouts/3g/ggg-manual-dialog.c:114
 msgid "Tertiary DNS:"
 msgstr "ਟਰਟਾਇਰੀ DNS:"
 
-#: ../callouts/3g/ggg-plan-dialog.c:131
+#: ../callouts/3g/ggg-plan-dialog.c:133
 msgid "Select your 3G Plan"
 msgstr "ਆਪਣਾ 3G ਪਲੈਨ ਚੁਣੋ"
 
-#: ../callouts/3g/ggg-provider-dialog.c:126
+#: ../callouts/3g/ggg-provider-dialog.c:128
 msgid "Select Provider"
 msgstr "ਪਰੋਵਾਇਡਰ ਚੁਣੋ"
 
@@ -337,11 +287,11 @@ msgstr "ਪਰੋਵਾਇਡਰ ਚੁਣੋ"
 msgid "%s (Roaming)"
 msgstr "%s (ਰੋਮਿੰਗ)"
 
-#: ../callouts/3g/ggg-service-dialog.c:125
+#: ../callouts/3g/ggg-service-dialog.c:127
 msgid "Select 3G Service"
 msgstr "3G ਸਰਵਿਸ ਚੁਣੋ"
 
-#: ../callouts/openconnect/main.c:659
+#: ../callouts/openconnect/main.c:660
 #, c-format
 msgid ""
 "Certificate from VPN server \"%s\" failed verification.\n"
@@ -349,27 +299,27 @@ msgid ""
 "Do you want to accept it?"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1318
+#: ../callouts/openconnect/main.c:1321
 msgid "VPN host"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1338
+#: ../callouts/openconnect/main.c:1341
 msgid "Automatically start connecting next time"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1355
+#: ../callouts/openconnect/main.c:1358
 msgid "Select a host to fetch the login form"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1360
+#: ../callouts/openconnect/main.c:1363
 msgid "Contacting host, please wait..."
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1372
+#: ../callouts/openconnect/main.c:1375
 msgid "_Login"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1386
+#: ../callouts/openconnect/main.c:1389
 msgid "Log"
 msgstr ""
 
@@ -379,7 +329,7 @@ msgstr ""
 #. * for example 'You could try enabling WiFi, WiMAX or 3G'.
 #. * Note that you need to include spaces on both sides of the word/phrase
 #. * here -- unless you want it joined with previous or next word.
-#: ../carrick/carrick-list.c:1014
+#: ../carrick/carrick-list.c:1098
 msgid " or "
 msgstr " ਜਾਂ "
 
@@ -388,34 +338,34 @@ msgstr " ਜਾਂ "
 #. * 'You could try enabling WiFi, WiMAX or 3G'
 #. * Note that you need to include spaces in the string, unless you
 #. * want the words to appear right next to the comma.
-#: ../carrick/carrick-list.c:1021
+#: ../carrick/carrick-list.c:1105
 msgid ", "
 msgstr ", "
 
 #. Translator note: these technology names will be used in forming
 #. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
 #.
-#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
+#: ../carrick/carrick-list.c:1128 ../carrick/carrick-util.c:42
 msgid "wired"
 msgstr "ਤਾਰ"
 
 #. Switches
-#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-list.c:1129 ../carrick/carrick-pane.c:1975
 #: ../carrick/carrick-util.c:40
 msgid "WiFi"
 msgstr "ਵਾਈ-ਫਾਈ"
 
-#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-list.c:1130 ../carrick/carrick-pane.c:2017
 #: ../carrick/carrick-util.c:46
 msgid "WiMAX"
 msgstr "ਵਾਈਮੈਕਸ"
 
-#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-list.c:1131 ../carrick/carrick-pane.c:2003
 #: ../carrick/carrick-util.c:44
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-list.c:1132 ../carrick/carrick-pane.c:2031
 #: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
 msgstr "ਬਲਿਊਟੁੱਥ"
@@ -425,7 +375,7 @@ msgstr "ਬਲਿਊਟੁੱਥ"
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
 #.
-#: ../carrick/carrick-list.c:1058
+#: ../carrick/carrick-list.c:1142
 msgid ""
 "Sorry, we can't find any networks. It appears that the connection manager is "
 "not running. You could try restarting your computer."
@@ -437,12 +387,12 @@ msgstr ""
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:1068
+#: ../carrick/carrick-list.c:1152
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਆਫਲਾਈਨ ਮੋਡ ਬੰਦ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
 
-#: ../carrick/carrick-list.c:1120
+#: ../carrick/carrick-list.c:1204
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ %s ਨੂੰ ਚਾਲੂ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
@@ -452,7 +402,7 @@ msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹ�
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:1134
+#: ../carrick/carrick-list.c:1218
 msgid "Sorry, we can't find any networks"
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ।"
 
@@ -553,7 +503,7 @@ msgstr ""
 msgid "New connection settings"
 msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸੈਟਿੰਗ"
 
-#: ../carrick/carrick-pane.c:724
+#: ../carrick/carrick-pane.c:721
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -563,55 +513,55 @@ msgstr ""
 "ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਜਿੱਥੇ ਲਾਜ਼ਮੀ ਹੋਵੇ, ਉੱਥੇ ਪਾਸਵਰਡ\n"
 "ਅਤੇ ਸੁਰੱਖਿਆ ਟਾਈਮ ਵੀ ਦਿਓ।"
 
-#: ../carrick/carrick-pane.c:734
+#: ../carrick/carrick-pane.c:731
 msgid "Network name"
 msgstr "ਨੈੱਟਵਰਕ ਨਾਂ"
 
-#: ../carrick/carrick-pane.c:746
+#: ../carrick/carrick-pane.c:743
 msgid "Network security"
 msgstr "ਨੈੱਟਵਰਕ ਸੁਰੱਖਿਆ"
 
-#: ../carrick/carrick-pane.c:756
+#: ../carrick/carrick-pane.c:753
 msgid "None"
 msgstr "ਕੋਈ ਨਹੀਂ"
 
-#: ../carrick/carrick-pane.c:768
+#: ../carrick/carrick-pane.c:765
 msgid "Password"
 msgstr "ਪਾਸਵਰਡ"
 
-#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
+#: ../carrick/carrick-pane.c:783 ../carrick/carrick-service-item.c:2176
 msgid "Show password"
 msgstr "ਪਾਸਵਰਡ ਵੇਖੋ"
 
-#: ../carrick/carrick-pane.c:1975
+#: ../carrick/carrick-pane.c:1958
 msgid "Settings"
 msgstr "ਸੈਟਿੰਗ"
 
-#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
+#: ../carrick/carrick-pane.c:1989 ../carrick/carrick-service-item.c:585
 msgid "Wired"
 msgstr "ਤਾਰ"
 
-#: ../carrick/carrick-pane.c:2073
+#: ../carrick/carrick-pane.c:2056
 msgid "Offline mode"
 msgstr "ਆਫਲਾਈਨ ਮੋਡ"
 
-#: ../carrick/carrick-pane.c:2083
+#: ../carrick/carrick-pane.c:2066
 msgid "This will disable all your connections"
 msgstr "ਇਹ ਤੁਹਾਡੇ ਸਭ ਕੁਨੈਕਸ਼ਨ ਆਯੋਗ ਕਰੇਗਾ"
 
-#: ../carrick/carrick-pane.c:2119 ../panels/networks/src/carrick.c:381
+#: ../carrick/carrick-pane.c:2102 ../panels/networks/src/carrick.c:383
 msgid "Networks"
 msgstr "ਨੈੱਟਵਰਕ"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:2125
+#: ../carrick/carrick-pane.c:2108
 msgid "Add new connection"
 msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸ਼ਾਮਲ ਕਰੋ"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
-#: ../carrick/carrick-pane.c:2165
+#: ../carrick/carrick-pane.c:2148
 msgid "Connect to VPN"
 msgstr "VPN ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
@@ -619,94 +569,90 @@ msgstr "VPN ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:64
+#: ../carrick/carrick-service-item.c:65
 msgid "Critical Error: Invalid country code"
 msgstr "ਘਾਤਕ ਗਲਤੀ: ਗਲਤ ਦੇਸ਼ ਕੋਡ"
 
-#: ../carrick/carrick-service-item.c:65
+#: ../carrick/carrick-service-item.c:66
 msgid "Missing required APN (service plan name)"
 msgstr "ਲੋੜੀਦਾ APN ਗੁੰਮ ਹੈ (ਸਰਵਿਸ ਪਲੈਨ ਨਾਂ)"
 
-#: ../carrick/carrick-service-item.c:66
+#: ../carrick/carrick-service-item.c:67
 msgid "Internal Error: Invalid network service"
 msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ: ਗਲਤ ਨੈੱਟਵਰਕ ਸਰਵਿਸ"
 
-#: ../carrick/carrick-service-item.c:67
+#: ../carrick/carrick-service-item.c:68
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "ਨਾਜ਼ੁਕ ਗਲਤੀ: ਕੁਨੈਕਸ਼ਨ ਮੈਨੇਜਰ ਵਰਤਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: ../carrick/carrick-service-item.c:68
+#: ../carrick/carrick-service-item.c:69
 msgid "ERROR: No 3G Hardware detected"
 msgstr "ਗਲਤੀ: ਕੋਈ 3G ਹਾਰਡਵੇਅਰ ਨਹੀਂ ਮਿਲਿਆ"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:248
+#: ../carrick/carrick-service-item.c:262
 #, c-format
 msgid "%s encrypted"
 msgstr "%s ਇੰਕ੍ਰਿਪਟਡ"
 
-#. TRANSLATORS: This string will be in the "Connect by:"-
-#. * combobox just like "DHCP" and "Static IP". Fixed means
-#. * that the IP configuration cannot be changed at all,
-#. * like in a 3G network
-#: ../carrick/carrick-service-item.c:407
+#: ../carrick/carrick-service-item.c:456 ../carrick/carrick-service-item.c:496
 msgid "Fixed IP"
 msgstr "ਸਥਿਰ IP"
 
-#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
+#: ../carrick/carrick-service-item.c:598 ../carrick/carrick-service-item.c:616
 msgid "Disconnect"
 msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:477
+#: ../carrick/carrick-service-item.c:601
 msgid "Connected"
 msgstr "ਕੁਨੈਕਟ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:495
+#: ../carrick/carrick-service-item.c:619
 msgid "Online"
 msgstr "ਆਨਲਾਈਨ"
 
-#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
+#: ../carrick/carrick-service-item.c:625 ../carrick/carrick-service-item.c:634
 #, c-format
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:504
+#: ../carrick/carrick-service-item.c:628
 msgid "Configuring"
 msgstr "ਸੰਰਚਨਾ ਜਾਰੀ"
 
-#: ../carrick/carrick-service-item.c:513
+#: ../carrick/carrick-service-item.c:637
 msgid "Associating"
 msgstr "ਸਬੰਧਤ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
-#: ../carrick/carrick-service-item.c:1940
+#: ../carrick/carrick-service-item.c:646 ../carrick/carrick-service-item.c:672
+#: ../carrick/carrick-service-item.c:2163
 msgid "Connect"
 msgstr "ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:551
+#: ../carrick/carrick-service-item.c:675
 msgid "Connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:555
+#: ../carrick/carrick-service-item.c:679
 msgid "Sorry, the connection failed. You could try again."
 msgstr "ਅਫਸੋਸ, ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ। ਤੁਸੀਂ ਬਾਅਦ 'ਚ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
 
-#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
+#: ../carrick/carrick-service-item.c:686 ../carrick/carrick-service-item.c:689
 #, c-format
 msgid "Disconnecting"
 msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:633
+#: ../carrick/carrick-service-item.c:757
 msgid "Type password here"
 msgstr "ਇੱਥੇ ਪਾਸਵਰਡ ਲਿਖੋ"
 
-#: ../carrick/carrick-service-item.c:709
+#: ../carrick/carrick-service-item.c:833
 msgid "Really remove?"
 msgstr "ਕੀ ਹਟਾਉਣਾ ਹੈ?"
 
-#: ../carrick/carrick-service-item.c:729
+#: ../carrick/carrick-service-item.c:852
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -717,35 +663,45 @@ msgstr ""
 "ਪਾਸਵਰਡ ਵੀ ਭੁੱਲਾ ਦਿੱਤਾ ਜਾਵੇਗਾ ਅਤੇ ਤੁਸੀਂ %s ਨਾਲ ਆਟੋਮੈਟਿਕ\n"
 "ਕੁਨੈਕਟ ਨਹੀਂ ਕਰ ਸਕੋਗੇ।"
 
-#: ../carrick/carrick-service-item.c:1422
+#: ../carrick/carrick-service-item.c:1554
 msgid "Sorry, it looks like the IP address is not valid"
 msgstr "ਅਫਸੋਸ, IP ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:1434
+#: ../carrick/carrick-service-item.c:1566
 msgid "Sorry, it looks like the gateway address is not valid"
 msgstr "ਅਫਸੋਸ, ਗੇਟਵੇ ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:1446
+#: ../carrick/carrick-service-item.c:1578
 msgid "Sorry, it looks like the subnet mask is not valid"
 msgstr "ਅਫਸੋਸ, ਸਬਨੈੱਟ ਮਾਸਕ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:1491
+#: ../carrick/carrick-service-item.c:1600
+#, fuzzy
+msgid "Sorry, it looks like the IPv6 address is not valid"
+msgstr "ਅਫਸੋਸ, IP ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:1612
+#, fuzzy
+msgid "Sorry, it looks like the IPv6 gateway address is not valid"
+msgstr "ਅਫਸੋਸ, ਗੇਟਵੇ ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:1657
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
 msgstr "ਅਫਸੋਸ, ਨੇਮ ਸਰਵਰ ਐਡਰੈੱਸ '%s' ਢੁੱਕਵਾਂ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
 
 #. TRANSLATORS: label for the Advanced expander in a service item
-#: ../carrick/carrick-service-item.c:1853
+#: ../carrick/carrick-service-item.c:2076
 msgid "Advanced"
 msgstr "ਤਕਨੀਕੀ"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
-#: ../carrick/carrick-service-item.c:1865
+#: ../carrick/carrick-service-item.c:2088
 msgid "Log in"
 msgstr "ਲਾਗ ਇਨ"
 
-#: ../carrick/carrick-service-item.c:1874
+#: ../carrick/carrick-service-item.c:2097
 msgid "Scanning"
 msgstr "ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
@@ -753,46 +709,69 @@ msgstr "ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1895
+#: ../carrick/carrick-service-item.c:2118
 msgid "WPA2 encrypted"
 msgstr "WPA2 ਇੰਕ੍ਰਿਪਟਡ"
 
-#. TRANSLATORS: label in advanced settings (next to combobox
-#. * for DHCP/Static IP)
-#: ../carrick/carrick-service-item.c:2002
-msgid "Connect by:"
-msgstr "ਕੁਨੈਕਟ ਕਰੋ:"
+#. TRANSLATORS: labels in advanced settings (next to combobox
+#. * for DHCP/Static IP and down from there)
+#: ../carrick/carrick-service-item.c:2225
+#, fuzzy
+msgid "Connect to IPv4:"
+msgstr "VPN ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2004
+#: ../carrick/carrick-service-item.c:2226
+#: ../carrick/carrick-service-item.c:2230
 msgid "IP address:"
 msgstr "IP ਐਡਰੈੱਸ:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2006
+#: ../carrick/carrick-service-item.c:2227
 msgid "Subnet mask:"
 msgstr "ਸਬਨੈੱਟ ਮਾਸਕ:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2008
+#: ../carrick/carrick-service-item.c:2228
+#: ../carrick/carrick-service-item.c:2231
 msgid "Router:"
 msgstr "ਰਾਊਟਰ:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2010
+#: ../carrick/carrick-service-item.c:2229
+#, fuzzy
+msgid "Connect to IPv6:"
+msgstr "VPN ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
+
+#: ../carrick/carrick-service-item.c:2232
+msgid "Prefix length:"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2233
 msgid "DNS:"
 msgstr "DNS:"
 
-#: ../carrick/carrick-service-item.c:2017
+#: ../carrick/carrick-service-item.c:2235
+#, fuzzy
+msgid "Your MAC address:"
+msgstr "IP ਐਡਰੈੱਸ:"
+
+#: ../carrick/carrick-service-item.c:2243
 msgid "DHCP"
 msgstr "DHCP"
 
-#: ../carrick/carrick-service-item.c:2019
+#: ../carrick/carrick-service-item.c:2245
+#: ../carrick/carrick-service-item.c:2276
 msgid "Static IP"
 msgstr "ਸਥਿਰ IP"
 
+#: ../carrick/carrick-service-item.c:2272
+#, fuzzy
+msgid "Off"
+msgstr "ਆਫਲਾਈਨ"
+
+#: ../carrick/carrick-service-item.c:2274
+msgid "Automatic"
+msgstr ""
+
 #. TRANSLATORS: label for apply button in static ip settings
-#: ../carrick/carrick-service-item.c:2070
+#: ../carrick/carrick-service-item.c:2336
 msgid "Apply"
 msgstr "ਲਾਗੂ ਕਰੋ"
 
@@ -897,13 +876,13 @@ msgid "Clear"
 msgstr ""
 
 #: ../panels/applications/src/mnb-filter.c:164
-#: ../panels/people/src/mnb-people-panel.c:723
+#: ../panels/people/src/mnb-people-panel.c:724
 #: ../panels/status/src/mps-geotag-pane.c:568
 #: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1585
 msgid "Search"
 msgstr "ਖੋਜ"
 
-#: ../panels/applications/src/dawati-netbook-launcher.c:61
+#: ../panels/applications/src/dawati-netbook-launcher.c:62
 msgid ""
 "To see your favourite applications here and on the myzone, hover your "
 "pointer over the application you want to add and select the pin in the top "
@@ -911,25 +890,25 @@ msgid ""
 msgstr ""
 
 #. Panel label
-#: ../panels/applications/src/dawati-netbook-launcher.c:1089
+#: ../panels/applications/src/dawati-netbook-launcher.c:1191
 msgid "Applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
 #.
 #. * Fav apps pane
 #.
-#: ../panels/applications/src/dawati-netbook-launcher.c:1105
+#: ../panels/applications/src/dawati-netbook-launcher.c:1207
 msgid "Favorite applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ"
 
 #.
 #. * Applications
 #.
-#: ../panels/applications/src/dawati-netbook-launcher.c:1148
+#: ../panels/applications/src/dawati-netbook-launcher.c:1250
 msgid "Your applications"
 msgstr "ਤੁਹਾਡੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ"
 
-#: ../panels/applications/src/dawati-panel-applications.c:258
+#: ../panels/applications/src/dawati-panel-applications.c:280
 #: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
@@ -1083,27 +1062,27 @@ msgstr ""
 msgid "Dawati Devices Panel"
 msgstr "ਮੀਗੋ ਜੰਤਰ ਪੈਨਲ"
 
-#: ../panels/devices/src/mpd-battery-device.c:381
+#: ../panels/devices/src/mpd-battery-device.c:378
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਇੰਸਟਾਲ ਨਹੀਂ ਜਾਪਦੀ ਹੈ।"
 
-#: ../panels/devices/src/mpd-battery-device.c:385
+#: ../panels/devices/src/mpd-battery-device.c:382
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਚਾਰਜ ਹੋ ਰਹੀ ਹੈ। ਇਹ %d%% ਲਗਭਗ ਪੂਰੀ ਹੈ।"
 
-#: ../panels/devices/src/mpd-battery-device.c:390
+#: ../panels/devices/src/mpd-battery-device.c:387
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ ਲਗਭਗ %d%% ਪੂਰੀ ਹੈ।"
 
-#: ../panels/devices/src/mpd-battery-device.c:395
+#: ../panels/devices/src/mpd-battery-device.c:392
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "ਬੈਟਰੀ ਪੂਰੀ ਤਰ੍ਹਾਂ ਚਾਰਜ ਹੋ ਚੁੱਕੀ ਹੈ ਤੇ ਤੁਸੀਂ ਵਰਤਣ ਲਈ ਤਿਆਰ ਹੋ।"
 
-#: ../panels/devices/src/mpd-battery-device.c:399
+#: ../panels/devices/src/mpd-battery-device.c:396
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖਰਾਬ ਜਾਪਦੀ ਹੈ।"
@@ -1342,76 +1321,121 @@ msgid "Network settings"
 msgstr "ਨੈੱਟਵਰਕ ਸੈਟਿੰਗ"
 
 #: ../panels/networks/data/carrick.desktop.in.in.h:2
-#: ../panels/networks/src/carrick.c:364
+#: ../panels/networks/src/carrick.c:365
 msgid "network"
 msgstr "ਨੈੱਟਵਰਕ"
 
 #. TRANSLATORS: Tooltips for the toolbar icon
 #. * The possible placeholder is service name (such as
 #. * a wireless network name)
-#: ../panels/networks/src/carrick.c:52
+#: ../panels/networks/src/carrick.c:53
 msgid "networks - not connected"
 msgstr "ਨੈੱਟਵਰਕ - ਕੁਨੈਕਟ ਨਹੀਂ ਹੈ"
 
-#: ../panels/networks/src/carrick.c:58
+#: ../panels/networks/src/carrick.c:59
 msgid "networks - connecting"
 msgstr "ਨੈੱਟਵਰਕ - ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../panels/networks/src/carrick.c:64
+#: ../panels/networks/src/carrick.c:65
 msgid "networks - wired"
 msgstr "ਨੈੱਟਵਰਕ - ਤਾਰ"
 
-#: ../panels/networks/src/carrick.c:66
+#: ../panels/networks/src/carrick.c:67
 #, c-format
 msgid "networks - %s - wifi"
 msgstr "ਨੈੱਟਵਰਕ - %s - wifi"
 
-#: ../panels/networks/src/carrick.c:69
+#: ../panels/networks/src/carrick.c:70
 #, c-format
 msgid "networks - %s - wimax"
 msgstr "ਨੈੱਟਵਰਕ - %s - ਵਾਈਮੈਕਸ"
 
-#: ../panels/networks/src/carrick.c:72
+#: ../panels/networks/src/carrick.c:73
 #, c-format
 msgid "networks - %s - 3G"
 msgstr "ਨੈੱਟਵਰਕ - %s - 3G"
 
-#: ../panels/networks/src/carrick.c:75
+#: ../panels/networks/src/carrick.c:76
 #, c-format
 msgid "networks - %s - bluetooth"
 msgstr "ਨੈੱਟਵਰਕ - %s - ਬਲਿਊਟੁੱਥ"
 
-#: ../panels/networks/src/carrick.c:78
+#: ../panels/networks/src/carrick.c:79
 #, c-format
 msgid "networks - %s - VPN"
 msgstr "ਨੈੱਟਵਰਕ - %s - VPN"
 
-#: ../panels/networks/src/carrick.c:81 ../panels/networks/src/carrick.c:93
+#: ../panels/networks/src/carrick.c:82 ../panels/networks/src/carrick.c:94
 msgid "networks"
 msgstr "ਨੈੱਟਵਰਕ"
 
-#: ../panels/networks/src/carrick.c:88
+#: ../panels/networks/src/carrick.c:89
 msgid "networks - error"
 msgstr "ਨੈੱਟਵਰਕ - ਗਲਤੀ"
 
-#: ../panels/networks/src/carrick.c:309
+#: ../panels/networks/src/carrick.c:310
 msgid "Run in standalone mode"
 msgstr "ਇੱਕਲੇ ਮੋਡ ਵਿੱਚ ਚਲਾਓ"
 
-#: ../panels/networks/src/carrick.c:311
+#: ../panels/networks/src/carrick.c:312
 msgid "Embed in another window (overrides --standalone)"
 msgstr "ਹੋਰ ਵਿੰਡੋ ਵਿੱਚ ਇੰਬੈੱਡ (--standalone ਅਣਡਿੱਠਾ)"
 
-#: ../panels/networks/src/carrick.c:322
+#: ../panels/networks/src/carrick.c:323
 msgid "Carrick connectivity applet"
 msgstr "ਕੱਰਿਕ ਕੁਨੈਕਟਵਿਟੀ ਐਪਲਿਟ"
 
-#: ../panels/networks/src/carrick.c:323
+#: ../panels/networks/src/carrick.c:324
 msgid "- Dawati connectivity applet"
 msgstr "- ਮੀਗੋ ਕੁਨੈਕਟਵਿਟੀ ਐਪਲਿਟ"
 
+#: ../panels/people/anerley/anerley/anerley-tile.c:171
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:44
+msgid "Available"
+msgstr "ਉਪਲੱਬਧ"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:174
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:48
+msgid "Busy"
+msgstr "ਰੁੱਝੇ"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:177
+#: ../panels/people/anerley/anerley/anerley-tile.c:180
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:45
+msgid "Away"
+msgstr "ਦੂਰ"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:183
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:43
+msgid "Offline"
+msgstr "ਆਫਲਾਈਨ"
+
+#: ../panels/people/anerley/anerley/anerley-econtact-item.c:234
+msgid "Unnamed"
+msgstr "ਬਿਨ-ਨਾਂ"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "ਅਣ-ਸੈੱਟ"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "ਪਹੁੰਚ ਤੋਂ ਦੂਰ"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "ਓਹਲੇ"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "ਅਣਜਾਣ"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "ਗਲਤੀ"
+
 #: ../panels/people/src/dawati-panel-people.c:88
-#: ../panels/people/src/mnb-people-panel.c:513
+#: ../panels/people/src/mnb-people-panel.c:514
 #: ../panels/people/data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "ਲੋਕ"
@@ -1424,7 +1448,7 @@ msgstr ""
 "ਜਦੋਂ ਤੁਸੀਂ IM ਸਰਵਿਸ ਸੰਰਚਿਤ ਕਰ ਲਈ (ਮੈਂਸਜਰ ਵਰਗੀ) ਤਾਂ ਇੱਥੇ ਤੁਸੀਂ ਲੋਕਾਂ ਨਾਲ ਗੱਲਾਬਾਤਾਂ ਵੇਖ ਸਕਦੇ ਹੋ।"
 
 #: ../panels/people/src/mnb-people-panel.c:191
-#: ../panels/people/src/mnb-people-panel.c:451
+#: ../panels/people/src/mnb-people-panel.c:452
 #, c-format
 msgid "Open %s"
 msgstr "%s ਖੋਲ੍ਹੋ"
@@ -1433,44 +1457,44 @@ msgstr "%s ਖੋਲ੍ਹੋ"
 msgid "This is the People panel."
 msgstr "ਇਹ ਲੋਕ ਪੈਨਲ ਹੈ।"
 
-#: ../panels/people/src/mnb-people-panel.c:320
+#: ../panels/people/src/mnb-people-panel.c:321
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਉਹ ਸਾਰੇ ਆਫਲਾਈਨ ਜਾਪਦੇ ਹਨ।"
 
-#: ../panels/people/src/mnb-people-panel.c:365
+#: ../panels/people/src/mnb-people-panel.c:366
 msgid "To see your IM contacts, you need to go online."
 msgstr "ਆਪਣੇ  IM ਸੰਪਰਕ ਵੇਖਣ ਲਈ, ਤੁਹਾਨੂੰ ਆਨਲਾਈਨ ਜਾਣ ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../panels/people/src/mnb-people-panel.c:495
+#: ../panels/people/src/mnb-people-panel.c:496
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "ਲੋਕ - ਤੁਸੀਂ %d ਲੋਕਾਂ ਨਾਲ ਗੱਲ ਕਰ ਰਹੇ ਹੋ"
 
-#: ../panels/people/src/mnb-people-panel.c:502
+#: ../panels/people/src/mnb-people-panel.c:503
 msgid "people - you are chatting with someone"
 msgstr "ਲੋਕ - ਤੁਸੀਂ ਕਿਸੇ ਨਾਲ ਗੱਲਾਂ ਕਰ ਰਹੇ ਹੋ"
 
 #. Populate header
-#: ../panels/people/src/mnb-people-panel.c:710
-#: ../panels/people/src/mnb-people-panel.c:964
+#: ../panels/people/src/mnb-people-panel.c:711
+#: ../panels/people/src/mnb-people-panel.c:965
 msgid "People"
 msgstr "ਲੋਕ"
 
-#: ../panels/people/src/mnb-people-panel.c:774
-#: ../panels/people/src/mnb-people-panel.c:1162
+#: ../panels/people/src/mnb-people-panel.c:775
+#: ../panels/people/src/mnb-people-panel.c:1163
 msgid "You are chatting with:"
 msgstr "ਤੁਸੀਂ ਗੱਲਾਂ ਕਰ ਰਹੇ ਹੋ:"
 
-#: ../panels/people/src/mnb-people-panel.c:981
+#: ../panels/people/src/mnb-people-panel.c:982
 msgid "Me and my people"
 msgstr "ਮੈਂ ਅਤੇ ਮੇਰੇ ਲੋਕ"
 
-#: ../panels/people/src/mnb-people-panel.c:1019
+#: ../panels/people/src/mnb-people-panel.c:1020
 msgid "Me"
 msgstr "ਮੈਂ"
 
 #. Side table
-#: ../panels/people/src/mnb-people-panel.c:1119
+#: ../panels/people/src/mnb-people-panel.c:1120
 msgid "My conversations"
 msgstr "ਮੇਰੀਆਂ ਗੱਲਾਂ"
 
@@ -1519,7 +1543,7 @@ msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਲਗਭਗ ਖਤਮ ਹੋਣ ਵਾਲੀ ਹੈ। ਮੈਂ ਹੁਣ ਬੰਦ ਹੋਣ ਜਾ ਰਿਹਾ ਹਾਂ। ਆਪਣਾ ਕੰਮ "
 "ਸੰਭਾਲ ਲਵੋ ਜੀ ਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਫੇਰ ਮਿਲਦੇ ਹਾਂ।"
 
-#: ../panels/power-icon/src/mpd-power-icon.c:500
+#: ../panels/power-icon/src/mpd-power-icon.c:501
 msgid "battery"
 msgstr "ਬੈਟਰੀ"
 
@@ -1743,7 +1767,7 @@ msgstr "ਜ਼ੋਨ ਪੈਨਲ"
 msgid "zones"
 msgstr "ਜ਼ੋਨ"
 
-#: ../panels/zones/src/main.c:494
+#: ../panels/zones/src/main.c:527
 msgid "Zones"
 msgstr "ਜ਼ੋਨ"
 
@@ -1823,15 +1847,15 @@ msgstr "੧ ਬਾਕੀ ਸੁਨੇਹਾ"
 msgid "Unread messages"
 msgstr "%i ਬਾਕੀ ਸੁਨੇਹੇ"
 
-#: ../src/dawati-netbook.c:846
+#: ../src/dawati-netbook.c:812
 msgid "Dawati Netbook Effects"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਪਰਭਾਵ"
 
-#: ../src/dawati-netbook.c:850
+#: ../src/dawati-netbook.c:816
 msgid "Effects for Dawati Netbooks"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
 
-#: ../src/mnb-toolbar.c:985
+#: ../src/mnb-toolbar.c:986
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "ਅਫਸੋਸ, %s ਖ਼ਰਾਬ ਹੈ"
@@ -1844,12 +1868,12 @@ msgstr "ਅਣਡਿੱਠਾ"
 msgid "Dismiss All"
 msgstr "ਸਭ ਅਣਡਿੱਠੇ"
 
-#: ../src/notifications/ntf-tray.c:516 ../src/notifications/ntf-tray.c:592
+#: ../src/notifications/ntf-tray.c:517 ../src/notifications/ntf-tray.c:594
 #, c-format
 msgid "%i pending messages"
 msgstr "%i ਬਾਕੀ ਸੁਨੇਹੇ"
 
-#: ../src/notifications/ntf-tray.c:570
+#: ../src/notifications/ntf-tray.c:572
 msgid "1 pending message"
 msgstr "੧ ਬਾਕੀ ਸੁਨੇਹਾ"
 
@@ -1881,6 +1905,9 @@ msgid "Opening %d Item"
 msgid_plural "Opening %d Items"
 msgstr[0] "%d ਆਈਟਮ ਖੋਲ੍ਹੀ ਜਾ ਰਹੀ ਹੈ"
 msgstr[1] "%d ਆਈਟਮਾਂ ਖੋਲ੍ਹੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+
+#~ msgid "Connect by:"
+#~ msgstr "ਕੁਨੈਕਟ ਕਰੋ:"
 
 #~ msgid "Ejecting failed, looks like an application is using it"
 #~ msgstr "ਬਾਹਰ ਕੱਢਣ ਲਈ ਫੇਲ੍ਹ, ਜਾਪਦਾ ਹੈ ਕਿ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਇਸ ਨੂੰ ਵਰਤ ਰਹੀ ਹੈ"
