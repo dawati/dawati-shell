@@ -1,3 +1,10 @@
+# #-#-#-#-#  ca@valencia.po (Anerley 2.x)  #-#-#-#-#
+# Anerley Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Anerley package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+#
+# #-#-#-#-#  ca@valencia.po (mutter-dawati)  #-#-#-#-#
 # #-#-#-#-#  ca@valencia.po (meego-panel-zones)  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -84,6 +91,17 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  ca@valencia.po (Anerley 2.x)  #-#-#-#-#\n"
+"Project-Id-Version: Anerley 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-15 09:25+0000\n"
+"PO-Revision-Date: 2009-08-21 11:24+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  ca@valencia.po (mutter-dawati)  #-#-#-#-#\n"
 "Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 13:35+0000\n"
@@ -134,6 +152,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "#-#-#-#-#  ca@valencia.po (mutter-dawati)  #-#-#-#-#\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../anerley/anerley-tile.c:208
+msgid "Available"
+msgstr "Disponible"
+
+#: ../anerley/anerley-tile.c:211
+msgid "Busy"
+msgstr "Ocupat"
+
+#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
+msgid "Away"
+msgstr "Absent"
+
+#: ../anerley/anerley-tile.c:220
+msgid "Offline"
+msgstr "Desconnectat"
+
+#: ../anerley/anerley-econtact-item.c:312
+msgid "Unnamed"
+msgstr "Sense nom"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"

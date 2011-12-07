@@ -1,4 +1,10 @@
 # #-#-#-#-#  cs.po  #-#-#-#-#
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Pavel, 2010, 2004.
+# #-#-#-#-#  cs.po  #-#-#-#-#
+# #-#-#-#-#  cs.po  #-#-#-#-#
 # Pavel Fric, 2010.
 # Pavel Fric <fripohled@blogspot.com>, 2010.
 # #-#-#-#-#  cs.po  #-#-#-#-#
@@ -59,6 +65,19 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-29 15:43+0000\n"
+"PO-Revision-Date: 2004-01-01 04:18+0100\n"
+"Last-Translator: \n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 13:35+0000\n"
@@ -126,6 +145,67 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.1\n"
+
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
+#, fuzzy
+msgid "Available"
+msgstr ""
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Dostupný\n"
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Verfügbar"
+
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
+#, fuzzy
+msgid "Busy"
+msgstr ""
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Zaneprázdněn\n"
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Beschäftigt"
+
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
+#, fuzzy
+msgid "Away"
+msgstr ""
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Pryč\n"
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Abwesend"
+
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
+#, fuzzy
+msgid "Offline"
+msgstr ""
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Odpojený\n"
+"#-#-#-#-#  cs.po  #-#-#-#-#\n"
+"Offline"
+
+#: ../anerley/anerley-econtact-item.c:234
+msgid "Unnamed"
+msgstr "Beze jména"
+
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "Nenastavený"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "Pryč na delší dobu"
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "Skrytý"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "Chyba"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -1889,18 +1969,6 @@ msgstr[1] "Otevírá se %d položek"
 #~ "Buď není nastavena žádná internetová služba, anebo jsou potíže s jejím "
 #~ "nastavením. Použijte tlačítko nahoře pro otevření Moje internetové účty a "
 #~ "jeden účet nastavte."
-
-#~ msgid "Offline"
-#~ msgstr "Offline"
-
-#~ msgid "Available"
-#~ msgstr "Verfügbar"
-
-#~ msgid "Away"
-#~ msgstr "Abwesend"
-
-#~ msgid "Busy"
-#~ msgstr "Beschäftigt"
 
 #~ msgid "Close"
 #~ msgstr "Schließen"

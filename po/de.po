@@ -9,6 +9,9 @@
 # #-#-#-#-#  de.po  #-#-#-#-#
 # #-#-#-#-#  de.po  #-#-#-#-#
 #
+# #-#-#-#-#  de.po  #-#-#-#-#
+# #-#-#-#-#  de.po  #-#-#-#-#
+#
 # #-#-#-#-#  de.po (dawati-panel-networks)  #-#-#-#-#
 # #-#-#-#-#  de.po (dawati-panel-networks)  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
@@ -52,6 +55,18 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 13:35+0000\n"
@@ -108,6 +123,61 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+# #-#-#-#-#  de.po  #-#-#-#-#
+# Derived from:
+# German translation of Empathy.
+# Copyright (C) 2003-2005, 2007 Free Software Foundation, Inc.
+# Hendrik Richter <naggeldak@gnome-de.org>, 2003.
+# Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
+# Andre Klapper <ak-47@gmx.net>, 2007, 2008.
+# Jochen Skulj <jochen@jochenskulj.de>, 2008, 2009.
+# Mario BlÃ¤ttermann <mariobl@gnome.org>, 2008, 2009.
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+msgid "Available"
+msgstr "Verfügbar"
+
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+msgid "Busy"
+msgstr "Beschäftigt"
+
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
+msgid "Away"
+msgstr "Abwesend"
+
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+#, fuzzy
+msgid "Offline"
+msgstr ""
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Abgemeldet\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Offline"
+
+#: ../anerley/anerley-econtact-item.c:233
+msgid "Unnamed"
+msgstr "Unbenannt"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "nicht festgelegt"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "unbekannt"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "versteckt"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Fehler"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Länger abwesend"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -1849,18 +1919,6 @@ msgstr[1] ""
 #~ "Es ist kein Web-Service konfiguriert oder es gibt ein Problem mit der "
 #~ "Konfiguration. Benutze die Schaltfläche oben, um My Web Accounts zu "
 #~ "öffnen und ein Konto einzurichten."
-
-#~ msgid "Offline"
-#~ msgstr "Offline"
-
-#~ msgid "Available"
-#~ msgstr "Verfügbar"
-
-#~ msgid "Away"
-#~ msgstr "Abwesend"
-
-#~ msgid "Busy"
-#~ msgstr "Beschäftigt"
 
 #~ msgid "Close"
 #~ msgstr "Schließen"

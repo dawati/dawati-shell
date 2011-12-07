@@ -1,3 +1,14 @@
+# #-#-#-#-#  zh_CN.po (gossip)  #-#-#-#-#
+# Derived from Empathy:
+# Simplified Chinese translation of Empathy.
+# Convert to Simp. Chinese translation of Empathy.
+# Copyright (C) 2003-2009 Free Software Foundation, Inc.
+# Abel Cheung <maddog@linux.org.hk>, 2003.
+# Mai Haohui <maihaohui@hotmail.com>, 2003.
+# Rongjun Mu <elanmu@sina.com>, 2003.
+# YangZhang <zyangmath@gmail.com>, 2008.
+# Funda Wang <fundawang@gmail.com>, 2009.
+# #-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#
 # #-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#
 # Chinese translations for mutter-moblin package
 # mutter-moblin 软件包的简体中文翻译.
@@ -88,6 +99,18 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  zh_CN.po (gossip)  #-#-#-#-#\n"
+"Project-Id-Version: gossip\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
+"PO-Revision-Date: 2009-07-27 12:00-0800\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Chinese\n"
+"#-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#\n"
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 13:35+0000\n"
@@ -133,6 +156,47 @@ msgstr ""
 "#-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#\n"
 "#-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#\n"
 "#-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#\n"
+
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+msgid "Available"
+msgstr "在线"
+
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+msgid "Busy"
+msgstr "忙碌"
+
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
+msgid "Away"
+msgstr "离开"
+
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+msgid "Offline"
+msgstr "离线"
+
+#: ../anerley/anerley-econtact-item.c:233
+msgid "Unnamed"
+msgstr "无名"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "离线"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "取消设置"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "未知"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "隐藏"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "错误"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -1830,15 +1894,6 @@ msgstr[1] ""
 #~ "您似乎没有配置任何网络服务，或者您的配置有问题。请使用上面的按钮，打开我的"
 #~ "网络帐户，开始配置。"
 
-#~ msgid "Offline"
-#~ msgstr "离线"
-
-#~ msgid "Away"
-#~ msgstr "离开"
-
-#~ msgid "Busy"
-#~ msgstr "忙碌"
-
 #~ msgid "Close"
 #~ msgstr "关闭"
 
@@ -1892,9 +1947,6 @@ msgstr[1] ""
 #~ "要更新您的即时通讯状态，需要先建立一个即时通讯账户。\n"
 #~ "#-#-#-#-#  zh_CN.po (0.27.6)  #-#-#-#-#\n"
 #~ "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
-
-#~ msgid "Available"
-#~ msgstr "在线"
 
 #~ msgid "Search for applications"
 #~ msgstr "搜索应用程序"
