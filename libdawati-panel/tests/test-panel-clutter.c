@@ -26,6 +26,8 @@
  *
  */
 
+#include <stdlib.h>
+
 #include <dawati-panel/mpl-panel-clutter.h>
 #include <dawati-panel/mpl-panel-common.h>
 
@@ -58,7 +60,12 @@ main (int argc, char *argv[])
 {
   MplPanelClient *panel;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_warning ("Unable to initialise Clutter");
+
+      return EXIT_FAILURE;
+    }
 
   /*
    * NB: the toolbar service indicates whether this panel requires access

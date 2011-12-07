@@ -31,7 +31,12 @@ main (int     argc,
   ClutterActor *pane;
   ClutterActor *button;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_warning ("Unable to initialise Clutter");
+
+      return EXIT_FAILURE;
+    }
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/theme.css", NULL);

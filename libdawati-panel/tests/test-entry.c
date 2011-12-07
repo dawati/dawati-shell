@@ -19,7 +19,12 @@ main (int argc, char *argv[])
   MxWidget *entry;
   ClutterActor *stage;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_warning ("Unable to initialise Clutter");
+
+      return EXIT_FAILURE;
+    }
 
   mx_style_load_from_file (mx_style_get_default (),
                              "../theme/theme.css", NULL);

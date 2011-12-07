@@ -291,9 +291,7 @@ mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 static void
 mpl_panel_clutter_init (MplPanelClutter *self)
 {
-  MplPanelClutterPrivate *priv;
-
-  priv = self->priv = MPL_PANEL_CLUTTER_GET_PRIVATE (self);
+  self->priv = MPL_PANEL_CLUTTER_GET_PRIVATE (self);
 }
 
 /**

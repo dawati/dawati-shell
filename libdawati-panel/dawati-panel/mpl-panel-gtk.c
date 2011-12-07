@@ -194,9 +194,7 @@ mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
 static void
 mpl_panel_gtk_init (MplPanelGtk *self)
 {
-  MplPanelGtkPrivate *priv;
-
-  priv = self->priv = MPL_PANEL_GTK_GET_PRIVATE (self);
+  self->priv = MPL_PANEL_GTK_GET_PRIVATE (self);
 }
 
 static void

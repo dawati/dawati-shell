@@ -762,10 +762,9 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
 static void
 mpl_panel_client_init (MplPanelClient *self)
 {
-  MplPanelClientPrivate *priv;
-  const gchar           *home;
+  const gchar *home;
 
-  priv = self->priv = MPL_PANEL_CLIENT_GET_PRIVATE (self);
+  self->priv = MPL_PANEL_CLIENT_GET_PRIVATE (self);
 
   home = g_get_home_dir ();
 
@@ -1381,26 +1380,12 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
 {
   GAppLaunchContext   *ctx;
   GdkAppLaunchContext *gctx;
-  GAppInfo            *app;
   GError              *error = NULL;
   gboolean             retval = TRUE;
   gchar               *uri_scheme;
   guint32              timestamp;
 
   uri_scheme = g_uri_parse_scheme (uri);
-
-  /* For local files we want the local file handler not the scheme handler */
-  if (g_str_equal (uri_scheme, "file"))
-    {
-      GFile *file;
-      file = g_file_new_for_uri (uri);
-      app = g_file_query_default_handler (file, NULL, NULL);
-      g_object_unref (file);
-    }
-  else
-    {
-      app = g_app_info_get_default_for_uri_scheme (uri_scheme);
-    }
 
   g_free (uri_scheme);
 

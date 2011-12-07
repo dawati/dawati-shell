@@ -163,9 +163,7 @@ mpl_panel_windowless_class_init (MplPanelWindowlessClass *klass)
 static void
 mpl_panel_windowless_init (MplPanelWindowless *self)
 {
-  MplPanelWindowlessPrivate *priv;
-
-  priv = self->priv = MPL_PANEL_WINDOWLESS_GET_PRIVATE (self);
+  self->priv = MPL_PANEL_WINDOWLESS_GET_PRIVATE (self);
 }
 
 /**
