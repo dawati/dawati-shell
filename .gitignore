@@ -6,7 +6,7 @@
 *.loT
 *.o
 *.service
-*.swp
+*.sw?
 */.svn/*
 *~
 .DS_Store?
@@ -31,6 +31,7 @@
 /data/theme/networks/network-applet.css
 /data/theme/power-icon/power-icon.css
 /data/theme/power-icon/power-icon.css
+/gtk-doc.make
 /libdawati-panel/*.pc
 /libdawati-panel/dawati-panel/dawati-app-launches-store
 /libdawati-panel/dawati-panel/dawati-launch
@@ -111,6 +112,7 @@
 /penge/test-block-container
 /penge/test-everything-pane
 /po/*.gmo
+/po/.intltool-merge-cache
 /po/POTFILES
 /po/stamp-it
 /src/marshal.[ch]
@@ -136,6 +138,7 @@
 /tests/test-tray
 Desktop.ini
 Makefile
+TAGS
 Thumbs.db
 aclocal.m4
 autom4te.cache
