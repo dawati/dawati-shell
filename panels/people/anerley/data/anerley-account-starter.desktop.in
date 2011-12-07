@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=IM Account starter
+Comment=Puts IM accounts online
+TryExec=@libexecdir@/anerley-account-starter
+Exec=@libexecdir@/anerley-account-starter
+StartupNotify=false
+Categories=
+Terminal=false
+Type=Application
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

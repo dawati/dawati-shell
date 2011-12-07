@@ -1,6 +1,4 @@
-SUBDIRS = \
-	src \
-	data
+SUBDIRS = anerley src data
 
 EXTRA_DIST = \
 	AUTHORS \

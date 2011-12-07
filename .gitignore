@@ -93,6 +93,16 @@
 /panels/networks/data/carrick.desktop
 /panels/networks/src/carrick-connection-panel
 /panels/networks/tests/test-model
+/panels/people/anerley/anerley/anerley-marshals.c
+/panels/people/anerley/anerley/anerley-marshals.h
+/panels/people/anerley/data/anerley-account-starter.desktop
+/panels/people/anerley/src/anerley-account-starter
+/panels/people/anerley/src/sw-marshals.c
+/panels/people/anerley/src/sw-marshals.h
+/panels/people/anerley/tests/test-presence-chooser
+/panels/people/anerley/tests/test-tp-monitor-feed
+/panels/people/anerley/tests/test-tp-observer
+/panels/people/anerley/tests/test-tp-user-avatar
 /panels/people/data/dawati-panel-people.desktop
 /panels/people/src/dawati-panel-people
 /panels/people/src/sw-marshals.c

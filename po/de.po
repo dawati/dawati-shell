@@ -9,6 +9,9 @@
 # #-#-#-#-#  de.po  #-#-#-#-#
 # #-#-#-#-#  de.po  #-#-#-#-#
 #
+# #-#-#-#-#  de.po  #-#-#-#-#
+# #-#-#-#-#  de.po  #-#-#-#-#
+#
 # #-#-#-#-#  de.po (dawati-panel-networks)  #-#-#-#-#
 # #-#-#-#-#  de.po (dawati-panel-networks)  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
@@ -54,7 +57,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-15 13:35+0000\n"
+"POT-Creation-Date: 2011-12-07 19:06+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -62,6 +65,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"X-Poedit-Language: German\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
 "#-#-#-#-#  de.po  #-#-#-#-#\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: German\n"
@@ -218,54 +224,54 @@ msgstr ""
 "wird, um dich auf etwas aufmerksam zu machen oder nach dem Schließen im "
 "Hintergrund weiterzulaufen."
 
-#: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
-#: ../callouts/3g/ggg-provider-dialog.c:106
-#: ../callouts/3g/ggg-service-dialog.c:106
+#: ../callouts/3g/ggg-country-dialog.c:75
+#: ../callouts/3g/ggg-manual-dialog.c:72 ../callouts/3g/ggg-plan-dialog.c:113
+#: ../callouts/3g/ggg-provider-dialog.c:108
+#: ../callouts/3g/ggg-service-dialog.c:108
 msgid "Cellular Data Connection Wizard"
 msgstr "Wizard zur Zellulardaten-Verbindung "
 
-#: ../callouts/3g/ggg-country-dialog.c:93
+#: ../callouts/3g/ggg-country-dialog.c:95
 msgid "Select Country"
 msgstr "Land auswählen"
 
-#: ../callouts/3g/ggg-manual-dialog.c:89
+#: ../callouts/3g/ggg-manual-dialog.c:91
 msgid "Manual Configuration"
 msgstr "Manuelle Konfiguriation"
 
-#: ../callouts/3g/ggg-manual-dialog.c:93
+#: ../callouts/3g/ggg-manual-dialog.c:95
 msgid "Plan Name (required):"
 msgstr "Planname (erforderlich):"
 
-#: ../callouts/3g/ggg-manual-dialog.c:96
+#: ../callouts/3g/ggg-manual-dialog.c:98
 msgid "Username:"
 msgstr "Benutzername:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:99
+#: ../callouts/3g/ggg-manual-dialog.c:101
 msgid "Password:"
 msgstr "Kennwort:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:103
+#: ../callouts/3g/ggg-manual-dialog.c:105
 msgid "Gateway:"
 msgstr "Gateway:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:106
+#: ../callouts/3g/ggg-manual-dialog.c:108
 msgid "Primary DNS:"
 msgstr "Primäre DNS:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:109
+#: ../callouts/3g/ggg-manual-dialog.c:111
 msgid "Secondary DNS:"
 msgstr "Sekundäre DNS:"
 
-#: ../callouts/3g/ggg-manual-dialog.c:112
+#: ../callouts/3g/ggg-manual-dialog.c:114
 msgid "Tertiary DNS:"
 msgstr "Tertiäre DNS:"
 
-#: ../callouts/3g/ggg-plan-dialog.c:131
+#: ../callouts/3g/ggg-plan-dialog.c:133
 msgid "Select your 3G Plan"
 msgstr "3G Datenplan wählen"
 
-#: ../callouts/3g/ggg-provider-dialog.c:126
+#: ../callouts/3g/ggg-provider-dialog.c:128
 msgid "Select Provider"
 msgstr "Provider wählen"
 
@@ -274,11 +280,11 @@ msgstr "Provider wählen"
 msgid "%s (Roaming)"
 msgstr "%s (Roaming)"
 
-#: ../callouts/3g/ggg-service-dialog.c:125
+#: ../callouts/3g/ggg-service-dialog.c:127
 msgid "Select 3G Service"
 msgstr "3G Service wählen"
 
-#: ../callouts/openconnect/main.c:659
+#: ../callouts/openconnect/main.c:660
 #, c-format
 msgid ""
 "Certificate from VPN server \"%s\" failed verification.\n"
@@ -286,27 +292,27 @@ msgid ""
 "Do you want to accept it?"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1318
+#: ../callouts/openconnect/main.c:1321
 msgid "VPN host"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1338
+#: ../callouts/openconnect/main.c:1341
 msgid "Automatically start connecting next time"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1355
+#: ../callouts/openconnect/main.c:1358
 msgid "Select a host to fetch the login form"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1360
+#: ../callouts/openconnect/main.c:1363
 msgid "Contacting host, please wait..."
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1372
+#: ../callouts/openconnect/main.c:1375
 msgid "_Login"
 msgstr ""
 
-#: ../callouts/openconnect/main.c:1386
+#: ../callouts/openconnect/main.c:1389
 msgid "Log"
 msgstr ""
 
@@ -316,7 +322,7 @@ msgstr ""
 #. * for example 'You could try enabling WiFi, WiMAX or 3G'.
 #. * Note that you need to include spaces on both sides of the word/phrase
 #. * here -- unless you want it joined with previous or next word.
-#: ../carrick/carrick-list.c:1014
+#: ../carrick/carrick-list.c:1098
 msgid " or "
 msgstr "oder "
 
@@ -325,34 +331,34 @@ msgstr "oder "
 #. * 'You could try enabling WiFi, WiMAX or 3G'
 #. * Note that you need to include spaces in the string, unless you
 #. * want the words to appear right next to the comma.
-#: ../carrick/carrick-list.c:1021
+#: ../carrick/carrick-list.c:1105
 msgid ", "
 msgstr ", "
 
 #. Translator note: these technology names will be used in forming
 #. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
 #.
-#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
+#: ../carrick/carrick-list.c:1128 ../carrick/carrick-util.c:42
 msgid "wired"
 msgstr "verkabelt"
 
 #. Switches
-#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-list.c:1129 ../carrick/carrick-pane.c:1975
 #: ../carrick/carrick-util.c:40
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-list.c:1130 ../carrick/carrick-pane.c:2017
 #: ../carrick/carrick-util.c:46
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-list.c:1131 ../carrick/carrick-pane.c:2003
 #: ../carrick/carrick-util.c:44
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-list.c:1132 ../carrick/carrick-pane.c:2031
 #: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -362,7 +368,7 @@ msgstr "Bluetooth"
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
 #.
-#: ../carrick/carrick-list.c:1058
+#: ../carrick/carrick-list.c:1142
 msgid ""
 "Sorry, we can't find any networks. It appears that the connection manager is "
 "not running. You could try restarting your computer."
@@ -374,14 +380,14 @@ msgstr ""
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:1068
+#: ../carrick/carrick-list.c:1152
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr ""
 "Leider können wir keine Netzwerke finden. Du könntest versuchen, den Offline-"
 "Modus zu deaktivieren."
 
-#: ../carrick/carrick-list.c:1120
+#: ../carrick/carrick-list.c:1204
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr ""
@@ -393,7 +399,7 @@ msgstr ""
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:1134
+#: ../carrick/carrick-list.c:1218
 msgid "Sorry, we can't find any networks"
 msgstr "Leider können wir keine Netzwerke finden."
 
@@ -494,7 +500,7 @@ msgstr ""
 msgid "New connection settings"
 msgstr "Einstellungen der neuen Verbindung"
 
-#: ../carrick/carrick-pane.c:724
+#: ../carrick/carrick-pane.c:721
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -504,55 +510,55 @@ msgstr ""
 "sowie, falls nötig, das Kennwort und\n"
 "den Sicherheitstyp an."
 
-#: ../carrick/carrick-pane.c:734
+#: ../carrick/carrick-pane.c:731
 msgid "Network name"
 msgstr "Netzwerkname"
 
-#: ../carrick/carrick-pane.c:746
+#: ../carrick/carrick-pane.c:743
 msgid "Network security"
 msgstr "Netzwerksicherheit"
 
-#: ../carrick/carrick-pane.c:756
+#: ../carrick/carrick-pane.c:753
 msgid "None"
 msgstr "Keine"
 
-#: ../carrick/carrick-pane.c:768
+#: ../carrick/carrick-pane.c:765
 msgid "Password"
 msgstr "Kennwort"
 
-#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
+#: ../carrick/carrick-pane.c:783 ../carrick/carrick-service-item.c:2176
 msgid "Show password"
 msgstr "Kennwort anzeigen"
 
-#: ../carrick/carrick-pane.c:1975
+#: ../carrick/carrick-pane.c:1958
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
+#: ../carrick/carrick-pane.c:1989 ../carrick/carrick-service-item.c:585
 msgid "Wired"
 msgstr "Kabel"
 
-#: ../carrick/carrick-pane.c:2073
+#: ../carrick/carrick-pane.c:2056
 msgid "Offline mode"
 msgstr "Offline-Modus"
 
-#: ../carrick/carrick-pane.c:2083
+#: ../carrick/carrick-pane.c:2066
 msgid "This will disable all your connections"
 msgstr "Dies deaktiviert alle Verbindungen"
 
-#: ../carrick/carrick-pane.c:2119 ../panels/networks/src/carrick.c:381
+#: ../carrick/carrick-pane.c:2102 ../panels/networks/src/carrick.c:383
 msgid "Networks"
 msgstr "Netzwerke"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:2125
+#: ../carrick/carrick-pane.c:2108
 msgid "Add new connection"
 msgstr "Neue Verbindung"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
-#: ../carrick/carrick-pane.c:2165
+#: ../carrick/carrick-pane.c:2148
 msgid "Connect to VPN"
 msgstr "Mit VPN verbinden"
 
@@ -560,95 +566,91 @@ msgstr "Mit VPN verbinden"
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:64
+#: ../carrick/carrick-service-item.c:65
 msgid "Critical Error: Invalid country code"
 msgstr "Kritischer Fehler: Ungültige Landvorwahl"
 
-#: ../carrick/carrick-service-item.c:65
+#: ../carrick/carrick-service-item.c:66
 msgid "Missing required APN (service plan name)"
 msgstr "Erforderliche APN (Name des Serviceplans) fehlt"
 
-#: ../carrick/carrick-service-item.c:66
+#: ../carrick/carrick-service-item.c:67
 msgid "Internal Error: Invalid network service"
 msgstr "Interner Fehler: Ungültiger Netzwerkservice"
 
-#: ../carrick/carrick-service-item.c:67
+#: ../carrick/carrick-service-item.c:68
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "Kritischer Fehler: Kein Zugang auf den Verbindungsmanager"
 
-#: ../carrick/carrick-service-item.c:68
+#: ../carrick/carrick-service-item.c:69
 msgid "ERROR: No 3G Hardware detected"
 msgstr "FEHLER: Keine 3G Hardware wurde entdeckt"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:248
+#: ../carrick/carrick-service-item.c:262
 #, c-format
 msgid "%s encrypted"
 msgstr "%s verschlüsselt"
 
-#. TRANSLATORS: This string will be in the "Connect by:"-
-#. * combobox just like "DHCP" and "Static IP". Fixed means
-#. * that the IP configuration cannot be changed at all,
-#. * like in a 3G network
-#: ../carrick/carrick-service-item.c:407
+#: ../carrick/carrick-service-item.c:456 ../carrick/carrick-service-item.c:496
 msgid "Fixed IP"
 msgstr "Feste IP"
 
-#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
+#: ../carrick/carrick-service-item.c:598 ../carrick/carrick-service-item.c:616
 msgid "Disconnect"
 msgstr "Verbindung trennen"
 
-#: ../carrick/carrick-service-item.c:477
+#: ../carrick/carrick-service-item.c:601
 msgid "Connected"
 msgstr "Verbunden"
 
-#: ../carrick/carrick-service-item.c:495
+#: ../carrick/carrick-service-item.c:619
 msgid "Online"
 msgstr "Online"
 
-#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
+#: ../carrick/carrick-service-item.c:625 ../carrick/carrick-service-item.c:634
 #, c-format
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../carrick/carrick-service-item.c:504
+#: ../carrick/carrick-service-item.c:628
 msgid "Configuring"
 msgstr "Konfigurieren"
 
-#: ../carrick/carrick-service-item.c:513
+#: ../carrick/carrick-service-item.c:637
 msgid "Associating"
 msgstr "Assoziieren"
 
-#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
-#: ../carrick/carrick-service-item.c:1940
+#: ../carrick/carrick-service-item.c:646 ../carrick/carrick-service-item.c:672
+#: ../carrick/carrick-service-item.c:2163
 msgid "Connect"
 msgstr "Verbinden"
 
-#: ../carrick/carrick-service-item.c:551
+#: ../carrick/carrick-service-item.c:675
 msgid "Connection failed"
 msgstr "Verbindung fehlgeschlagen"
 
-#: ../carrick/carrick-service-item.c:555
+#: ../carrick/carrick-service-item.c:679
 msgid "Sorry, the connection failed. You could try again."
 msgstr ""
 "Leider ist die Verbindung fehlgeschlagen. Du könntest es erneut versuchen."
 
-#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
+#: ../carrick/carrick-service-item.c:686 ../carrick/carrick-service-item.c:689
 #, c-format
 msgid "Disconnecting"
 msgstr "Verbindung wird getrennt"
 
-#: ../carrick/carrick-service-item.c:633
+#: ../carrick/carrick-service-item.c:757
 msgid "Type password here"
 msgstr "Kennwort hier eingeben"
 
-#: ../carrick/carrick-service-item.c:709
+#: ../carrick/carrick-service-item.c:833
 msgid "Really remove?"
 msgstr "Wirklich entfernen?"
 
-#: ../carrick/carrick-service-item.c:729
+#: ../carrick/carrick-service-item.c:852
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -659,35 +661,45 @@ msgstr ""
 "Kennwort geht damit verloren und es findet keine\n"
 "automatische Verbindung zu %s mehr statt."
 
-#: ../carrick/carrick-service-item.c:1422
+#: ../carrick/carrick-service-item.c:1554
 msgid "Sorry, it looks like the IP address is not valid"
 msgstr "Leider ist die IP-Adresse ungültig."
 
-#: ../carrick/carrick-service-item.c:1434
+#: ../carrick/carrick-service-item.c:1566
 msgid "Sorry, it looks like the gateway address is not valid"
 msgstr "Leider ist die Gateway-Adresse ungültig."
 
-#: ../carrick/carrick-service-item.c:1446
+#: ../carrick/carrick-service-item.c:1578
 msgid "Sorry, it looks like the subnet mask is not valid"
 msgstr "Leider ist die Subnet Mask ungültig."
 
-#: ../carrick/carrick-service-item.c:1491
+#: ../carrick/carrick-service-item.c:1600
+#, fuzzy
+msgid "Sorry, it looks like the IPv6 address is not valid"
+msgstr "Leider ist die IP-Adresse ungültig."
+
+#: ../carrick/carrick-service-item.c:1612
+#, fuzzy
+msgid "Sorry, it looks like the IPv6 gateway address is not valid"
+msgstr "Leider ist die Gateway-Adresse ungültig."
+
+#: ../carrick/carrick-service-item.c:1657
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
 msgstr "Leider ist die Nameserver-Adresse '%s ungültig."
 
 #. TRANSLATORS: label for the Advanced expander in a service item
-#: ../carrick/carrick-service-item.c:1853
+#: ../carrick/carrick-service-item.c:2076
 msgid "Advanced"
 msgstr "Erweitert"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
-#: ../carrick/carrick-service-item.c:1865
+#: ../carrick/carrick-service-item.c:2088
 msgid "Log in"
 msgstr "Anmeldung"
 
-#: ../carrick/carrick-service-item.c:1874
+#: ../carrick/carrick-service-item.c:2097
 msgid "Scanning"
 msgstr "Suchen"
 
@@ -695,46 +707,73 @@ msgstr "Suchen"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1895
+#: ../carrick/carrick-service-item.c:2118
 msgid "WPA2 encrypted"
 msgstr "WPA2 verschlüsselt"
 
-#. TRANSLATORS: label in advanced settings (next to combobox
-#. * for DHCP/Static IP)
-#: ../carrick/carrick-service-item.c:2002
-msgid "Connect by:"
-msgstr "Verbinden über:"
+#. TRANSLATORS: labels in advanced settings (next to combobox
+#. * for DHCP/Static IP and down from there)
+#: ../carrick/carrick-service-item.c:2225
+#, fuzzy
+msgid "Connect to IPv4:"
+msgstr "Mit VPN verbinden"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2004
+#: ../carrick/carrick-service-item.c:2226
+#: ../carrick/carrick-service-item.c:2230
 msgid "IP address:"
 msgstr "IP-Adresse:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2006
+#: ../carrick/carrick-service-item.c:2227
 msgid "Subnet mask:"
 msgstr "Subnet Mask:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2008
+#: ../carrick/carrick-service-item.c:2228
+#: ../carrick/carrick-service-item.c:2231
 msgid "Router:"
 msgstr "Router:"
 
-#. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2010
+#: ../carrick/carrick-service-item.c:2229
+#, fuzzy
+msgid "Connect to IPv6:"
+msgstr "Mit VPN verbinden"
+
+#: ../carrick/carrick-service-item.c:2232
+msgid "Prefix length:"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2233
 msgid "DNS:"
 msgstr "DNS:"
 
-#: ../carrick/carrick-service-item.c:2017
+#: ../carrick/carrick-service-item.c:2235
+#, fuzzy
+msgid "Your MAC address:"
+msgstr "IP-Adresse:"
+
+#: ../carrick/carrick-service-item.c:2243
 msgid "DHCP"
 msgstr "DHCP"
 
-#: ../carrick/carrick-service-item.c:2019
+#: ../carrick/carrick-service-item.c:2245
+#: ../carrick/carrick-service-item.c:2276
 msgid "Static IP"
 msgstr "Statische IP"
 
+#: ../carrick/carrick-service-item.c:2272
+#, fuzzy
+msgid "Off"
+msgstr ""
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Abgemeldet\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Offline"
+
+#: ../carrick/carrick-service-item.c:2274
+msgid "Automatic"
+msgstr ""
+
 #. TRANSLATORS: label for apply button in static ip settings
-#: ../carrick/carrick-service-item.c:2070
+#: ../carrick/carrick-service-item.c:2336
 msgid "Apply"
 msgstr "Anwenden"
 
@@ -840,7 +879,7 @@ msgid "Clear"
 msgstr ""
 
 #: ../panels/applications/src/mnb-filter.c:164
-#: ../panels/people/src/mnb-people-panel.c:723
+#: ../panels/people/src/mnb-people-panel.c:724
 #: ../panels/status/src/mps-geotag-pane.c:568
 #: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1585
 #, fuzzy
@@ -851,7 +890,7 @@ msgstr ""
 "#-#-#-#-#  de.po  #-#-#-#-#\n"
 "Suchen"
 
-#: ../panels/applications/src/dawati-netbook-launcher.c:61
+#: ../panels/applications/src/dawati-netbook-launcher.c:62
 msgid ""
 "To see your favourite applications here and on the myzone, hover your "
 "pointer over the application you want to add and select the pin in the top "
@@ -859,25 +898,25 @@ msgid ""
 msgstr ""
 
 #. Panel label
-#: ../panels/applications/src/dawati-netbook-launcher.c:1089
+#: ../panels/applications/src/dawati-netbook-launcher.c:1191
 msgid "Applications"
 msgstr "Anwendungen"
 
 #.
 #. * Fav apps pane
 #.
-#: ../panels/applications/src/dawati-netbook-launcher.c:1105
+#: ../panels/applications/src/dawati-netbook-launcher.c:1207
 msgid "Favorite applications"
 msgstr "Bevorzugte Anwendungen"
 
 #.
 #. * Applications
 #.
-#: ../panels/applications/src/dawati-netbook-launcher.c:1148
+#: ../panels/applications/src/dawati-netbook-launcher.c:1250
 msgid "Your applications"
 msgstr "Deine Anwendungen"
 
-#: ../panels/applications/src/dawati-panel-applications.c:258
+#: ../panels/applications/src/dawati-panel-applications.c:280
 #: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "Anwendungen"
@@ -1031,27 +1070,27 @@ msgstr ""
 msgid "Dawati Devices Panel"
 msgstr "Dawati-Panel Geräte"
 
-#: ../panels/devices/src/mpd-battery-device.c:381
+#: ../panels/devices/src/mpd-battery-device.c:378
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Anscheinend ist kein Akku vorhanden."
 
-#: ../panels/devices/src/mpd-battery-device.c:385
+#: ../panels/devices/src/mpd-battery-device.c:382
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Akku wird geladen. Aktueller Ladezustand: ca %d%%"
 
-#: ../panels/devices/src/mpd-battery-device.c:390
+#: ../panels/devices/src/mpd-battery-device.c:387
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Akku entlädt. Aktueller Ladezustand: ca %d%%"
 
-#: ../panels/devices/src/mpd-battery-device.c:395
+#: ../panels/devices/src/mpd-battery-device.c:392
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Akku ist vollständig geladen."
 
-#: ../panels/devices/src/mpd-battery-device.c:399
+#: ../panels/devices/src/mpd-battery-device.c:396
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Akku ist eventuell beschädigt."
@@ -1289,76 +1328,135 @@ msgid "Network settings"
 msgstr "Netzwerkeinstellungen"
 
 #: ../panels/networks/data/carrick.desktop.in.in.h:2
-#: ../panels/networks/src/carrick.c:364
+#: ../panels/networks/src/carrick.c:365
 msgid "network"
 msgstr "Netzwerk"
 
 #. TRANSLATORS: Tooltips for the toolbar icon
 #. * The possible placeholder is service name (such as
 #. * a wireless network name)
-#: ../panels/networks/src/carrick.c:52
+#: ../panels/networks/src/carrick.c:53
 msgid "networks - not connected"
 msgstr "Netzwerke - nicht verbunden"
 
-#: ../panels/networks/src/carrick.c:58
+#: ../panels/networks/src/carrick.c:59
 msgid "networks - connecting"
 msgstr "Netzwerke - verbinden"
 
-#: ../panels/networks/src/carrick.c:64
+#: ../panels/networks/src/carrick.c:65
 msgid "networks - wired"
 msgstr "Netzwerke - verdrahtet"
 
-#: ../panels/networks/src/carrick.c:66
+#: ../panels/networks/src/carrick.c:67
 #, c-format
 msgid "networks - %s - wifi"
 msgstr "Netzwerke - %s - WiFi"
 
-#: ../panels/networks/src/carrick.c:69
+#: ../panels/networks/src/carrick.c:70
 #, c-format
 msgid "networks - %s - wimax"
 msgstr "Netzwerke - %s - WiMAX"
 
-#: ../panels/networks/src/carrick.c:72
+#: ../panels/networks/src/carrick.c:73
 #, c-format
 msgid "networks - %s - 3G"
 msgstr "Netzwerke - %s - 3G"
 
-#: ../panels/networks/src/carrick.c:75
+#: ../panels/networks/src/carrick.c:76
 #, c-format
 msgid "networks - %s - bluetooth"
 msgstr "Netzwerke - %s - Bluetooth"
 
-#: ../panels/networks/src/carrick.c:78
+#: ../panels/networks/src/carrick.c:79
 #, c-format
 msgid "networks - %s - VPN"
 msgstr "Netzwerke - %s - VPN"
 
-#: ../panels/networks/src/carrick.c:81 ../panels/networks/src/carrick.c:93
+#: ../panels/networks/src/carrick.c:82 ../panels/networks/src/carrick.c:94
 msgid "networks"
 msgstr "Netzwerke"
 
-#: ../panels/networks/src/carrick.c:88
+#: ../panels/networks/src/carrick.c:89
 msgid "networks - error"
 msgstr "Netzwerke - Fehler"
 
-#: ../panels/networks/src/carrick.c:309
+#: ../panels/networks/src/carrick.c:310
 msgid "Run in standalone mode"
 msgstr "Im eigenständigen Modus ausführen"
 
-#: ../panels/networks/src/carrick.c:311
+#: ../panels/networks/src/carrick.c:312
 msgid "Embed in another window (overrides --standalone)"
 msgstr "In einem anderen Fenster einschließen (überschreibt -- Standalone)"
 
-#: ../panels/networks/src/carrick.c:322
+#: ../panels/networks/src/carrick.c:323
 msgid "Carrick connectivity applet"
 msgstr "Carrick Verbindungs-Applet"
 
-#: ../panels/networks/src/carrick.c:323
+#: ../panels/networks/src/carrick.c:324
 msgid "- Dawati connectivity applet"
 msgstr "- Dawati Verbindungs-Applet"
 
+# #-#-#-#-#  de.po  #-#-#-#-#
+# Derived from:
+# German translation of Empathy.
+# Copyright (C) 2003-2005, 2007 Free Software Foundation, Inc.
+# Hendrik Richter <naggeldak@gnome-de.org>, 2003.
+# Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
+# Andre Klapper <ak-47@gmx.net>, 2007, 2008.
+# Jochen Skulj <jochen@jochenskulj.de>, 2008, 2009.
+# Mario BlÃ¤ttermann <mariobl@gnome.org>, 2008, 2009.
+#: ../panels/people/anerley/anerley/anerley-tile.c:171
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:44
+msgid "Available"
+msgstr "Verfügbar"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:174
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:48
+msgid "Busy"
+msgstr "Beschäftigt"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:177
+#: ../panels/people/anerley/anerley/anerley-tile.c:180
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:45
+msgid "Away"
+msgstr "Abwesend"
+
+#: ../panels/people/anerley/anerley/anerley-tile.c:183
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:43
+#, fuzzy
+msgid "Offline"
+msgstr ""
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Abgemeldet\n"
+"#-#-#-#-#  de.po  #-#-#-#-#\n"
+"Offline"
+
+#: ../panels/people/anerley/anerley/anerley-econtact-item.c:234
+msgid "Unnamed"
+msgstr "Unbenannt"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "nicht festgelegt"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "Länger abwesend"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "versteckt"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "unbekannt"
+
+#: ../panels/people/anerley/anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "Fehler"
+
 #: ../panels/people/src/dawati-panel-people.c:88
-#: ../panels/people/src/mnb-people-panel.c:513
+#: ../panels/people/src/mnb-people-panel.c:514
 #: ../panels/people/data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "Leute"
@@ -1372,7 +1470,7 @@ msgstr ""
 "mit Leuten sprechen."
 
 #: ../panels/people/src/mnb-people-panel.c:191
-#: ../panels/people/src/mnb-people-panel.c:451
+#: ../panels/people/src/mnb-people-panel.c:452
 #, c-format
 msgid "Open %s"
 msgstr "% s öffnen"
@@ -1381,46 +1479,46 @@ msgstr "% s öffnen"
 msgid "This is the People panel."
 msgstr "Dies ist das Panel Leute."
 
-#: ../panels/people/src/mnb-people-panel.c:320
+#: ../panels/people/src/mnb-people-panel.c:321
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr ""
 "Wir können leider keine Leute finden. Es sieht so aus, als ob sie alle "
 "offline sind."
 
-#: ../panels/people/src/mnb-people-panel.c:365
+#: ../panels/people/src/mnb-people-panel.c:366
 msgid "To see your IM contacts, you need to go online."
 msgstr "Um deine IM-Kontakte zu sehen, gehe bitte online."
 
-#: ../panels/people/src/mnb-people-panel.c:495
+#: ../panels/people/src/mnb-people-panel.c:496
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "Leute - Du sprichst mit %d Leuten "
 
-#: ../panels/people/src/mnb-people-panel.c:502
+#: ../panels/people/src/mnb-people-panel.c:503
 msgid "people - you are chatting with someone"
 msgstr "Leute - Du sprichst mit jemandem"
 
 #. Populate header
-#: ../panels/people/src/mnb-people-panel.c:710
-#: ../panels/people/src/mnb-people-panel.c:964
+#: ../panels/people/src/mnb-people-panel.c:711
+#: ../panels/people/src/mnb-people-panel.c:965
 msgid "People"
 msgstr "Leute"
 
-#: ../panels/people/src/mnb-people-panel.c:774
-#: ../panels/people/src/mnb-people-panel.c:1162
+#: ../panels/people/src/mnb-people-panel.c:775
+#: ../panels/people/src/mnb-people-panel.c:1163
 msgid "You are chatting with:"
 msgstr "Du sprichst mit"
 
-#: ../panels/people/src/mnb-people-panel.c:981
+#: ../panels/people/src/mnb-people-panel.c:982
 msgid "Me and my people"
 msgstr "Ich und meine Leute"
 
-#: ../panels/people/src/mnb-people-panel.c:1019
+#: ../panels/people/src/mnb-people-panel.c:1020
 msgid "Me"
 msgstr "Ich"
 
 #. Side table
-#: ../panels/people/src/mnb-people-panel.c:1119
+#: ../panels/people/src/mnb-people-panel.c:1120
 msgid "My conversations"
 msgstr "Meine Gespräche"
 
@@ -1469,7 +1567,7 @@ msgstr ""
 "Der Akkuladezustand ist im kritischen Bereich. Der Rechner wird deshalb nun "
 "heruntergefahren. Bitte speichern Sie Ihre Arbeit."
 
-#: ../panels/power-icon/src/mpd-power-icon.c:500
+#: ../panels/power-icon/src/mpd-power-icon.c:501
 msgid "battery"
 msgstr "Akku"
 
@@ -1695,7 +1793,7 @@ msgstr "Panel Zonen"
 msgid "zones"
 msgstr "Zonen"
 
-#: ../panels/zones/src/main.c:494
+#: ../panels/zones/src/main.c:527
 msgid "Zones"
 msgstr "Zonen"
 
@@ -1772,15 +1870,15 @@ msgstr ""
 msgid "Unread messages"
 msgstr ""
 
-#: ../src/dawati-netbook.c:846
+#: ../src/dawati-netbook.c:812
 msgid "Dawati Netbook Effects"
 msgstr "Dawati-Effekte auf dem Netbook"
 
-#: ../src/dawati-netbook.c:850
+#: ../src/dawati-netbook.c:816
 msgid "Effects for Dawati Netbooks"
 msgstr "Effekte für Netbooks mit Dawati"
 
-#: ../src/mnb-toolbar.c:985
+#: ../src/mnb-toolbar.c:986
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s funktioniert leider nicht."
@@ -1798,12 +1896,12 @@ msgstr "Ignorieren"
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../src/notifications/ntf-tray.c:516 ../src/notifications/ntf-tray.c:592
+#: ../src/notifications/ntf-tray.c:517 ../src/notifications/ntf-tray.c:594
 #, c-format
 msgid "%i pending messages"
 msgstr ""
 
-#: ../src/notifications/ntf-tray.c:570
+#: ../src/notifications/ntf-tray.c:572
 msgid "1 pending message"
 msgstr ""
 
@@ -1836,6 +1934,9 @@ msgid_plural "Opening %d Items"
 msgstr[0] ""
 msgstr[1] ""
 
+#~ msgid "Connect by:"
+#~ msgstr "Verbinden über:"
+
 #~ msgid "Ejecting failed, looks like an application is using it"
 #~ msgstr ""
 #~ "Aushängen ist gescheitert; möglicherweise verwendet eine Anwendung das "
@@ -1849,18 +1950,6 @@ msgstr[1] ""
 #~ "Es ist kein Web-Service konfiguriert oder es gibt ein Problem mit der "
 #~ "Konfiguration. Benutze die Schaltfläche oben, um My Web Accounts zu "
 #~ "öffnen und ein Konto einzurichten."
-
-#~ msgid "Offline"
-#~ msgstr "Offline"
-
-#~ msgid "Available"
-#~ msgstr "Verfügbar"
-
-#~ msgid "Away"
-#~ msgstr "Abwesend"
-
-#~ msgid "Busy"
-#~ msgstr "Beschäftigt"
 
 #~ msgid "Close"
 #~ msgstr "Schließen"

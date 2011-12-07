@@ -31,10 +31,10 @@ panels/applications/src/mnb-filter.c
 panels/applications/src/dawati-netbook-launcher.c
 panels/applications/src/dawati-panel-applications.c
 panels/applications/src/mnb-launcher-button.c
-panels/applications/data/dawati-panel-applications.desktop.in
+panels/applications/data/dawati-panel-applications.desktop.in.in
 
 panels/datetime/src/dawati-panel-date-time.c
-panels/datetime/data/dawati-panel-datetime.desktop.in
+panels/datetime/data/dawati-panel-datetime.desktop.in.in
 panels/datetime/src/mnp-clock-area.c
 panels/datetime/src/mnp-utils.c
 panels/datetime/src/dawati-panel-date-time.c
@@ -47,7 +47,7 @@ panels/datetime/src/system-timezone.c
 panels/datetime/src/com.dawati.UX.Shell.Panels.datetime.service.in
 panels/datetime/src/date-time.schemas.in
 
-panels/devices/data/dawati-panel-devices.desktop.in
+panels/devices/data/dawati-panel-devices.desktop.in.in
 panels/devices/data/dawati-panel-devices.schemas.in
 panels/devices/src/dawati-panel-devices.c
 panels/devices/src/mpd-battery-device.c
@@ -64,28 +64,31 @@ panels/devices/src/mpd-shell.c
 panels/devices/src/mpd-storage-device-tile.c
 panels/devices/src/mpd-volume-tile.c
 
-panels/myzone/data/dawati-panel-myzone.desktop.in
+panels/myzone/data/dawati-panel-myzone.desktop.in.in
 panels/myzone/data/dawati-panel-myzone.schemas.in
-panels/myzone/data/myzone.desktop.in
+panels/myzone/data/myzone.desktop.in.in
 [type: gettext/glade]panels/myzone/data/capplet.ui
 panels/myzone/capplet/gconf-bridge.c
 panels/myzone/capplet/myzone-cc-panel.c
 panels/myzone/src/dawati-panel-myzone.c
 
-panels/networks/data/carrick.desktop.in
+panels/networks/data/carrick.desktop.in.in
 panels/networks/src/carrick.c
 
+panels/people/anerley/anerley/anerley-tile.c
+panels/people/anerley/anerley/anerley-econtact-item.c
+panels/people/anerley/anerley/anerley-presence-chooser.c
 panels/people/src/dawati-panel-people.c
 panels/people/src/mnb-people-panel.c
-panels/people/data/dawati-panel-people.desktop.in
+panels/people/data/dawati-panel-people.desktop.in.in
 
-panels/power-icon/data/dawati-power-icon.desktop.in
+panels/power-icon/data/dawati-power-icon.desktop.in.in
 panels/power-icon/src/dawati-power-icon.c
 panels/power-icon/src/mpd-power-icon.c
 panels/power-icon/src/mpd-shutdown-notification.c
 
 panels/status/src/dawati-panel-status.c
-panels/status/data/dawati-panel-status.desktop.in
+panels/status/data/dawati-panel-status.desktop.in.in
 panels/status/src/mps-feed-pane.c
 panels/status/src/mps-feed-switcher.c
 panels/status/src/mps-geotag-pane.c
@@ -98,9 +101,9 @@ panels/web/common/mwb-utils.cc
 panels/web/netpanel/dawati-netbook-netpanel.cc
 panels/web/netpanel/dawati-panel-web.cc
 panels/web/netpanel/mnb-netpanel-scrollview.cc
-panels/web/netpanel/dawati-panel-internet.desktop.in
+panels/web/netpanel/dawati-panel-internet.desktop.in.in
 
-panels/zones/data/dawati-panel-zones.desktop.in
+panels/zones/data/dawati-panel-zones.desktop.in.in
 panels/zones/src/main.c
 panels/zones/src/sw-overview.c
 panels/zones/src/sw-zone.c
