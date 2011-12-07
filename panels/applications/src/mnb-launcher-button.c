@@ -288,6 +288,23 @@ _enter_event_cb (ClutterActor         *actor,
                  ClutterCrossingEvent *event,
                  gpointer              data)
 {
+  MxFocusable *focusable;
+  MxFocusManager *f_manager;
+
+  f_manager =
+    mx_focus_manager_get_for_stage (CLUTTER_STAGE (clutter_actor_get_stage (actor)));
+
+  focusable = mx_focus_manager_get_focused (f_manager);
+
+  /* hide the hover state on a button that has accepted focus via the default
+   * focus as we're navigating by mouse and not keys we don't want to move
+   * the focus as we may still want it in the place e.g. search bar
+   */
+  if ((focusable) &&
+      (MNB_IS_LAUNCHER_BUTTON (focusable)) &&
+      (CLUTTER_ACTOR (focusable) != actor))
+    mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), NULL);
+
   mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "hover");
 
   return FALSE;
