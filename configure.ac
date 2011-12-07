@@ -326,7 +326,9 @@ AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 # People
 AS_DAWATI_PANEL(people, [gio-2.0
                          gio-unix-2.0
-                         anerley >= 0.2.4
+                         telepathy-glib >= 0.9.0
+                         libebook-1.2
+                         dbus-glib-1
                          $GTK_DEPS
                          $MX_DEPS])
 
@@ -553,6 +555,11 @@ panels/networks/tests/Makefile
 panels/networks/data/Makefile
 
 panels/people/Makefile
+panels/people/anerley/Makefile
+panels/people/anerley/anerley/Makefile
+panels/people/anerley/data/Makefile
+panels/people/anerley/src/Makefile
+panels/people/anerley/tests/Makefile
 panels/people/data/Makefile
 panels/people/src/Makefile
 

@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libanerley.la
+noinst_LTLIBRARIES = libanerley.la
 
 %.c: %.list Makefile.am
 	$(QUIET_GEN)glib-genmarshal --body --prefix=anerley_marshal $< > $@
@@ -53,11 +53,8 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			penge-magic-texture.h
 libanerley_ladir = $(includedir)/anerley/anerley
 
-libanerley_la_CFLAGS = -I$(top_srcdir) \
-		       $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) \
-		       $(MX_CFLAGS) $(EBOOK_CFLAGS) \
+libanerley_la_CFLAGS = -I$(top_srcdir)/panels/people/anerley \
+		       $(PANEL_PEOPLE_CFLAGS) \
 		       -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
 		       -D_GNU_SOURCE
-libanerley_la_LIBADD = $(GLIB_LIBS) $(TELEPATHY_LIBS) \
-		       $(MX_LIBS) $(EBOOK_LIBS)
-
+libanerley_la_LIBADD = $(PANEL_PEOPLE_LIBS)

@@ -10,11 +10,10 @@ noinst_PROGRAMS = \
 	test-tp-user-avatar \
 	$(NULL)
 
-AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MX_CFLAGS)\
-	    $(DBUS_GLIB_CFLAGS) \
-	    -I$(top_srcdir) \
+AM_CFLAGS = $(PANEL_PEOPLE_CFLAGS) \
+	    -I$(top_srcdir)/panels/people/anerley \
 	    -DPKG_DATA_DIR=\"$(pkgdatadir)\"
-AM_LDFLAGS = $(GLIB_LIBS) $(TELEPATHY_LIBS) $(MX_LIBS) $(DBUS_GLIB_LIBS)
+AM_LDFLAGS = $(PANEL_PEOPLE_LIBS)
 
 test_tp_feed_SOURCES = test-tp-feed.c
 test_tp_feed_LDADD = ../anerley/libanerley.la

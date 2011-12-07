@@ -75,6 +75,9 @@ panels/myzone/src/dawati-panel-myzone.c
 panels/networks/data/carrick.desktop.in
 panels/networks/src/carrick.c
 
+panels/people/anerley/anerley/anerley-tile.c
+panels/people/anerley/anerley/anerley-econtact-item.c
+panels/people/anerley/anerley/anerley-presence-chooser.c
 panels/people/src/dawati-panel-people.c
 panels/people/src/mnb-people-panel.c
 panels/people/data/dawati-panel-people.desktop.in

@@ -2,7 +2,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PANEL_PEOPLE_CFLAGS) \
-	\
+	-I$(top_srcdir)/panels/people/anerley \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	$(NULL)
 
@@ -10,6 +10,7 @@ libexec_PROGRAMS = dawati-panel-people
 
 dawati_panel_people_LDADD = \
 	$(PANEL_PEOPLE_LIBS) \
+	$(top_builddir)/panels/people/anerley/anerley/libanerley.la \
 	$(NULL)
 
 %.c: %.list Makefile.am
