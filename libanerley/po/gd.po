@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-anerley\n"
+"Report-Msgid-Bugs-To: https://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:20-0700\n"
+"PO-Revision-Date: 2010-11-30 05:59+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Gaelic, Scottish (http://www.transifex.net/projects/p/meego/team/gd/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: gd\n"
+"Plural-Forms: nplurals=3; plural=n < 2 ? 0 : n == 2 ? 1 : 2\n"
+
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
+msgid "Available"
+msgstr ""
+
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
+msgid "Busy"
+msgstr ""
+
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Away"
+msgstr ""
+
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
+msgid "Offline"
+msgstr ""
+
+#: ../anerley/anerley-econtact-item.c:234
+msgid "Unnamed"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr ""
+
+

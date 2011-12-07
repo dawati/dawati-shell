@@ -1,0 +1,74 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+
+# Derived from:
+# French translation of empathy.
+# Copyright (C) 2003-2009 The Free Software Foundation, Inc.
+# This file is distributed under the same license as the empathy package.
+# FrÃ©dÃ©ric Brin <duckx@mezimail.com>, 2003.
+# Lionel Henry <yoplait@tuxfamily.org>, 2003.
+# Laurent Richard <laurent.richard@lilit.be>, 2004.
+# Christophe Merlet <redfox@redfoxcenter.org>, 2004.
+# Audrey Simons <asimons@redhat.com>, 2004.
+# Quentin Delance <quentin.delance@laposte.net>, 2006.
+# Claude Paroz <claude@2xlibre.net>, 2007-2009.
+# Jonathan Ernst <jonathan@ernstfamily.ch>, 2007.
+# Damien Durand <splinux@fedoraproject.org>, 2007.
+# Robert-AndrÃ© Mauchin <zebob.m@pengzone.org>, 2007-2008.
+# Frederic Peters <fpeters@0d.be>, 2007-2008.
+# Laurent Bigonville <bigon@bigon.be>, 2007.
+# StÃ©phane Raimbault <stephane.raimbault@gmail.com>, 2007.
+# Christophe Benz <christophe.benz@gmail.com>, 2007.
+# Yannick Tailliez <ytdispatch-libre@yahoo.com>, 2008.
+# Laurent Coudeur <laurentc@iol.ie>, 2009.
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+msgid "Available"
+msgstr "Disponible"
+
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+msgid "Busy"
+msgstr "Occupé"
+
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
+msgid "Away"
+msgstr "Absent"
+
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+msgid "Offline"
+msgstr "Déconnecté"
+
+#: ../anerley/anerley-econtact-item.c:233
+msgid "Unnamed"
+msgstr "Sans nom"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Erreur"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Absence prolongée"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Non défini"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Caché"

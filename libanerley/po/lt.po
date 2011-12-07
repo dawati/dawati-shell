@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Laurynas Butkus <laurynas.butkus@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-anerley\n"
+"Report-Msgid-Bugs-To: https://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:20-0700\n"
+"PO-Revision-Date: 2011-03-22 15:15+0000\n"
+"Last-Translator: laurynas <laurynas.butkus@gmail.com>\n"
+"Language-Team: Lithuanian (http://www.transifex.net/projects/p/meego/team/lt/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
+msgid "Available"
+msgstr "Prieinamas"
+
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
+msgid "Busy"
+msgstr "Užimtas"
+
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Away"
+msgstr "Nutolęs"
+
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
+msgid "Offline"
+msgstr "Neprisijungęs"
+
+#: ../anerley/anerley-econtact-item.c:234
+msgid "Unnamed"
+msgstr "Bevardis"
+
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "Nenustatyta"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "Išplėstinis Nutolęs"
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "Paslėptas"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "Nežinomas"
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "Klaida"
+
+
