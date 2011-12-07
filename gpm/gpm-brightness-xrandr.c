@@ -161,7 +161,7 @@ gpm_brightness_xrandr_setup_display (GpmBrightnessXRandR *brightness)
 	g_return_val_if_fail (GPM_IS_BRIGHTNESS_XRANDR (brightness), FALSE);
 
 	/* get the display */
-	brightness->priv->dpy = GDK_DISPLAY();
+	brightness->priv->dpy = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 	if (!brightness->priv->dpy) {
 		g_critical ("Cannot open display");
 		return FALSE;
@@ -196,7 +196,7 @@ gpm_brightness_xrandr_setup_version (GpmBrightnessXRandR *brightness)
 	g_return_val_if_fail (GPM_IS_BRIGHTNESS_XRANDR (brightness), FALSE);
 
 	/* get the display */
-	brightness->priv->dpy = GDK_DISPLAY();
+	brightness->priv->dpy = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 	if (!brightness->priv->dpy) {
 		g_critical ("Cannot open display");
 		return FALSE;
@@ -735,15 +735,19 @@ gpm_brightness_xrandr_init (GpmBrightnessXRandR *brightness)
 	display = gdk_display_get_default ();
 
 	/* as we a filtering by a window, we have to add an event type */
-	if (!XRRQueryExtension (GDK_DISPLAY(), &event_base, &ignore)) {
-		g_critical ("can't get event_base for XRR");
-	}
+	if (!XRRQueryExtension (GDK_DISPLAY_XDISPLAY (display),
+                                &event_base,
+                                &ignore))
+        {
+                g_critical ("can't get event_base for XRR");
+        }
 	gdk_x11_register_standard_event_type (display, event_base, RRNotify + 1);
 	gdk_window_add_filter (window, gpm_brightness_xrandr_filter_xevents, (gpointer) brightness);
 
 	/* don't abort on error */
 	gdk_error_trap_push ();
-	XRRSelectInput (GDK_DISPLAY(), GDK_WINDOW_XID (window),
+	XRRSelectInput (GDK_DISPLAY_XDISPLAY (display),
+                        GDK_WINDOW_XID (window),
 			RRScreenChangeNotifyMask |
 			RROutputPropertyNotifyMask); /* <--- the only one we need, but see rh:345551 */
 	gdk_flush ();
