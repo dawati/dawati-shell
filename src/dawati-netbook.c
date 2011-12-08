@@ -687,8 +687,6 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
                        "disabled",
                        NULL);
 
-  dawati_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
-
   /* tweak with env var as then possible to develop in desktop env. */
   if (!(compositor_options & MNB_OPTION_DISABLE_WS_CLAMP))
     meta_prefs_set_num_workspaces (1);
@@ -748,6 +746,8 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
 
   switcher_overlay = priv->switcher_overlay =
     CLUTTER_ACTOR (mnb_alttab_overlay_new ());
+
+  dawati_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_set_motion_events_enabled (TRUE);
 
