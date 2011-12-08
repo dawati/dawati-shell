@@ -625,13 +625,13 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
   clutter_actor_queue_redraw (stage);
 
   if (!netbook_mode &&
-      CLUTTER_ACTOR_IS_VISIBLE (stage) &&
+      /* CLUTTER_ACTOR_IS_VISIBLE (stage) && */
       !CLUTTER_ACTOR_IS_VISIBLE (toolbar))
     {
       mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_POLICY);
     }
   else if (netbook_mode &&
-           CLUTTER_ACTOR_IS_VISIBLE (stage) &&
+           /* CLUTTER_ACTOR_IS_VISIBLE (stage) && */
            CLUTTER_ACTOR_IS_VISIBLE (toolbar) &&
            !mnb_toolbar_get_active_panel (toolbar))
     {
