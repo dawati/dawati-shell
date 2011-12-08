@@ -70,6 +70,7 @@
 #define SWITCH_TIMEOUT              400
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define MYZONE_TIMEOUT              200
+#define INIT_TIMEOUT                0
 #define ACTOR_DATA_KEY "MCCP-dawati-netbook-actor-data"
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
@@ -305,13 +306,30 @@ dawati_netbook_fullscreen_apps_present_on_workspace (MetaPlugin *plugin,
 }
 
 static void
+dawati_netbook_workspace_removed_window_cb (MetaWorkspace *workspace,
+                                            MetaWindow    *mw,
+                                            MetaPlugin    *plugin)
+{
+  check_for_empty_workspace (plugin,
+                             meta_workspace_index (workspace),
+                             mw,
+                             TRUE);
+}
+
+static void
 dawati_netbook_workspace_added_cb (MetaScreen *screen,
                                    gint        num,
                                    MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  MetaWorkspace *workspace = meta_screen_get_workspace_by_index (screen, num);
 
   dawati_netbook_set_struts (plugin, -1, -1, -1, -1);
+
+  g_signal_connect (workspace,
+                    "window-removed",
+                    G_CALLBACK (dawati_netbook_workspace_removed_window_cb),
+                    plugin);
 }
 
 static void
@@ -653,6 +671,86 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
     }
 }
 
+static gboolean
+cleanup_workspaces_at_start (MetaPlugin *plugin)
+{
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN_GET_PRIVATE (plugin);
+  MetaScreen  *screen           = meta_plugin_get_screen (plugin);
+  MetaDisplay *display          = meta_screen_get_display (screen);
+  gboolean     got_at_least_one = FALSE;
+  guint32      current_time     = meta_display_get_last_user_time (display);
+  GList       *workspaces;
+
+  /* Create a workspace that we then destroy to force the update of
+   * the _NET_NUMBER_OF_DESKTOPS atom. */
+  meta_screen_append_new_workspace (screen, 0, current_time);
+
+  workspaces = meta_screen_get_workspaces (screen);
+  while (workspaces != NULL)
+    {
+      MetaWorkspace *workspace = META_WORKSPACE (workspaces->data);
+      GList         *window, *windows;
+
+      /* Leave at least one workspace safe */
+      if ((workspaces->next == NULL) &&
+          (got_at_least_one == FALSE))
+        {
+          /* Watch removed windows on pre-existing workspaces */
+          g_signal_connect (workspace,
+                            "window-removed",
+                            G_CALLBACK (dawati_netbook_workspace_removed_window_cb),
+                            plugin);
+
+          break;
+        }
+
+      windows = window = meta_workspace_list_windows (workspace);
+      while (window != NULL)
+        {
+          MetaWindow *mw = META_WINDOW (window->data);
+
+          if (!meta_window_is_skip_taskbar (mw) &&
+              !meta_window_is_on_all_workspaces (mw))
+            {
+              /* Watch removed windows on pre-existing workspaces */
+              g_signal_connect (workspace,
+                                "window-removed",
+                                G_CALLBACK (dawati_netbook_workspace_removed_window_cb),
+                                plugin);
+
+              got_at_least_one = TRUE;
+              g_list_free (windows);
+              workspaces = workspaces->next;
+              break;
+            }
+
+          window = window->next;
+        }
+
+      g_list_free (windows);
+      workspaces = workspaces->next;
+
+      /* No window to manage -> destroy workspace */
+      meta_screen_remove_workspace (screen, workspace, current_time);
+    }
+
+  dawati_netbook_set_struts (plugin, -1, -1, -1, -1);
+
+  g_signal_connect (screen,
+                    "workspace-added",
+                    G_CALLBACK (dawati_netbook_workspace_added_cb),
+                    plugin);
+
+  g_signal_connect (screen,
+                    "workspace-switched",
+                    G_CALLBACK (dawati_netbook_workspace_switched_cb),
+                    plugin);
+
+  priv->workspaces_ready = TRUE;
+
+  return FALSE;
+}
+
 static void
 dawati_netbook_plugin_start (MetaPlugin *plugin)
 {
@@ -665,10 +763,10 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
   gint          screen_width, screen_height;
   GError       *err = NULL;
 
-  MetaScreen   *screen    = meta_plugin_get_screen (plugin);
-  MetaDisplay  *display   = meta_screen_get_display (screen);
-  ClutterActor *stage     = meta_get_stage_for_screen (screen);
-  GConfClient  *gconf_client;
+  MetaScreen    *screen  = meta_plugin_get_screen (plugin);
+  MetaDisplay   *display = meta_screen_get_display (screen);
+  ClutterActor  *stage   = meta_get_stage_for_screen (screen);
+  GConfClient   *gconf_client;
 
   plugin_singleton = plugin;
 
@@ -703,18 +801,8 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
     }
 
   g_signal_connect (screen,
-                    "workspace-added",
-                    G_CALLBACK (dawati_netbook_workspace_added_cb),
-                    plugin);
-
-  g_signal_connect (screen,
                     "workareas-changed",
                     G_CALLBACK (dawati_netbook_workarea_changed_cb),
-                    plugin);
-
-  g_signal_connect (screen,
-                    "workspace-switched",
-                    G_CALLBACK (dawati_netbook_workspace_switched_cb),
                     plugin);
 
   g_signal_connect (display,
@@ -784,6 +872,11 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
   /* Keys */
 
   meta_prefs_set_no_tab_popup (TRUE);
+
+  /* This is an ugly trick to work around the mutter's internal data
+     structures not being ready yet (ie. like workspace number,
+     windows lists, etc...). */
+  g_timeout_add (INIT_TIMEOUT, (GSourceFunc) cleanup_workspaces_at_start, plugin);
 }
 
 static void
@@ -1254,6 +1347,10 @@ check_for_empty_workspace (MetaPlugin *plugin,
   if (workspace < 0)
     return;
 
+  /* No need to check workspaces if we only have one. */
+  if (meta_screen_get_n_workspaces (screen) <= 1)
+    return;
+
   if (ignore)
     xwin = meta_window_get_xwindow (ignore);
 
@@ -1344,6 +1441,13 @@ check_for_empty_workspace (MetaPlugin *plugin,
                 }
             }
         }
+
+      /* Once we've decided to remove a workspace, disconnect all
+         signal handlers from it. */
+      g_signal_handlers_disconnect_by_func (current_ws,
+                                            dawati_netbook_workspace_removed_window_cb,
+                                            plugin);
+
 
       meta_screen_remove_workspace (screen, current_ws, timestamp);
 
@@ -1472,28 +1576,6 @@ handle_window_destruction (MetaWindowActor *mcw, MetaPlugin *plugin)
             }
         }
     }
-
-  /*
-   * * Do not destroy workspace if the closing window is a splash screen.
-   *   (Sometimes the splash gets destroyed before the application window
-   *   maps, e.g., Gimp.)
-   *
-   * * Ignore panel windows,
-   *
-   * * Do not destroy the workspace, if the closing window belongs
-   *   to a Panel,
-   *
-   * * For everything else run the empty workspace check.
-   *
-   * NB: This must come before we notify Mutter that the effect completed,
-   *     otherwise the destruction of this window will be completed and the
-   *     workspace switch effect will crash.
-   */
-
-  if (type != META_WINDOW_SPLASHSCREEN &&
-      type != META_WINDOW_DOCK &&
-      !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
-    check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
 
 static void
@@ -1507,35 +1589,6 @@ window_destroyed_cb (MetaWindowActor *mcw, MetaPlugin *plugin)
  * should be able to get rid of this call eventually.
  */
 void meta_window_calc_showing (MetaWindow  *window);
-
-static void
-meta_window_workspace_changed_cb (MetaWindow *mw,
-                                  gint        old_workspace,
-                                  gpointer    data)
-{
-  MetaPlugin *plugin = (MetaPlugin *) (data);
-
-#if 0
-  /*
-   * Flush any pending changes to the visibility of the window.
-   * (bug 1008 suggests that the removal of an empty workspace is sometimes
-   * causing a race condition on calculating the window visibility, along the
-   * lines of the window changing status
-   *
-   *  visible -> hidden -> visible
-   *
-   * As this is queued up, by the time the status is calculated this might
-   * appear as the visibility has not changed, but in fact somewhere along the
-   * line it the window has already been pushed down the stack.
-   *
-   * Needs further investigation; this is an attempt to work around the problem
-   * by flushing the state in the intermediate stage for the alpha2 release.
-   */
-  meta_window_calc_showing (mw);
-#endif
-
-  check_for_empty_workspace (plugin, old_workspace, mw, FALSE);
-}
 
 static void
 fullscreen_app_added (MetaPlugin *plugin, MetaWindow *mw)
@@ -1956,10 +2009,6 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
 
       apriv->is_minimized = FALSE;
 
-      g_signal_connect (mw, "workspace-changed",
-                        G_CALLBACK (meta_window_workspace_changed_cb),
-                        plugin);
-
       /*
        * Only animate windows that are smaller than the screen size
        * (see MB#5273)
@@ -2031,7 +2080,13 @@ switch_workspace (MetaPlugin         *plugin,
                   gint                  to,
                   MetaMotionDirection   direction)
 {
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;;
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+
+  if (!priv->workspaces_ready)
+    {
+      meta_plugin_switch_workspace_completed (plugin);
+      return;
+    }
 
   /*
    * We do not run an effect if a panel is visible (as the effect runs above

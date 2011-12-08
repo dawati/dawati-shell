@@ -119,6 +119,9 @@ struct _DawatiNetbookPluginPrivate
 
   int                    saver_base;
   int                    saver_error;
+
+  /*  */
+  gboolean               workspaces_ready : 1;
 };
 
 GType dawati_netbook_plugin_get_type (void);
