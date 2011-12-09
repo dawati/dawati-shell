@@ -291,9 +291,6 @@ mps_feed_pane_constructed (GObject *object)
 {
   MpsFeedPane *pane = MPS_FEED_PANE (object);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
-  const gchar *service_name;
-
-  service_name = sw_client_service_get_name (priv->service);
 
   g_signal_connect (priv->service,
                     "status-updated",
