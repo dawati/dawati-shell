@@ -57,7 +57,7 @@ struct _MpsGeotagPanePrivate {
   GeocluePosition *geo_position;
   GeoclueGeocode *geo_geocode;
   GeoclueReverseGeocode *geo_reverse_geocode;
-  ChamplainLayer *markers_layer;
+  ChamplainMarkerLayer *markers_layer;
   ClutterActor *your_location_marker;
   ClutterActor *entry;
   ClutterActor *guess_location_button;
@@ -205,14 +205,9 @@ mps_geotag_pane_ensure_marker_visible (MpsGeotagPane *pane)
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
 
-  ChamplainBaseMarker *markers[2] = { NULL, };
-
-  markers[0] = CHAMPLAIN_BASE_MARKER (priv->your_location_marker);
-  markers[1] = NULL;
-
-  champlain_view_ensure_markers_visible (CHAMPLAIN_VIEW (priv->map_view),
-                                         markers,
-                                         FALSE);
+  champlain_view_center_on (CHAMPLAIN_VIEW (priv->map_view),
+                            priv->latitude,
+                            priv->longitude);
 }
 
 static void
@@ -229,17 +224,17 @@ mps_geotag_pane_update_marker (MpsGeotagPane *pane,
     clutter_color_from_string (&text_color, "#7dbe0cff");
     clutter_color_from_string (&marker_color, "white");
 
-    priv->your_location_marker = champlain_marker_new_with_text (_("Your location"),
-                                                                 "Droid Sans 12",
-                                                                 &text_color,
-                                                                 &marker_color);
-    champlain_layer_add_marker (priv->markers_layer, CHAMPLAIN_BASE_MARKER (priv->your_location_marker));
+    priv->your_location_marker = champlain_label_new_with_text (_("Your location"),
+                                                                "Droid Sans 12",
+                                                                &text_color,
+                                                                &marker_color);
+    champlain_marker_layer_add_marker (priv->markers_layer, CHAMPLAIN_MARKER (priv->your_location_marker));
 
   }
 
-  champlain_base_marker_set_position (CHAMPLAIN_BASE_MARKER (priv->your_location_marker),
-                                      latitude,
-                                      longitude);
+  champlain_location_set_location (CHAMPLAIN_LOCATION (priv->your_location_marker),
+                                   latitude,
+                                   longitude);
 
   g_object_notify (G_OBJECT (pane), "latitude");
   g_object_notify (G_OBJECT (pane), "longitude");
@@ -412,24 +407,23 @@ _map_view_button_release_event_cb (ClutterActor  *actor,
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
   ClutterButtonEvent *bevent = (ClutterButtonEvent *)event;
   gdouble latitude, longitude;
+  gfloat x, y;
 
   /* We only care about single clicks! */
   if (bevent->button != 1 || bevent->click_count != 1)
     return FALSE;
 
-  if (champlain_view_get_coords_from_event (CHAMPLAIN_VIEW (priv->map_view),
-                                            event,
-                                            &latitude,
-                                            &longitude))
-  {
-    priv->latitude = latitude;
-    priv->longitude = longitude;
-    priv->position_set = TRUE;
-    mps_geotag_pane_update_marker (pane, latitude, longitude);
-    mx_button_set_toggled (MX_BUTTON (priv->guess_location_button), FALSE);
-    return TRUE;
-  }
-  return FALSE;
+  clutter_event_get_coords (event, &x, &y);
+
+  longitude = champlain_view_x_to_longitude (CHAMPLAIN_VIEW (priv->map_view), x);
+  latitude = champlain_view_y_to_latitude (CHAMPLAIN_VIEW (priv->map_view), y);
+
+  priv->latitude = latitude;
+  priv->longitude = longitude;
+  priv->position_set = TRUE;
+  mps_geotag_pane_update_marker (pane, latitude, longitude);
+  mx_button_set_toggled (MX_BUTTON (priv->guess_location_button), FALSE);
+  return TRUE;
 }
 
 static gboolean
@@ -560,8 +554,9 @@ mps_geotag_pane_init (MpsGeotagPane *self)
   ClutterActor *entry;
 
   priv->map_view = champlain_view_new ();
-  priv->markers_layer = champlain_layer_new ();
-  champlain_view_add_layer (CHAMPLAIN_VIEW (priv->map_view), priv->markers_layer);
+  priv->markers_layer = champlain_marker_layer_new ();
+  champlain_view_add_layer (CHAMPLAIN_VIEW (priv->map_view),
+                            CHAMPLAIN_LAYER (priv->markers_layer));
   clutter_actor_set_reactive (priv->map_view, TRUE);
   champlain_view_set_zoom_level (CHAMPLAIN_VIEW (priv->map_view), 7);
 
