@@ -253,7 +253,6 @@ _position_get_position_cb (GeocluePosition       *position,
 {
   MpsGeotagPane *pane = MPS_GEOTAG_PANE (userdata);
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
-  gchar *tmp;
 
   if (error)
   {
@@ -431,8 +430,6 @@ _guess_location_toggled_notify_cb (MxButton      *button,
                                    GParamSpec    *pspec,
                                    MpsGeotagPane *pane)
 {
-  MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
-
   if (mx_button_get_toggled (button))
   {
     mps_geotag_pane_guess_location (pane);
