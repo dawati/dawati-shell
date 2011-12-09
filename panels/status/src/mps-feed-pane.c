@@ -354,9 +354,6 @@ _service_update_status_cb (SwClientService *service,
                            const GError        *error,
                            gpointer             userdata)
 {
-  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
-  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
-
   if (error)
   {
     g_warning (G_STRLOC ": Error updating status: %s",
