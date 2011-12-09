@@ -235,7 +235,7 @@ mps_tweet_card_allocate (ClutterActor           *actor,
   ClutterActorBox secondary_label_box;
   ClutterActorBox button_box_box;
   gfloat nat_h, min_h, nat_w, min_w;
-  gfloat avail_height, avail_width;
+  gfloat avail_width;
 
   CLUTTER_ACTOR_CLASS (mps_tweet_card_parent_class)->allocate (actor,
                                                                box,
@@ -257,8 +257,6 @@ mps_tweet_card_allocate (ClutterActor           *actor,
   avatar_box.x2 = avatar_box.x1 + nat_w;
   avatar_box.y1 = (gint)((height - nat_h) / 2);
   avatar_box.y2 = avatar_box.y1 + nat_h;
-
-  avail_height = avatar_box.y2 - avatar_box.y1;
 
   clutter_actor_allocate (priv->avatar_frame, &avatar_box, flags);
 
