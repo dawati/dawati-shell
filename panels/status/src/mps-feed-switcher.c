@@ -161,7 +161,7 @@ _service_caps_changed_cb (SwClientService  *service,
              IS_CONFIGURED);
     mps_feed_switcher_ensure_service (switcher, service);
   } else {
-    g_debug (G_STRLOC ": Capabilities changed: Service doesn't "
+    g_debug (G_STRLOC ": Capabilities changed: Service %s doesn't "
              "have %s capability",
              sw_client_service_get_name (service),
              IS_CONFIGURED);
