@@ -426,7 +426,7 @@ _map_view_button_release_event_cb (ClutterActor  *actor,
   return TRUE;
 }
 
-static gboolean
+static void
 _guess_location_toggled_notify_cb (MxButton      *button,
                                    GParamSpec    *pspec,
                                    MpsGeotagPane *pane)
