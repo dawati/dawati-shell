@@ -151,7 +151,6 @@ _service_caps_changed_cb (SwClientService  *service,
                           gpointer          userdata)
 {
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
-  MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
   if (_has_cap (caps, IS_CONFIGURED))
   {
@@ -176,7 +175,6 @@ _service_get_dynamic_caps_cb (SwClientService  *service,
                               gpointer          userdata)
 {
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
-  MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
   if (_has_cap (caps, IS_CONFIGURED))
   {
@@ -306,7 +304,6 @@ _button_group_active_button_changed_cb (MxButtonGroup *button_group,
 {
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
-  GList *children;
   ClutterActor *pane;
   MxButton *button;
 
@@ -373,8 +370,6 @@ load_module (MpsFeedSwitcher *switcher,
   const gchar *service_name;
   GType service_type;
   gpointer sym;
-  gchar *path;
-  GError *error = NULL;
 
   service_module = g_module_open (file, G_MODULE_BIND_LOCAL);
   if (service_module == NULL) {
@@ -498,7 +493,7 @@ static void
 mps_feed_switcher_init (MpsFeedSwitcher *self)
 {
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *tmp_text, *tmp_texture, *tmp_button, *tmp_box, *tmp_label;
+  ClutterActor *tmp_text, *tmp_button, *tmp_box, *tmp_label;
 
   priv->button_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
