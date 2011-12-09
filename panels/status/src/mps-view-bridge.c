@@ -472,7 +472,6 @@ _view_items_removed_cb (SwClientItemView *view,
                         GList            *items,
                         MpsViewBridge    *bridge)
 {
-  MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
 
 }
 
