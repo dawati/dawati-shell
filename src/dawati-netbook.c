@@ -680,6 +680,67 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
     }
 }
 
+/*
+ * Shows the myzone if no applications are running.
+ *
+ * Always returns FALSE, so that we can pass it directly into g_timeout_add()
+ * as a one-of check.
+ */
+static gboolean
+maybe_show_myzone (MetaPlugin *plugin)
+{
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
+  gboolean                    no_apps = TRUE;
+  GList                      *l;
+
+  /*
+   * Do not drop Myzone if the Toolbar is visible.
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
+    return FALSE;
+
+  /*
+   * Check for running applications; we do this by checking if any
+   * application-type windows are present.
+   */
+  l = meta_get_window_actors (screen);
+
+  while (l)
+    {
+      MetaWindowActor *m         = (MetaWindowActor *) l->data;
+      MetaWindow      *mw        = meta_window_actor_get_meta_window (m);
+      MetaWindowType   type      = meta_window_get_window_type (mw);
+      gboolean         minimized = mw && meta_window_is_skip_taskbar (mw);
+
+      /*
+       * Ignore desktop, docs,panel windows and minimized windows
+       *
+       * (Panel windows are currently of type META_WINDOW_OVERRIDE_OTHER)
+       */
+      if (!(type == META_WINDOW_DESKTOP        ||
+            type == META_WINDOW_DOCK           ||
+            type == META_WINDOW_OVERRIDE_OTHER) &&
+          !minimized)
+        {
+          /* g_debug ("Found singificant window %s of type %d", */
+          /*          meta_window_actor_get_description (m), type); */
+
+          no_apps = FALSE;
+          break;
+        }
+
+      l = l->next;
+    }
+
+  if (no_apps)
+    mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
+                                "dawati-panel-myzone",
+                                MNB_SHOW_HIDE_POLICY);
+
+  return FALSE;
+}
+
 static gboolean
 cleanup_workspaces_at_start (MetaPlugin *plugin)
 {
@@ -756,6 +817,8 @@ cleanup_workspaces_at_start (MetaPlugin *plugin)
                     plugin);
 
   priv->workspaces_ready = TRUE;
+
+  maybe_show_myzone (plugin);
 
   return FALSE;
 }
@@ -1280,67 +1343,6 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   meta_plugin_map_completed (plugin, mcw);
 }
 
-/*
- * Shows the myzone if no applications are running.
- *
- * Always returns FALSE, so that we can pass it directly into g_timeout_add()
- * as a one-of check.
- */
-static gboolean
-maybe_show_myzone (MetaPlugin *plugin)
-{
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
-  gboolean                    no_apps = TRUE;
-  GList                      *l;
-
-  /*
-   * Do not drop Myzone if the Toolbar is visible.
-   */
-  if (CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
-    return FALSE;
-
-  /*
-   * Check for running applications; we do this by checking if any
-   * application-type windows are present.
-   */
-  l = meta_get_window_actors (screen);
-
-  while (l)
-    {
-      MetaWindowActor *m         = (MetaWindowActor *) l->data;
-      MetaWindow      *mw        = meta_window_actor_get_meta_window (m);
-      MetaWindowType   type      = meta_window_get_window_type (mw);
-      gboolean         minimized = mw && meta_window_is_skip_taskbar (mw);
-
-      /*
-       * Ignore desktop, docs,panel windows and minimized windows
-       *
-       * (Panel windows are currently of type META_WINDOW_OVERRIDE_OTHER)
-       */
-      if (!(type == META_WINDOW_DESKTOP        ||
-            type == META_WINDOW_DOCK           ||
-            type == META_WINDOW_OVERRIDE_OTHER) &&
-          !minimized)
-        {
-          /* g_debug ("Found singificant window %s of type %d", */
-          /*          meta_window_actor_get_description (m), type); */
-
-          no_apps = FALSE;
-          break;
-        }
-
-      l = l->next;
-    }
-
-  if (no_apps)
-    mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
-                                "dawati-panel-myzone",
-                                MNB_SHOW_HIDE_POLICY);
-
-  return FALSE;
-}
-
 static void
 check_for_empty_workspace (MetaPlugin *plugin,
                            gint workspace, MetaWindow *ignore,
@@ -1584,6 +1586,13 @@ handle_window_destruction (MetaWindowActor *mcw, MetaPlugin *plugin)
               dawati_netbook_toggle_compositor (plugin, on);
             }
         }
+    }
+
+  if (type != META_WINDOW_SPLASHSCREEN &&
+      type != META_WINDOW_DOCK &&
+      !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
+    {
+      g_timeout_add (MYZONE_TIMEOUT, (GSourceFunc)maybe_show_myzone, plugin);
     }
 }
 
