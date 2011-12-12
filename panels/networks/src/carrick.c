@@ -366,6 +366,8 @@ main (int    argc,
                                       THEMEDIR "/network-applet.css",
                                       "offline",
                                       TRUE);
+    mpl_panel_client_set_height_request (panel_client, 600);
+
     g_signal_connect (panel_client,
                       "show",
                       (GCallback) _client_show_cb,
