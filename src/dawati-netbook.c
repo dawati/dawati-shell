@@ -788,7 +788,6 @@ cleanup_workspaces_at_start (MetaPlugin *plugin)
                                 plugin);
 
               got_at_least_one = TRUE;
-              workspaces = workspaces->next;
               break;
             }
 
