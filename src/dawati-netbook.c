@@ -789,7 +789,6 @@ cleanup_workspaces_at_start (MetaPlugin *plugin)
                                 plugin);
 
               got_at_least_one = TRUE;
-              g_list_free (windows);
               workspaces = workspaces->next;
               break;
             }
@@ -801,7 +800,8 @@ cleanup_workspaces_at_start (MetaPlugin *plugin)
       workspaces = workspaces->next;
 
       /* No window to manage -> destroy workspace */
-      meta_screen_remove_workspace (screen, workspace, current_time);
+      if (window == NULL)
+        meta_screen_remove_workspace (screen, workspace, current_time);
     }
 
   dawati_netbook_set_struts (plugin, -1, -1, -1, -1);
