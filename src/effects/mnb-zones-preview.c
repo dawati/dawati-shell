@@ -23,6 +23,7 @@
 #include "mnb-fancy-bin.h"
 
 #include <stdlib.h>
+#include <math.h>
 
 static void mx_stylable_iface_init (MxStylableIface *iface);
 
@@ -457,7 +458,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_ZOOM_OUT:
       /* Start panning */
       {
-        guint duration = MIN (175 * abs (priv->dest_workspace - priv->workspace), 525);
+        guint duration = MIN (175 * fabs ((gdouble) priv->dest_workspace - priv->workspace), 525);
 
         if (duration)
           {
@@ -478,6 +479,10 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_OUT_CUBIC,
                              250,
+                             /* Force workspace to destination in case
+                                a previous pan animation is already
+                                running. */
+                             "workspace", (gdouble) priv->dest_workspace,
                              "zoom", 1.0,
                              NULL);
       break;
