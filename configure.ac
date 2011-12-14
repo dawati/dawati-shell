@@ -597,6 +597,4 @@ echo "
             Panels           :    ${WITH_PANELS}
 
 	    CFLAGS: ${CFLAGS}
-
-        Type make to build the plugin.
 "
