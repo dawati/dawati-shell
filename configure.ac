@@ -23,6 +23,7 @@ AC_PREREQ([2.59])
 
 AC_INIT([dawati-shell], [plugin_version], [http://dawati.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
+AC_CONFIG_AUX_DIR([build])
 
 AC_CONFIG_SRCDIR(src/dawati-netbook.c)
 
