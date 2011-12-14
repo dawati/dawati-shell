@@ -2,8 +2,8 @@
 Version=1.0
 Encoding=UTF-8
 Type=Application
-Exec=/usr/libexec/dawati-panel-web
-TryExec=/usr/libexec/dawati-panel-web
+Exec=@libexecdir@/dawati-panel-web
+TryExec=@libexecdir@/dawati-panel-web
 _Name=internet
 Icon=dawati-web-browser
 _Comment=Internet panel
