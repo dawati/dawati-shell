@@ -62,6 +62,7 @@ AM_CFLAGS = \
 	-Wall \
 	$(LIBMPL_CFLAGS) \
 	$(PENGE_CFLAGS) \
+	-I$(top_srcdir) \
 	-I$(top_srcdir)/libdawati-panel \
 	\
 	-DTHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \

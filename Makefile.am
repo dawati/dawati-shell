@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I build/autotools
 
-DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-capplet
 
 # always built
 SUBDIRS = build libdawati-panel
@@ -32,6 +32,6 @@ if HAVE_CAPPLET
 SUBDIRS += capplet
 endif
 
-EXTRA_DIST = autogen.sh config.rpath
+EXTRA_DIST = autogen.sh
 
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update po/stamp-it po/.intltool-merge-cache

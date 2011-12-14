@@ -7,6 +7,7 @@ INCLUDES = -I$(srcdir)/../connman-common
 carrick_connection_panel_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_NETWORKS_CFLAGS) \
+	-I$(top_srcdir) \
 	-I$(srcdir)/../ \
 	-Wall
 

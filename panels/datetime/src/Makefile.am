@@ -3,7 +3,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 AM_CFLAGS = \
 	$(PANEL_DATETIME_CFLAGS) \
 	$(PENGE_CFLAGS) \
-	-I$(top_srdir)/penge \
+	-I$(top_srcdir) \
 	\
 	-DMYZONETHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \
 	-Wall -g3 -O0 -ggdb \

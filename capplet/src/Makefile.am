@@ -41,7 +41,7 @@ dawati_toolbar_properties_LDADD   = libmtp-common.la
 dawati_toolbar_properties_SOURCES = dawati-toolbar-properties.c
 
 ccmodulesdir = $(CC_DIR)
-ccmodules_LTLIBRARIES = libmtp.la libsystray.la libapp.la
+ccmodules_LTLIBRARIES = libmtp.la libsystray.la # libapp.la
 
 libmtp_la_SOURCES = \
 	module.c \

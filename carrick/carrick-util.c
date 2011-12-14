@@ -35,7 +35,7 @@ util_get_service_type_for_display (const char *type)
    *     you to a %s network"
    * where both placeholders are service type names. */
   if (!type || strlen (type) == 0)
-    return _("");
+    return _("Unknown");
   else if (g_strcmp0 (type, "wifi") == 0)
     return _("WiFi");
   else if (g_strcmp0 (type, "ethernet") == 0)

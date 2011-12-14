@@ -13,6 +13,7 @@ carrick_3g_wizard_SOURCES = \
 	$(NULL)
 
 carrick_3g_wizard_CFLAGS = \
+	-I$(top_srcdir) \
 	$(CALLOUTS_CFLAGS) \
 	-Wall
 

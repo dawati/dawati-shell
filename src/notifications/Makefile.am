@@ -1,7 +1,7 @@
 noinst_LTLIBRARIES = libnotifications.la
 
 AM_CFLAGS = \
-	@MUTTER_PLUGIN_CFLAGS@ \
+	$(MUTTER_PLUGIN_CFLAGS) \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
 	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)\"
 

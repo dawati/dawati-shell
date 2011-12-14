@@ -1,11 +1,6 @@
 EXTRA_DIST = \
 	Makefile.am.panels \
 	\
-	gettext.m4 \
-	iconv.m4 \
-	lib-ld.m4 \
-	lib-link.m4 \
-	lib-prefix.m4 \
-	nls.m4 \
-	po.m4 \
-	progtest.m4
+	as-linguas.m4 \
+	as-panels.m4 \
+	gtk-doc.m4

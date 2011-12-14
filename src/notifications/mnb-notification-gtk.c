@@ -23,8 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <display.h>
-#include <mutter-plugin.h>
+#include <meta/display.h>
 
 #include "../dawati-netbook.h"
 #include "mnb-notification-gtk.h"

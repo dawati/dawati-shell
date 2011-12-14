@@ -27,7 +27,7 @@
 #include "../mnb-input-manager.h"
 
 #include "ntf-tray.h"
-#include "mnb-notification-gtk.h"
+/* #include "mnb-notification-gtk.h" */
 
 #define CLUSTER_WIDTH 320
 #define FADE_DURATION 300

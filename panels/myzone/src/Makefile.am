@@ -3,7 +3,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 AM_CFLAGS = \
 	$(PANEL_MYZONE_CFLAGS) \
 	$(PENGE_CFLAGS) \
-	-I$(top_srcdir)/penge \
+	-I$(top_srcdir) \
 	\
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	$(NULL)
