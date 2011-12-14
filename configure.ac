@@ -347,7 +347,7 @@ AS_DAWATI_PANEL(status, [dbus-glib-1
                          $CLUTTER_GTK_DEPS
                          $MX_DEPS
                          libsocialweb-client >= 0.25.3
-                         champlain-0.10
+                         champlain-0.12
                          geoclue
                          gconf-2.0])
 
