@@ -911,6 +911,9 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
 
   clutter_set_motion_events_enabled (TRUE);
 
+  /*
+   * Get background actor from mutter.
+   */
   priv->desktop_tex = meta_get_background_actor_for_screen (screen);
 
   /*
