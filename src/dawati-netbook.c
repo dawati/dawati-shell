@@ -1704,6 +1704,8 @@ dawati_netbook_toggle_compositor (MetaPlugin *plugin, gboolean on)
                                       CompositeRedirectManual);
       XUnmapWindow (xdpy, overlay);
       XSync (xdpy, FALSE);
+
+      meta_enable_unredirect_for_screen (screen);
     }
   else
     {
@@ -1732,6 +1734,8 @@ dawati_netbook_toggle_compositor (MetaPlugin *plugin, gboolean on)
                                     CompositeRedirectManual);
       XSync (xdpy, FALSE);
       dawati_netbook_detach_mutter_windows (screen);
+
+      meta_disable_unredirect_for_screen (screen);
     }
 }
 
