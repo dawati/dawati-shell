@@ -2308,119 +2308,6 @@ setup_screen_saver (MetaPlugin *plugin)
   meta_error_trap_pop (display);
 }
 
-static void
-setup_desktop_background (MetaPlugin *plugin, const gchar *filename)
-{
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
-  gint                        screen_width, screen_height;
-  ClutterActor               *new_texture;
-  ClutterActor               *old_texture = priv->desktop_tex;
-
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  g_assert (filename);
-
-  new_texture = (ClutterActor*)
-    mx_texture_cache_get_texture (mx_texture_cache_get_default (), filename);
-
-  priv->desktop_tex = new_texture;
-
-  if (old_texture)
-    clutter_actor_destroy (old_texture);
-
-  if (!new_texture)
-    {
-      g_warning ("Failed to load '%s', No tiled desktop image", filename);
-    }
-  else
-    {
-      ClutterActor *stage = meta_get_stage_for_screen (screen);
-
-      if (clutter_texture_get_pixel_format (CLUTTER_TEXTURE (new_texture)) &
-          COGL_A_BIT)
-        {
-          g_warning ("Desktop background '%s' has alpha channel", filename);
-        }
-
-      clutter_actor_set_size (new_texture, screen_width, screen_height);
-
-      clutter_texture_set_repeat (CLUTTER_TEXTURE (new_texture), TRUE, TRUE);
-
-      if (new_texture)
-        {
-          clutter_container_add_actor (CLUTTER_CONTAINER (stage), new_texture);
-          clutter_actor_lower_bottom (new_texture);
-
-          /* g_signal_connect (new_texture, "paint", */
-          /*                   G_CALLBACK (desktop_background_paint), */
-          /*                   plugin); */
-        }
-    }
-}
-
-static void
-desktop_background_changed_cb (GConfClient *client,
-                               guint        cnxn_id,
-                               GConfEntry  *entry,
-                               gpointer     data)
-{
-  MetaPlugin *plugin = META_PLUGIN (data);
-  const gchar  *filename = NULL;
-  GConfValue   *value;
-  const gchar  *key;
-
-  if (!entry)
-    return;
-
-  key   = gconf_entry_get_key (entry);
-  value = gconf_entry_get_value (entry);
-
-  if (!strcmp (key, KEY_BG_FILENAME))
-    {
-      if (value)
-        filename = gconf_value_get_string (value);
-
-      if (filename && *filename)
-        setup_desktop_background (plugin, filename);
-    }
-  else if (!strcmp (key, KEY_BG_COLOR))
-    {
-      const char *clr_str = NULL;
-      ClutterColor clr;
-
-      if (value)
-        clr_str = gconf_value_get_string (value);
-
-      if (clr_str && *clr_str &&
-          clutter_color_from_string (&clr, clr_str))
-        {
-          MetaScreen   *screen = meta_plugin_get_screen (plugin);
-          ClutterActor *stage  = meta_get_stage_for_screen (screen);
-
-          clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);
-        }
-    }
-#if 0
-  else if (value && !strcmp (key, KEY_BG_OPTIONS))
-    {
-      DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-
-      g_return_if_fail (value->type == GCONF_VALUE_STRING);
-
-      const gchar *opt = gconf_value_get_string (value);
-
-      /*
-       * Anything other than 'wallpaper' is scaled
-       */
-      if (strcmp (opt, "wallpaper"))
-        priv->scaled_background = TRUE;
-      else
-        priv->scaled_background = FALSE;
-    }
-#endif
-}
-
 /*
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
@@ -2670,8 +2557,7 @@ dawati_netbook_set_struts (MetaPlugin *plugin,
                            gint          top,
                            gint          bottom)
 {
-  MetaScreen  *screen  = meta_plugin_get_screen (plugin);
-  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
 
   static gint32 struts[4] = {-1, /* left */
                              -1, /* right */
