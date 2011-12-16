@@ -288,6 +288,28 @@ struct _MnbToolbarPrivate
   guint            trigger_cb_id;
 };
 
+static GSList *
+mnb_toolbar_get_default_panel_list (void)
+{
+  const gchar *panels_required[8] = {"dawati-panel-myzone",
+                                     "dawati-panel-zones",
+                                     "dawati-panel-applications",
+                                     "dawati-panel-status",
+                                     "dawati-panel-people",
+                                     "dawati-panel-internet",
+                                     "carrick",
+                                     "dawati-panel-datetime"};
+  gint i;
+  GSList *order = NULL;
+
+  for (i = 0; i < G_N_ELEMENTS (panels_required); i++)
+    order = g_slist_append (order, (gchar *) panels_required[i]);
+
+  return order;
+}
+
+
+
 static void
 mnb_toolbar_get_property (GObject    *object,
                           guint       property_id,
@@ -3999,33 +4021,42 @@ mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
       return;
     }
 
-  value = gconf_entry_get_value (entry);
-
-  if (!value)
-    {
-      g_warning (G_STRLOC ": no value!");
-      return;
-    }
-
   if (!strcmp (key, KEY_ORDER))
     {
       GSList *order;
 
-      if (value->type != GCONF_VALUE_LIST)
+      value = gconf_entry_get_value (entry);
+
+      if (value)
         {
-          g_warning (G_STRLOC ": %s does not contain a list!", KEY_ORDER);
-          return;
-        }
+          if (value->type != GCONF_VALUE_LIST)
+            {
+              g_warning (G_STRLOC ": %s does not contain a list!", KEY_ORDER);
+              return;
+            }
 
-      if (gconf_value_get_list_type (value) != GCONF_VALUE_STRING)
+          if (gconf_value_get_list_type (value) != GCONF_VALUE_STRING)
+            {
+              g_warning (G_STRLOC ": %s list does not contain strings!", KEY_ORDER);
+              return;
+            }
+
+          order = gconf_value_get_list (value);
+
+          mnb_toolbar_fixup_panels (toolbar, order, FALSE);
+        }
+      else
         {
-          g_warning (G_STRLOC ": %s list does not contain strings!", KEY_ORDER);
-          return;
+          GSList *order;
+
+          g_warning (G_STRLOC ": no value for key %s !", key);
+
+          order = mnb_toolbar_get_default_panel_list ();
+
+          mnb_toolbar_fixup_panels (toolbar, order, TRUE);
+
+          g_slist_free (order);
         }
-
-      order = gconf_value_get_list (value);
-
-      mnb_toolbar_fixup_panels (toolbar, order, FALSE);
       return;
     }
 
@@ -4040,32 +4071,23 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
   DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   GConfClient                *client = ppriv->gconf_client;
   GSList                     *order;
-  gint                        i;
-  const gchar                *required[8] = {"dawati-panel-myzone",
-                                             "dawati-panel-zones",
-                                             "dawati-panel-applications",
-                                             "dawati-panel-status",
-                                             "dawati-panel-people",
-                                             "dawati-panel-internet",
-                                             "carrick",
-                                             "dawati-panel-datetime"};
+  GSList                     *l, *defaults;
 
   order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
 
-  /*
-   * Ensure that the required panels are in the list; if not, we insert them
-   * at the end.
-   */
-  for (i = 0; i < G_N_ELEMENTS (required); ++i)
-    {
-      GSList *l = g_slist_find_custom (order,
-                                       required[i],
-                                       (GCompareFunc)g_strcmp0);
+  defaults = mnb_toolbar_get_default_panel_list ();
 
-      if (!l)
-        {
-          order = g_slist_append (order, g_strdup (required[i]));
-        }
+  l = defaults;
+  while (l)
+    {
+      GSList *e = g_slist_find_custom (order,
+                                       l->data,
+                                       (GCompareFunc) g_strcmp0);
+
+      if (!e)
+        order = g_slist_append (order, g_strdup (l->data));
+
+      l = l->next;
     }
 
   mnb_toolbar_fixup_panels (toolbar, order, TRUE);
@@ -4073,7 +4095,8 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
   /*
    * Clean up
    */
-  g_slist_foreach (order, (GFunc)g_free, NULL);
+  g_slist_free (defaults);
+  g_slist_foreach (order, (GFunc) g_free, NULL);
   g_slist_free (order);
 }
 
