@@ -22,8 +22,6 @@
 #include <glib/gi18n.h>
 #include <locale.h>
 
-#include <gconf/gconf-client.h>
-
 #define ZONES_PANEL_TOOLTIP _("zones")
 
 static MplPanelClient *client = NULL;
@@ -37,7 +35,6 @@ typedef struct
   gint            height;
   gboolean        connected;
   ClutterActor   *background;
-  GConfClient    *gconf_client;
   WnckScreen     *screen;
 } ZonePanelData;
 
