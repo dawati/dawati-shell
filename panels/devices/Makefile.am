@@ -5,7 +5,5 @@ SUBDIRS = \
 	$(NULL)
 
 EXTRA_DIST = \
-	AUTHORS \
-	NEWS \
-	README \
+	TODO \
 	$(NULL)
