@@ -2,6 +2,8 @@
 #include <config.h>
 
 #include <mx/mx.h>
+#define COGL_ENABLE_EXPERIMENTAL_API
+#include <cogl/cogl-texture-pixmap-x11.h>
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE
 #include <libwnck/libwnck.h>
@@ -74,23 +76,16 @@ static GOptionEntry entries[] = {
 
 
 static void
-desktop_filename_changed_cb (GConfClient *client,
-                             guint        cnxn_id,
-                             GConfEntry  *entry,
-                             gpointer     userdata)
+background_changed_callback (WnckScreen    *screen,
+                             ZonePanelData *data)
 {
-  const gchar   *filename = NULL;
-  GConfValue    *value;
-  ZonePanelData *data = userdata;
-  GError        *err = NULL;
+  gulong     root_pixmap_id;
+  CoglHandle texture;
 
-  value = gconf_entry_get_value (entry);
+  root_pixmap_id = wnck_screen_get_background_pixmap (data->screen);
 
-  if (value)
-    filename = gconf_value_get_string (value);
+  texture = cogl_texture_pixmap_x11_new (root_pixmap_id, FALSE);
 
-  if (!filename || !*filename)
-    filename = THEMEDIR "/panel/background-tile.png";
 
   if (data->background)
     {
@@ -98,66 +93,31 @@ desktop_filename_changed_cb (GConfClient *client,
       data->background = NULL;
     }
 
-  if (!data->background)
-    data->background = clutter_texture_new_from_file (filename, &err);
-  else
-    clutter_texture_set_from_file (CLUTTER_TEXTURE (data->background),
-                                   filename, &err);
-
-
-  if (err)
+  if (texture != COGL_INVALID_HANDLE)
     {
-      g_warning ("Could not load background image: %s", err->message);
-      g_error_free (err);
-      return;
-    }
+      data->background = clutter_texture_new ();
+      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (data->background), texture);
 
-  clutter_texture_set_repeat (CLUTTER_TEXTURE (data->background), TRUE, TRUE);
-  clutter_actor_set_size (data->background,
-                          wnck_screen_get_width (data->screen),
-                          wnck_screen_get_height (data->screen));
-  clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->background);
-  clutter_actor_set_opacity (data->background, 0);
+      clutter_texture_set_repeat (CLUTTER_TEXTURE (data->background), TRUE, TRUE);
+
+      clutter_actor_set_size (data->background,
+                              wnck_screen_get_width (data->screen),
+                              wnck_screen_get_height (data->screen));
+      clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->background);
+      clutter_actor_set_opacity (data->background, 0);
+    }
+  else
+    g_warning ("Failed to retrieve background pixmap");
 }
 
 static void
 desktop_background_init (ZonePanelData *data)
 {
-  GError *error = NULL;
+  g_signal_connect (data->screen, "background-changed",
+                    G_CALLBACK (background_changed_callback),
+                    data);
 
-  data->gconf_client = gconf_client_get_default ();
-
-
-  gconf_client_add_dir (data->gconf_client,
-                        BG_KEY_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE,
-                        &error);
-
-  if (error)
-    {
-      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-  gconf_client_notify_add (data->gconf_client,
-                           KEY_BG_FILENAME,
-                           desktop_filename_changed_cb,
-                           data,
-                           NULL,
-                           &error);
-
-  if (error)
-    {
-      g_warning (G_STRLOC ": Error when adding key for notification: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-
-  /*
-   * Read the background via our notify func
-   */
-  gconf_client_notify (data->gconf_client, KEY_BG_FILENAME);
+  background_changed_callback (data->screen, data);
 }
 
 
