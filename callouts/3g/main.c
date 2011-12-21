@@ -17,45 +17,38 @@
  * 02110-1301, USA.
  *
  * Written by - Ross Burton <ross@linux.intel.com>
+ *              Jussi Kukkonen <jussi.kukkonen@intel.com>
  */
 
 #include <config.h>
 #include <stdlib.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-bindings.h>
+
 #include <rest/rest-xml-parser.h>
 #include <gtk/gtk.h>
 
-#include "ggg-service.h"
 #include "ggg-mobile-info.h"
 #include "ggg-country-dialog.h"
-#include "ggg-service-dialog.h"
 #include "ggg-provider-dialog.h"
 #include "ggg-plan-dialog.h"
 #include "ggg-manual-dialog.h"
 
-#include "carrick/connman-manager-bindings.h"
+#define OFONO_SERVICE             "org.ofono"
+#define OFONO_MANAGER_PATH        "/"
+#define OFONO_MANAGER_INTERFACE OFONO_SERVICE ".Manager"
+#define OFONO_MODEM_INTERFACE OFONO_SERVICE ".Modem"
+#define OFONO_CONNMAN_INTERFACE OFONO_SERVICE ".ConnectionManager"
+#define OFONO_CONTEXT_INTERFACE OFONO_SERVICE ".ConnectionContext"
 
-#define CONNMAN_SERVICE           "net.connman"
-#define CONNMAN_MANAGER_PATH      "/"
-#define CONNMAN_MANAGER_INTERFACE CONNMAN_SERVICE ".Manager"
-#define CONNMAN_SERVICE_INTERFACE CONNMAN_SERVICE ".Service"
 
-static DBusGConnection *connection = NULL;
-
-static char **service_paths = NULL;
 static gboolean add_fake = FALSE;
 
 static const GOptionEntry entries[] = {
-  { "service", 's', 0, G_OPTION_ARG_STRING_ARRAY, &service_paths, "Service path", "PATH" },
   { "fake-service", 'f', 0, G_OPTION_ARG_NONE, &add_fake, "Add a fake service" },
   { NULL }
 };
 
 static enum {
   STATE_START,
-  STATE_SERVICE,
-  STATE_COUNTRY,
   STATE_PROVIDER,
   STATE_PLAN,
   STATE_MANUAL,
@@ -63,11 +56,155 @@ static enum {
   STATE_FINISH,
 } state;
 
-static GList *services = NULL;
-static GggService *service;
 static RestXmlNode *country_node = NULL;
 static RestXmlNode *provider_node = NULL;
 static RestXmlNode *plan_node = NULL;
+
+/* This is an abstraction of a ofono Modem + ConnectionContext
+ * (we're only processing the first "internet" context in the modem)*/
+typedef struct Sim {
+  GDBusProxy *modem_proxy;
+  char *context_path;
+
+  char *mnc;
+  char *mcc;
+
+  const char *apn;
+  const char *username;
+  const char *password;
+} Sim;
+static GHashTable *sims;
+
+static void
+sim_free (Sim *sim)
+{
+  g_free (sim->context_path);
+  g_free (sim->mnc);
+  g_free (sim->mcc);
+  g_object_unref (sim->modem_proxy);
+  g_slice_free (Sim, sim);
+}
+
+static Sim*
+sim_new (const char *modem_path)
+{
+  GError *err = NULL;
+  Sim *sim;
+  GVariant *contexts, *props, *value;
+  GVariantIter *iter, *obj_iter;
+  gboolean has_connection_manager = FALSE;
+  gboolean has_sim_manager = FALSE;
+  char *key, *context_path;
+
+  sim = g_slice_new0 (Sim);
+
+  sim->modem_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                                   G_DBUS_PROXY_FLAGS_NONE,
+                                                   NULL, /* should add iface info here */
+                                                   OFONO_SERVICE,
+                                                   modem_path,
+                                                   OFONO_MODEM_INTERFACE,
+                                                   NULL,
+                                                   &err);
+  if (err) {
+    g_warning ("Could not create Modem proxy: %s", err->message);
+    g_error_free (err);
+    sim_free (sim);
+    return NULL;
+  }
+
+  /* check if this modem supports the ifaces we need */
+  props = g_dbus_proxy_call_sync (sim->modem_proxy,
+                                  "org.ofono.Modem.GetProperties",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &err);
+  if (err) {
+    g_warning ("Modem.GetProperties failed: %s", err->message);
+    g_error_free (err);
+    sim_free (sim);
+    return NULL;
+  }
+
+  g_variant_get (props, "(a{sv})", &iter);
+  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
+    if (g_strcmp0 (key, "Interfaces") == 0) {
+      const char **ifaces;
+      ifaces = g_variant_get_strv (value, NULL);
+      while (*ifaces) {
+        if (g_strcmp0 (*ifaces, "org.ofono.ConnectionManager") == 0) {
+          has_connection_manager = TRUE;
+        } else if (g_strcmp0 (*ifaces, "org.ofono.SimManager") == 0) {
+          has_sim_manager = TRUE;
+        }
+        ifaces++;
+      }
+      break;
+    }
+  }
+  g_variant_iter_free (iter);
+  g_variant_unref (props);
+
+  if (!has_connection_manager && !has_sim_manager) {
+    sim_free (sim);
+    return NULL;
+  }
+    
+  /* find out if we already have a internet context */
+  contexts = g_dbus_proxy_call_sync (sim->modem_proxy,
+                                    "org.ofono.ConnectionManager.GetContexts",
+                                     NULL,
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1,
+                                     NULL,
+                                     &err);
+  if (err) {
+    g_warning ("GetContexts failed: %s", err->message);
+    g_error_free (err);
+    sim_free (sim);
+    return NULL;
+  }
+
+  g_variant_get (contexts, "(a(oa{sv}))", &iter);
+  while (g_variant_iter_loop (iter, "(oa{sv})", &context_path, &obj_iter)) {
+     while (g_variant_iter_loop (obj_iter, "{sv}", &key, &value)) {
+       if (g_strcmp0 (key, "Type") == 0 &&
+           g_strcmp0 (g_variant_get_string (value, NULL), "internet") == 0) {
+         sim->context_path = g_strdup (context_path);
+       }
+    }
+  }
+  g_variant_iter_free (iter);
+  g_variant_unref (contexts);
+      
+  /* see if we have MNC and MCC */
+  props = g_dbus_proxy_call_sync (sim->modem_proxy,
+                                  "org.ofono.SimManager.GetProperties",
+                                  NULL,
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &err);
+  if (err) {
+    g_warning ("GetProperties failed: %s", err->message);
+    g_error_free (err);
+    sim_free (sim);
+    return NULL;
+  }
+  g_variant_get (props, "(a{sv})", &iter);
+  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
+    if (g_strcmp0 (key, "MobileCountryCode") == 0)
+      sim->mcc = g_strdup (g_variant_get_string (value, NULL));
+    else if (g_strcmp0 (key, "MobileNetworkCode") == 0)
+      sim->mnc = g_strdup (g_variant_get_string (value, NULL));
+  }
+  g_variant_iter_free (iter);
+  g_variant_unref (props);
+
+  return sim;
+}
 
 static const char *
 get_child_content (RestXmlNode *node, const char *name)
@@ -83,10 +220,89 @@ get_child_content (RestXmlNode *node, const char *name)
 }
 
 static void
+set_property (GDBusProxy *proxy,
+              const char *key,
+              const GVariant *value)
+{
+  GError *err = NULL;
+
+  g_dbus_proxy_call_sync (proxy,
+                          "SetProperty",
+                          g_variant_new ("(sv)", key, value),
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          &err);
+  if (err) {
+    g_warning ("SetProperty failed: %s", err->message);
+    g_error_free (err);
+    /* TODO */
+  } 
+}
+
+static void
+save_context (Sim *sim)
+{
+  GDBusProxy *context_proxy;
+  GError *err = NULL;
+  const char *username, *password, *name;
+
+  name = rest_xml_node_get_attr (plan_node, "value");
+  if (!name)
+    name = "";
+  username = get_child_content (plan_node, "username");
+  if (!username)
+    username = "";
+  password = get_child_content (plan_node, "password");
+  if (!password)
+    password = "";
+
+  if (!sim->context_path) {
+    GVariant *var;
+    var = g_dbus_proxy_call_sync (sim->modem_proxy,
+                                  "AddContext",
+                                  g_variant_new ("(s)", "internet"),
+                                  G_DBUS_CALL_FLAGS_NONE,
+                                  -1,
+                                  NULL,
+                                  &err);
+    if (err) {
+      g_warning ("AddContext failed: %s", err->message);
+      g_error_free (err);
+      /* TODO ? */
+      return;
+    } 
+    g_variant_get (var, "(o)", &sim->context_path);
+    g_variant_unref (var);
+  }
+
+  context_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                                 G_DBUS_PROXY_FLAGS_NONE,
+                                                 NULL, /* should add iface info here */
+                                                 OFONO_SERVICE,
+                                                 sim->context_path,
+                                                 OFONO_CONTEXT_INTERFACE,
+                                                 NULL,
+                                                 &err);
+  if (err) {
+    g_warning ("Failed to get proxy: %s", err->message);
+    g_error_free (err);
+    /* TODO ? */
+    return;
+  } 
+
+  set_property (context_proxy, "AccessPointName", g_variant_new_string (name));
+  set_property (context_proxy, "Username", g_variant_new_string (username));
+  set_property (context_proxy, "Password", g_variant_new_string (password));
+}
+
+static void
 state_machine (void)
 {
   GtkWidget *dialog;
   int old_state;
+  Sim *sim = NULL;
+  GHashTableIter iter;
 
   while (state != STATE_FINISH) {
     /* For sanity checking state changes later */
@@ -95,51 +311,24 @@ state_machine (void)
     switch (state) {
     case STATE_START:
       /*
-       * Determine if we need to select a service or can go straight to probing
-       * the service.
+       * TODO: find out which modem/SIM we want to work with
        */
-      if (services) {
-        if (services->next) {
-          dialog = g_object_new (GGG_TYPE_SERVICE_DIALOG,
-                                 "services", services,
-                                 NULL);
-          switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
-          case GTK_RESPONSE_CANCEL:
-          case GTK_RESPONSE_DELETE_EVENT:
-            state = STATE_FINISH;
-            break;
-          case GTK_RESPONSE_ACCEPT:
-            service = ggg_service_dialog_get_selected (GGG_SERVICE_DIALOG (dialog));
-            state = STATE_SERVICE;
-            break;
-          }
-          gtk_widget_destroy (dialog);
-        } else {
-          service = services->data;
-          state = STATE_SERVICE;
-        }
-      } else {
-        g_printerr ("No services found\n");
-        state = STATE_FINISH;
-      }
-      break;
-    case STATE_SERVICE:
-      /*
-       * Exmaine the service and determine if we can probe some information, or
-       * have to do guided configuration.
-       */
-      g_assert (service);
+      g_hash_table_iter_init (&iter, sims);
+      g_hash_table_iter_next (&iter, NULL, (gpointer)&sim);
 
-      if (ggg_service_is_roaming (service)) {
-        state = STATE_COUNTRY;
+      g_assert (sim);
+      g_assert (sim->modem_proxy);
+
+      provider_node = ggg_mobile_info_get_provider_for_ids (sim->mcc, sim->mnc);
+      if (provider_node) {
+        state = STATE_PLAN;
       } else {
-        provider_node = ggg_mobile_info_get_provider_for_ids
-          (ggg_service_get_mcc (service), ggg_service_get_mnc (service));
-        /* If we found a provider switch straight to the plan selector, otherwises
-           fall back to the manual configuration */
-        state = provider_node ? STATE_PLAN : STATE_MANUAL;
+        country_node = ggg_mobile_info_get_country_for_mcc (sim->mcc);
+        state = country_node ? STATE_PROVIDER : STATE_COUNTRY;
       }
+
       break;
+
     case STATE_COUNTRY:
       dialog = g_object_new (GGG_TYPE_COUNTRY_DIALOG, NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
@@ -157,6 +346,7 @@ state_machine (void)
       }
       gtk_widget_destroy (dialog);
       break;
+
     case STATE_PROVIDER:
       g_assert (country_node);
       dialog = g_object_new (GGG_TYPE_PROVIDER_DIALOG,
@@ -212,14 +402,7 @@ state_machine (void)
       break;
     case STATE_SAVE:
       g_assert (plan_node);
-
-      ggg_service_set (service,
-                       rest_xml_node_get_attr (plan_node, "value"),
-                       get_child_content (plan_node, "username"),
-                       get_child_content (plan_node, "password"));
-
-      ggg_service_connect (service);
-
+      save_context (sim);      
       state = STATE_FINISH;
       break;
     case STATE_FINISH:
@@ -231,70 +414,81 @@ state_machine (void)
 }
 
 static void
-add_service (const GValue *value, gpointer user_data)
+find_sims (void)
 {
-  GList **services = user_data;
-  const char *path = g_value_get_boxed (value);
-  GggService *service;
-
-  if (path) {
-    service = ggg_service_new (connection, path);
-    if (service) {
-      *services = g_list_append (*services, service);
-    }
-  }
-}
-
-static void
-find_services (void)
-{
-  DBusGProxy *proxy;
-  GHashTable *props = NULL;
-  GError *error = NULL;
-  GValue *value;
-
-  proxy = dbus_g_proxy_new_for_name (connection,
-                                     CONNMAN_SERVICE, "/",
-                                     CONNMAN_MANAGER_INTERFACE);
-
-  if (!net_connman_Manager_get_properties (proxy, &props, &error)) {
-    g_printerr ("Cannot get properties for manager: %s\n", error->message);
-    g_error_free (error);
-    g_object_unref (proxy);
+  GDBusProxy *proxy;
+  GError *err = NULL;
+  GVariant *modems;
+  char *obj_path;
+  GVariantIter *iter;
+  
+  /* TODO don't be synchronous... */
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL, /* should add iface info here */
+                                         OFONO_SERVICE,
+                                         OFONO_MANAGER_PATH,
+                                         OFONO_MANAGER_INTERFACE,
+                                         NULL,
+                                         &err);
+  if (err) {
+    g_warning ("No ofono proxy: %s", err->message);
     return;
   }
 
-  value = g_hash_table_lookup (props, "Services");
-  if (value)
-    dbus_g_type_collection_value_iterate (value, add_service, &services);
+  modems = g_dbus_proxy_call_sync (proxy,
+                                   "GetModems",
+                                   NULL,
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,
+                                   &err);
+  if (err) {
+    g_warning ("GetModems failed: %s", err->message);
+    return;
+  }
 
-  g_hash_table_unref (props);
-  g_object_unref (proxy);
+  g_variant_get (modems, "(a(oa{sv}))", &iter);
+  while (g_variant_iter_loop (iter, "(oa{sv})", &obj_path, NULL)) {
+    Sim *sim = sim_new (obj_path);
+    if (sim)
+      g_hash_table_insert (sims, g_strdup (obj_path), sim);
+  }
+  g_variant_iter_free (iter);
+  g_variant_unref (modems);
+
+
 }
 
 static void
 show_network_panel (void)
 {
-  DBusGConnection *session_bus;
   GError *error = NULL;
-  DBusGProxy *proxy;
+  GDBusProxy *proxy;
 
-  session_bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-  if (connection == NULL) {
-    g_printerr ("Cannot connect to DBus: %s\n", error->message);
-    g_error_free (error);
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL, /* should add iface info here */
+                                         "com.dawati.UX.Shell.Toolbar",
+                                         "/com/dawati/UX/Shell/Toolbar",
+                                         "com.dawati.UX.Shell.Toolbar",
+                                         NULL,
+                                         &error);
+  if (error) {
+    g_warning ("No Toolbar proxy: %s", error->message);
     return;
   }
 
-  proxy = dbus_g_proxy_new_for_name (session_bus,
-                                     "com.dawati.UX.Shell.Toolbar",
-                                     "/com/dawati/UX/Shell/Toolbar",
-                                     "com.dawati.UX.Shell.Toolbar");
-
-  dbus_g_proxy_call_no_reply (proxy, "ShowPanel",
-                              G_TYPE_STRING, "network", G_TYPE_INVALID);
-  /* Need to flush because we're out of the main loop by now */
-  dbus_g_connection_flush (connection);
+  g_dbus_proxy_call_sync (proxy,
+                          "ShowPanel",
+                          g_variant_new ("(s)", "network"),
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL, 
+                          &error);
+  if (error) {
+    g_warning ("ShowPanel failed: %s", error->message);
+  }
 
   g_object_unref (proxy);
 }
@@ -304,9 +498,8 @@ main (int argc, char **argv)
 {
   GError *error = NULL;
   GOptionContext *context;
-  char **l;
 
-  context = g_option_context_new ("- Carrick/ConnMan 3G connection wizard");
+  context = g_option_context_new ("- Dawati shell 3G connection wizard");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   if (!g_option_context_parse (context, &argc, &argv, &error)) {
@@ -314,31 +507,13 @@ main (int argc, char **argv)
     exit (1);
   }
 
-  connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
-  if (connection == NULL) {
-    g_printerr ("Cannot connect to DBus: %s\n", error->message);
-    g_error_free (error);
-    exit (1);
+  sims = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                g_free, (GDestroyNotify)sim_free);
+  find_sims ();
+  if (g_hash_table_size (sims) == 0) {
+    g_debug ("No Modem/Sim found");
+    return 0;
   }
-
-  if (service_paths) {
-    for (l = service_paths; *l; l++) {
-      GggService *service;
-
-      service = ggg_service_new (connection, *l);
-      if (service)
-        services = g_list_prepend (services, service);
-    }
-  }
-
-  if (add_fake) {
-    services = g_list_prepend (services, ggg_service_new_fake ("Fake Device 1", FALSE));
-    services = g_list_prepend (services, ggg_service_new_fake ("Fake Device 2", TRUE));
-  }
-
-  /* Scan connman for services if none were found */
-  if (services == NULL)
-    find_services ();
 
   gtk_window_set_default_icon_name ("network-wireless");
 
