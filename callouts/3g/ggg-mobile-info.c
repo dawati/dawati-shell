@@ -59,6 +59,9 @@ ggg_mobile_info_get_provider_for_ids (const char *mcc, const char *mnc)
   RestXmlNode *root, *c_node, *p_node, *n_node;
   const char *this_mcc, *this_mnc;
 
+  if (!mnc || !mcc)
+    return NULL;
+
   root = ggg_mobile_info_get_root ();
 
   /* Iterate over every country */
