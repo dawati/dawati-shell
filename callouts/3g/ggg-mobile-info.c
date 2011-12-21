@@ -92,3 +92,41 @@ ggg_mobile_info_get_provider_for_ids (const char *mcc, const char *mnc)
 
   return NULL;
 }
+
+RestXmlNode *
+ggg_mobile_info_get_country_for_mcc (const char *mcc)
+{
+  RestXmlNode *root, *c_node, *p_node, *n_node;
+  const char *this_mcc;
+
+  if (!mcc)
+    return NULL;
+
+  root = ggg_mobile_info_get_root ();
+
+  /* Iterate over every country */
+  for (c_node = rest_xml_node_find (root, "country");
+       c_node;
+       c_node = c_node->next) {
+
+    /* Iterate over every provider */
+    for (p_node = rest_xml_node_find (c_node, "provider");
+         p_node;
+         p_node = p_node->next) {
+
+      /* Iterate over every network-id */
+      for (n_node = rest_xml_node_find (p_node, "network-id");
+           n_node;
+           n_node = n_node->next) {
+
+        this_mcc = rest_xml_node_get_attr (n_node, "mcc");
+
+        if (g_strcmp0 (this_mcc, mcc) == 0) {
+          return c_node;
+        }
+      }
+    }
+  }
+
+  return NULL;
+}

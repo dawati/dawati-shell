@@ -31,16 +31,13 @@
 #include "ggg-provider-dialog.h"
 #include "ggg-plan-dialog.h"
 #include "ggg-manual-dialog.h"
-
-#define OFONO_SERVICE             "org.ofono"
-#define OFONO_MANAGER_PATH        "/"
-#define OFONO_MANAGER_INTERFACE OFONO_SERVICE ".Manager"
-#define OFONO_MODEM_INTERFACE OFONO_SERVICE ".Modem"
-#define OFONO_CONNMAN_INTERFACE OFONO_SERVICE ".ConnectionManager"
-#define OFONO_CONTEXT_INTERFACE OFONO_SERVICE ".ConnectionContext"
+#include "ggg-sim-dialog.h"
+#include "ggg-sim.h"
 
 
 static gboolean add_fake = FALSE;
+
+static GHashTable *sims;
 
 static const GOptionEntry entries[] = {
   { "fake-service", 'f', 0, G_OPTION_ARG_NONE, &add_fake, "Add a fake service" },
@@ -49,6 +46,8 @@ static const GOptionEntry entries[] = {
 
 static enum {
   STATE_START,
+  STATE_BROADBAND_INFO,
+  STATE_COUNTRY,
   STATE_PROVIDER,
   STATE_PLAN,
   STATE_MANUAL,
@@ -59,152 +58,6 @@ static enum {
 static RestXmlNode *country_node = NULL;
 static RestXmlNode *provider_node = NULL;
 static RestXmlNode *plan_node = NULL;
-
-/* This is an abstraction of a ofono Modem + ConnectionContext
- * (we're only processing the first "internet" context in the modem)*/
-typedef struct Sim {
-  GDBusProxy *modem_proxy;
-  char *context_path;
-
-  char *mnc;
-  char *mcc;
-
-  const char *apn;
-  const char *username;
-  const char *password;
-} Sim;
-static GHashTable *sims;
-
-static void
-sim_free (Sim *sim)
-{
-  g_free (sim->context_path);
-  g_free (sim->mnc);
-  g_free (sim->mcc);
-  g_object_unref (sim->modem_proxy);
-  g_slice_free (Sim, sim);
-}
-
-static Sim*
-sim_new (const char *modem_path)
-{
-  GError *err = NULL;
-  Sim *sim;
-  GVariant *contexts, *props, *value;
-  GVariantIter *iter, *obj_iter;
-  gboolean has_connection_manager = FALSE;
-  gboolean has_sim_manager = FALSE;
-  char *key, *context_path;
-
-  sim = g_slice_new0 (Sim);
-
-  sim->modem_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                                   G_DBUS_PROXY_FLAGS_NONE,
-                                                   NULL, /* should add iface info here */
-                                                   OFONO_SERVICE,
-                                                   modem_path,
-                                                   OFONO_MODEM_INTERFACE,
-                                                   NULL,
-                                                   &err);
-  if (err) {
-    g_warning ("Could not create Modem proxy: %s", err->message);
-    g_error_free (err);
-    sim_free (sim);
-    return NULL;
-  }
-
-  /* check if this modem supports the ifaces we need */
-  props = g_dbus_proxy_call_sync (sim->modem_proxy,
-                                  "org.ofono.Modem.GetProperties",
-                                  NULL,
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &err);
-  if (err) {
-    g_warning ("Modem.GetProperties failed: %s", err->message);
-    g_error_free (err);
-    sim_free (sim);
-    return NULL;
-  }
-
-  g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
-    if (g_strcmp0 (key, "Interfaces") == 0) {
-      const char **ifaces;
-      ifaces = g_variant_get_strv (value, NULL);
-      while (*ifaces) {
-        if (g_strcmp0 (*ifaces, "org.ofono.ConnectionManager") == 0) {
-          has_connection_manager = TRUE;
-        } else if (g_strcmp0 (*ifaces, "org.ofono.SimManager") == 0) {
-          has_sim_manager = TRUE;
-        }
-        ifaces++;
-      }
-      break;
-    }
-  }
-  g_variant_iter_free (iter);
-  g_variant_unref (props);
-
-  if (!has_connection_manager && !has_sim_manager) {
-    sim_free (sim);
-    return NULL;
-  }
-    
-  /* find out if we already have a internet context */
-  contexts = g_dbus_proxy_call_sync (sim->modem_proxy,
-                                    "org.ofono.ConnectionManager.GetContexts",
-                                     NULL,
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1,
-                                     NULL,
-                                     &err);
-  if (err) {
-    g_warning ("GetContexts failed: %s", err->message);
-    g_error_free (err);
-    sim_free (sim);
-    return NULL;
-  }
-
-  g_variant_get (contexts, "(a(oa{sv}))", &iter);
-  while (g_variant_iter_loop (iter, "(oa{sv})", &context_path, &obj_iter)) {
-     while (g_variant_iter_loop (obj_iter, "{sv}", &key, &value)) {
-       if (g_strcmp0 (key, "Type") == 0 &&
-           g_strcmp0 (g_variant_get_string (value, NULL), "internet") == 0) {
-         sim->context_path = g_strdup (context_path);
-       }
-    }
-  }
-  g_variant_iter_free (iter);
-  g_variant_unref (contexts);
-      
-  /* see if we have MNC and MCC */
-  props = g_dbus_proxy_call_sync (sim->modem_proxy,
-                                  "org.ofono.SimManager.GetProperties",
-                                  NULL,
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &err);
-  if (err) {
-    g_warning ("GetProperties failed: %s", err->message);
-    g_error_free (err);
-    sim_free (sim);
-    return NULL;
-  }
-  g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
-    if (g_strcmp0 (key, "MobileCountryCode") == 0)
-      sim->mcc = g_strdup (g_variant_get_string (value, NULL));
-    else if (g_strcmp0 (key, "MobileNetworkCode") == 0)
-      sim->mnc = g_strdup (g_variant_get_string (value, NULL));
-  }
-  g_variant_iter_free (iter);
-  g_variant_unref (props);
-
-  return sim;
-}
 
 static const char *
 get_child_content (RestXmlNode *node, const char *name)
@@ -302,7 +155,6 @@ state_machine (void)
   GtkWidget *dialog;
   int old_state;
   Sim *sim = NULL;
-  GHashTableIter iter;
 
   while (state != STATE_FINISH) {
     /* For sanity checking state changes later */
@@ -310,14 +162,36 @@ state_machine (void)
 
     switch (state) {
     case STATE_START:
-      /*
-       * TODO: find out which modem/SIM we want to work with
-       */
-      g_hash_table_iter_init (&iter, sims);
-      g_hash_table_iter_next (&iter, NULL, (gpointer)&sim);
+      g_assert (g_hash_table_size (sims) > 0);
 
+      /* Select modem/sim if have several */
+      if (g_hash_table_size (sims) == 1) {
+        GHashTableIter iter;
+        g_hash_table_iter_init (&iter, sims);
+        g_hash_table_iter_next (&iter, NULL, (gpointer)&sim);
+        state = STATE_BROADBAND_INFO;
+      } else {
+        dialog = g_object_new (GGG_TYPE_SIM_DIALOG,
+                               "sims", sims,
+                               NULL);
+        switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+        case GTK_RESPONSE_CANCEL:
+        case GTK_RESPONSE_DELETE_EVENT:
+          state = STATE_FINISH;
+          break;
+        case GTK_RESPONSE_ACCEPT:
+          sim = ggg_sim_dialog_get_selected (GGG_SIM_DIALOG (dialog));
+          state = STATE_BROADBAND_INFO;
+        break;
+        }
+        gtk_widget_destroy (dialog);
+      }
+      break;
+
+     case STATE_BROADBAND_INFO:
+      /* Go to plan, provider or country selection depending on what we know
+       * from mobile-broadband-info */
       g_assert (sim);
-      g_assert (sim->modem_proxy);
 
       provider_node = ggg_mobile_info_get_provider_for_ids (sim->mcc, sim->mnc);
       if (provider_node) {
@@ -414,7 +288,7 @@ state_machine (void)
 }
 
 static void
-find_sims (void)
+find_sims ()
 {
   GDBusProxy *proxy;
   GError *err = NULL;
