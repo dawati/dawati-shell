@@ -24,3 +24,4 @@
 RestXmlNode *ggg_mobile_info_get_root (void);
 
 RestXmlNode *ggg_mobile_info_get_provider_for_ids (const char *mcc, const char *mnc);
+RestXmlNode *ggg_mobile_info_get_country_for_mcc (const char *mcc);
