@@ -1,17 +1,15 @@
-# connman-marshal defines the marshalling code used for the signals sourced
-# by ConnMan
-connman-marshal.c: connman-marshal.list Makefile
-	$(AM_V_GEN)glib-genmarshal --prefix=connman_marshal --body $< > $@
+carrick-marshal.c: carrick-marshal.list Makefile
+	$(AM_V_GEN)glib-genmarshal --prefix=carrick_marshal --body $< > $@
 
-connman-marshal.h: connman-marshal.list Makefile
-	$(AM_V_GEN)glib-genmarshal --prefix=connman_marshal --header $< > $@
+carrick-marshal.h: carrick-marshal.list Makefile
+	$(AM_V_GEN)glib-genmarshal --prefix=carrick_marshal --header $< > $@
 
 %-bindings.h: %.xml
 	$(AM_V_GEN)dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 BUILT_SOURCES = \
-	connman-marshal.c \
-	connman-marshal.h \
+	carrick-marshal.c \
+	carrick-marshal.h \
 	connman-manager-bindings.h \
 	connman-service-bindings.h \
 	connman-technology-bindings.h \
@@ -60,7 +58,7 @@ libcarrick_la_LIBADD = \
 DISTCLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-	connman-marshal.list \
+	carrick-marshal.list \
 	connman-manager.xml \
 	connman-service.xml \
 	connman-technology.xml \
