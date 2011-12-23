@@ -1,5 +1,5 @@
 #include "carrick-network-model.h"
-#include "connman-marshal.h"
+#include "carrick-marshal.h"
 
 static void
 service_to_text (GtkTreeViewColumn *column,
@@ -88,7 +88,7 @@ main (int argc, char **argv)
   gtk_init (&argc, &argv);
   dbus_g_thread_init ();
 
-  dbus_g_object_register_marshaller (connman_marshal_VOID__STRING_BOXED,
+  dbus_g_object_register_marshaller (carrick_marshal_VOID__STRING_BOXED,
                                      /* return */
                                      G_TYPE_NONE,
                                      /* args */

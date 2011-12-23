@@ -27,7 +27,7 @@
 #include <gconf/gconf-client.h>
 #include <dbus/dbus-glib.h>
 
-#include "connman-marshal.h"
+#include "carrick-marshal.h"
 #include "connman-manager-bindings.h"
 #include "connman-technology-bindings.h"
 
@@ -287,7 +287,7 @@ carrick_pane_class_init (CarrickPaneClass *klass)
                     G_STRUCT_OFFSET(CarrickPaneClass, connection_changed),
                     NULL,
                     NULL,
-                    connman_marshal_VOID__STRING_STRING_STRING_UINT,
+                    carrick_marshal_VOID__STRING_STRING_STRING_UINT,
                     G_TYPE_NONE,
                     4,
                     G_TYPE_STRING,
@@ -1868,7 +1868,7 @@ carrick_pane_init (CarrickPane *self)
   priv->wimax_enabled = FALSE;
   priv->bluetooth_enabled = FALSE;
 
-  dbus_g_object_register_marshaller (connman_marshal_VOID__STRING_BOXED,
+  dbus_g_object_register_marshaller (carrick_marshal_VOID__STRING_BOXED,
                                      /* return */
                                      G_TYPE_NONE,
                                      /* args */
