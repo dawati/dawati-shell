@@ -34,6 +34,8 @@ libcarrick_la_SOURCES = \
 	carrick-notification-manager.h \
 	carrick-network-model.c \
 	carrick-network-model.h \
+	carrick-ofono-agent.c \
+	carrick-ofono-agent.h \
 	carrick-util.c \
 	carrick-util.h \
 	carrick-shell.h \
