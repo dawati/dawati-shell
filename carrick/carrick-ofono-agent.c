@@ -20,6 +20,7 @@
  */
 
 #include <gio/gio.h>
+#include <string.h>
 
 #include "carrick-ofono-agent.h"
 #include "carrick-marshal.h"
@@ -165,6 +166,27 @@ static enum ofono_sim_password_type puk2pin(enum ofono_sim_password_type type)
 		return OFONO_SIM_PASSWORD_INVALID;
 	}
 }
+
+static gboolean
+is_valid_pin(const char *pin, unsigned int min,
+             unsigned int max)
+{
+	unsigned int i;
+
+	/* Pin must not be empty */
+	if (pin == NULL || pin[0] == '\0')
+		return FALSE;
+
+	i = strlen(pin);
+	if (i != strspn(pin, "0123456789"))
+		return FALSE;
+
+	if (min <= i && i <= max)
+		return TRUE;
+
+	return FALSE;
+}
+
 /* ----- */
 
 static void
@@ -313,10 +335,8 @@ carrick_ofono_agent_add_sim_to_modem (CarrickOfonoAgent *self, Modem *modem)
   GVariantIter *iter;
   const char *key;
 
-  if (modem->sim) {
-    g_warning ("add_sim on a modem that already has one...");
+  if (modem->sim)
     return;
-  }
 
   g_debug ("add sim %s", g_dbus_proxy_get_object_path (modem->modem));
 
@@ -373,7 +393,7 @@ carrick_ofono_agent_remove_sim_from_modem (CarrickOfonoAgent *self, Modem *modem
   }
   modem->present = FALSE;
 
-  /* clean required_pins */
+  /* check if the modem was requiring a pin */
   if (g_hash_table_remove (self->priv->required_pins,
                            g_dbus_proxy_get_object_path (modem->modem))) {
     g_object_notify (G_OBJECT (self), "required-pins");
@@ -607,13 +627,20 @@ carrick_ofono_agent_enter_pin (CarrickOfonoAgent *self,
 {
   enum ofono_sim_password_type pw_type;
   Modem *modem;
-  GError *err;
+  GError *err = NULL;
+
+  g_return_if_fail (self);
+  g_return_if_fail (modem_path);
+  g_return_if_fail (pin_type);
+  g_return_if_fail (pin);
+  g_return_if_fail (carrick_ofono_is_valid_sim_pin (pin, pin_type));
 
   pw_type = sim_string_to_passwd (pin_type);
-  modem = g_hash_table_lookup (self->priv->modems, modem_path);
-
-  g_return_if_fail (modem);
   g_return_if_fail (password_is_pin (pw_type));
+
+  modem = g_hash_table_lookup (self->priv->modems, modem_path);
+  g_return_if_fail (modem);
+
 
   g_dbus_proxy_call_sync (modem->sim,
                           "EnterPin",
@@ -623,6 +650,7 @@ carrick_ofono_agent_enter_pin (CarrickOfonoAgent *self,
                           NULL,
                           &err);
   if (err) {    
+    /* TODO handle org.ofono.Error.Failed -- the pin code was wrong */
     g_warning ("EnterPin failed: %d %s", err->code,err->message);
     g_error_free (err);
   }
@@ -637,7 +665,7 @@ carrick_ofono_agent_reset_pin (CarrickOfonoAgent *self,
 {
   enum ofono_sim_password_type pw_type;
   Modem *modem;
-  GError *err;
+  GError *err = NULL;
 
   pw_type = sim_string_to_passwd (puk_type);
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
@@ -667,7 +695,7 @@ carrick_ofono_agent_change_pin (CarrickOfonoAgent *self,
 {
   enum ofono_sim_password_type pw_type;
   Modem *modem;
-  GError *err;
+  GError *err = NULL;
 
   pw_type = sim_string_to_passwd (pin_type);
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
@@ -705,3 +733,68 @@ carrick_ofono_agent_get_retries (CarrickOfonoAgent *self,
     return -1;
   return GPOINTER_TO_INT (p);
 }
+
+gboolean
+carrick_ofono_is_pin (const char *pin_type)
+{
+  return password_is_pin (sim_string_to_passwd (pin_type));
+}
+
+gboolean
+carrick_ofono_is_puk (const char *pin_type)
+{
+  return password_is_puk (sim_string_to_passwd (pin_type));
+}
+
+
+const char*
+carrick_ofono_pin_for_puk (const char *puk_type)
+{
+  enum ofono_sim_password_type pin_type;
+
+  pin_type = puk2pin (sim_string_to_passwd (puk_type));
+  return passwd_name[pin_type];
+}
+
+gboolean
+carrick_ofono_is_valid_sim_pin(const char *pin,
+                               const char *pin_type)
+{
+  enum ofono_sim_password_type type;
+
+  type = sim_string_to_passwd (pin_type);
+	switch (type) {
+	case OFONO_SIM_PASSWORD_SIM_PIN:
+	case OFONO_SIM_PASSWORD_SIM_PIN2:
+		/* 11.11 Section 9.3 ("CHV"): 4..8 IA-5 digits */
+		return is_valid_pin(pin, 4, 8);
+		break;
+	case OFONO_SIM_PASSWORD_PHSIM_PIN:
+	case OFONO_SIM_PASSWORD_PHFSIM_PIN:
+	case OFONO_SIM_PASSWORD_PHNET_PIN:
+	case OFONO_SIM_PASSWORD_PHNETSUB_PIN:
+	case OFONO_SIM_PASSWORD_PHSP_PIN:
+	case OFONO_SIM_PASSWORD_PHCORP_PIN:
+		/* 22.022 Section 14 4..16 IA-5 digits */
+		return is_valid_pin(pin, 4, 16);
+		break;
+	case OFONO_SIM_PASSWORD_SIM_PUK:
+	case OFONO_SIM_PASSWORD_SIM_PUK2:
+	case OFONO_SIM_PASSWORD_PHFSIM_PUK:
+	case OFONO_SIM_PASSWORD_PHNET_PUK:
+	case OFONO_SIM_PASSWORD_PHNETSUB_PUK:
+	case OFONO_SIM_PASSWORD_PHSP_PUK:
+	case OFONO_SIM_PASSWORD_PHCORP_PUK:
+		/* 11.11 Section 9.3 ("UNBLOCK CHV"), 8 IA-5 digits */
+		return is_valid_pin(pin, 8, 8);
+		break;
+	case OFONO_SIM_PASSWORD_NONE:
+		return is_valid_pin(pin, 0, 8);
+		break;
+	case OFONO_SIM_PASSWORD_INVALID:
+		break;
+	}
+
+	return FALSE;
+}
+

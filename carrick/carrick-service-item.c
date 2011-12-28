@@ -71,6 +71,7 @@ enum {
   PROP_0,
   PROP_FAVORITE,
   PROP_ICON_FACTORY,
+  PROP_OFONO_AGENT,
   PROP_NOTIFICATIONS,
   PROP_MODEL,
   PROP_ROW,
@@ -108,6 +109,9 @@ struct _CarrickServiceItemPrivate
   gboolean form_modified;
 
   CarrickIconFactory *icon_factory;
+
+  CarrickOfonoAgent *ofono;
+
   gboolean failed;
   gboolean passphrase_hint_visible;
 
@@ -185,6 +189,10 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
     case PROP_ICON_FACTORY:
       g_value_set_object (value, priv->icon_factory);
+      break;
+
+    case PROP_OFONO_AGENT:
+      g_value_set_object (value, priv->ofono);
       break;
 
     case PROP_NOTIFICATIONS:
@@ -1294,6 +1302,10 @@ carrick_service_item_set_property (GObject *object, guint property_id,
       priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
       break;
 
+    case PROP_OFONO_AGENT:
+      priv->ofono = CARRICK_OFONO_AGENT (g_value_get_object (value));
+      break;
+
     case PROP_NOTIFICATIONS:
       priv->note = CARRICK_NOTIFICATION_MANAGER (g_value_get_object (value));
       break;
@@ -1879,6 +1891,15 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                                    PROP_ICON_FACTORY,
                                    pspec);
 
+  pspec = g_param_spec_object ("ofono-agent",
+                               "ofono-agent",
+                               "CarrickOfonoAgent object",
+                               CARRICK_TYPE_OFONO_AGENT,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_object_class_install_property (object_class,
+                                   PROP_OFONO_AGENT,
+                                   pspec);
+
   pspec = g_param_spec_object ("model",
                                "model",
                                "CarrickNetworkModel object",
@@ -2333,14 +2354,22 @@ carrick_service_item_init (CarrickServiceItem *self)
 
 GtkWidget*
 carrick_service_item_new (CarrickIconFactory         *icon_factory,
+                          CarrickOfonoAgent          *ofono_agent,
                           CarrickNotificationManager *notifications,
                           CarrickNetworkModel        *model,
                           GtkTreePath                *path)
 {
   return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
                        "icon-factory", icon_factory,
+                       "ofono-agent", ofono_agent,
                        "notification-manager", notifications,
                        "model", model,
                        "tree-path", path,
                        NULL);
+}
+
+const char*
+carrick_service_item_get_service_type (CarrickServiceItem *item)
+{
+  return item->priv->type;
 }
