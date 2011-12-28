@@ -330,8 +330,6 @@ find_sims ()
   }
   g_variant_iter_free (iter);
   g_variant_unref (modems);
-
-
 }
 
 static void
