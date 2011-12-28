@@ -619,71 +619,111 @@ carrick_ofono_agent_new (void)
   return g_object_new (CARRICK_TYPE_OFONO_AGENT, NULL);
 }
 
-void
-carrick_ofono_agent_enter_pin (CarrickOfonoAgent *self,
-                               const char        *modem_path,
-                               const char        *pin_type,
-                               const char        *pin)
+typedef struct CarrickOfonoData{
+  CarrickOfonoAgent *agent;
+  const char *modem;
+  CarrickOfonoAgentCallback callback;
+  gpointer userdata;
+} CarrickOfonoData;
+
+CarrickOfonoData*
+carrick_ofono_data_new (CarrickOfonoAgent *agent,
+                        Modem *modem,
+                        CarrickOfonoAgentCallback callback,
+                        gpointer userdata)
 {
-  enum ofono_sim_password_type pw_type;
+  CarrickOfonoData *data;
+  data = g_slice_new (CarrickOfonoData);
+  data->agent = agent;
+  data->modem = g_dbus_proxy_get_object_path (modem->modem); /* copy? */
+  data->callback = callback;
+  data->userdata = userdata;
+
+  return data;
+}
+
+static void 
+_carrick_ofono_agent_generic_cb (GObject *source_object,
+                                 GAsyncResult *res,
+                                 CarrickOfonoData *data)
+{
+  data->callback (data->agent, data->modem, res, data->userdata);
+  g_slice_free (CarrickOfonoData, data);
+}
+
+gboolean
+carrick_ofono_agent_finish (CarrickOfonoAgent  *self,
+                            const char         *modem_path,
+                            GAsyncResult       *res,
+                            GError            **error)
+{
   Modem *modem;
-  GError *err = NULL;
-
-  g_return_if_fail (self);
-  g_return_if_fail (modem_path);
-  g_return_if_fail (pin_type);
-  g_return_if_fail (pin);
-  g_return_if_fail (carrick_ofono_is_valid_sim_pin (pin, pin_type));
-
-  pw_type = sim_string_to_passwd (pin_type);
-  g_return_if_fail (password_is_pin (pw_type));
 
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
-  g_return_if_fail (modem);
-
-
-  g_dbus_proxy_call_sync (modem->sim,
-                          "EnterPin",
-                          g_variant_new ("(ss)", pin_type, pin),
-                          G_DBUS_CALL_FLAGS_NONE,
-                          -1,
-                          NULL,
-                          &err);
-  if (err) {    
-    /* TODO handle org.ofono.Error.Failed -- the pin code was wrong */
-    g_warning ("EnterPin failed: %d %s", err->code,err->message);
-    g_error_free (err);
+  if (!modem) {
+    /* TODO g_simple_async_result_new_error ... */
+    return FALSE;
   }
+
+  g_variant_unref (g_dbus_proxy_call_finish (modem->sim, res, error));
+  return (error == NULL);
 }
 
 void
-carrick_ofono_agent_reset_pin (CarrickOfonoAgent *self,
-                               const char        *modem_path,
-                               const char        *puk_type,
-                               const char        *puk,
-                               const char        *new_pin)
+carrick_ofono_agent_enter_pin (CarrickOfonoAgent   *self,
+                               const char          *modem_path,
+                               const char          *pin_type,
+                               const char          *pin,
+                               CarrickOfonoAgentCallback callback,
+                               gpointer             user_data)
 {
   enum ofono_sim_password_type pw_type;
   Modem *modem;
-  GError *err = NULL;
+
+  modem = g_hash_table_lookup (self->priv->modems, modem_path);
+  pw_type = sim_string_to_passwd (pin_type);
+
+  if (!self || !modem_path || !pin_type || !pin || !modem || !password_is_pin (pw_type))
+    g_warning ("EnterPin arguments seem wrong");
+  if (!carrick_ofono_is_valid_sim_pin (pin, pin_type))
+    g_warning ("EnterPin pin seems invalid");
+
+  g_dbus_proxy_call (modem->sim,
+                     "EnterPin",
+                     g_variant_new ("(ss)", pin_type, pin),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_carrick_ofono_agent_generic_cb,
+                     carrick_ofono_data_new (self, modem, callback, user_data));
+}
+
+void
+carrick_ofono_agent_reset_pin (CarrickOfonoAgent   *self,
+                               const char          *modem_path,
+                               const char          *puk_type,
+                               const char          *puk,
+                               const char          *new_pin,
+                               CarrickOfonoAgentCallback callback,
+                               gpointer             user_data)
+{
+  enum ofono_sim_password_type pw_type;
+  Modem *modem;
 
   pw_type = sim_string_to_passwd (puk_type);
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
 
-  g_return_if_fail (modem);
-  g_return_if_fail (password_is_puk (pw_type));
+  if (!modem || !password_is_puk (pw_type))
+    g_warning ("ResetPin arguments seem wrong");
 
-  g_dbus_proxy_call_sync (modem->sim,
-                          "ResetPin",
-                          g_variant_new ("(sss)", puk_type, puk, new_pin),
-                          G_DBUS_CALL_FLAGS_NONE,
-                          -1,
-                          NULL,
-                          &err);
-  if (err) {
-    g_warning ("ResetPin failed: %d %s", err->code,err->message);
-    g_error_free (err);
-  }
+  g_dbus_proxy_call (modem->sim,
+                     "ResetPin",
+                     g_variant_new ("(sss)", puk_type, puk, new_pin),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_carrick_ofono_agent_generic_cb,
+                     carrick_ofono_data_new (self, modem, callback, user_data));
 }
 
 void
@@ -691,29 +731,30 @@ carrick_ofono_agent_change_pin (CarrickOfonoAgent *self,
                                 const char        *modem_path,
                                 const char        *pin_type,
                                 const char        *pin,
-                                const char        *new_pin)
+                                const char        *new_pin,
+                               CarrickOfonoAgentCallback callback,
+                                gpointer             user_data)
 {
   enum ofono_sim_password_type pw_type;
   Modem *modem;
-  GError *err = NULL;
 
   pw_type = sim_string_to_passwd (pin_type);
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
 
-  g_return_if_fail (modem);
-  g_return_if_fail (password_is_pin (pw_type));
+  if (!modem || !password_is_pin (pw_type))
+    g_warning ("ChangePin arguments seem wrong");
+  if (!carrick_ofono_is_valid_sim_pin (pin, pin_type) ||
+      !carrick_ofono_is_valid_sim_pin (new_pin, pin_type))
+    g_warning ("ChangePin pin seems invalid");
 
-  g_dbus_proxy_call_sync (modem->sim,
-                          "ChangePin",
-                          g_variant_new ("(sss)", pin_type, pin, new_pin),
-                          G_DBUS_CALL_FLAGS_NONE,
-                          -1,
-                          NULL,
-                          &err);
-  if (err) {
-    g_warning ("ChangePin failed: %d %s", err->code,err->message);
-    g_error_free (err);
-  }
+  g_dbus_proxy_call (modem->sim,
+                     "ChangePin",
+                     g_variant_new ("(sss)", pin_type, pin, new_pin),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                    (GAsyncReadyCallback)_carrick_ofono_agent_generic_cb,
+                    carrick_ofono_data_new (self, modem, callback, user_data));
 }
 
 int
