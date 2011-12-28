@@ -1292,7 +1292,7 @@ pane_have_daemon (CarrickPane *pane,
 {
   CarrickPanePrivate *priv = pane->priv;
 
-  gtk_widget_set_sensitive (priv->service_list, have_daemon);
+//  gtk_widget_set_sensitive (priv->service_list, have_daemon);
   gtk_widget_set_sensitive (priv->new_conn_button, have_daemon);
   gtk_widget_set_visible (priv->offline_mode_box, have_daemon);
 

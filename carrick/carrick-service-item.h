@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 #include "carrick-icon-factory.h"
+#include "carrick-ofono-agent.h"
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 
@@ -76,12 +77,14 @@ void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean            active);
 
 gboolean carrick_service_item_get_favorite (CarrickServiceItem *item);
+const char* carrick_service_item_get_service_type (CarrickServiceItem *item);
 DBusGProxy* carrick_service_item_get_proxy (CarrickServiceItem *item);
 GtkTreeRowReference* carrick_service_item_get_row_reference (CarrickServiceItem *item);
 
 void carrick_service_item_update (CarrickServiceItem *self);
 
 GtkWidget* carrick_service_item_new (CarrickIconFactory         *icon_factory,
+                                     CarrickOfonoAgent          *ofono_agent,
                                      CarrickNotificationManager *notifications,
                                      CarrickNetworkModel        *model,
                                      GtkTreePath                *path);

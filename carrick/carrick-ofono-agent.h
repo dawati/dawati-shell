@@ -84,5 +84,12 @@ carrick_ofono_agent_get_retries (CarrickOfonoAgent *self,
                                  const char        *modem_path,
                                  const char        *pin_type);
 
+
+
+gboolean carrick_ofono_is_pin (const char *pin_type);
+gboolean carrick_ofono_is_puk (const char *pin_type);
+gboolean carrick_ofono_is_valid_sim_pin (const char *pin, const char *pin_type);
+const char* carrick_ofono_pin_for_puk (const char *puk_type);
+
 G_END_DECLS
 #endif /* _CARRICK_OFONO_AGENT */

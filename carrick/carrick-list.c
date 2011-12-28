@@ -30,6 +30,7 @@
 #include "connman-manager-bindings.h"
 
 #include "carrick-service-item.h"
+#include "carrick-ofono-agent.h"
 
 G_DEFINE_TYPE (CarrickList, carrick_list, GTK_TYPE_SCROLLED_WINDOW)
 
@@ -41,6 +42,11 @@ struct _CarrickListPrivate
   GtkWidget     *box;
   GtkAdjustment *adjustment;
   GtkWidget     *drag_window;
+  GtkWidget     *modem_box;
+  GtkWidget     *pin_box;
+  GtkWidget     *puk_entry;
+  GtkWidget     *pin_entry;
+  GtkWidget     *pin_label;
   GtkWidget     *fallback;
 
   GtkWidget     *active_item;
@@ -70,6 +76,13 @@ struct _CarrickListPrivate
   gboolean have_threeg;
   gboolean have_wimax;
   gboolean have_bluetooth;
+
+  CarrickOfonoAgent *ofono;
+  int sims;
+  int cell_services;
+
+  char *modem_requiring_pin;
+  char *required_pin_type;
 };
 
 enum {
@@ -553,6 +566,54 @@ carrick_list_get_notification_manager (CarrickList *list)
   return priv->notes;
 }
 
+
+static void
+carrick_list_update_modem_service (CarrickList *list)
+{
+  gboolean show_dummy_modem = FALSE;
+  gboolean show_pin_entry = FALSE;
+  gboolean show_puk_entry = FALSE;
+
+  if (!list->priv->modem_box)
+    return;
+
+  if (list->priv->sims > list->priv->cell_services) {
+    show_dummy_modem = TRUE;
+    
+    if (list->priv->modem_requiring_pin) {
+      char *msg;
+      const char *new_pin_type;
+
+      if (carrick_ofono_is_puk (list->priv->required_pin_type)) {
+
+        new_pin_type = carrick_ofono_pin_for_puk (list->priv->required_pin_type);
+        msg = g_strdup_printf ("Please enter %s and new %s to unlock %s for modem %s:",
+                               list->priv->required_pin_type,
+                               new_pin_type,
+                               new_pin_type,
+                               list->priv->modem_requiring_pin);
+        gtk_label_set_text (GTK_LABEL (list->priv->pin_label), msg);
+        g_free (msg);
+
+        show_puk_entry = TRUE;
+        show_pin_entry = TRUE;
+      } else if (carrick_ofono_is_pin (list->priv->required_pin_type)) {
+        msg = g_strdup_printf ("Please enter %s for modem %s:",
+                               list->priv->required_pin_type,
+                               list->priv->modem_requiring_pin);
+        gtk_label_set_text (GTK_LABEL (list->priv->pin_label), msg);
+        g_free (msg);
+
+        show_pin_entry = TRUE;
+      }
+    }
+  }
+
+  gtk_widget_set_visible (list->priv->puk_entry, show_puk_entry);
+  gtk_widget_set_visible (list->priv->pin_box, show_pin_entry);
+  gtk_widget_set_visible (list->priv->modem_box, show_dummy_modem);
+}
+
 static void
 _row_inserted_cb (GtkTreeModel *tree_model,
                   GtkTreePath  *path,
@@ -579,8 +640,17 @@ _find_and_remove (GtkWidget *item,
 
   if (gtk_tree_row_reference_valid (row) == FALSE)
     {
+      const char *type;
+
       if (list->priv->active_item == item)
         _set_active_item (list, NULL);
+
+      type = carrick_service_item_get_service_type (CARRICK_SERVICE_ITEM (item));
+      if (g_strcmp0 (type, "Cellular") == 0) {
+        list->priv->cell_services--;
+        carrick_list_update_modem_service (list);
+      }
+
       gtk_widget_destroy (item);
     }
 }
@@ -1041,11 +1111,13 @@ carrick_list_add (CarrickList *list,
 {
   CarrickListPrivate *priv;
   GtkWidget          *widget;
+  const char         *type;
 
   g_return_if_fail (CARRICK_IS_LIST (list));
 
   priv = list->priv;
   widget = carrick_service_item_new (priv->icon_factory,
+                                     priv->ofono,
                                      priv->notes,
                                      priv->model,
                                      path);
@@ -1082,6 +1154,13 @@ carrick_list_add (CarrickList *list,
                       FALSE,
                       FALSE,
                       2);
+
+  /* We trust that type can't change after this... */
+  type = carrick_service_item_get_service_type (CARRICK_SERVICE_ITEM (widget));
+  if (g_strcmp0 (type, "Cellular") == 0) {
+    list->priv->cell_services++;
+    carrick_list_update_modem_service (list);
+  }
 
   gtk_widget_hide (priv->fallback);
   gtk_widget_show (priv->box);
@@ -1224,6 +1303,56 @@ carrick_list_update_fallback (CarrickList *self)
   g_free (fallback);
 }
 
+static void
+_pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
+{
+  const char *pin, *puk;
+
+  pin = gtk_entry_get_text (GTK_ENTRY (list->priv->pin_entry));
+
+  if (carrick_ofono_is_pin (list->priv->required_pin_type)) {
+    if (!carrick_ofono_is_valid_sim_pin (pin, list->priv->required_pin_type)) {
+      g_warning ("Entered code was not a valid '%s' code", list->priv->required_pin_type);
+      /* TODO !!! */
+      return;
+    }
+
+    carrick_ofono_agent_enter_pin (list->priv->ofono,
+                                   list->priv->modem_requiring_pin,
+                                   list->priv->required_pin_type,
+                                   pin);
+    /* TODO handle errors and check SIM query state again after the pin entry is done */
+  } else if (carrick_ofono_is_puk (list->priv->required_pin_type)) {
+    const char *pin_type;
+
+    puk = gtk_entry_get_text (GTK_ENTRY (list->priv->puk_entry));
+    if (!carrick_ofono_is_valid_sim_pin (puk, list->priv->required_pin_type)) {
+      g_warning ("Entered code was not a valid '%s' code", list->priv->required_pin_type);
+      /* TODO !!! */
+      return;
+    }
+
+    pin_type = carrick_ofono_pin_for_puk (list->priv->required_pin_type);
+    if (!carrick_ofono_is_valid_sim_pin (pin, pin_type)) {
+      g_warning ("Entered code was not a valid '%s' code", pin_type);
+      /* TODO !!! */
+      return;
+    }
+
+    carrick_ofono_agent_reset_pin (list->priv->ofono,
+                                   list->priv->modem_requiring_pin,
+                                   list->priv->required_pin_type,
+                                   puk,
+                                   pin);
+
+    /* TODO handle errors and check SIM query state again after the reset is done */
+  } else {
+    g_warn_if_reached ();
+  }
+
+  gtk_widget_set_visible (list->priv->modem_box, FALSE);
+}
+
 static GObject *
 carrick_list_constructor (GType                  gtype,
                           guint                  n_properties,
@@ -1260,6 +1389,42 @@ carrick_list_constructor (GType                  gtype,
   gtk_container_add (GTK_CONTAINER (viewport),
                      box);
 
+
+  /* TODO: this is just debug before we have a proper UI */
+  priv->modem_box = gtk_vbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (box), priv->modem_box,
+                      FALSE, FALSE, 2);
+
+  priv->pin_box = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (priv->modem_box), priv->pin_box,
+                      FALSE, FALSE, 2);
+
+  priv->pin_label = gtk_label_new ("");
+  gtk_box_pack_start (GTK_BOX (priv->pin_box), priv->pin_label,
+                      FALSE, FALSE, 0);
+  gtk_widget_show (priv->pin_label);
+
+  priv->puk_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (priv->pin_box), priv->puk_entry,
+                      FALSE, FALSE, 0);
+  gtk_widget_show (priv->puk_entry);
+
+  priv->pin_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (priv->pin_box), priv->pin_entry,
+                      FALSE, FALSE, 0);
+  g_signal_connect (priv->pin_entry, "activate",
+                    G_CALLBACK (_pin_entry_or_button_cb), obj);
+  gtk_widget_show (priv->pin_entry);
+  GtkWidget *pin_btn = gtk_button_new_with_label ("Enter code");
+  gtk_box_pack_start (GTK_BOX (priv->pin_box), pin_btn,
+                      FALSE, FALSE, 0);
+  g_signal_connect (pin_btn, "clicked",
+                    G_CALLBACK (_pin_entry_or_button_cb), obj);
+  gtk_widget_show (pin_btn);
+  /* TODO: debug end */
+
+
+
   gtk_label_set_line_wrap (GTK_LABEL (priv->fallback),
                            TRUE);
   gtk_widget_set_size_request (priv->fallback,
@@ -1270,9 +1435,12 @@ carrick_list_constructor (GType                  gtype,
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
                       FALSE, FALSE, 2);
 
+
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
                      priv->box);
+
+  carrick_list_update_modem_service (CARRICK_LIST (obj));
 
   return obj;
 }
@@ -1320,6 +1488,51 @@ carrick_list_class_init (CarrickListClass *klass)
 }
 
 static void
+carrick_list_set_required_pin_type (CarrickList *list,
+                                    const char* obj_path,
+                                    const char* pin_type)
+{
+  if (list->priv->modem_requiring_pin)
+    g_free (list->priv->modem_requiring_pin);
+  if (list->priv->required_pin_type)
+    g_free (list->priv->required_pin_type);
+
+  list->priv->modem_requiring_pin = g_strdup (obj_path);
+  list->priv->required_pin_type = g_strdup (pin_type);
+
+  /* TODO notify pin-required to user */
+
+  carrick_list_update_modem_service (list);
+}
+
+static void
+_ofono_notify_n_present_sims_cb (CarrickOfonoAgent *ofono,
+                                 GParamSpec *arg1,
+                                 CarrickList *self)
+{
+  g_object_get (ofono, "n-present-sims", &self->priv->sims, NULL);
+  carrick_list_update_modem_service (self);
+}
+
+static void
+_ofono_notify_required_pins_cb (CarrickOfonoAgent *ofono,
+                                GParamSpec *arg1,
+                                CarrickList *self)
+{
+  GHashTable *required_pins;
+  GHashTableIter iter;
+  gpointer key, val;
+
+  g_object_get (ofono, "required-pins", &required_pins, NULL);
+  g_hash_table_iter_init (&iter, required_pins);
+
+  /* note: only deals with the first required pin */
+  key = val = NULL;
+  g_hash_table_iter_next (&iter, &key, &val);
+  carrick_list_set_required_pin_type (self, (const char*)key, (const char*)val);
+}
+
+static void
 carrick_list_init (CarrickList *self)
 {
   CarrickListPrivate *priv;
@@ -1328,6 +1541,13 @@ carrick_list_init (CarrickList *self)
 
   priv->fallback = gtk_label_new ("");
   priv->have_daemon = FALSE;
+  priv->ofono = carrick_ofono_agent_new ();
+  g_signal_connect (priv->ofono, "notify::n-present-sims",
+                    G_CALLBACK (_ofono_notify_n_present_sims_cb), self);
+  _ofono_notify_n_present_sims_cb (priv->ofono, NULL, self);
+  g_signal_connect (priv->ofono, "notify::required-pins",
+                    G_CALLBACK (_ofono_notify_required_pins_cb), self);
+  _ofono_notify_required_pins_cb (priv->ofono, NULL, self);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
                                   GTK_POLICY_NEVER,
