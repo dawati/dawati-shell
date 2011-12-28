@@ -1304,6 +1304,24 @@ carrick_list_update_fallback (CarrickList *self)
 }
 
 static void
+_ofono_agent_generic_cb (CarrickOfonoAgent *agent,
+                           const char *modem_path,
+                           GAsyncResult *res,
+                           gpointer userdata)
+{
+  GError *error = NULL;
+  if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
+    /* TODO */
+    g_warning ("Ofono call failed: %s", error->message);
+    g_error_free (error);
+  }
+
+  /* it's possible that ofono properties have not changed but 
+   * pin is still required... */
+  carrick_list_update_modem_service (CARRICK_LIST (userdata));  
+}
+
+static void
 _pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
 {
   const char *pin, *puk;
@@ -1320,7 +1338,9 @@ _pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
     carrick_ofono_agent_enter_pin (list->priv->ofono,
                                    list->priv->modem_requiring_pin,
                                    list->priv->required_pin_type,
-                                   pin);
+                                   pin,
+                                   _ofono_agent_generic_cb,
+                                   list);
     /* TODO handle errors and check SIM query state again after the pin entry is done */
   } else if (carrick_ofono_is_puk (list->priv->required_pin_type)) {
     const char *pin_type;
@@ -1343,9 +1363,9 @@ _pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
                                    list->priv->modem_requiring_pin,
                                    list->priv->required_pin_type,
                                    puk,
-                                   pin);
-
-    /* TODO handle errors and check SIM query state again after the reset is done */
+                                   pin,
+                                   _ofono_agent_generic_cb,
+                                   list);
   } else {
     g_warn_if_reached ();
   }
