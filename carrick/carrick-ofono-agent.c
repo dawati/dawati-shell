@@ -328,51 +328,93 @@ carrick_ofono_agent_sim_signal_cb (GDBusProxy *sim,
 }
 
 static void
-carrick_ofono_agent_add_sim_to_modem (CarrickOfonoAgent *self, Modem *modem)
+_get_sim_properties_cb (GDBusProxy *sim,
+                        GAsyncResult *res,
+                        CarrickOfonoAgent *self)
 {
   GError *err = NULL;
   GVariant *props, *value;
   GVariantIter *iter;
   const char *key;
+  Modem *modem;
 
+  modem = g_hash_table_lookup (self->priv->modems,
+                               g_dbus_proxy_get_object_path (sim));
+  if (!modem) {    
+    g_warning ("No modem found for %s", g_dbus_proxy_get_object_path (sim));
+    g_object_unref (sim);
+    return;
+  }
+
+  props = g_dbus_proxy_call_finish (sim, res, &err);
+  if (err) {
+    g_warning ("GetProperties failed: %s", err->message);
+    g_error_free (err);
+    return;
+  }
+
+  g_variant_get (props, "(a{sv})", &iter);
+  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
+    carrick_ofono_agent_sim_property_changed (self, modem, key, value);
+  }
+
+  g_variant_unref (props);
+}
+
+static void
+_sim_proxy_new_cb (GObject *source_object,
+                   GAsyncResult *res,
+                   CarrickOfonoAgent *self)
+{
+  GError *err = NULL;
+  GDBusProxy *sim;
+  Modem *modem;
+
+  sim = g_dbus_proxy_new_for_bus_finish (res, &err);
+  if (err) {    
+    g_warning ("No SimManager proxy: %s", err->message);
+    g_error_free (err);
+    return;
+  }
+
+  modem = g_hash_table_lookup (self->priv->modems,
+                               g_dbus_proxy_get_object_path (sim));
+  if (!modem) {    
+    g_warning ("No modem found for sim");
+    g_object_unref (sim);
+    return;
+  }
+
+  modem->sim = sim;
+  g_signal_connect (modem->sim, "g-signal",
+                    G_CALLBACK (carrick_ofono_agent_sim_signal_cb), self);
+  g_dbus_proxy_call (modem->sim,
+                     "GetProperties",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_get_sim_properties_cb,
+                     self);
+}
+
+static void
+carrick_ofono_agent_add_sim_to_modem (CarrickOfonoAgent *self, Modem *modem)
+{
   if (modem->sim)
     return;
 
   g_debug ("add sim %s", g_dbus_proxy_get_object_path (modem->modem));
 
-  /* TODO don't be synchronous... */
-  modem->sim = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                              G_DBUS_PROXY_FLAGS_NONE,
-                                              NULL, /* should add iface info here */
-                                              OFONO_SERVICE,
-                                              g_dbus_proxy_get_object_path (modem->modem),
-                                              OFONO_SIM_INTERFACE,
-                                              NULL,
-                                              &err);
-  if (err) {    
-    g_warning ("No SimManager proxy: %d %s", err->code,err->message);
-    g_error_free (err);
-    return;
-  }
-
-  g_signal_connect (modem->sim, "g-signal",
-                    G_CALLBACK (carrick_ofono_agent_sim_signal_cb), self);
-  props = g_dbus_proxy_call_sync (modem->sim,
-                                  "GetProperties",
-                                  NULL,
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &err);
-  if (err) {
-    g_warning ("GetProperties failed: %d %s", err->code,err->message);
-    g_error_free (err);
-    return;
-  }
-  g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
-    carrick_ofono_agent_sim_property_changed (self, modem, key, value);
-  }
+  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                            G_DBUS_PROXY_FLAGS_NONE,
+                            NULL, /* should add iface info here */
+                            OFONO_SERVICE,
+                            g_dbus_proxy_get_object_path (modem->modem),
+                            OFONO_SIM_INTERFACE,
+                            NULL,
+                            (GAsyncReadyCallback)_sim_proxy_new_cb,
+                            self);
 }
 
 static void
@@ -464,62 +506,92 @@ modem_free (Modem *modem)
   g_slice_free (Modem, modem);
 }
 
-
 static void
-carrick_ofono_agent_add_modem (CarrickOfonoAgent *self,
-                               const char *obj_path)
+_get_modem_properties_cb (GDBusProxy *modem_proxy,
+                          GAsyncResult *res,
+                          CarrickOfonoAgent *self)
 {
-  Modem *modem;
-
   GError *err = NULL;
   GVariant *props, *value;
   GVariantIter *iter;
   const char *key;
+  Modem *modem;
 
-  modem = g_slice_new0 (Modem);
-  modem->retries = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                          g_free, NULL);
-
-  /* We need Modem interface only for seeing when the object starts/stops 
-   * supporting SimManager */
-  modem->modem = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                                G_DBUS_PROXY_FLAGS_NONE,
-                                                NULL, /* should add iface info here */
-                                                OFONO_SERVICE,
-                                                obj_path,
-                                                OFONO_MODEM_INTERFACE,
-                                                NULL,
-                                                &err);
-  if (err) {
-    g_warning ("No Modem proxy: %d %s", err->code,err->message);
-    g_error_free (err);
-    modem_free (modem);
+  modem = g_hash_table_lookup (self->priv->modems,
+                               g_dbus_proxy_get_object_path (modem_proxy));
+  if (!modem) {    
+    g_warning ("No modem found for %s", g_dbus_proxy_get_object_path (modem_proxy));
+    g_object_unref (modem_proxy);
     return;
   }
 
-  g_signal_connect (modem->modem, "g-signal",
-                    G_CALLBACK (carrick_ofono_agent_modem_signal_cb), self);
-  props = g_dbus_proxy_call_sync (modem->modem,
-                                  "GetProperties",
-                                  NULL,
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &err);
+  props = g_dbus_proxy_call_finish (modem_proxy, res, &err);
   if (err) {
-    g_warning ("GetProperties failed: %d %s", err->code,err->message);
+    g_warning ("GetProperties failed: %s", err->message);
     g_error_free (err);
-    modem_free (modem);
     return;
   }
-
-  g_hash_table_insert (self->priv->modems, g_strdup (obj_path), modem);
 
   g_variant_get (props, "(a{sv})", &iter);
   while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
     carrick_ofono_agent_modem_property_changed (self, modem, key, value);
   }
 
+  g_variant_unref (props);
+}
+
+static void
+_modem_proxy_new_cb (GObject *source_object,
+                     GAsyncResult *res,
+                     CarrickOfonoAgent *self)
+{
+  GError *err = NULL;
+  GDBusProxy *modem_proxy;
+  Modem *modem;
+
+
+  modem_proxy = g_dbus_proxy_new_for_bus_finish (res, &err);
+  if (err) {
+    g_warning ("No Modem proxy: %s", err->message);
+    g_error_free (err);
+    return;
+  }
+
+  modem = g_slice_new0 (Modem);
+  modem->retries = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                          g_free, NULL);
+  modem->modem = modem_proxy;
+  g_hash_table_insert (self->priv->modems,
+                       g_strdup (g_dbus_proxy_get_object_path (modem->modem)),
+                       modem);
+
+  g_signal_connect (modem->modem, "g-signal",
+                    G_CALLBACK (carrick_ofono_agent_modem_signal_cb), self);
+  g_dbus_proxy_call (modem->modem,
+                     "GetProperties",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_get_modem_properties_cb,
+                     self);
+}
+
+static void
+carrick_ofono_agent_add_modem (CarrickOfonoAgent *self,
+                               const char *obj_path)
+{
+  /* We need Modem interface only for seeing when the object starts/stops 
+   * supporting SimManager */
+  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                            G_DBUS_PROXY_FLAGS_NONE,
+                            NULL, /* should add iface info here */
+                            OFONO_SERVICE,
+                            obj_path,
+                            OFONO_MODEM_INTERFACE,
+                            NULL,
+                            (GAsyncReadyCallback)_modem_proxy_new_cb,
+                            self);
 }
 
 static void
@@ -554,32 +626,16 @@ carrick_ofono_manager_signal_cb (GDBusProxy *ofono_mgr,
 }
 
 static void
-ofono_proxy_new_for_bus_cb (GObject *object,
-                            GAsyncResult *res,
-                            CarrickOfonoAgent *self)
+_get_modems_cb (GDBusProxy *ofono_mgr,
+                GAsyncResult *res,
+                CarrickOfonoAgent *self)
 {
   GVariant *modems;
   char *obj_path;
   GVariantIter *iter;
   GError *err = NULL;
 
-  self->priv->ofono_mgr = g_dbus_proxy_new_for_bus_finish (res, &err);
-  if (err) {
-    g_warning ("No ofono proxy: %s", err->message);
-    return;
-  }
-
-  g_signal_connect (self->priv->ofono_mgr, "g-signal",
-                    G_CALLBACK (carrick_ofono_manager_signal_cb), self);
-
-  /* TODO don't be synchronous... */
-  modems = g_dbus_proxy_call_sync (self->priv->ofono_mgr,
-                                   "GetModems",
-                                   NULL,
-                                   G_DBUS_CALL_FLAGS_NONE,
-                                   -1,
-                                   NULL,
-                                   &err);
+  modems = g_dbus_proxy_call_finish (ofono_mgr, res, &err);
   if (err) {
     g_warning ("GetModems failed: %s", err->message);
     return;
@@ -591,6 +647,32 @@ ofono_proxy_new_for_bus_cb (GObject *object,
   }
   g_variant_iter_free (iter);
   g_variant_unref (modems);
+}
+
+static void
+ofono_proxy_new_for_bus_cb (GObject *object,
+                            GAsyncResult *res,
+                            CarrickOfonoAgent *self)
+{
+  GError *err = NULL;
+
+  self->priv->ofono_mgr = g_dbus_proxy_new_for_bus_finish (res, &err);
+  if (err) {
+    g_warning ("No ofono proxy: %s", err->message);
+    return;
+  }
+
+  g_signal_connect (self->priv->ofono_mgr, "g-signal",
+                    G_CALLBACK (carrick_ofono_manager_signal_cb), self);
+
+  g_dbus_proxy_call (self->priv->ofono_mgr,
+                     "GetModems",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_get_modems_cb,
+                     self);
 }
 
 static void
