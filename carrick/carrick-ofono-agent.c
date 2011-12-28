@@ -189,6 +189,7 @@ is_valid_pin(const char *pin, unsigned int min,
 
 /* ----- */
 
+
 static void
 carrick_ofono_agent_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -261,7 +262,6 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
         self->priv->present_sims++;
       else
         self->priv->present_sims--;
-      g_debug ("  sims: %d", self->priv->present_sims);
       g_object_notify (G_OBJECT (self), "n-present-sims");
     }
 
@@ -302,6 +302,7 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
                            g_strdup (type),
                            GINT_TO_POINTER((int)retries));
     }
+    g_variant_iter_free (iter);
   }   
 }
 
@@ -358,6 +359,7 @@ _get_sim_properties_cb (GDBusProxy *sim,
     carrick_ofono_agent_sim_property_changed (self, modem, key, value);
   }
 
+  g_variant_iter_free (iter);
   g_variant_unref (props);
 }
 
@@ -404,8 +406,6 @@ carrick_ofono_agent_add_sim_to_modem (CarrickOfonoAgent *self, Modem *modem)
   if (modem->sim)
     return;
 
-  g_debug ("add sim %s", g_dbus_proxy_get_object_path (modem->modem));
-
   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
                             G_DBUS_PROXY_FLAGS_NONE,
                             NULL, /* should add iface info here */
@@ -423,14 +423,11 @@ carrick_ofono_agent_remove_sim_from_modem (CarrickOfonoAgent *self, Modem *modem
   if (!modem->sim)
     return;
 
-  g_debug ("remove sim from modem");
-
   g_object_unref (modem->sim);
   modem->sim = NULL;
 
   if (modem->present) {
     self->priv->present_sims--;
-    g_debug ("  sims: %d", self->priv->present_sims);
     g_object_notify (G_OBJECT (self), "n-present-sims");
   }
   modem->present = FALSE;
@@ -537,6 +534,7 @@ _get_modem_properties_cb (GDBusProxy *modem_proxy,
     carrick_ofono_agent_modem_property_changed (self, modem, key, value);
   }
 
+  g_variant_iter_free (iter);
   g_variant_unref (props);
 }
 
@@ -767,7 +765,7 @@ carrick_ofono_agent_enter_pin (CarrickOfonoAgent   *self,
 
   if (!self || !modem_path || !pin_type || !pin || !modem || !password_is_pin (pw_type))
     g_warning ("EnterPin arguments seem wrong");
-  if (!carrick_ofono_is_valid_sim_pin (pin, pin_type))
+  if (!carrick_ofono_is_valid_pin (pin, pin_type))
     g_warning ("EnterPin pin seems invalid");
 
   g_dbus_proxy_call (modem->sim,
@@ -825,8 +823,8 @@ carrick_ofono_agent_change_pin (CarrickOfonoAgent *self,
 
   if (!modem || !password_is_pin (pw_type))
     g_warning ("ChangePin arguments seem wrong");
-  if (!carrick_ofono_is_valid_sim_pin (pin, pin_type) ||
-      !carrick_ofono_is_valid_sim_pin (new_pin, pin_type))
+  if (!carrick_ofono_is_valid_pin (pin, pin_type) ||
+      !carrick_ofono_is_valid_pin (new_pin, pin_type))
     g_warning ("ChangePin pin seems invalid");
 
   g_dbus_proxy_call (modem->sim,
@@ -880,8 +878,8 @@ carrick_ofono_pin_for_puk (const char *puk_type)
 }
 
 gboolean
-carrick_ofono_is_valid_sim_pin(const char *pin,
-                               const char *pin_type)
+carrick_ofono_is_valid_pin(const char *pin,
+                           const char *pin_type)
 {
   enum ofono_sim_password_type type;
 
@@ -920,4 +918,3 @@ carrick_ofono_is_valid_sim_pin(const char *pin,
 
 	return FALSE;
 }
-

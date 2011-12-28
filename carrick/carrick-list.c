@@ -1312,7 +1312,7 @@ _ofono_agent_generic_cb (CarrickOfonoAgent *agent,
   GError *error = NULL;
   if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
     /* TODO */
-    g_warning ("Ofono call failed: %s", error->message);
+    g_warning ("Ofono call failed: %d %s", error->code, error->message);
     g_error_free (error);
   }
 
@@ -1329,7 +1329,7 @@ _pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
   pin = gtk_entry_get_text (GTK_ENTRY (list->priv->pin_entry));
 
   if (carrick_ofono_is_pin (list->priv->required_pin_type)) {
-    if (!carrick_ofono_is_valid_sim_pin (pin, list->priv->required_pin_type)) {
+    if (!carrick_ofono_is_valid_pin (pin, list->priv->required_pin_type)) {
       g_warning ("Entered code was not a valid '%s' code", list->priv->required_pin_type);
       /* TODO !!! */
       return;
@@ -1346,14 +1346,14 @@ _pin_entry_or_button_cb (GtkWidget *btn_or_entry, CarrickList *list)
     const char *pin_type;
 
     puk = gtk_entry_get_text (GTK_ENTRY (list->priv->puk_entry));
-    if (!carrick_ofono_is_valid_sim_pin (puk, list->priv->required_pin_type)) {
+    if (!carrick_ofono_is_valid_pin (puk, list->priv->required_pin_type)) {
       g_warning ("Entered code was not a valid '%s' code", list->priv->required_pin_type);
       /* TODO !!! */
       return;
     }
 
     pin_type = carrick_ofono_pin_for_puk (list->priv->required_pin_type);
-    if (!carrick_ofono_is_valid_sim_pin (pin, pin_type)) {
+    if (!carrick_ofono_is_valid_pin (pin, pin_type)) {
       g_warning ("Entered code was not a valid '%s' code", pin_type);
       /* TODO !!! */
       return;
