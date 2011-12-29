@@ -88,6 +88,9 @@ GtkWidget* carrick_service_item_new (CarrickIconFactory         *icon_factory,
                                      CarrickNotificationManager *notifications,
                                      CarrickNetworkModel        *model,
                                      GtkTreePath                *path);
+GtkWidget* carrick_service_item_new_as_modem_proxy (CarrickIconFactory         *icon_factory,
+                                                    CarrickOfonoAgent          *ofono_agent,
+                                                    CarrickNotificationManager *notifications);
 
 G_END_DECLS
 

@@ -42,6 +42,7 @@ typedef struct Modem {
 
   gboolean present;
   char *required_pin;
+  char *locked_puk;
   GHashTable *retries;
 } Modem;
 
@@ -51,12 +52,14 @@ struct _CarrickOfonoAgentPrivate {
 
   guint present_sims;
   GHashTable *required_pins;
+  GHashTable *locked_puks;
 };
 
 enum {
   PROP_0,
   PROP_N_PRESENT_SIMS,
-  PROP_REQUIRED_PINS
+  PROP_REQUIRED_PINS,
+  PROP_LOCKED_PUKS,
 };
 
 
@@ -155,13 +158,35 @@ static enum ofono_sim_password_type puk2pin(enum ofono_sim_password_type type)
 	case OFONO_SIM_PASSWORD_SIM_PUK2:
 		return OFONO_SIM_PASSWORD_SIM_PIN2;
 	case OFONO_SIM_PASSWORD_PHNET_PUK:
-		return OFONO_SIM_PASSWORD_PHNET_PUK;
+		return OFONO_SIM_PASSWORD_PHNET_PIN;
 	case OFONO_SIM_PASSWORD_PHNETSUB_PUK:
 		return OFONO_SIM_PASSWORD_PHNETSUB_PIN;
 	case OFONO_SIM_PASSWORD_PHSP_PUK:
 		return OFONO_SIM_PASSWORD_PHSP_PIN;
 	case OFONO_SIM_PASSWORD_PHCORP_PUK:
 		return OFONO_SIM_PASSWORD_PHCORP_PIN;
+	default:
+		return OFONO_SIM_PASSWORD_INVALID;
+	}
+}
+
+static enum ofono_sim_password_type pin2puk(enum ofono_sim_password_type type)
+{
+	switch (type) {
+	case OFONO_SIM_PASSWORD_SIM_PIN:
+		return OFONO_SIM_PASSWORD_SIM_PUK;
+	case OFONO_SIM_PASSWORD_PHFSIM_PIN:
+		return OFONO_SIM_PASSWORD_PHFSIM_PUK;
+	case OFONO_SIM_PASSWORD_SIM_PIN2:
+		return OFONO_SIM_PASSWORD_SIM_PUK2;
+	case OFONO_SIM_PASSWORD_PHNET_PIN:
+		return OFONO_SIM_PASSWORD_PHNET_PUK;
+	case OFONO_SIM_PASSWORD_PHNETSUB_PIN:
+		return OFONO_SIM_PASSWORD_PHNETSUB_PUK;
+	case OFONO_SIM_PASSWORD_PHSP_PIN:
+		return OFONO_SIM_PASSWORD_PHSP_PUK;
+	case OFONO_SIM_PASSWORD_PHCORP_PIN:
+		return OFONO_SIM_PASSWORD_PHCORP_PUK;
 	default:
 		return OFONO_SIM_PASSWORD_INVALID;
 	}
@@ -203,6 +228,9 @@ carrick_ofono_agent_get_property (GObject *object, guint property_id,
   case PROP_REQUIRED_PINS:
     g_value_set_boxed (value, self->priv->required_pins);
     break;
+  case PROP_LOCKED_PUKS:
+    g_value_set_boxed (value, self->priv->locked_puks);
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -240,13 +268,21 @@ carrick_ofono_agent_class_init (CarrickOfonoAgentClass *klass)
 
   pspec = g_param_spec_boxed ("required-pins",
                               "required-pins",
-                              "List of object paths for modems and the pin types they require",
+                              "List of object paths for modems and the pin/puk types they require",
                               G_TYPE_HASH_TABLE,
                              G_PARAM_READABLE|G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class,
                                    PROP_REQUIRED_PINS,
                                    pspec);
 
+  pspec = g_param_spec_boxed ("locked-puks",
+                              "locked-puks",
+                              "List of object paths for modems that have a locked puk (a permanent lock)",
+                              G_TYPE_HASH_TABLE,
+                             G_PARAM_READABLE|G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class,
+                                   PROP_LOCKED_PUKS,
+                                   pspec);
 }
 
 static void
@@ -255,6 +291,8 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
                                           const char *key,
                                           GVariant *value)
 {
+  const char *path;
+
   if (g_strcmp0 (key, "Present") == 0) {
     if (modem->present != g_variant_get_boolean (value)) {
       modem->present = !modem->present;
@@ -265,6 +303,35 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
       g_object_notify (G_OBJECT (self), "n-present-sims");
     }
 
+  } else if (g_strcmp0 (key, "LockedPins") == 0) {
+    const char **locked_pins;
+    const char *locked_puk = NULL;
+
+    /* we only deal with the first puk that's locked */
+    locked_pins = g_variant_get_strv (value, NULL);
+    while (*locked_pins) {
+      if (carrick_ofono_is_puk (*locked_pins)) {
+        locked_puk = *locked_pins;
+        break;
+       }
+      locked_pins++;
+    }
+
+    if (g_strcmp0 (locked_puk, modem->locked_puk) != 0) {
+      if (modem->locked_puk)
+        g_free (modem->locked_puk);
+      modem->locked_puk = g_strdup (locked_puk);
+
+      path = g_dbus_proxy_get_object_path (modem->modem);
+      if (locked_puk)
+        g_hash_table_insert (self->priv->locked_puks,
+                             (char*)path, modem->locked_puk);
+      else
+        g_hash_table_remove (self->priv->locked_puks, path);      
+
+      g_object_notify (G_OBJECT (self), "locked-puks");
+    }
+
   } else if (g_strcmp0 (key, "PinRequired") == 0) {
     const char *type;
 
@@ -273,7 +340,6 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
       type = NULL;
 
     if (g_strcmp0 (type, modem->required_pin) != 0) {
-      const char *path;
 
       if (modem->required_pin)
         g_free (modem->required_pin);
@@ -355,9 +421,11 @@ _get_sim_properties_cb (GDBusProxy *sim,
   }
 
   g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
+
+  g_object_freeze_notify (G_OBJECT (self));
+  while (g_variant_iter_loop (iter, "{sv}", &key, &value))
     carrick_ofono_agent_sim_property_changed (self, modem, key, value);
-  }
+  g_object_thaw_notify (G_OBJECT (self));
 
   g_variant_iter_free (iter);
   g_variant_unref (props);
@@ -432,10 +500,14 @@ carrick_ofono_agent_remove_sim_from_modem (CarrickOfonoAgent *self, Modem *modem
   }
   modem->present = FALSE;
 
-  /* check if the modem was requiring a pin */
+  /* check if the modem was requiring a pin or had a locked puk */
   if (g_hash_table_remove (self->priv->required_pins,
                            g_dbus_proxy_get_object_path (modem->modem))) {
     g_object_notify (G_OBJECT (self), "required-pins");
+  }
+  if (g_hash_table_remove (self->priv->locked_puks,
+                           g_dbus_proxy_get_object_path (modem->modem))) {
+    g_object_notify (G_OBJECT (self), "locked-puks");
   }
 }
 
@@ -500,6 +572,8 @@ modem_free (Modem *modem)
     g_hash_table_destroy (modem->retries);
   if (modem->required_pin)
     g_free (modem->required_pin);
+  if (modem->locked_puk)
+    g_free (modem->locked_puk);
   g_slice_free (Modem, modem);
 }
 
@@ -530,9 +604,11 @@ _get_modem_properties_cb (GDBusProxy *modem_proxy,
   }
 
   g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value)) {
+
+  g_object_freeze_notify (G_OBJECT (self));
+  while (g_variant_iter_loop (iter, "{sv}", &key, &value))
     carrick_ofono_agent_modem_property_changed (self, modem, key, value);
-  }
+  g_object_thaw_notify (G_OBJECT (self));
 
   g_variant_iter_free (iter);
   g_variant_unref (props);
@@ -681,6 +757,7 @@ carrick_ofono_agent_init (CarrickOfonoAgent *self)
   self->priv->modems = g_hash_table_new_full (g_str_hash, g_str_equal,
                                               g_free, (GDestroyNotify)modem_free);
   self->priv->required_pins = g_hash_table_new (g_str_hash, g_str_equal);
+  self->priv->locked_puks = g_hash_table_new (g_str_hash, g_str_equal);
 
   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
                             G_DBUS_PROXY_FLAGS_NONE,
@@ -738,6 +815,7 @@ carrick_ofono_agent_finish (CarrickOfonoAgent  *self,
                             GError            **error)
 {
   Modem *modem;
+  GVariant *var;
 
   modem = g_hash_table_lookup (self->priv->modems, modem_path);
   if (!modem) {
@@ -745,7 +823,9 @@ carrick_ofono_agent_finish (CarrickOfonoAgent  *self,
     return FALSE;
   }
 
-  g_variant_unref (g_dbus_proxy_call_finish (modem->sim, res, error));
+  var = g_dbus_proxy_call_finish (modem->sim, res, error);
+  if (var)
+    g_variant_unref (var);
   return (*error == NULL);
 }
 
@@ -852,6 +932,7 @@ carrick_ofono_agent_get_retries (CarrickOfonoAgent *self,
   p = g_hash_table_lookup (modem->retries, pin_type);
   if (!p)
     return -1;
+
   return GPOINTER_TO_INT (p);
 }
 
@@ -875,6 +956,15 @@ carrick_ofono_pin_for_puk (const char *puk_type)
 
   pin_type = puk2pin (sim_string_to_passwd (puk_type));
   return passwd_name[pin_type];
+}
+
+const char*
+carrick_ofono_puk_for_pin (const char *pin_type)
+{
+  enum ofono_sim_password_type puk_type;
+
+  puk_type = pin2puk (sim_string_to_passwd (pin_type));
+  return passwd_name[puk_type];
 }
 
 gboolean
