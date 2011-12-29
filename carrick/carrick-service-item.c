@@ -57,16 +57,6 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 #define SERVICE_ITEM_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_SERVICE_ITEM, CarrickServiceItemPrivate))
 
-/* Translators:
-   The following are potential errors that a user might see while
-   attempting to configure a 3G data service.
-*/
-#define INVALID_COUNTRY_CODE _("Critical Error: Invalid country code")
-#define MISSING_APN_NAME _("Missing required APN (service plan name)")
-#define INVALID_NETWORK_SERVICE _("Internal Error: Invalid network service")
-#define INVALID_CONNMAN _("Critical Error: Unable to access Connection Manager")
-#define MISSING_3G_HW _("ERROR: No 3G Hardware detected")
-
 enum {
   PROP_0,
   PROP_FAVORITE,
@@ -76,7 +66,15 @@ enum {
   PROP_MODEL,
   PROP_ROW,
   PROP_ACTIVE,
+  PROP_TYPE,
 };
+
+typedef enum {
+  CARRICK_PASSPHRASE_WIFI,
+  CARRICK_PASSPHRASE_PIN,
+  CARRICK_PASSPHRASE_PUK,
+  CARRICK_PASSPHRASE_NEW_PIN,
+}CarrickPassphraseType;
 
 struct _CarrickServiceItemPrivate
 {
@@ -90,6 +88,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *passphrase_box;
   GtkWidget *passphrase_entry;
   GtkWidget *show_password_check;
+  GtkWidget *passphrase_button;
   GtkWidget *delete_button;
   GtkWidget *expando;
 
@@ -111,9 +110,20 @@ struct _CarrickServiceItemPrivate
   CarrickIconFactory *icon_factory;
 
   CarrickOfonoAgent *ofono;
+  gboolean is_modem_dummy;
+
+  char *modem_requiring_pin;
+  char *required_pin_type;
+
+  char *entered_pin_type;
+  char *entered_puk;
+
+  char *locked_modem;
+  char *locked_puk_type;
 
   gboolean failed;
   gboolean passphrase_hint_visible;
+  CarrickPassphraseType passphrase_type;
 
   CarrickNotificationManager *note;
 
@@ -170,6 +180,8 @@ typedef enum {
   CARRICK_INET_ANY
 } CarrickInet;
 
+static void _connect_ofono_handlers (CarrickServiceItem *self);
+
 static void
 carrick_service_item_get_property (GObject *object, guint property_id,
                                    GValue *value, GParamSpec *pspec)
@@ -208,6 +220,10 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
     case PROP_ACTIVE:
       g_value_set_boolean (value, priv->active);
+      break;
+
+    case PROP_TYPE:
+      g_value_set_string (value, priv->type);
       break;
 
     default:
@@ -288,6 +304,23 @@ _service_item_set_security (CarrickServiceItem *item)
 }
 
 static void
+carrick_service_item_set_type (CarrickServiceItem *item, const char *type)
+{
+  if (g_strcmp0 (type, item->priv->type) == 0)
+    return;
+
+  if (item->priv->type)
+    g_free (item->priv->type);
+  item->priv->type = g_strdup (type);
+
+  /* TODO type shouldn't change but disconnecting if it happens 
+   * would still be the right thing */
+  _connect_ofono_handlers (item);
+
+  g_object_notify (G_OBJECT (item), "type");
+}    
+
+static void
 _populate_variables (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = self->priv;
@@ -305,11 +338,11 @@ _populate_variables (CarrickServiceItem *self)
       uint ipv6_prefix_length;
       char **nameservers;
       char *state;
+      char *type;
 
       if (priv->proxy)
         g_object_unref (priv->proxy);
       g_free (priv->name);
-      g_free (priv->type);
       g_free (priv->security);
       g_free (priv->passphrase);
       g_free (priv->method);
@@ -326,7 +359,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_PROXY, &priv->proxy,
                           CARRICK_COLUMN_INDEX, &priv->index,
                           CARRICK_COLUMN_NAME, &priv->name,
-                          CARRICK_COLUMN_TYPE, &priv->type,
+                          CARRICK_COLUMN_TYPE, &type,
                           CARRICK_COLUMN_STATE, &state,
                           CARRICK_COLUMN_STRENGTH, &priv->strength,
                           CARRICK_COLUMN_SECURITY, &priv->security,
@@ -356,6 +389,10 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_LOGIN_REQUIRED, &priv->login_required,
                           CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, &priv->mac_address,
                           -1);
+
+      carrick_service_item_set_type (self, type);
+      if (type)
+        g_free (type);
 
       /* use normal values only if manually configured values are not available:
        * Two reasons:
@@ -572,6 +609,87 @@ _set_form_state (CarrickServiceItem *self)
 }
 
 static void
+carrick_service_item_update_cellular_info (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+  char                      *msg = NULL;
+
+      if (priv->locked_puk_type)
+        {
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_ERROR);
+          /* TRANSLATORS: error when a puk code is locked. Placeholder is usually "puk",
+           * see pin entry translations for full list of possible values.  */
+          msg = g_strdup_printf (_("The %s code is locked, contact your service provider."),
+                                 priv->locked_puk_type);
+        } 
+      else if (priv->required_pin_type)
+        {
+          int retries;
+
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_INFO);
+          retries = carrick_ofono_agent_get_retries (priv->ofono,
+                                                     priv->modem_requiring_pin,
+                                                     priv->required_pin_type);
+          if (carrick_ofono_is_pin (priv->required_pin_type))
+            {
+              if (retries > 0 && retries < 3)
+                {
+                  /* TRANSLATORS: info message when pin entry is required and 
+                   * there are less than three retries,
+                   * Placeholder is pin type, usually "pin" */
+                  msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
+                                                   "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
+                                                   retries),
+                                         priv->required_pin_type);
+                }
+              else
+                {
+                  /* TRANSLATORS: info message when pin entry is required,
+                   * Placeholder is pin type, usually "pin" */
+                  msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
+                                         priv->required_pin_type);
+                }
+            }
+          else
+            {
+              if (retries > 0 && retries < 10)
+                {
+                  /* TRANSLATORS: info message when pin reset is required and
+                   * there are less than 10 retries
+                   * Placeholder 1 is puk type, usually "puk"
+                   * Placeholder 2 is pin type, usually "pin" */
+                  msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the SIM card is permanently locked.",
+                                                   "A %s code is required to reset the %s code. You can try %d more times before the SIM card is permanently locked.",
+                                                   retries),
+                                         priv->required_pin_type,
+                                         carrick_ofono_pin_for_puk (priv->required_pin_type),
+                                         retries);
+                }
+              else
+                {
+                  /* TRANSLATORS: info message when pin reset is required,
+                   * Placeholder 1 is puk type, usually "puk"
+                   * Placeholder 2 is pin type, usually "pin" */
+                  msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
+                                         priv->required_pin_type,
+                                         carrick_ofono_pin_for_puk (priv->required_pin_type));
+                }
+            }
+        }
+      else
+        {
+          msg = g_strdup ("");
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_INFO);
+        }
+
+      gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
+      g_free (msg);
+}
+
+static void
 _set_state (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = self->priv;
@@ -589,7 +707,14 @@ _set_state (CarrickServiceItem *self)
   if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
       g_free (name);
+      /* TRANSLATORS: service type for building the service title */
       name = g_strdup (_ ("Wired"));
+    }
+  else if (priv->is_modem_dummy)
+    {
+      g_free (name);
+      /* TRANSLATORS: service type for building the service title */
+      name = g_strdup (_("3G"));
     }
 
   if (g_strcmp0 (priv->state, "ready") == 0)
@@ -603,6 +728,8 @@ _set_state (CarrickServiceItem *self)
                                     TRUE);
         }
       button = g_strdup (_ ("Disconnect"));
+      /* TRANSLATORS: service state string, will be used as a title 
+       * like this: "MyWifiAP - Connected" */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Connected"));
@@ -620,7 +747,9 @@ _set_state (CarrickServiceItem *self)
           gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                                     TRUE);
         }
+      /* TRANSLATORS: button label when service is online */
       button = g_strdup (_ ("Disconnect"));
+      /* TRANSLATORS: service state string, see example above */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Online"));
@@ -629,7 +758,9 @@ _set_state (CarrickServiceItem *self)
     }
   else if (g_strcmp0 (priv->state, "configuration") == 0)
     {
+      /* TRANSLATORS: button label when service is configuring*/
       button = g_strdup_printf (_ ("Cancel"));
+      /* TRANSLATORS: service state string, see example above */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Configuring"));
@@ -638,7 +769,9 @@ _set_state (CarrickServiceItem *self)
     }
   else if (g_strcmp0 (priv->state, "association") == 0)
     {
+      /* TRANSLATORS: button label when service is associating */
       button = g_strdup_printf (_("Cancel"));
+      /* TRANSLATORS: service state string, see example above */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _("Associating"));
@@ -650,10 +783,14 @@ _set_state (CarrickServiceItem *self)
       gtk_widget_hide (GTK_WIDGET (priv->delete_button));
       gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                                 FALSE);
+      /* TRANSLATORS: button label when service is not connected */
       button = g_strdup (_ ("Connect"));
       label = g_strdup (name);
-      gtk_label_set_text (GTK_LABEL (priv->info_label),
-                          "");
+
+      gtk_label_set_text (GTK_LABEL (priv->info_label), "");
+
+      /* the dummy modem service is always in idle */
+      carrick_service_item_update_cellular_info (self);
     }
   else if (g_strcmp0 (priv->state, "failure") == 0)
     {
@@ -676,7 +813,9 @@ _set_state (CarrickServiceItem *self)
                                     TRUE);
         }
 
+      /* TRANSLATORS: button label when service failed to connect */
       button = g_strdup (_ ("Connect"));
+      /* TRANSLATORS: service state string, see example above */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Connection failed"));
@@ -690,7 +829,10 @@ _set_state (CarrickServiceItem *self)
     }
   else if (g_strcmp0 (priv->state, "disconnect") == 0)
     {
+      /* TRANSLATORS: button label when service is dicsonnecting
+       * and is insensitive */
       button = g_strdup_printf (_ ("Disconnecting"));
+      /* TRANSLATORS: service state string, see example above */
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Disconnecting"));
@@ -752,17 +894,78 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
 }
 
 static void
-_request_passphrase (CarrickServiceItem *item)
+_request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
 {
   CarrickServiceItemPrivate *priv = item->priv;
+  char *hint = NULL;
+  const char *btn_text = NULL;
+  const char *check_text = NULL;
+
+  priv->passphrase_type = type;
+  switch (type)
+  {
+  case CARRICK_PASSPHRASE_WIFI:
+    /* TRANSLATORS: text is used as a hint in the passphrase entry and 
+     * should be 20 characters or less to be entirely visible */
+    hint = g_strdup (_("Type password here"));
+    /* TRANSLATORS: Button label when connecting with passphrase */
+    btn_text = _("Connect");
+    /* TRANSLATORS: A check button label when connecting wifi */
+    check_text = _("Show password");
+    break;
+  case CARRICK_PASSPHRASE_PIN:
+    /* TRANSLATORS: text is used as a hint in the PIN entry and
+     * should be 20 characters or less to be entirely visible
+     * The placeholder is almost always "pin" but it 
+     * can be any of these:
+     *
+     * "pin", "phone", "firstphone", "pin2", "network",
+     * "netsub", "service", "corp"
+     */
+    hint = g_strdup_printf (_("Type %s here"),
+                            item->priv->required_pin_type);
+    /* TRANSLATORS: Button label when entering a PIN code */
+    btn_text = _("Connect");
+    /* TRANSLATORS: A check button label when connecting a cellular modem */
+    check_text = _("Show PIN");
+    break;
+  case CARRICK_PASSPHRASE_PUK:
+    /* TRANSLATORS: text is used as a hint in the PUK entry and
+     * should be 20 characters or less to be entirely visible
+     * The placeholder is almost always "puk" but it 
+     * can be any of these:
+     *
+     * "puk", "firstphonepuk", "puk2", "networkpuk",
+     * "netsubpuk", "servicepuk", "corppuk",
+     */
+    hint = g_strdup_printf (_("Type %s here"),
+                            item->priv->required_pin_type);
+    /* TRANSLATORS: Button label when resetting a PIN code */
+    btn_text = _("Enter PUK");
+    /* TRANSLATORS: A check button label when resetting pin code */
+    check_text = _("Show PUK");
+    break;
+  case CARRICK_PASSPHRASE_NEW_PIN:
+    /* TRANSLATORS: text is used as a hint in the PIN entry when setting 
+     * a new pin. Same rules as above for normal PIN entry. */
+    hint = g_strdup_printf (_("Type new %s here"),
+                            carrick_ofono_pin_for_puk (item->priv->required_pin_type));
+    /* TRANSLATORS: Button label when entering new pin code */
+    btn_text = _("Enter new PIN");
+    /* TRANSLATORS: A check button label when entering a new pin code */
+    check_text = _("Show PIN");
+    break;
+  }
+
+  gtk_button_set_label (GTK_BUTTON (item->priv->passphrase_button),
+                        btn_text);
+  gtk_button_set_label (GTK_BUTTON (item->priv->show_password_check),
+                        check_text);
 
   if (!priv->passphrase || (strlen (priv->passphrase) == 0))
     {
-      /* TRANSLATORS: text should be 20 characters or less to be entirely
-       * visible in the passphrase entry */
-      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
-                          _ ("Type password here"));
       priv->passphrase_hint_visible = TRUE;
+      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), hint);
     }
   else
     {
@@ -931,7 +1134,9 @@ _start_connecting (CarrickServiceItem *item)
           ((g_strcmp0 (priv->state, "failure") == 0) ||
            (priv->need_pass && priv->passphrase == NULL)))
         {
-          _request_passphrase (item);
+          /* TRANSLATORS: text should be 20 characters or less to be entirely
+           * visible in the passphrase entry -- */
+          _request_passphrase (item, CARRICK_PASSPHRASE_WIFI);
         }
       else
         {
@@ -1078,7 +1283,7 @@ _connect_with_password (CarrickServiceItem *item)
           g_slice_free (GValue, value);
 
           gtk_widget_hide (priv->passphrase_box);
-          gtk_widget_show (priv->connect_box);
+          gtk_widget_set_visible (priv->connect_box, !priv->is_modem_dummy);
 
           /* hack: modify passphrase here since connman won't
            * send property change notify */
@@ -1102,17 +1307,247 @@ _connect_with_password (CarrickServiceItem *item)
 }
 
 static void
-_connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
+carrick_service_item_request_pin_if_needed (CarrickServiceItem *item)
 {
-  carrick_service_item_set_active (item, TRUE);
-  _connect_with_password (item);
+  /* TODO pin-required notification to user */
+
+  if (!item->priv->required_pin_type)
+      gtk_widget_hide (item->priv->passphrase_box);
+  else if (carrick_ofono_is_pin (item->priv->required_pin_type))
+    _request_passphrase (item, CARRICK_PASSPHRASE_PIN);
+  else if (carrick_ofono_is_puk (item->priv->required_pin_type))
+    _request_passphrase (item, CARRICK_PASSPHRASE_PUK);
+  else
+    g_warning ("unrecognised pin type '%s' required",
+               item->priv->required_pin_type);
+}
+
+static gboolean
+_wait_for_ofono_to_settle (CarrickServiceItem *item)
+{
+  carrick_service_item_update_cellular_info (item);
+  carrick_service_item_request_pin_if_needed (item);
+  return FALSE;
 }
 
 static void
-_passphrase_entry_activated_cb (GtkEntry *entry, CarrickServiceItem *item)
+_ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
+                         const char *modem_path,
+                         GAsyncResult *res,
+                         CarrickServiceItem *item)
 {
+  GError *error = NULL;
+  char *msg, *err_name = NULL;
+  int retries;
+  if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
+    if (!error) {
+      g_warning ("EnterPin() failed without message");
+    } else 
+      g_debug ("EnterPin() failed: %s", error->message);
+
+    if (error && g_dbus_error_is_remote_error (error))
+      err_name = g_dbus_error_get_remote_error (error);
+
+    if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
+      /* TRANSLATORS: error message on malformed pin entry. Placeholder is usually "pin"
+       * but can be other things as well. See the pin entry translations for all
+       * values. */
+      msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code"),
+                             item->priv->entered_pin_type);
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+    } else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0) {
+      retries = carrick_ofono_agent_get_retries (agent, modem_path,
+                                                 item->priv->entered_pin_type);
+
+      if (retries == 0) {
+        /* this case should be handled by a PinRequested="puk" change moments later but
+         * let's be sure ... */
+        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "pin"
+         * but can be other things as well. See the pin entry translations for all
+         * values. */
+        msg = g_strdup_printf (_("Sorry, it looks like the %s was incorrect and is now locked. The %s code is needed to unlock it."),
+                                 item->priv->required_pin_type,
+                                 carrick_ofono_puk_for_pin (item->priv->required_pin_type));
+        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                       GTK_MESSAGE_WARNING);
+      } else {
+        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "pin"
+         * but can be other things as well. See the pin entry translations for all
+         * values. */
+        msg = g_strdup_printf (ngettext ("Sorry, it looks like the %s is incorrect. You can try once more before the code is locked.",
+                                         "Sorry, it looks like the %s is incorrect. You can try two more times before the code is locked.",
+                                         retries),
+                               item->priv->required_pin_type);
+        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                       GTK_MESSAGE_WARNING);
+      }
+    } else  { /* InProgress, InvalidArguments, ... */
+      /* TRANSLATORS: error message on pin entry Placeholder is usually "pin"
+       * but can be other things as well. See the pin entry translations for all
+       * values. */
+      msg = g_strdup_printf (_("Sorry, %s entry failed"),
+                             item->priv->entered_pin_type);
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                     GTK_MESSAGE_ERROR);
+    }
+
+    gtk_label_set_text (GTK_LABEL (item->priv->info_label), msg);
+    gtk_widget_show (item->priv->info_bar);
+
+    g_free (msg);
+    if (error)
+      g_error_free (error);
+  }
+
+  /* it's possible that a pin is still required, but unfortunately ofono
+   * has not updated retries yet */
+  g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
+}
+
+static void
+_ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
+                         const char *modem_path,
+                         GAsyncResult *res,
+                         CarrickServiceItem *item)
+{
+  GError *error = NULL;
+  char *msg, *err_name = NULL;
+  int retries;
+
+  if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
+    if (!error)
+      g_warning ("ResetPin() failed without message");
+    else
+      g_debug ("ResetPin() failed: %s", error->message);
+
+    if (error && g_dbus_error_is_remote_error (error))
+      err_name = g_dbus_error_get_remote_error (error);
+
+    if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
+      /* TRANSLATORS: error message on pin reset.
+       * Placeholders are puk type and pin type (usually "pin and "puk") */
+      msg = g_strdup_printf (_("Sorry, either the %s or %s code is not in the correct format"),
+                             item->priv->entered_pin_type,
+                             carrick_ofono_pin_for_puk (item->priv->entered_pin_type));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+    } else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0) {
+      retries = carrick_ofono_agent_get_retries (agent, modem_path,
+                                                 item->priv->entered_pin_type);
+
+      if (retries == 0) {
+        /* TRANSLATORS: Error message on pin reset when the puk code gets locked.
+         * Placeholder is the entered puk code type (usually "puk") */
+        msg = g_strdup_printf (_("Sorry, it looks like the %s code is incorrect. The SIM card is now locked. Please contact your operator."),
+                               item->priv->entered_pin_type);
+        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                       GTK_MESSAGE_ERROR);
+      } else {
+        /* TRANSLATORS: error message on pin reset (wrong puk). Placeholder is usually "puk"
+         * but can be other things as well. See the PUK entry translations for all
+         * values. */
+        msg = g_strdup_printf (ngettext ("Sorry, it looks like the %s code is incorrect. You can try once more before the SIM card is permanently locked.",
+                                         "Sorry, it looks like the %s code is incorrect. You can try %d more times before the SIM card is permanently locked.",
+                                         retries),
+                               item->priv->entered_pin_type, retries);
+
+        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                       GTK_MESSAGE_WARNING);
+      }
+
+    } else  { /* InProgress, InvalidArguments, ... */
+      /* TRANSLATORS: error message on pin reset. Placeholder is usually "pin"
+       * but can be other things as well. See the pin entry translations for all
+       * values. */
+      msg = g_strdup_printf (_("Sorry, %s code reset failed"),
+                             carrick_ofono_pin_for_puk (item->priv->entered_pin_type));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
+                                     GTK_MESSAGE_ERROR);
+    }
+
+    gtk_label_set_text (GTK_LABEL (item->priv->info_label), msg);
+    gtk_widget_show (item->priv->info_bar);
+
+    g_free (msg);
+    if (error)
+      g_error_free (error);
+  }
+
+  /* it's possible that a pin is still required, but unfortunately ofono
+   * has not updated retries yet */
+  g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
+}
+
+static void
+carrick_service_item_enter_pin (CarrickServiceItem *item)
+{
+  const char *pin;
+  pin = gtk_entry_get_text (GTK_ENTRY (item->priv->passphrase_entry));
+
+  /* we let ofono do the validation */
+
+  if (item->priv->entered_pin_type)
+    g_free (item->priv->entered_pin_type);
+  item->priv->entered_pin_type = g_strdup (item->priv->required_pin_type);
+
+  carrick_ofono_agent_enter_pin (item->priv->ofono,
+                                 item->priv->modem_requiring_pin,
+                                 item->priv->required_pin_type,
+                                 pin,
+                                 (CarrickOfonoAgentCallback)_ofono_agent_enter_pin_cb,
+                                 item);
+  gtk_widget_hide (item->priv->passphrase_box);
+}
+
+static void
+carrick_service_item_reset_pin (CarrickServiceItem *item)
+{
+  const char *new_pin;
+  new_pin = gtk_entry_get_text (GTK_ENTRY (item->priv->passphrase_entry));
+
+  /* we let ofono do the validation */
+
+  if (item->priv->entered_pin_type)
+    g_free (item->priv->entered_pin_type);
+  item->priv->entered_pin_type = g_strdup (item->priv->required_pin_type);
+  carrick_ofono_agent_reset_pin (item->priv->ofono,
+                                 item->priv->modem_requiring_pin,
+                                 item->priv->required_pin_type,
+                                 item->priv->entered_puk,
+                                 new_pin,
+                                 (CarrickOfonoAgentCallback)_ofono_agent_reset_pin_cb,
+                                 item);
+  gtk_widget_hide (item->priv->passphrase_box);
+
+  g_free (item->priv->entered_puk);
+  item->priv->entered_puk = NULL;
+}
+
+static void
+_passphrase_button_or_entry_cb (GtkWidget *button_or_entry,
+                                CarrickServiceItem *item)
+{
+  const char *puk;
+
   carrick_service_item_set_active (item, TRUE);
-  _connect_with_password (item);
+  switch (item->priv->passphrase_type)
+    {
+    case CARRICK_PASSPHRASE_WIFI:
+      _connect_with_password (item);
+      break;
+    case CARRICK_PASSPHRASE_PIN:
+      carrick_service_item_enter_pin (item);
+      break;
+    case CARRICK_PASSPHRASE_PUK:
+      puk = gtk_entry_get_text (GTK_ENTRY (item->priv->passphrase_entry));
+      item->priv->entered_puk = g_strdup (puk);
+      _request_passphrase (item, CARRICK_PASSPHRASE_NEW_PIN);
+      break;
+    case CARRICK_PASSPHRASE_NEW_PIN:
+      carrick_service_item_reset_pin (item);
+      break;
+    }    
 }
 
 static void
@@ -1203,7 +1638,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
     {
       priv->error_hidden = TRUE;
       gtk_widget_hide (priv->passphrase_box);
-      gtk_widget_show (priv->connect_box);
+      gtk_widget_set_visible (priv->connect_box, !priv->is_modem_dummy);
       gtk_widget_hide (priv->info_bar);
       gtk_label_set_text (GTK_LABEL (priv->info_label), "");
       _unexpand_advanced_settings (item);
@@ -1240,27 +1675,125 @@ carrick_service_item_get_order (CarrickServiceItem *item)
 }
 
 static void
+carrick_service_item_set_locked_puk_type (CarrickServiceItem *item,
+                                          const char* obj_path,
+                                          const char* puk_type)
+{
+  if (item->priv->locked_modem)
+    g_free (item->priv->locked_modem);
+  if (item->priv->locked_puk_type)
+    g_free (item->priv->locked_puk_type);
+
+  item->priv->locked_modem = g_strdup (obj_path);
+  item->priv->locked_puk_type = g_strdup (puk_type);
+
+  if (!obj_path)
+    return;
+
+  carrick_service_item_update (item);
+}
+
+static void
+carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
+                                            const char* obj_path,
+                                            const char* pin_type)
+{
+  if (item->priv->modem_requiring_pin)
+    g_free (item->priv->modem_requiring_pin);
+  if (item->priv->required_pin_type)
+    g_free (item->priv->required_pin_type);
+
+  item->priv->modem_requiring_pin = g_strdup (obj_path);
+  item->priv->required_pin_type = g_strdup (pin_type);
+
+  carrick_service_item_update (item);
+  carrick_service_item_request_pin_if_needed (item);
+}
+
+
+static void
+_ofono_notify_required_pins_cb (CarrickOfonoAgent *ofono,
+                                GParamSpec *arg1,
+                                CarrickServiceItem *self)
+{
+  GHashTable *required_pins;
+  GHashTableIter iter;
+  gpointer key, val;
+  int sims;
+
+  /* if this is a real cell service we will only show the UI if we
+   * are certain this is the right service... in other words when 
+   * there's only one sim. In other situations we expect carricklist
+   * to use a dummy service */
+  g_object_get (ofono, "n-present-sims", &sims, NULL);
+  if (sims > 1 && !self->priv->is_modem_dummy)
+    return;
+  g_object_get (ofono, "required-pins", &required_pins, NULL);
+  g_hash_table_iter_init (&iter, required_pins);
+
+  /* note: only deals with the first required pin or null-case */
+  key = val = NULL;
+  g_hash_table_iter_next (&iter, &key, &val);
+  carrick_service_item_set_required_pin_type (self, (const char*)key, (const char*)val);
+}
+
+static void
+_ofono_notify_locked_puks_cb (CarrickOfonoAgent *ofono,
+                              GParamSpec *arg1,
+                              CarrickServiceItem *self)
+{
+  GHashTable *locked_puks;
+  GHashTableIter iter;
+  gpointer key, val;
+  int sims;
+
+  /* if this is a real cell service we will only show the UI if we
+   * are certain this is the right service... in other words when 
+   * there's only one sim. In other situations we expect carricklist
+   * to use a dummy service */
+  g_object_get (ofono, "n-present-sims", &sims, NULL);
+  if (sims > 1 && !self->priv->is_modem_dummy)
+    return;
+
+  g_object_get (ofono, "locked-puks", &locked_puks, NULL);
+  g_hash_table_iter_init (&iter, locked_puks);
+
+  /* note: only deals with the first locked puk or the null-case */
+  key = val = NULL;
+  g_hash_table_iter_next (&iter, &key, &val);
+  carrick_service_item_set_locked_puk_type (self, (const char*)key, (const char*)val);
+}
+
+static void
+_connect_ofono_handlers (CarrickServiceItem *self)
+{
+  if (self->priv->ofono && g_strcmp0 (self->priv->type, "cellular") == 0) {
+    g_signal_connect (self->priv->ofono, "notify::required-pins",
+                      G_CALLBACK (_ofono_notify_required_pins_cb), self);
+    _ofono_notify_required_pins_cb (self->priv->ofono, NULL, self);
+    g_signal_connect (self->priv->ofono, "notify::locked-puks",
+                      G_CALLBACK (_ofono_notify_locked_puks_cb), self);
+    _ofono_notify_locked_puks_cb (self->priv->ofono, NULL, self);
+  }
+
+}
+
+static void
 _set_model (CarrickServiceItem  *self,
             CarrickNetworkModel *model)
 {
-  g_return_if_fail (model != NULL);
   CarrickServiceItemPrivate *priv = self->priv;
 
   priv->model = model;
 
-
   if (priv->row)
-    {
-      _populate_variables (self);
-      _set_state (self);
-    }
+     _populate_variables (self);
 }
 
 static void
 _set_row (CarrickServiceItem *self,
           GtkTreePath        *path)
 {
-  g_return_if_fail (path != NULL);
   CarrickServiceItemPrivate *priv = self->priv;
 
   if (priv->row)
@@ -1274,16 +1807,14 @@ _set_row (CarrickServiceItem *self,
                                             path);
 
   if (priv->model)
-    {
-      _populate_variables (self);
-      _set_state (self);
-    }
+    _populate_variables (self);
 }
 
 void
 carrick_service_item_update (CarrickServiceItem *self)
 {
-  _populate_variables (self);
+  if (self->priv->model)
+    _populate_variables (self);
   _set_state (self);
 }
 
@@ -1847,6 +2378,32 @@ apply_button_clicked_cb (GtkButton *button,
   _unexpand_advanced_settings (item);
 }
 
+static GObject *
+carrick_service_item_constructor (GType                  gtype,
+                                  guint                  n_properties,
+                                  GObjectConstructParam *properties)
+{
+  GObject            *obj;
+  GObjectClass       *parent_class;
+  CarrickServiceItemPrivate *priv;
+
+  parent_class = G_OBJECT_CLASS (carrick_service_item_parent_class);
+  obj = parent_class->constructor (gtype, n_properties, properties);
+  priv = SERVICE_ITEM_PRIVATE (obj);
+
+  if (!priv->model) {
+    priv->is_modem_dummy = TRUE;
+    priv->state = g_strdup ("idle");
+    priv->strength = 0;
+    carrick_service_item_set_type (CARRICK_SERVICE_ITEM (obj), "cellular");
+    gtk_widget_set_visible (priv->connect_box, FALSE);
+ }
+
+  _set_state (CARRICK_SERVICE_ITEM (obj));
+
+  return obj;
+}
+
 static void
 carrick_service_item_class_init (CarrickServiceItemClass *klass)
 {
@@ -1860,6 +2417,7 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   object_class->get_property = carrick_service_item_get_property;
   object_class->set_property = carrick_service_item_set_property;
   object_class->dispose = carrick_service_item_dispose;
+  object_class->constructor = carrick_service_item_constructor;
 
   widget_class->enter_notify_event = carrick_service_item_enter_notify_event;
   widget_class->leave_notify_event = carrick_service_item_leave_notify_event;
@@ -1926,6 +2484,15 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_ACTIVE,
                                    pspec);
+
+  pspec = g_param_spec_string ("type",
+                               "type",
+                               "Connman service type",
+                               NULL,
+                               G_PARAM_READABLE);
+  g_object_class_install_property (object_class,
+                                   PROP_TYPE,
+                                   pspec);
 }
 
 static GtkWidget*
@@ -1971,7 +2538,6 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *table;
   GtkWidget                 *align;
   GtkWidget                 *scrolled_window;
-  GtkWidget                 *connect_with_pw_button;
   GtkWidget                 *content_area;
   char                      *security_sample;
 
@@ -2068,9 +2634,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                             FALSE);
 
-  priv->connect_box = gtk_hbox_new (FALSE,
-                                    6);
-  gtk_widget_show (priv->connect_box);
+  priv->connect_box = gtk_hbox_new (FALSE, 6);
+  gtk_widget_set_visible (priv->connect_box, !priv->is_modem_dummy);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->connect_box,
                       FALSE,
@@ -2159,7 +2724,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_show (priv->passphrase_entry);
   g_signal_connect (priv->passphrase_entry,
                     "activate",
-                    G_CALLBACK (_passphrase_entry_activated_cb),
+                    G_CALLBACK (_passphrase_button_or_entry_cb),
                     self);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->passphrase_entry),
                                  GTK_ENTRY_ICON_SECONDARY,
@@ -2172,19 +2737,18 @@ carrick_service_item_init (CarrickServiceItem *self)
                       priv->passphrase_entry,
                       FALSE, FALSE, 6);
 
-  connect_with_pw_button = gtk_button_new_with_label (_ ("Connect"));
-  gtk_widget_show (connect_with_pw_button);
-  gtk_widget_set_size_request (connect_with_pw_button, CARRICK_MIN_BUTTON_WIDTH, -1);
-  g_signal_connect (connect_with_pw_button,
+  priv->passphrase_button = gtk_button_new ();
+  gtk_widget_show (priv->passphrase_button);
+  gtk_widget_set_size_request (priv->passphrase_button, CARRICK_MIN_BUTTON_WIDTH, -1);
+  g_signal_connect (priv->passphrase_button,
                     "clicked",
-                    G_CALLBACK (_connect_with_pw_clicked_cb),
+                    G_CALLBACK (_passphrase_button_or_entry_cb),
                     self);
   gtk_box_pack_start (GTK_BOX (priv->passphrase_box),
-                      connect_with_pw_button,
+                      priv->passphrase_button,
                       FALSE, FALSE, 6);
 
-  priv->show_password_check =
-    gtk_check_button_new_with_label (_ ("Show password"));
+  priv->show_password_check = gtk_check_button_new ();
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->show_password_check),
                                                    TRUE);
   gtk_widget_show (priv->show_password_check);
@@ -2365,6 +2929,18 @@ carrick_service_item_new (CarrickIconFactory         *icon_factory,
                        "notification-manager", notifications,
                        "model", model,
                        "tree-path", path,
+                       NULL);
+}
+
+GtkWidget*
+carrick_service_item_new_as_modem_proxy (CarrickIconFactory         *icon_factory,
+                                         CarrickOfonoAgent          *ofono_agent,
+                                         CarrickNotificationManager *notifications)
+{
+  return g_object_new (CARRICK_TYPE_SERVICE_ITEM,
+                       "icon-factory", icon_factory,
+                       "ofono-agent", ofono_agent,
+                       "notification-manager", notifications,
                        NULL);
 }
 
