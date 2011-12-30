@@ -746,7 +746,7 @@ carrick_ofono_agent_finish (CarrickOfonoAgent  *self,
   }
 
   g_variant_unref (g_dbus_proxy_call_finish (modem->sim, res, error));
-  return (error == NULL);
+  return (*error == NULL);
 }
 
 void
