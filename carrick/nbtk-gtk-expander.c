@@ -137,7 +137,7 @@ nbtk_gtk_expander_size_allocate (GtkWidget     *widget,
   child = gtk_bin_get_child ((GtkBin*) widget);
   label = ((NbtkGtkExpander *) widget)->priv->label;
   gtk_style_context_get_border (gtk_widget_get_style_context (widget), 0, &border);
-  child_y = border.top + priv->child_padding;
+  child_y = allocation->y + border.top + priv->child_padding;
 
   if (label && gtk_widget_get_visible (label))
     {
@@ -297,10 +297,14 @@ static void
 nbtk_gtk_expander_add (GtkContainer *container,
                        GtkWidget    *widget)
 {
+  gboolean expanded;
+
+  expanded = (gtk_widget_get_state_flags (GTK_WIDGET (container)) & GTK_STATE_FLAG_ACTIVE);
+
+  gtk_widget_set_child_visible (widget, TRUE);
+  gtk_widget_set_visible (widget, expanded);
   GTK_CONTAINER_CLASS (nbtk_gtk_expander_parent_class)->add (container, widget);
 
-  gtk_widget_set_child_visible (widget,
-                                gtk_widget_get_state_flags (GTK_WIDGET (container)) & GTK_STATE_FLAG_ACTIVE);
   gtk_widget_queue_resize (GTK_WIDGET (container));
 }
 
@@ -552,10 +556,13 @@ nbtk_gtk_expander_set_expanded (NbtkGtkExpander *expander,
     {
       GtkWidget *child;
 
-      gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_ACTIVE, FALSE);
-      child = gtk_bin_get_child (GTK_BIN (expander));
-      gtk_widget_set_child_visible (child, gtk_widget_get_state_flags (widget) & GTK_STATE_FLAG_ACTIVE);
+      if (expanded)
+        gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_ACTIVE, FALSE);
+      else
+        gtk_widget_unset_state_flags (widget, GTK_STATE_FLAG_ACTIVE);
 
+      child = gtk_bin_get_child (GTK_BIN (expander));
+      gtk_widget_set_visible (child, expanded);
       gtk_widget_queue_resize (widget);
 
       g_object_notify ((GObject*) expander, "expanded");

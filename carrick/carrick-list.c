@@ -381,13 +381,15 @@ _adjustment_value_changed_cb (GtkAdjustment *adj, CarrickList *list)
   CarrickListPrivate *priv = list->priv;
   GtkAllocation alloc;
 
-  gtk_widget_get_allocation (priv->active_item, &alloc);
-
   /* save the position of the active item relative to the adjustment.
    * This allows us to preserve that position in active_item_alloc_cb() */
-  if (priv->active_item)
+  if (priv->active_item) {
+    gtk_widget_get_allocation (priv->active_item, &alloc);
     priv->active_item_rel_pos = alloc.y -
                                 gtk_adjustment_get_value (adj);
+  } else {
+    priv->active_item_rel_pos =  0;
+  }
 }
 
 /* called when a ServiceItem signals it is active or when
