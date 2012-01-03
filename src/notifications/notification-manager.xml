@@ -28,11 +28,17 @@
       <arg type="s" name="name" direction="out"/>
       <arg type="s" name="vendor" direction="out"/>
       <arg type="s" name="version" direction="out"/>
+      <arg type="s" name="spec_version" direction="out"/>
     </method>
 
     <signal name="NotificationClosed">
       <arg type="u" name="id"/>
       <arg type="u" name="reason"/>
+    </signal>
+
+    <signal name="ActionInvoked">
+      <arg type="u" name="id"/>
+      <arg type="s" name="action"/>
     </signal>
   </interface>
 </node>

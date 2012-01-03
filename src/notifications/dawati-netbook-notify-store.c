@@ -418,6 +418,7 @@ notification_manager_get_server_information (DawatiNetbookNotifyStore  *notify,
                                              gchar                    **name,
                                              gchar                    **vendor,
                                              gchar                    **version,
+                                             gchar                    **spec_version,
                                              GError                    *error)
 {
   g_return_val_if_fail (DAWATI_NETBOOK_IS_NOTIFY (notify) &&
@@ -426,6 +427,7 @@ notification_manager_get_server_information (DawatiNetbookNotifyStore  *notify,
   *name    = g_strdup ("Dawati Netbook Notification Manager");
   *vendor  = g_strdup ("Dawati Netbook");
   *version = g_strdup (VERSION);
+  *spec_version = g_strdup ("1.2");
 
   return TRUE;
 }
