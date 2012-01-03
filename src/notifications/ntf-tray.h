@@ -70,7 +70,8 @@ struct _NtfTray
 
 GType ntf_tray_get_type (void) G_GNUC_CONST;
 
-NtfTray         *ntf_tray_new                 (void);
+NtfTray         *ntf_tray_new                 (gboolean         urgent);
+gboolean         ntf_tray_get_urgent          (NtfTray         *tray);
 void             ntf_tray_add_notification    (NtfTray         *tray,
                                                NtfNotification *ntf);
 NtfNotification *ntf_tray_find_notification   (NtfTray         *tray,

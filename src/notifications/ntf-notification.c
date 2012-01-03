@@ -328,12 +328,15 @@ ntf_notification_constructed (GObject *object)
   clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_wrap (txt, TRUE);
+  clutter_text_set_line_wrap_mode (txt, PANGO_WRAP_WORD_CHAR);
   clutter_text_set_use_markup (txt, TRUE);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->body),
-                               "y-expand", FALSE,
+                               "y-expand", TRUE,
                                "x-expand", FALSE,
+                               "y-fill", TRUE,
+                               "x-fill", TRUE,
                                NULL);
 
   /* create the box for the buttons */

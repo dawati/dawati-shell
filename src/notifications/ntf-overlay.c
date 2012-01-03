@@ -418,10 +418,10 @@ ntf_overlay_constructed (GObject *object)
   if (G_OBJECT_CLASS (ntf_overlay_parent_class)->constructed)
     G_OBJECT_CLASS (ntf_overlay_parent_class)->constructed (object);
 
-  priv->tray_normal = ntf_tray_new ();
+  priv->tray_normal = ntf_tray_new (FALSE);
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->tray_normal), actor);
 
-  priv->tray_urgent = ntf_tray_new ();
+  priv->tray_urgent = ntf_tray_new (TRUE);
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->tray_urgent), actor);
 
   priv->lowlight = clutter_rectangle_new_with_color (&low_clr);

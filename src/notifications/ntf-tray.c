@@ -58,6 +58,8 @@ struct _NtfTrayPrivate
   ClutterActor *pending_removed;  /* notification pending removal on anim */
   gboolean      anim_lock;
 
+  gboolean urgent;
+
   guint disposed : 1;
 };
 
@@ -69,6 +71,7 @@ enum
 enum
 {
   PROP_0,
+  PROP_URGENT
 };
 
 /* static guint signals[N_SIGNALS] = {0}; */
@@ -123,32 +126,53 @@ static void
 ntf_tray_get_preferred_width (ClutterActor *actor,
                               gfloat        for_height,
                               gfloat       *min_width,
-                              gfloat       *natural_width)
+                              gfloat       *nat_width)
 {
-  *min_width     = CLUSTER_WIDTH;
-  *natural_width = CLUSTER_WIDTH;
+  NtfTrayPrivate *priv = NTF_TRAY (actor)->priv;
+
+  if (min_width)
+    *min_width = CLUSTER_WIDTH;
+  if (nat_width)
+    {
+      if (priv->urgent)
+        {
+          gfloat nat_notif;
+          MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+          MetaScreen *screen = meta_plugin_get_screen (plugin);
+          gint screen_width, screen_height;
+
+          meta_screen_get_size (screen, &screen_width, &screen_height);
+
+          clutter_actor_get_preferred_width (priv->notifiers, for_height,
+                                             NULL, &nat_notif);
+
+          *nat_width = MIN ((2 * screen_width) / 3, nat_notif);
+        }
+      else
+        *nat_width = CLUSTER_WIDTH;
+    }
 }
 
 static void
 ntf_tray_get_preferred_height (ClutterActor *actor,
                                gfloat        for_width,
                                gfloat       *min_height,
-                               gfloat       *natural_height)
+                               gfloat       *nat_height)
 {
   NtfTrayPrivate *priv = NTF_TRAY (actor)->priv;
 
   *min_height = 0;
-  *natural_height = 0;
+  *nat_height = 0;
 
   if (priv->notifiers)
     {
       gfloat m_height, p_height;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
-                                          CLUSTER_WIDTH, &m_height, &p_height);
+                                          for_width, &m_height, &p_height);
 
       *min_height += m_height;
-      *natural_height += p_height;
+      *nat_height += p_height;
     }
 
   if (priv->control && CLUTTER_ACTOR_IS_MAPPED (priv->control))
@@ -156,10 +180,10 @@ ntf_tray_get_preferred_height (ClutterActor *actor,
       gfloat m_height, p_height;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->control),
-                                          CLUSTER_WIDTH, &m_height, &p_height);
+                                          for_width, &m_height, &p_height);
 
       *min_height += m_height - 30;
-      *natural_height += p_height - 30;
+      *nat_height += p_height - 30;
     }
 }
 
@@ -171,22 +195,31 @@ ntf_tray_allocate (ClutterActor          *actor,
   NtfTrayPrivate    *priv = NTF_TRAY (actor)->priv;
   ClutterActorClass *klass;
   gfloat             m_height = 0.0, p_height = 0.0;
+  gfloat             control_height = 0.0;
 
   klass = CLUTTER_ACTOR_CLASS (ntf_tray_parent_class);
 
   klass->allocate (actor, box, flags);
+
+  if (priv->control && CLUTTER_ACTOR_IS_MAPPED (priv->control))
+    {
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->control),
+                                          box->x2 - box->x1,
+                                          NULL, &control_height);
+    }
 
   if (priv->notifiers)
     {
       ClutterActorBox notifier_box = { 0, };
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
-                                          CLUSTER_WIDTH, &m_height, &p_height);
+                                          box->x2 - box->x1,
+                                          &m_height, &p_height);
 
       notifier_box.x2 = box->x2 - box->x1;
       notifier_box.y2 = p_height;
 
-      clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
+      clutter_actor_allocate (CLUTTER_ACTOR (priv->notifiers),
                               &notifier_box, flags);
     }
 
@@ -198,12 +231,13 @@ ntf_tray_allocate (ClutterActor          *actor,
       control_box.y1 = p_height - 30;
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->control),
-                                          CLUSTER_WIDTH, &m_height, &p_height);
+                                          box->x2 - box->x1,
+                                          &m_height, &p_height);
 
       control_box.x2 = box->x2 - box->x1;
       control_box.y2 = control_box.y1 + p_height;
 
-      clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
+      clutter_actor_allocate (CLUTTER_ACTOR (priv->control),
                               &control_box, flags);
     }
 }
@@ -247,6 +281,44 @@ ntf_tray_key_press_event (ClutterActor *actor, ClutterKeyEvent *event)
 }
 
 static void
+ntf_tray_get_property (GObject    *object,
+                       guint       property_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
+{
+  NtfTray        *self = NTF_TRAY (object);
+  NtfTrayPrivate *priv = self->priv;
+
+  switch (property_id)
+    {
+    case PROP_URGENT:
+      g_value_set_boolean (value, priv->urgent);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+ntf_tray_set_property (GObject      *object,
+                       guint         property_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
+{
+  NtfTray        *self = NTF_TRAY (object);
+  NtfTrayPrivate *priv = self->priv;
+
+  switch (property_id)
+    {
+    case PROP_URGENT:
+      priv->urgent = g_value_get_boolean (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
 ntf_tray_class_init (NtfTrayClass *klass)
 {
   GObjectClass      *object_class = (GObjectClass *)klass;
@@ -257,6 +329,8 @@ ntf_tray_class_init (NtfTrayClass *klass)
   object_class->dispose             = ntf_tray_dispose;
   object_class->finalize            = ntf_tray_finalize;
   object_class->constructed         = ntf_tray_constructed;
+  object_class->get_property        = ntf_tray_get_property;
+  object_class->set_property        = ntf_tray_set_property;
 
   actor_class->key_press_event      = ntf_tray_key_press_event;
   actor_class->paint                = ntf_tray_paint;
@@ -266,6 +340,15 @@ ntf_tray_class_init (NtfTrayClass *klass)
   actor_class->allocate             = ntf_tray_allocate;
   actor_class->get_preferred_height = ntf_tray_get_preferred_height;
   actor_class->get_preferred_width  = ntf_tray_get_preferred_width;
+
+  g_object_class_install_property (object_class,
+                                   PROP_URGENT,
+                                   g_param_spec_boolean ("urgent",
+                                                         "Urgent",
+                                                         "Is this tray urgent",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -297,7 +380,7 @@ ntf_tray_constructed (GObject *object)
   if (G_OBJECT_CLASS (ntf_tray_parent_class)->constructed)
     G_OBJECT_CLASS (ntf_tray_parent_class)->constructed (object);
 
-  priv->notifiers = clutter_group_new ();
+  priv->notifiers = mx_stack_new ();
 
   clutter_actor_set_parent (priv->notifiers, actor);
 
@@ -317,8 +400,6 @@ ntf_tray_constructed (GObject *object)
   priv->control_text = mx_label_new ();
   mx_table_add_actor (MX_TABLE (priv->control),
                         CLUTTER_ACTOR (priv->control_text), 0, 0);
-
-  clutter_actor_set_width (priv->control, CLUSTER_WIDTH);
 
   clutter_actor_set_parent (priv->control, actor);
 
@@ -449,12 +530,17 @@ ntf_tray_notification_closed_cb (NtfNotification *ntf, NtfTray *tray)
   if (ntfa == priv->active_notifier && priv->n_notifiers > 0)
     {
       gint prev_height, new_height;
+      GList *notifiers;
 
       prev_height = clutter_actor_get_height (ntfa);
 
-      priv->active_notifier =
-        clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers),
-                                     1); /* Next, not 0 */
+      notifiers =
+        clutter_container_get_children (CLUTTER_CONTAINER (priv->notifiers));
+
+      priv->active_notifier = notifiers->next != NULL ?
+        (ClutterActor *) notifiers->next->data : NULL;
+
+      g_list_free (notifiers);
 
       if (priv->active_notifier)
         {
@@ -546,8 +632,6 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), ntfa);
 
-  clutter_actor_set_width (ntfa, CLUSTER_WIDTH);
-
   priv->n_notifiers++;
 
   if (priv->n_notifiers == 1)
@@ -638,10 +722,20 @@ ntf_tray_get_n_notifications (NtfTray *tray)
   return tray->priv->n_notifiers;
 }
 
+gboolean
+ntf_tray_get_urgent (NtfTray *tray)
+{
+  g_return_val_if_fail (NTF_IS_TRAY (tray), FALSE);
+
+  return tray->priv->urgent;
+}
+
+
 NtfTray *
-ntf_tray_new (void)
+ntf_tray_new (gboolean urgent)
 {
   return g_object_new (NTF_TYPE_TRAY,
                        "show-on-set-parent", FALSE,
+                       "urgent", urgent,
                        NULL);
 }
