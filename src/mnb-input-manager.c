@@ -282,7 +282,7 @@ mnb_input_manager_apply_stack (void)
 static void
 actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
 {
-  ClutterGeometry  geom;
+  ClutterActorBox  box;
   MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
   XserverRegion    rgn;
   XRectangle       rect;
@@ -297,12 +297,12 @@ actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
 
   rgn = mir->region;
 
-  clutter_actor_get_geometry (actor, &geom);
+  clutter_actor_get_allocation_box (actor, &box);
 
-  rect.x      = geom.x;
-  rect.y      = geom.y;
-  rect.width  = geom.width;
-  rect.height = geom.height;
+  rect.x      = box.x1;
+  rect.y      = box.y1;
+  rect.width  = box.x2 - box.x1;
+  rect.height = box.y2 - box.y1;
 
   XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
@@ -373,20 +373,20 @@ actor_hide_cb (ClutterActor *actor, gpointer data)
 static void
 actor_show_cb (ClutterActor *actor, MnbInputLayer layer)
 {
-  ClutterGeometry  geom;
-  MnbInputRegion  *mir  = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+  ClutterActorBox  box;
+  MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
   Display         *xdpy;
 
   g_assert (mgr_singleton);
 
   xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
 
-  clutter_actor_get_geometry (actor, &geom);
+  clutter_actor_get_allocation_box (actor, &box);
 
   if (!mir)
     {
-      mir = mnb_input_manager_push_region (geom.x, geom.y,
-                                           geom.width, geom.height,
+      mir = mnb_input_manager_push_region (box.x1, box.y1,
+                                           box.x2 - box.x1, box.y2 - box.y1,
                                            META_IS_WINDOW_ACTOR (actor), layer);
 
       g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
@@ -398,10 +398,10 @@ actor_show_cb (ClutterActor *actor, MnbInputLayer layer)
 
       rgn = mir->region;
 
-      rect.x      = geom.x;
-      rect.y      = geom.y;
-      rect.width  = geom.width;
-      rect.height = geom.height;
+      rect.x      = box.x1;
+      rect.y      = box.y1;
+      rect.width  = box.x2 - box.x1;
+      rect.height = box.y2 - box.y1;
 
       XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
