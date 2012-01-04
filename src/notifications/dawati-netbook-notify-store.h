@@ -58,6 +58,7 @@ typedef struct {
 
 typedef struct {
   GObjectClass parent_class;
+  void (*action_invoked) (DawatiNetbookNotifyStore *notify, guint id, const gchar *action);
   void (*notification_added) (DawatiNetbookNotifyStore *notify, Notification *notification);
   void (*notification_closed) (DawatiNetbookNotifyStore *notify, guint id, DawatiNetbookNotifyStoreCloseReason reason);
 } DawatiNetbookNotifyStoreClass;

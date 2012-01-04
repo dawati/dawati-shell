@@ -25,6 +25,7 @@ G_DEFINE_TYPE (DawatiNetbookNotifyStore, dawati_netbook_notify_store, G_TYPE_OBJ
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), DAWATI_NETBOOK_TYPE_NOTIFY_STORE, DawatiNetbookNotifyStorePrivate))
 
 enum {
+  ACTION_INVOKED,
   NOTIFICATION_ADDED,
   NOTIFICATION_CLOSED,
   N_SIGNALS
@@ -344,7 +345,7 @@ notification_manager_notify (DawatiNetbookNotifyStore  *notify,
  * Function allowing to pop up notifications internally from mutter-dawati
  *
  * This is bit of a hack that relies on special action ids, and has the
- * associated actions hardcoded in invoke_action_for_notification().
+ * associated actions hardcoded in dawati_netbook_notify_store_action().
  *
  * data: the data to pass to the specific internal callback.
  */
@@ -458,6 +459,17 @@ dawati_netbook_notify_store_class_init (DawatiNetbookNotifyStoreClass *klass)
 
   object_class->finalize = dawati_netbook_notify_store_finalize;
 
+  /* TODO: implement ActionInvoked */
+  signals[ACTION_INVOKED] =
+    g_signal_new ("action-invoked",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (DawatiNetbookNotifyStoreClass,
+                                   action_invoked),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__UINT_POINTER,
+                  G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_STRING);
+
   signals[NOTIFICATION_ADDED] =
     g_signal_new ("notification-added",
                   G_OBJECT_CLASS_TYPE (object_class),
@@ -548,38 +560,6 @@ create_signal_for_notification (Notification *n, const char *signal_name)
   return message;
 }
 
-static void
-invoke_action_for_notification (Notification *n, const char *key)
-{
-  DBusMessage *message;
-
-  g_return_if_fail (n && key);
-
-  if (n->sender)
-    {
-      message = create_signal_for_notification (n, "ActionInvoked");
-      dbus_message_append_args(message,
-                               DBUS_TYPE_STRING, &key,
-                               DBUS_TYPE_INVALID);
-
-      dbus_connection_send(_dbus_conn, message, NULL);
-      dbus_message_unref(message);
-    }
-  else
-    {
-      /*
-       * Internal notification
-       *
-       * TODO -- if we are going to use this for anything else, we should add
-       *         api to formally install callbacks.
-       */
-      if (!strcmp (key, "MNB-urgent-window"))
-        {
-          dawati_netbook_activate_window (n->internal_data);
-        }
-    }
-}
-
 DawatiNetbookNotifyStore *
 dawati_netbook_notify_store_new (void)
 {
@@ -621,7 +601,24 @@ dawati_netbook_notify_store_action (DawatiNetbookNotifyStore *notify,
 
   if (find_notification (notify, id, &notification))
     {
-      invoke_action_for_notification (notification, action);
+      if (notification->sender)
+        {
+          g_signal_emit (notify, signals[ACTION_INVOKED], 0, id, action);
+        }
+      else
+        {
+          /*
+           * Internal notification
+           *
+           * TODO -- if we are going to use this for anything else, we should add
+           *         api to formally install callbacks.
+           */
+          if (!strcmp (action, "MNB-urgent-window"))
+            {
+              dawati_netbook_activate_window (notification->internal_data);
+            }
+        }
+      /* invoke_action_for_notification (notification, action); */
       dawati_netbook_notify_store_close (notify, id, ClosedProgramatically);
     }
 }
