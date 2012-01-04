@@ -168,8 +168,11 @@ ntf_notification_leave_event (ClutterActor         *actor,
 
   if (priv->timeout > 0)
     {
+      gint remaining = (gint) priv->timeout -
+        (gint) g_timer_elapsed (priv->timer, NULL) * 1000;
+
       priv->timeout_id =
-        g_timeout_add (g_timer_elapsed (priv->timer, NULL) * 1000,
+        g_timeout_add (remaining,
                        (GSourceFunc) ntf_notification_timeout_cb,
                        actor);
       g_timer_continue (priv->timer);
