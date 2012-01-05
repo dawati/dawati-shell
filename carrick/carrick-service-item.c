@@ -80,6 +80,7 @@ struct _CarrickServiceItemPrivate
 {
   GtkWidget *icon;
   GtkWidget *name_label;
+  GtkWidget *modem_box;
   GtkWidget *connect_box;
   GtkWidget *security_label;
   GtkWidget *portal_button;
@@ -703,6 +704,7 @@ _set_state (CarrickServiceItem *self)
 
   gtk_widget_set_sensitive (priv->advanced_box, !priv->immutable);
   gtk_widget_hide (priv->portal_button);
+  gtk_widget_set_visible (priv->modem_box, priv->is_modem_dummy);
 
   if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
@@ -978,6 +980,7 @@ _request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
                               0, -1);
   gtk_widget_grab_focus (priv->passphrase_entry);
   gtk_widget_hide (priv->connect_box);
+  gtk_widget_hide (priv->modem_box);
   gtk_widget_show (priv->passphrase_box);
 }
 
@@ -1149,36 +1152,38 @@ _start_connecting (CarrickServiceItem *item)
     }
   else
     {
-      if (priv->setup_required)
-        {
-          GPid pid;
-          gulong flags = G_SPAWN_SEARCH_PATH | \
-                         G_SPAWN_STDOUT_TO_DEV_NULL | \
-                         G_SPAWN_STDERR_TO_DEV_NULL;
-          GError *error = NULL;
-          char *argv[] = {
-              LIBEXECDIR "/carrick-3g-wizard",
-              NULL
-          };
-
-          if (g_spawn_async(NULL, argv, NULL, flags, NULL,
-                            NULL, &pid, &error))
-            {
-              carrick_shell_hide ();
-            } else {
-              g_warning ("Unable to spawn 3g connection wizard");
-              g_error_free(error);
-            }
-        }
-      else
-        {
-          carrick_notification_manager_queue_event (priv->note,
-                                                    priv->type,
-                                                    "ready",
-                                                    priv->name);
-          _connect (item);
-        }
+      carrick_notification_manager_queue_event (priv->note,
+                                                priv->type,
+                                                "ready",
+                                                priv->name);
+      _connect (item);
     }
+}
+
+static void
+_modem_button_cb (GtkButton          *modem_button,
+                  CarrickServiceItem *item)
+{
+  GPid pid;
+  gulong flags = G_SPAWN_SEARCH_PATH | \
+                 G_SPAWN_STDOUT_TO_DEV_NULL | \
+                 G_SPAWN_STDERR_TO_DEV_NULL;
+  GError *error = NULL;
+  char *argv[] = {
+     LIBEXECDIR "/carrick-3g-wizard",
+     NULL
+  };
+
+  if (g_spawn_async(NULL, argv, NULL, flags, NULL,
+                    NULL, &pid, &error))
+    {
+      carrick_shell_hide ();
+    } 
+  else 
+   {
+      g_warning ("Unable to spawn 3g connection wizard");
+      g_error_free(error);
+   }
 }
 
 static void
@@ -2535,6 +2540,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   CarrickServiceItemPrivate *priv;
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
+  GtkWidget                 *modem_button;
   GtkWidget                 *table;
   GtkWidget                 *align;
   GtkWidget                 *scrolled_window;
@@ -2634,8 +2640,29 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                             FALSE);
 
+  priv->modem_box = gtk_hbox_new (FALSE, 6);
+  gtk_widget_set_visible (priv->modem_box, priv->is_modem_dummy);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      priv->modem_box,
+                      FALSE,
+                      FALSE,
+                      6);
+
+  modem_button = gtk_button_new_with_label (_("Configure SIM card"));
+  gtk_widget_show (modem_button);
+  gtk_widget_set_size_request (modem_button, CARRICK_MIN_BUTTON_WIDTH, -1);
+  g_signal_connect (modem_button,
+                    "clicked",
+                    G_CALLBACK (_modem_button_cb),
+                    self);
+  gtk_box_pack_start (GTK_BOX (priv->modem_box),
+                      modem_button,
+                      FALSE,
+                      FALSE,
+                      6);
+
+
   priv->connect_box = gtk_hbox_new (FALSE, 6);
-  gtk_widget_set_visible (priv->connect_box, !priv->is_modem_dummy);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->connect_box,
                       FALSE,

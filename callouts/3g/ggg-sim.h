@@ -34,7 +34,7 @@
 /* This is an abstraction of a ofono Modem + ConnectionContext */
 typedef struct Sim {
   GDBusProxy *modem_proxy;
-  char *context_path;
+  GDBusProxy *context_proxy;
 
   char *device_name;
 
@@ -49,5 +49,16 @@ typedef struct Sim {
 
 void sim_free (Sim *sim);
 Sim* sim_new (const char *modem_path);
+gboolean sim_get_plan (Sim *sim,
+                       char **name,
+                       char **apn,
+                       char **username,
+                       char **password);
+gboolean sim_set_plan (Sim *sim,
+                       const char *name,
+                       const char *apn,
+                       const char *username,
+                       const char *password);
+gboolean sim_remove_plan (Sim *sim);
 
 #endif /* __GGG_SIM_H__ */
