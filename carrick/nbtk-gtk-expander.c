@@ -180,6 +180,8 @@ nbtk_gtk_expander_size_allocate (GtkWidget     *widget,
 
 }
 
+  /* This widget only does height-for-width for now*/
+
 static void
 nbtk_gtk_expander_get_preferred_height (GtkWidget *widget,
                                         gint      *minimum,
@@ -187,7 +189,7 @@ nbtk_gtk_expander_get_preferred_height (GtkWidget *widget,
 {
   NbtkGtkExpanderPrivate *priv = ((NbtkGtkExpander*) widget)->priv;
   GtkWidget *child, *label;
-  gint label_min, label_nat, child_min, child_nat, indicator;
+  gint label_min, label_nat, child_min, child_nat, indicator, min_w;
   GtkBorder border;
 
   child = gtk_bin_get_child ((GtkBin*) widget);
@@ -196,12 +198,16 @@ nbtk_gtk_expander_get_preferred_height (GtkWidget *widget,
 
   label_min = label_nat = indicator = child_min = child_nat = 0;
 
-  if (label && gtk_widget_get_visible (label))
-    gtk_widget_get_preferred_height (label, &label_min, &label_nat);
+
+  if (label && gtk_widget_get_visible (label)) {
+    gtk_widget_get_preferred_width (label, &min_w, NULL);
+    gtk_widget_get_preferred_height_for_width (label, min_w, &label_min, &label_nat);
+  }
 
   if (child && gtk_widget_get_visible (child))
     {
-      gtk_widget_get_preferred_height (child, &child_min, &child_nat);
+      gtk_widget_get_preferred_width (child, &min_w, NULL);
+      gtk_widget_get_preferred_height_for_width (child, min_w, &child_min, &child_nat);
       child_min += priv->child_padding;
       child_nat += priv->child_padding;
     }
