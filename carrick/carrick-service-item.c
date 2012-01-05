@@ -1335,6 +1335,11 @@ _wait_for_ofono_to_settle (CarrickServiceItem *item)
   return FALSE;
 }
 
+/* TODO this does not currently work as expected because 
+ * we have to re-run carrick_service_item_update_cellular_info()
+ * via _wait_for_ofono_to_settle(). Should save the GError for
+ * carrick_service_item_update_cellular_info... */
+
 static void
 _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
                          const char *modem_path,
@@ -1344,6 +1349,7 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
   GError *error = NULL;
   char *msg, *err_name = NULL;
   int retries;
+
   if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
     if (!error) {
       g_warning ("EnterPin() failed without message");
