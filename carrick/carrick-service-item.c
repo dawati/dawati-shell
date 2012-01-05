@@ -1992,6 +1992,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->icon = gtk_image_new ();
   gtk_widget_show (priv->icon);
+  gtk_misc_set_alignment (GTK_MISC (priv->icon), 0.5, 0.0);
   gtk_box_pack_start (GTK_BOX (box),
                       priv->icon,
                       FALSE,
@@ -2012,8 +2013,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox),
                       hbox,
-                      TRUE,
-                      TRUE,
+                      FALSE,
+                      FALSE,
                       6);
 
   priv->name_label = gtk_label_new ("");
@@ -2051,8 +2052,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_show (priv->connect_box);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->connect_box,
-                      TRUE,
-                      TRUE,
+                      FALSE,
+                      FALSE,
                       6);
 
   align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
@@ -2129,7 +2130,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->passphrase_box = gtk_hbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box,
-                      TRUE, TRUE, 6);
+                      FALSE, FALSE, 6);
 
   priv->passphrase_entry = gtk_entry_new ();
   gtk_entry_set_width_chars (GTK_ENTRY (priv->passphrase_entry), 20);
