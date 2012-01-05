@@ -73,36 +73,13 @@ get_child_content (RestXmlNode *node, const char *name)
 }
 
 static void
-set_property (GDBusProxy *proxy,
-              const char *key,
-              const GVariant *value)
+save_context (Sim *sim, const char *name)
 {
-  GError *err = NULL;
+  const char *username, *password, *apn;
 
-  g_dbus_proxy_call_sync (proxy,
-                          "SetProperty",
-                          g_variant_new ("(sv)", key, value),
-                          G_DBUS_CALL_FLAGS_NONE,
-                          -1,
-                          NULL,
-                          &err);
-  if (err) {
-    g_warning ("SetProperty failed: %s", err->message);
-    g_error_free (err);
-    /* TODO */
-  } 
-}
-
-static void
-save_context (Sim *sim)
-{
-  GDBusProxy *context_proxy;
-  GError *err = NULL;
-  const char *username, *password, *name;
-
-  name = rest_xml_node_get_attr (plan_node, "value");
-  if (!name)
-    name = "";
+  apn = rest_xml_node_get_attr (plan_node, "value");
+  if (!apn)
+    apn = "";
   username = get_child_content (plan_node, "username");
   if (!username)
     username = "";
@@ -110,43 +87,7 @@ save_context (Sim *sim)
   if (!password)
     password = "";
 
-  if (!sim->context_path) {
-    GVariant *var;
-    var = g_dbus_proxy_call_sync (sim->modem_proxy,
-                                  "AddContext",
-                                  g_variant_new ("(s)", "internet"),
-                                  G_DBUS_CALL_FLAGS_NONE,
-                                  -1,
-                                  NULL,
-                                  &err);
-    if (err) {
-      g_warning ("AddContext failed: %s", err->message);
-      g_error_free (err);
-      /* TODO ? */
-      return;
-    } 
-    g_variant_get (var, "(o)", &sim->context_path);
-    g_variant_unref (var);
-  }
-
-  context_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                                 G_DBUS_PROXY_FLAGS_NONE,
-                                                 NULL, /* should add iface info here */
-                                                 OFONO_SERVICE,
-                                                 sim->context_path,
-                                                 OFONO_CONTEXT_INTERFACE,
-                                                 NULL,
-                                                 &err);
-  if (err) {
-    g_warning ("Failed to get proxy: %s", err->message);
-    g_error_free (err);
-    /* TODO ? */
-    return;
-  } 
-
-  set_property (context_proxy, "AccessPointName", g_variant_new_string (name));
-  set_property (context_proxy, "Username", g_variant_new_string (username));
-  set_property (context_proxy, "Password", g_variant_new_string (password));
+  sim_set_plan (sim, name, apn, username, password);
 }
 
 static void
@@ -155,6 +96,10 @@ state_machine (void)
   GtkWidget *dialog;
   int old_state;
   Sim *sim = NULL;
+  char *name, *apn, *username, *password;
+  const char *provider;
+
+  name = apn = username = password = NULL;
 
   while (state != STATE_FINISH) {
     /* For sanity checking state changes later */
@@ -189,9 +134,11 @@ state_machine (void)
       break;
 
      case STATE_BROADBAND_INFO:
-      /* Go to plan, provider or country selection depending on what we know
-       * from mobile-broadband-info */
+      /* Go to plan, provider, country or manual selection depending on what we know
+       * from mobile-broadband-info and ofono */
       g_assert (sim);
+
+      name = apn = username = password = NULL;
 
       provider_node = ggg_mobile_info_get_provider_for_ids (sim->mcc, sim->mnc);
       if (provider_node) {
@@ -199,6 +146,13 @@ state_machine (void)
       } else {
         country_node = ggg_mobile_info_get_country_for_mcc (sim->mcc);
         state = country_node ? STATE_PROVIDER : STATE_COUNTRY;
+      }
+
+      if (sim_get_plan (sim, &name, &apn, &username, &password)) {
+        /* ofono has a context already. We cannot really tell if this
+         * was a manual setup or from a template... so skip to manual dialog
+         * and let the user restart wizard if needed */
+        state = STATE_MANUAL;
       }
 
       break;
@@ -241,6 +195,7 @@ state_machine (void)
       }
       gtk_widget_destroy (dialog);
       break;
+
     case STATE_PLAN:
       g_assert (provider_node);
       dialog = g_object_new (GGG_TYPE_PLAN_DIALOG,
@@ -256,27 +211,47 @@ state_machine (void)
         break;
       case GTK_RESPONSE_ACCEPT:
         plan_node = ggg_plan_dialog_get_selected (GGG_PLAN_DIALOG (dialog));
+        /* guess a name for the context */
+        provider = get_child_content (provider_node, "name");
+        if (provider)
+          name = g_strdup_printf ("%s Internet", provider);
+        else
+          name = g_strdup ("Internet");
+
         state = STATE_SAVE;
         break;
       }
       gtk_widget_destroy (dialog);
       break;
+
     case STATE_MANUAL:
-      dialog = g_object_new (GGG_TYPE_MANUAL_DIALOG, NULL);
+      dialog = g_object_new (GGG_TYPE_MANUAL_DIALOG,
+                             "name", name,
+                             "apn", apn,
+                             "username", username,
+                             "password", password,
+                             NULL);
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
       case GTK_RESPONSE_CANCEL:
+      case GTK_RESPONSE_CLOSE:
       case GTK_RESPONSE_DELETE_EVENT:
         state = STATE_FINISH;
+        break;
+      case GTK_RESPONSE_REJECT:
+        sim_remove_plan (sim);
+        state = STATE_BROADBAND_INFO;
         break;
       case GTK_RESPONSE_ACCEPT:
         plan_node = ggg_manual_dialog_get_plan (GGG_MANUAL_DIALOG (dialog));
         state = STATE_SAVE;
         break;
       }
+      gtk_widget_destroy (dialog);
       break;
+
     case STATE_SAVE:
       g_assert (plan_node);
-      save_context (sim);      
+      save_context (sim, name);
       state = STATE_FINISH;
       break;
     case STATE_FINISH:

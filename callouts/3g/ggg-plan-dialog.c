@@ -32,6 +32,7 @@ enum {
 };
 
 struct _GggPlanDialogPrivate {
+  GtkWidget *label;
   GtkListStore *store;
   GtkWidget *combo;
 };
@@ -75,6 +76,20 @@ ggg_plan_set_property (GObject *object, guint property_id, const GValue *value, 
       node = g_value_get_boxed (value);
       populate_store (dialog->priv->store, node);
       gtk_combo_box_set_active (GTK_COMBO_BOX (dialog->priv->combo), 0);
+
+      node = rest_xml_node_find (node, "name");
+      if (node && node->content && strlen (node->content) > 0) {
+          char *str;
+          /* TRANSLATORS: placeholder is service provider name,
+           * e.g. "Vodafone" */
+          str = g_strdup_printf (_("Select your %s 3G Plan"),
+                                 node->content);
+          gtk_label_set_text (GTK_LABEL (dialog->priv->label), str);
+          g_free (str);
+      } else {
+          gtk_label_set_text (GTK_LABEL (dialog->priv->label),
+                              _("Select your 3G Plan"));
+      }
     }
     break;
   default:
@@ -103,7 +118,7 @@ static void
 ggg_plan_dialog_init (GggPlanDialog *self)
 {
   GggPlanDialogPrivate *priv;
-  GtkWidget *table, *image, *label;
+  GtkWidget *table, *image;
   GtkCellRenderer *cell;
   GtkWidget *content;
 
@@ -130,10 +145,10 @@ ggg_plan_dialog_init (GggPlanDialog *self)
   gtk_widget_show (image);
   gtk_table_attach_defaults (GTK_TABLE (table), image, 0, 1, 0, 2);
 
-  label = gtk_label_new (_("Select your 3G Plan"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_widget_show (label);
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 3, 0, 1);
+  priv->label = gtk_label_new ("");
+  gtk_misc_set_alignment (GTK_MISC (priv->label), 0.0, 0.5);
+  gtk_widget_show (priv->label);
+  gtk_table_attach_defaults (GTK_TABLE (table), priv->label, 1, 3, 0, 1);
 
   priv->store = gtk_list_store_new (2, REST_TYPE_XML_NODE, G_TYPE_STRING);
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (priv->store), 1, GTK_SORT_ASCENDING);
