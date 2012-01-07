@@ -118,7 +118,7 @@ DawatiNetbookNetpanel *#netpanel-entrytable
   padding: 0 7;
 }
 
-MnbNetpanelScrollview
+MxScrollview
 {
   padding: 0 14;
 }

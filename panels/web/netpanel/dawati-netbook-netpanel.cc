@@ -36,7 +36,6 @@ extern "C" {
 #include <dawati-panel/mpl-panel-client.h>
 #include "dawati-netbook-netpanel.h"
 #include "mnb-netpanel-bar.h"
-#include "mnb-netpanel-scrollview.h"
 #include "mwb-utils.h"
 }
 
@@ -82,9 +81,11 @@ struct _DawatiNetbookNetpanelPrivate
   MxWidget     *entry;
 
   MxWidget     *tabs_label;
-  MxWidget     *tabs_view;
+  ClutterActor *tabs_scrollview;
+  ClutterActor *tabs_box;
   MxWidget     *favs_label;
-  MxWidget     *favs_view;
+  ClutterActor *favs_scrollview;
+  ClutterActor *favs_box;
 
   guint           n_tabs;
   guint           n_favs;
@@ -140,32 +141,34 @@ dawati_netbook_netpanel_dispose (GObject *object)
 
   if (priv->entry_table)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->entry_table));
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->entry_table));
       priv->entry_table = NULL;
     }
 
   if (priv->tabs_label)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_label));
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->tabs_label));
       priv->tabs_label = NULL;
     }
 
-  if (priv->tabs_view)
+  if (priv->tabs_scrollview)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
-      priv->tabs_view = NULL;
+      clutter_actor_destroy (priv->tabs_scrollview);
+      priv->tabs_scrollview = NULL;
+      priv->tabs_box = NULL;
     }
 
   if (priv->favs_label)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_label));
+      clutter_actor_destroy (CLUTTER_ACTOR (priv->favs_label));
       priv->favs_label = NULL;
     }
 
-  if (priv->favs_view)
+  if (priv->favs_scrollview)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
-      priv->favs_view = NULL;
+      clutter_actor_destroy (priv->favs_scrollview);
+      priv->favs_scrollview = NULL;
+      priv->favs_box = NULL;
     }
 
   if (priv->places_db)
@@ -231,16 +234,16 @@ dawati_netbook_netpanel_allocate (ClutterActor           *actor,
     clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->tabs_label), width,
                                         min_heights + 1, natural_heights + 1);
 
-  if (priv->tabs_view)
-    clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->tabs_view), width,
+  if (priv->tabs_scrollview)
+    clutter_actor_get_preferred_height (priv->tabs_scrollview, width,
                                         min_heights + 2, natural_heights + 2);
 
   if (priv->favs_label)
     clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->favs_label), width,
                                         min_heights + 3, natural_heights + 3);
 
-  if (priv->favs_view)
-    clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->favs_view), width,
+  if (priv->favs_scrollview)
+    clutter_actor_get_preferred_height (priv->favs_scrollview, width,
                                         min_heights + 4, natural_heights + 4);
 
   height = box->y2 - box->y1 - padding.top - padding.bottom;
@@ -303,10 +306,10 @@ dawati_netbook_netpanel_allocate (ClutterActor           *actor,
       child_box.y1 = child_box.y2 + ROW_SPACING;
     }
 
-  if (priv->tabs_view)
+  if (priv->tabs_scrollview)
     {
       child_box.y2 = child_box.y1 + final_heights[2];
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->tabs_view),
+      clutter_actor_allocate (priv->tabs_scrollview,
                               &child_box, flags);
       child_box.y1 = child_box.y2 + ROW_SPACING;
     }
@@ -322,10 +325,10 @@ dawati_netbook_netpanel_allocate (ClutterActor           *actor,
       child_box.y1 = child_box.y2 + ROW_SPACING;
     }
 
-  if (priv->favs_view)
+  if (priv->favs_scrollview)
     {
       child_box.y2 = child_box.y1 + final_heights[4];
-      clutter_actor_allocate (CLUTTER_ACTOR (priv->favs_view),
+      clutter_actor_allocate (priv->favs_scrollview,
                               &child_box, flags);
     }
 }
@@ -373,14 +376,14 @@ dawati_netbook_netpanel_get_preferred_width (ClutterActor *self,
   if (priv->tabs_label)
     expand_to_child_width (CLUTTER_ACTOR (priv->tabs_label), for_height,
                            &min_width, &natural_width);
-  if (priv->tabs_view)
-    expand_to_child_width (CLUTTER_ACTOR (priv->tabs_view), for_height,
+  if (priv->tabs_scrollview)
+    expand_to_child_width (priv->tabs_scrollview, for_height,
                            &min_width, &natural_width);
   if (priv->favs_label)
     expand_to_child_width (CLUTTER_ACTOR (priv->favs_label), for_height,
                            &min_width, &natural_width);
-  if (priv->favs_view)
-    expand_to_child_width (CLUTTER_ACTOR (priv->favs_view), for_height,
+  if (priv->favs_scrollview)
+    expand_to_child_width (priv->favs_scrollview, for_height,
                            &min_width, &natural_width);
 
   if (min_width_p)
@@ -428,11 +431,11 @@ dawati_netbook_netpanel_get_preferred_height (ClutterActor *self,
                     min_height_p, natural_height_p, 0.0);
   add_child_height (CLUTTER_ACTOR (priv->tabs_label), for_width,
                     min_height_p, natural_height_p, ROW_SPACING);
-  add_child_height (CLUTTER_ACTOR (priv->tabs_view), for_width,
+  add_child_height (priv->tabs_scrollview, for_width,
                     min_height_p, natural_height_p, ROW_SPACING);
   add_child_height (CLUTTER_ACTOR (priv->favs_label), for_width,
                     min_height_p, natural_height_p, ROW_SPACING);
-  add_child_height (CLUTTER_ACTOR (priv->favs_view), for_width,
+  add_child_height (priv->favs_scrollview, for_width,
                     min_height_p, natural_height_p, ROW_SPACING);
 }
 
@@ -446,12 +449,12 @@ dawati_netbook_netpanel_paint (ClutterActor *actor)
 
   if (priv->tabs_label)
     clutter_actor_paint (CLUTTER_ACTOR (priv->tabs_label));
-  if (priv->tabs_view)
-    clutter_actor_paint (CLUTTER_ACTOR (priv->tabs_view));
+  if (priv->tabs_scrollview)
+    clutter_actor_paint (priv->tabs_scrollview);
   if (priv->favs_label)
     clutter_actor_paint (CLUTTER_ACTOR (priv->favs_label));
-  if (priv->favs_view)
-    clutter_actor_paint (CLUTTER_ACTOR (priv->favs_view));
+  if (priv->favs_scrollview)
+    clutter_actor_paint (priv->favs_scrollview);
 
   /* Paint the entry last so automagic dropdown will be on top */
   clutter_actor_paint (CLUTTER_ACTOR (priv->entry_table));
@@ -835,17 +838,22 @@ create_tabs_view (DawatiNetbookNetpanel *self)
 {
   DawatiNetbookNetpanelPrivate *priv = self->priv;
 
-  if (priv->tabs_view)
-    clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
+  if (priv->tabs_box)
+    return;
 
-  priv->tabs_view = mnb_netpanel_scrollview_new ();
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->tabs_view),
-                            CLUTTER_ACTOR (self));
+  priv->tabs_scrollview = mx_scroll_view_new ();
+  mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (priv->tabs_scrollview),
+                                    MX_SCROLL_POLICY_HORIZONTAL);
+  clutter_actor_set_parent (priv->tabs_scrollview, CLUTTER_ACTOR (self));
+
+  priv->tabs_box =
+    mx_box_layout_new_with_orientation (MX_ORIENTATION_HORIZONTAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->tabs_scrollview),
+                               priv->tabs_box);
 
   /* TODO: set column and row spacing properties */
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->tabs_view),
-                          "netpanel-subtable");
-  clutter_actor_show (CLUTTER_ACTOR (priv->tabs_view));
+  clutter_actor_set_name (priv->tabs_box, "netpanel-subtable");
+  clutter_actor_show_all (priv->tabs_scrollview);
 }
 
 static void
@@ -853,40 +861,51 @@ create_favs_view (DawatiNetbookNetpanel *self)
 {
   DawatiNetbookNetpanelPrivate *priv = self->priv;
 
-  if (priv->favs_view)
-    clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
+  if (priv->favs_box)
+    return;
+
+  priv->favs_scrollview = mx_scroll_view_new ();
+  mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (priv->favs_scrollview),
+                                    MX_SCROLL_POLICY_HORIZONTAL);
+  clutter_actor_set_parent (priv->favs_scrollview, CLUTTER_ACTOR (self));
 
   /* Construct favorites table */
-  priv->favs_view = mnb_netpanel_scrollview_new ();
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->favs_view),
-                            CLUTTER_ACTOR (self));
+  priv->favs_box =
+    mx_box_layout_new_with_orientation (MX_ORIENTATION_HORIZONTAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->favs_scrollview),
+                               priv->favs_box);
+
 
   /* TODO: set column and row spacing properties */
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->favs_view),
-                          "netpanel-subtable");
-  clutter_actor_show (CLUTTER_ACTOR (priv->favs_view));
+  clutter_actor_set_name (priv->favs_box, "netpanel-subtable");
+  clutter_actor_show_all (priv->favs_scrollview);
 }
 
 static void
 create_favs_placeholder (DawatiNetbookNetpanel *self)
 {
   DawatiNetbookNetpanelPrivate *priv = self->priv;
-  MxWidget *label, *bin;
+  ClutterActor *label;
 
-  if (priv->favs_view)
-    clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
+  if (priv->favs_scrollview)
+    {
+      clutter_actor_destroy (priv->favs_scrollview);
+      priv->favs_scrollview = NULL;
+      priv->favs_box = NULL;
+    }
 
-  priv->favs_view = bin = MX_WIDGET(mx_frame_new ());
-  clutter_actor_set_name (CLUTTER_ACTOR (bin), "netpanel-placeholder-bin");
+  priv->favs_scrollview = mx_frame_new ();
+  clutter_actor_set_name (priv->favs_scrollview, "netpanel-placeholder-bin");
 
-  label = MX_WIDGET(mx_label_new_with_text (_("As you visit web pages, your favorites will "
-                                              "appear here and on the New tab page in the "
-                                              "browser.")));
-  clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-placeholder-label");
-  mx_bin_set_child (MX_BIN (bin), CLUTTER_ACTOR (label));
-  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+  label = mx_label_new_with_text (_("As you visit web pages, your favorites will "
+                                    "appear here and on the New tab page in the "
+                                    "browser."));
+  clutter_actor_set_name (label, "netpanel-placeholder-label");
+  mx_bin_set_child (MX_BIN (priv->favs_scrollview), label);
+  mx_bin_set_alignment (MX_BIN (priv->favs_scrollview),
+                        MX_ALIGN_START, MX_ALIGN_MIDDLE);
 
-  clutter_actor_set_parent (CLUTTER_ACTOR (bin), CLUTTER_ACTOR (self));
+  clutter_actor_set_parent (priv->favs_scrollview, CLUTTER_ACTOR (self));
 }
 
 typedef struct _TextureData{
@@ -1016,7 +1035,7 @@ add_texture_to_scrollview(void*data)
 }
 
 static MxWidget *
-add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
+add_thumbnail_to_scrollview (ClutterActor *scrollview,
                              const gchar *url, const gchar *title,
                              const gchar *favicon_filename, const int priority)
 {
@@ -1069,7 +1088,7 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   clutter_actor_set_name (label, "title");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
-  mnb_netpanel_scrollview_add_item (scrollview, 0, vbox);
+  clutter_container_add_actor (CLUTTER_CONTAINER (scrollview), vbox);
 
   TextureData *tex_data = (TextureData*) g_malloc0 (sizeof (TextureData));
   tex_data->tex = tex;
@@ -1098,17 +1117,14 @@ favs_received (void *context, const char* url, const char *title, const int prio
   DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   MxWidget *button;
-  MnbNetpanelScrollview *scrollview;
-
-  scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
 
   // it is possible that when this callback is called
   // the scrollview is destroied by hide
-  if (!scrollview)
+  if (!priv->favs_box)
     return;
 
   gchar *favicon_filename = get_favicon_filename(self, url);
-  button = add_thumbnail_to_scrollview (scrollview, url, title, favicon_filename,  priority);
+  button = add_thumbnail_to_scrollview (priv->favs_box, url, title, favicon_filename,  priority);
   g_free(favicon_filename);
 
   if (button)
@@ -1127,7 +1143,6 @@ static void tabs_exception(void* context, int errno)
 {
   DawatiNetbookNetpanel* self = (DawatiNetbookNetpanel*)context;
   DawatiNetbookNetpanelPrivate *priv = self->priv;
-  MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
   ClutterActor *vbox, *hbox;
   ClutterActor *button, *tex;
@@ -1151,6 +1166,7 @@ static void tabs_exception(void* context, int errno)
     }
 
   button = mx_button_new ();
+  clutter_actor_set_name (button, "weblink");
   mx_stylable_set_style_class (MX_STYLABLE (button), "weblink");
 
   clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
@@ -1172,7 +1188,7 @@ static void tabs_exception(void* context, int errno)
   clutter_actor_set_name (label, "title");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
-  mnb_netpanel_scrollview_add_item (scrollview, 0, vbox);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->tabs_box), vbox);
 }
 
 static void tabs_received(void* context, int tab_id,
@@ -1182,9 +1198,8 @@ static void tabs_received(void* context, int tab_id,
 {
     DawatiNetbookNetpanel* self = (DawatiNetbookNetpanel*)context;
     DawatiNetbookNetpanelPrivate *priv = self->priv;
-    MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
-    if (!scrollview)
+    if (!priv->tabs_box)
       return;
 
     if (url)
@@ -1201,7 +1216,7 @@ static void tabs_received(void* context, int tab_id,
         sprintf(prev_url, "%s", url);
 
         gchar *favicon_filename = get_favicon_filename(self, url);
-        button = add_thumbnail_to_scrollview (scrollview, url, title, favicon_filename,  priority);
+        button = add_thumbnail_to_scrollview (priv->tabs_box, url, title, favicon_filename,  priority);
         g_free(favicon_filename);
         //free(prev_url);
 
@@ -1223,7 +1238,7 @@ create_tabs(DawatiNetbookNetpanel *self)
   /* Create tabs table */
   create_tabs_view (self);
 
-  if (!priv->favs_view)
+  if (!priv->favs_scrollview)
     create_favs_placeholder (self);
 
 
@@ -1264,7 +1279,7 @@ create_history (DawatiNetbookNetpanel *self)
   DawatiNetbookNetpanelPrivate *priv = self->priv;
   gint rc, i;
 
-  if (!priv->tabs_view)
+  if (!priv->tabs_box)
     create_tabs_view (self);
 
   create_favs_view (self);
@@ -1473,16 +1488,18 @@ dawati_netbook_netpanel_hide (ClutterActor *actor)
     }
 
   /* Destroy tab table */
-  if (priv->tabs_view)
+  if (priv->tabs_scrollview)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
-      priv->tabs_view = NULL;
+      clutter_actor_destroy (priv->tabs_scrollview);
+      priv->tabs_scrollview = NULL;
+      priv->tabs_box = NULL;
     }
 
-  if (priv->favs_view)
+  if (priv->favs_scrollview)
     {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
-      priv->favs_view = NULL;
+      clutter_actor_destroy (priv->favs_scrollview);
+      priv->favs_scrollview = NULL;
+      priv->favs_box = NULL;
     }
 
   while (priv->session_urls)

@@ -18,8 +18,6 @@ dawati_panel_web_SOURCES = \
 	dawati-netbook-netpanel.h \
 	mnb-netpanel-bar.cc \
 	mnb-netpanel-bar.h \
-	mnb-netpanel-scrollview.cc \
-	mnb-netpanel-scrollview.h \
 	$(NULL)
 
 dawati_panel_web_DEPENDENCIES = \
