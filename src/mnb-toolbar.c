@@ -3648,20 +3648,15 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 gboolean
 mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw)
 {
-  MnbToolbarPrivate *priv  = toolbar->priv;
-  GList             *l;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MnbToolbarPanel   *tp   = mnb_toolbar_get_active_panel (toolbar);
 
   if (!mcw)
     return FALSE;
 
-  for (l = priv->panels; l; l = l->next)
-    {
-      MnbToolbarPanel *tp = l->data;
-
-      if (tp && tp->panel && MNB_IS_PANEL_OOP (tp->panel))
-        if (mnb_panel_oop_owns_window ((MnbPanelOop*)tp->panel, mcw))
-          return TRUE;
-    }
+  if (tp && tp->panel && MNB_IS_PANEL_OOP (tp->panel))
+    if (mnb_panel_oop_owns_window ((MnbPanelOop*)tp->panel, mcw))
+      return TRUE;
 
   return FALSE;
 }
