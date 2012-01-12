@@ -37,6 +37,7 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <glib/gi18n.h>
+#include <libnotify/notify.h>
 #include "nbtk-gtk-expander.h"
 
 #include "connman-service-bindings.h"
@@ -111,6 +112,7 @@ struct _CarrickServiceItemPrivate
   CarrickIconFactory *icon_factory;
 
   CarrickOfonoAgent *ofono;
+  NotifyNotification *notify;
   gboolean is_modem_dummy;
 
   char *modem_requiring_pin;
@@ -609,85 +611,96 @@ _set_form_state (CarrickServiceItem *self)
   _set_form_modified (self, FALSE);
 }
 
-static void
-carrick_service_item_update_cellular_info (CarrickServiceItem *item)
+static char*
+carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
   char                      *msg = NULL;
 
-      if (priv->locked_puk_type)
-        {
-          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
-                                         GTK_MESSAGE_ERROR);
-          /* TRANSLATORS: error when a puk code is locked. Placeholder is usually "puk",
-           * see pin entry translations for full list of possible values.  */
-          msg = g_strdup_printf (_("The %s code is locked, contact your service provider."),
-                                 priv->locked_puk_type);
-        } 
-      else if (priv->required_pin_type)
-        {
-          int retries;
+  if (priv->locked_puk_type)
+    {
+      /* TRANSLATORS: error when a puk code is locked. Placeholder is usually "puk",
+       * see pin entry translations for full list of possible values.  */
+      msg = g_strdup_printf (_("The %s code is locked, contact your service provider."),
+                             priv->locked_puk_type);
+    } 
+  else if (priv->required_pin_type)
+    {
+      int retries;
 
-          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
-                                         GTK_MESSAGE_INFO);
-          retries = carrick_ofono_agent_get_retries (priv->ofono,
-                                                     priv->modem_requiring_pin,
-                                                     priv->required_pin_type);
-          if (carrick_ofono_is_pin (priv->required_pin_type))
+      retries = carrick_ofono_agent_get_retries (priv->ofono,
+                                                 priv->modem_requiring_pin,
+                                                 priv->required_pin_type);
+      if (carrick_ofono_is_pin (priv->required_pin_type))
+        {
+          if (retries > 0 && retries < 3)
             {
-              if (retries > 0 && retries < 3)
-                {
-                  /* TRANSLATORS: info message when pin entry is required and 
-                   * there are less than three retries,
-                   * Placeholder is pin type, usually "pin" */
-                  msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
-                                                   "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
-                                                   retries),
-                                         priv->required_pin_type);
-                }
-              else
-                {
-                  /* TRANSLATORS: info message when pin entry is required,
-                   * Placeholder is pin type, usually "pin" */
-                  msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
-                                         priv->required_pin_type);
-                }
+              /* TRANSLATORS: info message when pin entry is required and 
+               * there are less than three retries,
+               * Placeholder is pin type, usually "pin" */
+              msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
+                                               "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
+                                               retries),
+                                     priv->required_pin_type);
             }
           else
             {
-              if (retries > 0 && retries < 10)
-                {
-                  /* TRANSLATORS: info message when pin reset is required and
-                   * there are less than 10 retries
-                   * Placeholder 1 is puk type, usually "puk"
-                   * Placeholder 2 is pin type, usually "pin" */
-                  msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the SIM card is permanently locked.",
-                                                   "A %s code is required to reset the %s code. You can try %d more times before the SIM card is permanently locked.",
-                                                   retries),
-                                         priv->required_pin_type,
-                                         carrick_ofono_pin_for_puk (priv->required_pin_type),
-                                         retries);
-                }
-              else
-                {
-                  /* TRANSLATORS: info message when pin reset is required,
-                   * Placeholder 1 is puk type, usually "puk"
-                   * Placeholder 2 is pin type, usually "pin" */
-                  msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
-                                         priv->required_pin_type,
-                                         carrick_ofono_pin_for_puk (priv->required_pin_type));
-                }
+              /* TRANSLATORS: info message when pin entry is required,
+               * Placeholder is pin type, usually "pin" */
+              msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
+                                     priv->required_pin_type);
             }
         }
       else
         {
-          msg = g_strdup ("");
-          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
-                                         GTK_MESSAGE_INFO);
+          if (retries > 0 && retries < 10)
+            {
+              /* TRANSLATORS: info message when pin reset is required and
+               * there are less than 10 retries
+               * Placeholder 1 is puk type, usually "puk"
+               * Placeholder 2 is pin type, usually "pin" */
+              msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the SIM card is permanently locked.",
+                                               "A %s code is required to reset the %s code. You can try %d more times before the SIM card is permanently locked.",
+                                               retries),
+                                     priv->required_pin_type,
+                                     carrick_ofono_pin_for_puk (priv->required_pin_type),
+                                     retries);
+            }
+          else
+            {
+              /* TRANSLATORS: info message when pin reset is required,
+               * Placeholder 1 is puk type, usually "puk"
+               * Placeholder 2 is pin type, usually "pin" */
+              msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
+                                     priv->required_pin_type,
+                                     carrick_ofono_pin_for_puk (priv->required_pin_type));
+            }
         }
+    }
+  else
+    {
+      msg = g_strdup ("");
+    }
 
-      gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
-      g_free (msg);
+  return msg;
+}
+
+static void
+carrick_service_item_update_cellular_info (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+  char                      *msg;
+
+  if (priv->locked_puk_type)
+    gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                   GTK_MESSAGE_ERROR);
+  else
+    gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                   GTK_MESSAGE_INFO);
+
+   msg = carrick_service_item_build_pin_required_message (item);
+   gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
+   g_free (msg);
 }
 
 static void
@@ -1312,10 +1325,68 @@ _connect_with_password (CarrickServiceItem *item)
 }
 
 static void
+_notify_action_cb (NotifyNotification *notification,
+                   char *action,
+                   CarrickServiceItem *item)
+{
+  /* user clicked "Enter PIN" in the notification */
+  carrick_shell_show ();
+  gtk_widget_grab_focus (priv->passphrase_entry);
+}
+
+static void
+carrick_service_desktop_notify_request_pin (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+  char *title, *message, *action;
+  const char *icon = NULL;
+
+  /* if there's no pin request we don't notify */
+  if (!item->priv->required_pin_type || priv->locked_puk_type) {
+    if (priv->notify)
+      notify_notification_close (priv->notify, NULL);
+    return;
+  }
+
+  /* if the panel is open we don't notify */
+  if (carrick_shell_is_visible ())
+    return;
+
+  if (!priv->notify) {
+#ifdef HAVE_NOTIFY_0_7
+    priv->notify = notify_notification_new ("", NULL, NULL);
+#else
+    priv->notify = notify_notification_new ("", NULL, NULL, NULL);
+#endif
+  }
+
+  /*TRANSLATORS: desktop notification title when a pin/puk code is needed.
+   * Placeholder is a pin/puk type string */
+  title = g_strdup_printf (_("%s code is needed"), priv->required_pin_type);
+  message = carrick_service_item_build_pin_required_message (item);
+
+  notify_notification_update (priv->notify,
+                              title,
+                              message,
+                              icon);
+
+  /*TRANSLATORS: action button in desktop notification when a pin/puk
+   * code is needed. Placeholder is a pin/puk type string */
+  action = g_strdup_printf (_("Enter %s"), priv->required_pin_type);
+  notify_notification_add_action (priv->notify,
+                                  "enter-pin", action,
+                                  (NotifyActionCallback)_notify_action_cb,
+                                  item, NULL);
+
+  notify_notification_show (priv->notify, NULL);
+  g_free (title);
+  g_free (message);
+  g_free (action);
+}
+
+static void
 carrick_service_item_request_pin_if_needed (CarrickServiceItem *item)
 {
-  /* TODO pin-required notification to user */
-
   if (!item->priv->required_pin_type)
       gtk_widget_hide (item->priv->passphrase_box);
   else if (carrick_ofono_is_pin (item->priv->required_pin_type))
@@ -1325,6 +1396,8 @@ carrick_service_item_request_pin_if_needed (CarrickServiceItem *item)
   else
     g_warning ("unrecognised pin type '%s' required",
                item->priv->required_pin_type);
+
+  carrick_service_desktop_notify_request_pin (item);
 }
 
 static gboolean
