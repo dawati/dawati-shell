@@ -112,6 +112,7 @@ gboolean carrick_ofono_is_puk (const char *pin_type);
 gboolean carrick_ofono_is_valid_pin (const char *pin, const char *pin_type);
 const char* carrick_ofono_pin_for_puk (const char *puk_type);
 const char* carrick_ofono_puk_for_pin (const char *pin_type);
+const char* carrick_ofono_prettify_pin (const char *pin_type);
 
 G_END_DECLS
 #endif /* _CARRICK_OFONO_AGENT */

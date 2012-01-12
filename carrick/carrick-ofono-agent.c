@@ -1008,3 +1008,32 @@ carrick_ofono_is_valid_pin(const char *pin,
 
 	return FALSE;
 }
+
+/* as of now we're printing code names in uppercase */
+const char*
+carrick_ofono_prettify_pin (const char *pin_type)
+{
+  enum ofono_sim_password_type type;
+
+  type = sim_string_to_passwd (pin_type);
+	switch (type) {
+	case OFONO_SIM_PASSWORD_SIM_PIN: return "PIN";
+	case OFONO_SIM_PASSWORD_SIM_PIN2: return "PIN2";
+	case OFONO_SIM_PASSWORD_PHSIM_PIN:return "PHONE";
+	case OFONO_SIM_PASSWORD_PHFSIM_PIN: return "FIRSTPHONE";
+	case OFONO_SIM_PASSWORD_PHNET_PIN: return "NETWORK";
+	case OFONO_SIM_PASSWORD_PHNETSUB_PIN: return "NETSUB";
+	case OFONO_SIM_PASSWORD_PHSP_PIN: return "SERVICE";
+	case OFONO_SIM_PASSWORD_PHCORP_PIN: return "CORP";
+	case OFONO_SIM_PASSWORD_SIM_PUK: return "PUK";
+	case OFONO_SIM_PASSWORD_SIM_PUK2: return "PUK2";
+	case OFONO_SIM_PASSWORD_PHFSIM_PUK: return "FIRSTPHONEPUK";
+	case OFONO_SIM_PASSWORD_PHNET_PUK: return "NETWORKPUK";
+	case OFONO_SIM_PASSWORD_PHNETSUB_PUK: return "NETSUBPUK";
+	case OFONO_SIM_PASSWORD_PHSP_PUK: return "SERVICEPUK";
+	case OFONO_SIM_PASSWORD_PHCORP_PUK: return "CORPPUK";
+	default:
+    g_warn_if_reached ();
+    return "";
+	}
+}
