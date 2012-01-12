@@ -622,7 +622,7 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
       /* TRANSLATORS: error when a puk code is locked. Placeholder is usually "puk",
        * see pin entry translations for full list of possible values.  */
       msg = g_strdup_printf (_("The %s code is locked, contact your service provider."),
-                             priv->locked_puk_type);
+                             carrick_ofono_prettify_pin (priv->locked_puk_type));
     } 
   else if (priv->required_pin_type)
     {
@@ -637,18 +637,18 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
             {
               /* TRANSLATORS: info message when pin entry is required and 
                * there are less than three retries,
-               * Placeholder is pin type, usually "pin" */
+               * Placeholder is pin type, usually "PIN" */
               msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
                                                "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
                                                retries),
-                                     priv->required_pin_type);
+                                     carrick_ofono_prettify_pin (priv->required_pin_type));
             }
           else
             {
               /* TRANSLATORS: info message when pin entry is required,
-               * Placeholder is pin type, usually "pin" */
+               * Placeholder is pin type, usually "PIN" */
               msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
-                                     priv->required_pin_type);
+                                     carrick_ofono_prettify_pin (priv->required_pin_type));
             }
         }
       else
@@ -657,23 +657,23 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
             {
               /* TRANSLATORS: info message when pin reset is required and
                * there are less than 10 retries
-               * Placeholder 1 is puk type, usually "puk"
-               * Placeholder 2 is pin type, usually "pin" */
+               * Placeholder 1 is puk type, usually "PUK"
+               * Placeholder 2 is pin type, usually "PIN" */
               msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the SIM card is permanently locked.",
                                                "A %s code is required to reset the %s code. You can try %d more times before the SIM card is permanently locked.",
                                                retries),
-                                     priv->required_pin_type,
-                                     carrick_ofono_pin_for_puk (priv->required_pin_type),
+                                     carrick_ofono_prettify_pin (priv->required_pin_type),
+                                     carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
                                      retries);
             }
           else
             {
               /* TRANSLATORS: info message when pin reset is required,
-               * Placeholder 1 is puk type, usually "puk"
-               * Placeholder 2 is pin type, usually "pin" */
+               * Placeholder 1 is puk type, usually "PUK"
+               * Placeholder 2 is pin type, usually "PIN" */
               msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
-                                     priv->required_pin_type,
-                                     carrick_ofono_pin_for_puk (priv->required_pin_type));
+                                     carrick_ofono_prettify_pin (priv->required_pin_type),
+                                     carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
             }
         }
     }
@@ -912,9 +912,10 @@ static void
 _request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
 {
   CarrickServiceItemPrivate *priv = item->priv;
+  const char *pretty_pin;
   char *hint = NULL;
-  const char *btn_text = NULL;
-  const char *check_text = NULL;
+  char *btn_text = NULL;
+  char *check_text = NULL;
 
   priv->passphrase_type = type;
   switch (type)
@@ -924,51 +925,40 @@ _request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
      * should be 20 characters or less to be entirely visible */
     hint = g_strdup (_("Type password here"));
     /* TRANSLATORS: Button label when connecting with passphrase */
-    btn_text = _("Connect");
+    btn_text = g_strdup (_("Connect"));
     /* TRANSLATORS: A check button label when connecting wifi */
-    check_text = _("Show password");
+    check_text = g_strdup (_("Show password"));
     break;
   case CARRICK_PASSPHRASE_PIN:
+  case CARRICK_PASSPHRASE_PUK:
+    pretty_pin = carrick_ofono_prettify_pin (item->priv->required_pin_type);
     /* TRANSLATORS: text is used as a hint in the PIN entry and
      * should be 20 characters or less to be entirely visible
-     * The placeholder is almost always "pin" but it 
+     * The placeholder is usually "PIN" or "PUK" but it 
      * can be any of these:
-     *
-     * "pin", "phone", "firstphone", "pin2", "network",
-     * "netsub", "service", "corp"
+     * "PIN", "PHONE", "FIRSTPHONE", "PIN2", "NETWORK",
+     * "NETSUB", "SERVICE", "CORP"
+     * "PUK", "FIRSTPHONEPUK", "PUK2", "NETWORKPUK",
+     * "NETSUBPUK", "SERVICEPUK", "CORPPUK",
      */
-    hint = g_strdup_printf (_("Type %s here"),
-                            item->priv->required_pin_type);
-    /* TRANSLATORS: Button label when entering a PIN code */
-    btn_text = _("Connect");
-    /* TRANSLATORS: A check button label when connecting a cellular modem */
-    check_text = _("Show PIN");
-    break;
-  case CARRICK_PASSPHRASE_PUK:
-    /* TRANSLATORS: text is used as a hint in the PUK entry and
-     * should be 20 characters or less to be entirely visible
-     * The placeholder is almost always "puk" but it 
-     * can be any of these:
-     *
-     * "puk", "firstphonepuk", "puk2", "networkpuk",
-     * "netsubpuk", "servicepuk", "corppuk",
-     */
-    hint = g_strdup_printf (_("Type %s here"),
-                            item->priv->required_pin_type);
-    /* TRANSLATORS: Button label when resetting a PIN code */
-    btn_text = _("Enter PUK");
-    /* TRANSLATORS: A check button label when resetting pin code */
-    check_text = _("Show PUK");
+    hint = g_strdup_printf (_("Type %s here"), pretty_pin);
+    /* TRANSLATORS: Button label when entering a PIN code. Placeholder as above */
+    btn_text = g_strdup_printf (_("Enter %s"), pretty_pin);
+    /* TRANSLATORS: A check button label when connecting a cellular modem.
+     * Placeholder as above */
+    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
     break;
   case CARRICK_PASSPHRASE_NEW_PIN:
+    pretty_pin = carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (item->priv->required_pin_type));
     /* TRANSLATORS: text is used as a hint in the PIN entry when setting 
      * a new pin. Same rules as above for normal PIN entry. */
-    hint = g_strdup_printf (_("Type new %s here"),
-                            carrick_ofono_pin_for_puk (item->priv->required_pin_type));
-    /* TRANSLATORS: Button label when entering new pin code */
-    btn_text = _("Enter new PIN");
-    /* TRANSLATORS: A check button label when entering a new pin code */
-    check_text = _("Show PIN");
+    hint = g_strdup_printf (_("Type new %s here"), pretty_pin);
+    /* TRANSLATORS: Button label when entering new pin code.
+     * Placeholder as above */
+    btn_text = g_strdup_printf (_("Enter new %s"), pretty_pin);
+    /* TRANSLATORS: A check button label when entering a new pin code.
+     * Placeholder as above */
+    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
     break;
   }
 
@@ -995,6 +985,10 @@ _request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
   gtk_widget_hide (priv->connect_box);
   gtk_widget_hide (priv->modem_box);
   gtk_widget_show (priv->passphrase_box);
+
+  g_free (hint);
+  g_free (btn_text);
+  g_free (check_text);
 }
 
 /*
@@ -1331,7 +1325,7 @@ _notify_action_cb (NotifyNotification *notification,
 {
   /* user clicked "Enter PIN" in the notification */
   carrick_shell_show ();
-  gtk_widget_grab_focus (priv->passphrase_entry);
+  gtk_widget_grab_focus (item->priv->passphrase_entry);
 }
 
 static void
@@ -1362,7 +1356,8 @@ carrick_service_desktop_notify_request_pin (CarrickServiceItem *item)
 
   /*TRANSLATORS: desktop notification title when a pin/puk code is needed.
    * Placeholder is a pin/puk type string */
-  title = g_strdup_printf (_("%s code is needed"), priv->required_pin_type);
+  title = g_strdup_printf (_("%s code is needed"),
+                           carrick_ofono_prettify_pin (priv->required_pin_type));
   message = carrick_service_item_build_pin_required_message (item);
 
   notify_notification_update (priv->notify,
@@ -1372,7 +1367,8 @@ carrick_service_desktop_notify_request_pin (CarrickServiceItem *item)
 
   /*TRANSLATORS: action button in desktop notification when a pin/puk
    * code is needed. Placeholder is a pin/puk type string */
-  action = g_strdup_printf (_("Enter %s"), priv->required_pin_type);
+  action = g_strdup_printf (_("Enter %s"),
+                            carrick_ofono_prettify_pin (priv->required_pin_type));
   notify_notification_add_action (priv->notify,
                                   "enter-pin", action,
                                   (NotifyActionCallback)_notify_action_cb,
@@ -1433,7 +1429,7 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
       err_name = g_dbus_error_get_remote_error (error);
 
     if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
-      /* TRANSLATORS: error message on malformed pin entry. Placeholder is usually "pin"
+      /* TRANSLATORS: error message on malformed pin entry. Placeholder is usually "PIN"
        * but can be other things as well. See the pin entry translations for all
        * values. */
       msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code"),
@@ -1447,7 +1443,7 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
       if (retries == 0) {
         /* this case should be handled by a PinRequested="puk" change moments later but
          * let's be sure ... */
-        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "pin"
+        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "PIN"
          * but can be other things as well. See the pin entry translations for all
          * values. */
         msg = g_strdup_printf (_("Sorry, it looks like the %s was incorrect and is now locked. The %s code is needed to unlock it."),
@@ -1456,7 +1452,7 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
         gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
                                        GTK_MESSAGE_WARNING);
       } else {
-        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "pin"
+        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "PIN"
          * but can be other things as well. See the pin entry translations for all
          * values. */
         msg = g_strdup_printf (ngettext ("Sorry, it looks like the %s is incorrect. You can try once more before the code is locked.",
@@ -1467,7 +1463,7 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
                                        GTK_MESSAGE_WARNING);
       }
     } else  { /* InProgress, InvalidArguments, ... */
-      /* TRANSLATORS: error message on pin entry Placeholder is usually "pin"
+      /* TRANSLATORS: error message on pin entry Placeholder is usually "PIN"
        * but can be other things as well. See the pin entry translations for all
        * values. */
       msg = g_strdup_printf (_("Sorry, %s entry failed"),
@@ -1510,7 +1506,7 @@ _ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
 
     if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
       /* TRANSLATORS: error message on pin reset.
-       * Placeholders are puk type and pin type (usually "pin and "puk") */
+       * Placeholders are puk type and pin type (usually "PIN" and "PUK") */
       msg = g_strdup_printf (_("Sorry, either the %s or %s code is not in the correct format"),
                              item->priv->entered_pin_type,
                              carrick_ofono_pin_for_puk (item->priv->entered_pin_type));
@@ -1541,7 +1537,7 @@ _ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
       }
 
     } else  { /* InProgress, InvalidArguments, ... */
-      /* TRANSLATORS: error message on pin reset. Placeholder is usually "pin"
+      /* TRANSLATORS: error message on pin reset. Placeholder is usually "PIN"
        * but can be other things as well. See the pin entry translations for all
        * values. */
       msg = g_strdup_printf (_("Sorry, %s code reset failed"),
