@@ -111,9 +111,10 @@ struct _CarrickServiceItemPrivate
 
   CarrickIconFactory *icon_factory;
 
+  gboolean is_modem_dummy;
   CarrickOfonoAgent *ofono;
   NotifyNotification *notify;
-  gboolean is_modem_dummy;
+  GError *ofono_error;
 
   char *modem_requiring_pin;
   char *required_pin_type;
@@ -627,10 +628,14 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
   else if (priv->required_pin_type)
     {
       int retries;
+      char *error = NULL;
 
+      if (priv->ofono_error)
+        error = g_dbus_error_get_remote_error (priv->ofono_error);
       retries = carrick_ofono_agent_get_retries (priv->ofono,
                                                  priv->modem_requiring_pin,
                                                  priv->required_pin_type);
+
       if (carrick_ofono_is_pin (priv->required_pin_type))
         {
           if (retries > 0 && retries < 3)
@@ -638,44 +643,93 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
               /* TRANSLATORS: info message when pin entry is required and 
                * there are less than three retries,
                * Placeholder is pin type, usually "PIN" */
-              msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
-                                               "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
-                                               retries),
+              if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
+                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card. You can try once more before the code is locked.",
+                                                 "Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
+                                                 retries),
+                                     carrick_ofono_prettify_pin (priv->entered_pin_type),
                                      carrick_ofono_prettify_pin (priv->required_pin_type));
+              if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
+                msg = g_strdup_printf (ngettext ("Sorry, the %s code is incorrect. A %s code is still required to unlock the SIM card. You can try once more before the code is locked.",
+                                                 "Sorry, the %s code is incorrect. A %s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
+                                                 retries),
+                                     carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                     carrick_ofono_prettify_pin (priv->required_pin_type));
+              else
+                msg = g_strdup_printf (ngettext ("A %s code is required to unlock the SIM card. You can try once more before the code is locked.",
+                                                 "A %s code is required to unlock the SIM card. You can try two more times before the code is locked.",
+                                                 retries),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type));
             }
           else
             {
+              /* only invalidformat-error makes sense when retries is still full */
               /* TRANSLATORS: info message when pin entry is required,
-               * Placeholder is pin type, usually "PIN" */
-              msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
-                                     carrick_ofono_prettify_pin (priv->required_pin_type));
+               * Placeholders are pin types, usually "PIN" */
+              if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
+                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card."),
+                                       carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type));
+              else
+                msg = g_strdup_printf (_("A %s code is required to unlock the SIM card."),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type));
             }
         }
       else
         {
           if (retries > 0 && retries < 10)
             {
+
               /* TRANSLATORS: info message when pin reset is required and
                * there are less than 10 retries
-               * Placeholder 1 is puk type, usually "PUK"
-               * Placeholder 2 is pin type, usually "PIN" */
-              msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the SIM card is permanently locked.",
-                                               "A %s code is required to reset the %s code. You can try %d more times before the SIM card is permanently locked.",
-                                               retries),
-                                     carrick_ofono_prettify_pin (priv->required_pin_type),
-                                     carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
-                                     retries);
+               * Placeholder 1 & 2 are puk type, usually "PUK"
+               * Placeholder 3 is pin type, usually "PIN" */
+              if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
+                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code. You can try once more before the code is permanently locked.",
+                                                 "Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                                                 retries),
+                                       carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
+                                       retries);
+              else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
+                msg = g_strdup_printf (ngettext ("Sorry, the %s code is incorrect. A %s code is still required to reset the %s code. You can try once more before the code is permanently locked.",
+                                                 "Sorry, the %s code is incorrect. A %s code is still required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                                                 retries),
+                                       carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
+                                       retries);
+              else
+                msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the code is permanently locked.",
+                                                 "A %s code is required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                                                 retries),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
+                                       retries);
             }
           else
             {
               /* TRANSLATORS: info message when pin reset is required,
-               * Placeholder 1 is puk type, usually "PUK"
-               * Placeholder 2 is pin type, usually "PIN" */
-              msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
-                                     carrick_ofono_prettify_pin (priv->required_pin_type),
-                                     carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
+               * Placeholder 1 & 3 are pin type, usually "PIN"
+               * Placeholder 2 is pin type, usually "PUK" */
+              if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
+                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is required to reset the %s code."),
+                                       carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
+              else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
+                msg = g_strdup_printf (_("Sorry, that %s code is incorrect. A %s code is required to reset the %s code."),
+                                       carrick_ofono_prettify_pin (priv->entered_pin_type),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
+              else
+                msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
+                                       carrick_ofono_prettify_pin (priv->required_pin_type),
+                                       carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
             }
         }
+      g_free (error);
     }
   else
     {
@@ -698,9 +752,11 @@ carrick_service_item_update_cellular_info (CarrickServiceItem *item)
     gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
                                    GTK_MESSAGE_INFO);
 
-   msg = carrick_service_item_build_pin_required_message (item);
-   gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
-   g_free (msg);
+  msg = carrick_service_item_build_pin_required_message (item);
+  gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
+  g_free (msg);
+
+  carrick_service_item_request_pin_if_needed (item);
 }
 
 static void
@@ -805,6 +861,9 @@ _set_state (CarrickServiceItem *self)
       gtk_label_set_text (GTK_LABEL (priv->info_label), "");
 
       /* the dummy modem service is always in idle */
+      /* TODO can't trust this to be tru as we want some 
+       * updates to happen for cell services -- which might be in
+       * other states as well*/
       carrick_service_item_update_cellular_info (self);
     }
   else if (g_strcmp0 (priv->state, "failure") == 0)
@@ -1380,27 +1439,10 @@ carrick_service_desktop_notify_request_pin (CarrickServiceItem *item)
   g_free (action);
 }
 
-static void
-carrick_service_item_request_pin_if_needed (CarrickServiceItem *item)
-{
-  if (!item->priv->required_pin_type)
-      gtk_widget_hide (item->priv->passphrase_box);
-  else if (carrick_ofono_is_pin (item->priv->required_pin_type))
-    _request_passphrase (item, CARRICK_PASSPHRASE_PIN);
-  else if (carrick_ofono_is_puk (item->priv->required_pin_type))
-    _request_passphrase (item, CARRICK_PASSPHRASE_PUK);
-  else
-    g_warning ("unrecognised pin type '%s' required",
-               item->priv->required_pin_type);
-
-  carrick_service_desktop_notify_request_pin (item);
-}
-
 static gboolean
 _wait_for_ofono_to_settle (CarrickServiceItem *item)
 {
-  carrick_service_item_update_cellular_info (item);
-  carrick_service_item_request_pin_if_needed (item);
+  carrick_service_item_update (item);
   return FALSE;
 }
 
@@ -1419,69 +1461,20 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
   char *msg, *err_name = NULL;
   int retries;
 
+  g_clear_error (item->priv->ofono_error);
+
   if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
     if (!error) {
       g_warning ("EnterPin() failed without message");
-    } else 
-      g_debug ("EnterPin() failed: %s", error->message);
-
-    if (error && g_dbus_error_is_remote_error (error))
-      err_name = g_dbus_error_get_remote_error (error);
-
-    if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
-      /* TRANSLATORS: error message on malformed pin entry. Placeholder is usually "PIN"
-       * but can be other things as well. See the pin entry translations for all
-       * values. */
-      msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code"),
-                             item->priv->entered_pin_type);
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                     GTK_MESSAGE_WARNING);
-    } else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0) {
-      retries = carrick_ofono_agent_get_retries (agent, modem_path,
-                                                 item->priv->entered_pin_type);
-
-      if (retries == 0) {
-        /* this case should be handled by a PinRequested="puk" change moments later but
-         * let's be sure ... */
-        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "PIN"
-         * but can be other things as well. See the pin entry translations for all
-         * values. */
-        msg = g_strdup_printf (_("Sorry, it looks like the %s was incorrect and is now locked. The %s code is needed to unlock it."),
-                                 item->priv->required_pin_type,
-                                 carrick_ofono_puk_for_pin (item->priv->required_pin_type));
-        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                       GTK_MESSAGE_WARNING);
-      } else {
-        /* TRANSLATORS: error message on pin entry (wrong pin). Placeholder is usually "PIN"
-         * but can be other things as well. See the pin entry translations for all
-         * values. */
-        msg = g_strdup_printf (ngettext ("Sorry, it looks like the %s is incorrect. You can try once more before the code is locked.",
-                                         "Sorry, it looks like the %s is incorrect. You can try two more times before the code is locked.",
-                                         retries),
-                               item->priv->required_pin_type);
-        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                       GTK_MESSAGE_WARNING);
-      }
-    } else  { /* InProgress, InvalidArguments, ... */
-      /* TRANSLATORS: error message on pin entry Placeholder is usually "PIN"
-       * but can be other things as well. See the pin entry translations for all
-       * values. */
-      msg = g_strdup_printf (_("Sorry, %s entry failed"),
-                             item->priv->entered_pin_type);
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                     GTK_MESSAGE_ERROR);
+      return;
     }
 
-    gtk_label_set_text (GTK_LABEL (item->priv->info_label), msg);
-    gtk_widget_show (item->priv->info_bar);
-
-    g_free (msg);
-    if (error)
-      g_error_free (error);
+    item->priv->ofono_error = error;
   }
 
   /* it's possible that a pin is still required, but unfortunately ofono
-   * has not updated retries yet */
+   * has not updated retries yet. This is inherently racy and ...
+   * TODO: need to start tracking retries-chanegs and update the message */
   g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
 }
 
@@ -1609,6 +1602,9 @@ _passphrase_button_or_entry_cb (GtkWidget *button_or_entry,
                                 CarrickServiceItem *item)
 {
   const char *puk;
+
+  /* make sure we don't show stale error messages for cell service / modem dummy */
+  g_clear_error (&item->priv->ofono_error);
 
   carrick_service_item_set_active (item, TRUE);
   switch (item->priv->passphrase_type)
@@ -1778,6 +1774,11 @@ carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
                                             const char* obj_path,
                                             const char* pin_type)
 {
+  gboolean notify;
+
+  notify = (g_strcmp0 (item->priv->modem_requiring_pin, obj_path) != 0 ||
+            g_strcmp0 (item->priv->required_pin_type, pin_type) != 0);
+
   if (item->priv->modem_requiring_pin)
     g_free (item->priv->modem_requiring_pin);
   if (item->priv->required_pin_type)
@@ -1787,7 +1788,18 @@ carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
   item->priv->required_pin_type = g_strdup (pin_type);
 
   carrick_service_item_update (item);
-  carrick_service_item_request_pin_if_needed (item);
+
+  if (!pin_type)
+      gtk_widget_hide (item->priv->passphrase_box);
+  else if (carrick_ofono_is_pin (pin_type))
+    _request_passphrase (item, CARRICK_PASSPHRASE_PIN);
+  else if (carrick_ofono_is_puk (pin_type))
+    _request_passphrase (item, CARRICK_PASSPHRASE_PUK);
+  else
+    g_warning ("unrecognised pin type '%s' required", pin_type);
+
+  if (notify)
+    carrick_service_desktop_notify_request_pin (item);
 }
 
 
