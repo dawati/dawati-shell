@@ -62,6 +62,12 @@ enum {
   PROP_LOCKED_PUKS,
 };
 
+enum
+{
+  RETRIES_CHANGED, /* any retry count changed in any modem */
+  LAST_SIGNAL
+};
+static guint _signals[LAST_SIGNAL] = { 0, };
 
 /* ---- Following types/functions adapted from ofono ---- */
 enum ofono_sim_password_type {
@@ -283,6 +289,17 @@ carrick_ofono_agent_class_init (CarrickOfonoAgentClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_LOCKED_PUKS,
                                    pspec);
+
+  _signals[RETRIES_CHANGED] =
+      g_signal_new ("retries-changed",
+                    CARRICK_TYPE_OFONO_AGENT,
+                    G_SIGNAL_RUN_FIRST,
+                    G_STRUCT_OFFSET(CarrickOfonoAgentClass, retries_changed),
+                    NULL,
+                    NULL,
+                    g_cclosure_marshal_VOID__VOID,
+                    G_TYPE_NONE,
+                    0);
 }
 
 static void
@@ -369,6 +386,8 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
                            GINT_TO_POINTER((int)retries));
     }
     g_variant_iter_free (iter);
+
+    g_signal_emit (self, _signals[RETRIES_CHANGED], 0);
   }   
 }
 
