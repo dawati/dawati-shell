@@ -52,7 +52,7 @@ typedef struct {
 
 typedef struct {
   GObjectClass parent_class;
-
+  void (*retries_changed) (CarrickOfonoAgent   *self);
 } CarrickOfonoAgentClass;
 
 GType carrick_ofono_agent_get_type (void);

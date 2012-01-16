@@ -628,10 +628,10 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
   else if (priv->required_pin_type)
     {
       int retries;
-      char *error = NULL;
+      char *err_name = NULL;
 
       if (priv->ofono_error)
-        error = g_dbus_error_get_remote_error (priv->ofono_error);
+        err_name = g_dbus_error_get_remote_error (priv->ofono_error);
       retries = carrick_ofono_agent_get_retries (priv->ofono,
                                                  priv->modem_requiring_pin,
                                                  priv->required_pin_type);
@@ -712,9 +712,9 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
             {
               /* TRANSLATORS: info message when pin reset is required,
                * Placeholder 1 & 3 are pin type, usually "PIN"
-               * Placeholder 2 is pin type, usually "PUK" */
+               * Placeholder 2 is puk type, usually "PUK" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
-                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is required to reset the %s code."),
+                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code."),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
@@ -729,7 +729,7 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
             }
         }
-      g_free (error);
+      g_free (err_name);
     }
   else
     {
@@ -755,8 +755,6 @@ carrick_service_item_update_cellular_info (CarrickServiceItem *item)
   msg = carrick_service_item_build_pin_required_message (item);
   gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
   g_free (msg);
-
-  carrick_service_item_request_pin_if_needed (item);
 }
 
 static void
@@ -1446,11 +1444,6 @@ _wait_for_ofono_to_settle (CarrickServiceItem *item)
   return FALSE;
 }
 
-/* TODO this does not currently work as expected because 
- * we have to re-run carrick_service_item_update_cellular_info()
- * via _wait_for_ofono_to_settle(). Should save the GError for
- * carrick_service_item_update_cellular_info... */
-
 static void
 _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
                          const char *modem_path,
@@ -1459,22 +1452,22 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
 {
   GError *error = NULL;
   char *msg, *err_name = NULL;
-  int retries;
 
-  g_clear_error (item->priv->ofono_error);
+  g_clear_error (&item->priv->ofono_error);
 
   if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
-    if (!error) {
+    if (!error)
       g_warning ("EnterPin() failed without message");
-      return;
-    }
 
+    /* save error so it can be used in _update_cellular_info() */
     item->priv->ofono_error = error;
   }
 
-  /* it's possible that a pin is still required, but unfortunately ofono
-   * has not updated retries yet. This is inherently racy and ...
-   * TODO: need to start tracking retries-chanegs and update the message */
+  /* it's possible that a pin is still required, but nothing in ofono
+   * API changes so we must ensure the message is shown... but we want 
+   * to avoid e.g. setting an error message and then immediately
+   * changing the message contents: so we wait just a short while 
+   * before we ensure the error is shown */
   g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
 }
 
@@ -1492,63 +1485,16 @@ _ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
     if (!error)
       g_warning ("ResetPin() failed without message");
     else
-      g_debug ("ResetPin() failed: %s", error->message);
 
-    if (error && g_dbus_error_is_remote_error (error))
-      err_name = g_dbus_error_get_remote_error (error);
-
-    if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0) {
-      /* TRANSLATORS: error message on pin reset.
-       * Placeholders are puk type and pin type (usually "PIN" and "PUK") */
-      msg = g_strdup_printf (_("Sorry, either the %s or %s code is not in the correct format"),
-                             item->priv->entered_pin_type,
-                             carrick_ofono_pin_for_puk (item->priv->entered_pin_type));
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                     GTK_MESSAGE_WARNING);
-    } else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0) {
-      retries = carrick_ofono_agent_get_retries (agent, modem_path,
-                                                 item->priv->entered_pin_type);
-
-      if (retries == 0) {
-        /* TRANSLATORS: Error message on pin reset when the puk code gets locked.
-         * Placeholder is the entered puk code type (usually "puk") */
-        msg = g_strdup_printf (_("Sorry, it looks like the %s code is incorrect. The SIM card is now locked. Please contact your operator."),
-                               item->priv->entered_pin_type);
-        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                       GTK_MESSAGE_ERROR);
-      } else {
-        /* TRANSLATORS: error message on pin reset (wrong puk). Placeholder is usually "puk"
-         * but can be other things as well. See the PUK entry translations for all
-         * values. */
-        msg = g_strdup_printf (ngettext ("Sorry, it looks like the %s code is incorrect. You can try once more before the SIM card is permanently locked.",
-                                         "Sorry, it looks like the %s code is incorrect. You can try %d more times before the SIM card is permanently locked.",
-                                         retries),
-                               item->priv->entered_pin_type, retries);
-
-        gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                       GTK_MESSAGE_WARNING);
-      }
-
-    } else  { /* InProgress, InvalidArguments, ... */
-      /* TRANSLATORS: error message on pin reset. Placeholder is usually "PIN"
-       * but can be other things as well. See the pin entry translations for all
-       * values. */
-      msg = g_strdup_printf (_("Sorry, %s code reset failed"),
-                             carrick_ofono_pin_for_puk (item->priv->entered_pin_type));
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (item->priv->info_bar),
-                                     GTK_MESSAGE_ERROR);
-    }
-
-    gtk_label_set_text (GTK_LABEL (item->priv->info_label), msg);
-    gtk_widget_show (item->priv->info_bar);
-
-    g_free (msg);
-    if (error)
-      g_error_free (error);
+    /* save error so it can be used in _update_cellular_info() */
+    item->priv->ofono_error = error;
   }
 
-  /* it's possible that a pin is still required, but unfortunately ofono
-   * has not updated retries yet */
+  /* it's possible that a puk is still required, but nothing in ofono
+   * API changes so we must ensure the message is shown... but we want 
+   * to avoid e.g. setting an error message and then immediately
+   * changing the message contents: so we wait just a short while 
+   * before we ensure the error is shown */
   g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
 }
 
@@ -1857,6 +1803,15 @@ _ofono_notify_locked_puks_cb (CarrickOfonoAgent *ofono,
 }
 
 static void
+_ofono_retries_changed_cb (CarrickOfonoAgent *ofono,
+                           CarrickServiceItem *item)
+{
+  /* need to update ui since we may have a error message up showing the 
+     retry count */
+  carrick_service_item_update (item);
+}
+
+static void
 _connect_ofono_handlers (CarrickServiceItem *self)
 {
   if (self->priv->ofono && g_strcmp0 (self->priv->type, "cellular") == 0) {
@@ -1865,6 +1820,8 @@ _connect_ofono_handlers (CarrickServiceItem *self)
     _ofono_notify_required_pins_cb (self->priv->ofono, NULL, self);
     g_signal_connect (self->priv->ofono, "notify::locked-puks",
                       G_CALLBACK (_ofono_notify_locked_puks_cb), self);
+    g_signal_connect (self->priv->ofono, "retries-changed",
+                      G_CALLBACK (_ofono_retries_changed_cb), self);
     _ofono_notify_locked_puks_cb (self->priv->ofono, NULL, self);
   }
 
