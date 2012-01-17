@@ -327,7 +327,7 @@ mpl_panel_clutter_constructed (GObject *self)
   if (G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed)
     G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed (self);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   priv->stage = stage;
 
