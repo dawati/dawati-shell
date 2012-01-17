@@ -677,7 +677,14 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
         }
       else
         {
-          if (retries > 0 && retries < 10)
+          if (priv->passphrase_type == CARRICK_PASSPHRASE_NEW_PIN)
+            {
+              /* TRANSLATORS: info message when user has entered a PUK code and
+               * now needs to set a new PIN code */
+              msg = g_strdup_printf (_("Now enter the new %s code"),
+                                     carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
+            }
+          else if (retries > 0 && retries < 10)
             {
 
               /* TRANSLATORS: info message when pin reset is required and
@@ -740,6 +747,88 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
 }
 
 static void
+_request_passphrase (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+  const char *pretty_pin;
+  char *hint = NULL;
+  char *btn_text = NULL;
+  char *check_text = NULL;
+
+  switch (priv->passphrase_type)
+  {
+  case CARRICK_PASSPHRASE_WIFI:
+    /* TRANSLATORS: text is used as a hint in the passphrase entry and 
+     * should be 20 characters or less to be entirely visible */
+    hint = g_strdup (_("Type password here"));
+    /* TRANSLATORS: Button label when connecting with passphrase */
+    btn_text = g_strdup (_("Connect"));
+    /* TRANSLATORS: A check button label when connecting wifi */
+    check_text = g_strdup (_("Show password"));
+    break;
+  case CARRICK_PASSPHRASE_PIN:
+  case CARRICK_PASSPHRASE_PUK:
+    pretty_pin = carrick_ofono_prettify_pin (item->priv->required_pin_type);
+    /* TRANSLATORS: text is used as a hint in the PIN entry and
+     * should be 20 characters or less to be entirely visible
+     * The placeholder is usually "PIN" or "PUK" but it 
+     * can be any of these:
+     * "PIN", "PHONE", "FIRSTPHONE", "PIN2", "NETWORK",
+     * "NETSUB", "SERVICE", "CORP"
+     * "PUK", "FIRSTPHONEPUK", "PUK2", "NETWORKPUK",
+     * "NETSUBPUK", "SERVICEPUK", "CORPPUK",
+     */
+    hint = g_strdup_printf (_("Type %s here"), pretty_pin);
+    /* TRANSLATORS: Button label when entering a PIN code. Placeholder as above */
+    btn_text = g_strdup_printf (_("Enter %s"), pretty_pin);
+    /* TRANSLATORS: A check button label when connecting a cellular modem.
+     * Placeholder as above */
+    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
+    break;
+  case CARRICK_PASSPHRASE_NEW_PIN:
+    pretty_pin = carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (item->priv->required_pin_type));
+    /* TRANSLATORS: text is used as a hint in the PIN entry when setting 
+     * a new pin. Same rules as above for normal PIN entry. */
+    hint = g_strdup_printf (_("Type new %s here"), pretty_pin);
+    /* TRANSLATORS: Button label when entering new pin code.
+     * Placeholder as above */
+    btn_text = g_strdup_printf (_("Enter new %s"), pretty_pin);
+    /* TRANSLATORS: A check button label when entering a new pin code.
+     * Placeholder as above */
+    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
+    break;
+  }
+
+  gtk_button_set_label (GTK_BUTTON (item->priv->passphrase_button),
+                        btn_text);
+  gtk_button_set_label (GTK_BUTTON (item->priv->show_password_check),
+                        check_text);
+
+  if (!priv->passphrase || (strlen (priv->passphrase) == 0))
+    {
+      priv->passphrase_hint_visible = TRUE;
+      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), hint);
+    }
+  else
+    {
+      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
+                          priv->passphrase);
+    }    
+
+  gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
+  gtk_editable_select_region (GTK_EDITABLE (priv->passphrase_entry),
+                              0, -1);
+  gtk_widget_grab_focus (priv->passphrase_entry);
+  gtk_widget_hide (priv->connect_box);
+  gtk_widget_hide (priv->modem_box);
+  gtk_widget_show (priv->passphrase_box);
+
+  g_free (hint);
+  g_free (btn_text);
+  g_free (check_text);
+}
+
+static void
 carrick_service_item_update_cellular_info (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
@@ -755,6 +844,12 @@ carrick_service_item_update_cellular_info (CarrickServiceItem *item)
   msg = carrick_service_item_build_pin_required_message (item);
   gtk_label_set_text (GTK_LABEL (priv->info_label), msg);
   g_free (msg);
+
+  /* passphrase_type is set already */
+  if (priv->required_pin_type)
+    _request_passphrase (item);
+  else 
+    gtk_widget_hide (item->priv->passphrase_box);
 }
 
 static void
@@ -965,89 +1060,6 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
   carrick_service_item_set_active (item, TRUE);
 }
 
-static void
-_request_passphrase (CarrickServiceItem *item, CarrickPassphraseType type)
-{
-  CarrickServiceItemPrivate *priv = item->priv;
-  const char *pretty_pin;
-  char *hint = NULL;
-  char *btn_text = NULL;
-  char *check_text = NULL;
-
-  priv->passphrase_type = type;
-  switch (type)
-  {
-  case CARRICK_PASSPHRASE_WIFI:
-    /* TRANSLATORS: text is used as a hint in the passphrase entry and 
-     * should be 20 characters or less to be entirely visible */
-    hint = g_strdup (_("Type password here"));
-    /* TRANSLATORS: Button label when connecting with passphrase */
-    btn_text = g_strdup (_("Connect"));
-    /* TRANSLATORS: A check button label when connecting wifi */
-    check_text = g_strdup (_("Show password"));
-    break;
-  case CARRICK_PASSPHRASE_PIN:
-  case CARRICK_PASSPHRASE_PUK:
-    pretty_pin = carrick_ofono_prettify_pin (item->priv->required_pin_type);
-    /* TRANSLATORS: text is used as a hint in the PIN entry and
-     * should be 20 characters or less to be entirely visible
-     * The placeholder is usually "PIN" or "PUK" but it 
-     * can be any of these:
-     * "PIN", "PHONE", "FIRSTPHONE", "PIN2", "NETWORK",
-     * "NETSUB", "SERVICE", "CORP"
-     * "PUK", "FIRSTPHONEPUK", "PUK2", "NETWORKPUK",
-     * "NETSUBPUK", "SERVICEPUK", "CORPPUK",
-     */
-    hint = g_strdup_printf (_("Type %s here"), pretty_pin);
-    /* TRANSLATORS: Button label when entering a PIN code. Placeholder as above */
-    btn_text = g_strdup_printf (_("Enter %s"), pretty_pin);
-    /* TRANSLATORS: A check button label when connecting a cellular modem.
-     * Placeholder as above */
-    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
-    break;
-  case CARRICK_PASSPHRASE_NEW_PIN:
-    pretty_pin = carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (item->priv->required_pin_type));
-    /* TRANSLATORS: text is used as a hint in the PIN entry when setting 
-     * a new pin. Same rules as above for normal PIN entry. */
-    hint = g_strdup_printf (_("Type new %s here"), pretty_pin);
-    /* TRANSLATORS: Button label when entering new pin code.
-     * Placeholder as above */
-    btn_text = g_strdup_printf (_("Enter new %s"), pretty_pin);
-    /* TRANSLATORS: A check button label when entering a new pin code.
-     * Placeholder as above */
-    check_text = g_strdup_printf (_("Show %s"), pretty_pin);
-    break;
-  }
-
-  gtk_button_set_label (GTK_BUTTON (item->priv->passphrase_button),
-                        btn_text);
-  gtk_button_set_label (GTK_BUTTON (item->priv->show_password_check),
-                        check_text);
-
-  if (!priv->passphrase || (strlen (priv->passphrase) == 0))
-    {
-      priv->passphrase_hint_visible = TRUE;
-      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry), hint);
-    }
-  else
-    {
-      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
-                          priv->passphrase);
-    }    
-
-  gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
-  gtk_editable_select_region (GTK_EDITABLE (priv->passphrase_entry),
-                              0, -1);
-  gtk_widget_grab_focus (priv->passphrase_entry);
-  gtk_widget_hide (priv->connect_box);
-  gtk_widget_hide (priv->modem_box);
-  gtk_widget_show (priv->passphrase_box);
-
-  g_free (hint);
-  g_free (btn_text);
-  g_free (check_text);
-}
-
 /*
  * Generic call_notify function for async d-bus calls
  */
@@ -1201,9 +1213,8 @@ _start_connecting (CarrickServiceItem *item)
           ((g_strcmp0 (priv->state, "failure") == 0) ||
            (priv->need_pass && priv->passphrase == NULL)))
         {
-          /* TRANSLATORS: text should be 20 characters or less to be entirely
-           * visible in the passphrase entry -- */
-          _request_passphrase (item, CARRICK_PASSPHRASE_WIFI);
+          priv->passphrase_type = CARRICK_PASSPHRASE_WIFI;
+          _request_passphrase (item);
         }
       else
         {
@@ -1564,7 +1575,8 @@ _passphrase_button_or_entry_cb (GtkWidget *button_or_entry,
     case CARRICK_PASSPHRASE_PUK:
       puk = gtk_entry_get_text (GTK_ENTRY (item->priv->passphrase_entry));
       item->priv->entered_puk = g_strdup (puk);
-      _request_passphrase (item, CARRICK_PASSPHRASE_NEW_PIN);
+      item->priv->passphrase_type = CARRICK_PASSPHRASE_NEW_PIN;
+      carrick_service_item_update (item);
       break;
     case CARRICK_PASSPHRASE_NEW_PIN:
       carrick_service_item_reset_pin (item);
@@ -1720,10 +1732,9 @@ carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
                                             const char* obj_path,
                                             const char* pin_type)
 {
-  gboolean notify;
-
-  notify = (g_strcmp0 (item->priv->modem_requiring_pin, obj_path) != 0 ||
-            g_strcmp0 (item->priv->required_pin_type, pin_type) != 0);
+  if (g_strcmp0 (item->priv->modem_requiring_pin, obj_path) == 0 &&
+      g_strcmp0 (item->priv->required_pin_type, pin_type) == 0)
+    return;
 
   if (item->priv->modem_requiring_pin)
     g_free (item->priv->modem_requiring_pin);
@@ -1733,19 +1744,17 @@ carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
   item->priv->modem_requiring_pin = g_strdup (obj_path);
   item->priv->required_pin_type = g_strdup (pin_type);
 
+  /* need to set passphrase_type here and not later so we do not 
+   * unnecessarily overwrite the CARRICK_PASSPHRASE_NEW_PIN that
+   * may be set */
+  if (carrick_ofono_is_pin (pin_type))
+    item->priv->passphrase_type = CARRICK_PASSPHRASE_PIN;
+  else if (carrick_ofono_is_puk (pin_type))
+    item->priv->passphrase_type = CARRICK_PASSPHRASE_PUK;
+
   carrick_service_item_update (item);
 
-  if (!pin_type)
-      gtk_widget_hide (item->priv->passphrase_box);
-  else if (carrick_ofono_is_pin (pin_type))
-    _request_passphrase (item, CARRICK_PASSPHRASE_PIN);
-  else if (carrick_ofono_is_puk (pin_type))
-    _request_passphrase (item, CARRICK_PASSPHRASE_PUK);
-  else
-    g_warning ("unrecognised pin type '%s' required", pin_type);
-
-  if (notify)
-    carrick_service_desktop_notify_request_pin (item);
+  carrick_service_desktop_notify_request_pin (item);
 }
 
 
