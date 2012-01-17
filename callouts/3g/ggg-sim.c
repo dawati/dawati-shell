@@ -111,11 +111,11 @@ sim_new (const char *modem_path)
   g_variant_iter_free (iter);
   g_variant_unref (props);
 
-  if (!has_connection_manager && !has_sim_manager) {
+  if (!has_connection_manager || !has_sim_manager) {
     sim_free (sim);
     return NULL;
   }
-    
+
   /* find out if we already have a internet context */
   contexts = g_dbus_proxy_call_sync (sim->modem_proxy,
                                     "org.ofono.ConnectionManager.GetContexts",
