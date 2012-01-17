@@ -846,8 +846,9 @@ create_tabs_view (DawatiNetbookNetpanel *self)
                                     MX_SCROLL_POLICY_HORIZONTAL);
   clutter_actor_set_parent (priv->tabs_scrollview, CLUTTER_ACTOR (self));
 
-  priv->tabs_box =
-    mx_box_layout_new_with_orientation (MX_ORIENTATION_HORIZONTAL);
+  priv->tabs_box = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->tabs_box),
+                                 MX_ORIENTATION_HORIZONTAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->tabs_scrollview),
                                priv->tabs_box);
 
@@ -870,8 +871,9 @@ create_favs_view (DawatiNetbookNetpanel *self)
   clutter_actor_set_parent (priv->favs_scrollview, CLUTTER_ACTOR (self));
 
   /* Construct favorites table */
-  priv->favs_box =
-    mx_box_layout_new_with_orientation (MX_ORIENTATION_HORIZONTAL);
+  priv->favs_box = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->favs_box),
+                                 MX_ORIENTATION_HORIZONTAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->favs_scrollview),
                                priv->favs_box);
 
