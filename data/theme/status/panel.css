@@ -1,6 +1,6 @@
 *#status-panel-header-label
 {
-  color: #a0da00ff;
+  color: #2a3c4a;
   font-size: 22px;
   font-weight: bold;
   padding: 0 0 0 15;
@@ -227,7 +227,7 @@ MpsFeedSwitcher
 *.mps-feed-location-label
 {
   font-size:16px;
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
   color: #595959ff;
 }
 

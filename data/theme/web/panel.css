@@ -42,9 +42,9 @@ DawatiNetbookNetpanel
 
 DawatiNetbookNetpanel MxLabel#title
 {
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
   font-size: 11px;
-  color: #6e6e6e;
+  color: #2a3c4a;
   padding:  3 0 5 3;
 }
 
@@ -55,7 +55,7 @@ DawatiNetbookNetpanel MxBoxLayout#weblink-description
 
 DawatiNetbookNetpanel MxLabel#section
 {
-  font-family: "Droid Sans Bold";
+  font-family: "Open Sans";
   font-size: 14px;
   font-weight: bold;
   color: #616261;
@@ -64,7 +64,7 @@ DawatiNetbookNetpanel MxLabel#section
 
 DawatiNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
   font-size: 16px;
   color: #909190;
   padding: 13 16 13 34;
@@ -129,10 +129,9 @@ MxScrollview
 }
 
 #panel-label {
-  font-family: "Droid Sans Bold";
-  color: #a980ed;
+  font-family: "Open Sans";
+  color: #2a3c4a;
   font-size: 22px;
-  font-weight: bold;
   padding: 1 0 5 18;
 }
 
@@ -142,11 +141,10 @@ MxScrollview
 }
 
 #netpanel-label {
-  font-family: "Droid Sans Bold";
+  font-family: "Open Sans";
   border-image: url('content-pane-header.png') 2;
   color: #616261;
   font-size: 16px;
-  font-weight: bold;
   padding: 8;
 }
 

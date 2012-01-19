@@ -47,7 +47,7 @@ MxLabel.zone-title
   border-image: url('content-panel-header-grey.png') 4;
   font-size: 16;
   font-weight: bold;
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
 }
 
 SwZone#focused-zone > MxLabel.zone-title
@@ -84,9 +84,8 @@ MxLabel#welcome-label
 
 MxLabel#zones-title-label
 {
-  color: #e87208;
+  color: #2a3c4a;
   font-size: 22;
-  font-weight: bold;
   padding: 0 0 0 15;
 }
 
