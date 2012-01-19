@@ -334,13 +334,13 @@ MplEntry *.MplEntryClearButton:hover {
 
 MxLabel
 {
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
   font-size: 12px;
 }
 
 /* date and time */
 MxLabel.date-label {
-  font-family: "Droid Sans";
+  font-family: "Open Sans";
   font-size: 15px;
 }
 
@@ -359,14 +359,16 @@ NtfTray *.notification-control
 
 *.NotificationSummary
 {
-    font-family: "Droid Sans Bold";
+    font-family: "Open Sans";
+    font-weight: bold;
     font-size: 16px;
     color: #009bceff;
 }
 
 *.NotificationSummaryUrgent
 {
-    font-family: "Droid Sans Bold";
+    font-family: "Open Sans";
+    font-weight: bold;
     font-size: 16px;
     color: #e73035ff;
 }
@@ -374,7 +376,7 @@ NtfTray *.notification-control
 
 NtfNotification > *.NotificationBody
 {
-    font-family: "Droid Sans";
+    font-family: "Open Sans";
     font-size: 13px;
     color: #333;
 }
