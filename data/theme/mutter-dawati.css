@@ -271,13 +271,13 @@ MnbAlttabOverlayApp:active {
 
 /* Must be identical to the style defintion for MplPanelBackground */
 MnbPanelFrame {
-  border-image: url("drop-down/panel_shadow.png") 4 9 473 9;
+  background-color: #ffffff;
   padding: 4 4 12 4;
 }
 
 /* Must be identical to the style defintion for MplPanelBackground */
 MnbPanelFrame#too-small, MxFrame#panel-stub {
-  border-image: url("drop-down/panel_stub_shadow.png") 4 9 14 9;
+  background-color: #ffffff;
   padding: 4 4 12 4;
 }
 

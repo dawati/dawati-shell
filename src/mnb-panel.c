@@ -478,12 +478,12 @@ mnb_panel_ensure_size (MnbPanel *panel)
        * available space (because we set a strut for it).
        */
       /* FIXME -- devise a way of doing the shadow */
-      max_height = r.height - 8 - TOOLBAR_X_PADDING;
+      max_height = r.height;
 
       if (netbook_mode)
         max_height -= TOOLBAR_HEIGHT;
 
-      max_width  = r.width - TOOLBAR_X_PADDING * 2;
+      max_width  = r.width;
 
       if (max_height != h || r.width != w)
         {

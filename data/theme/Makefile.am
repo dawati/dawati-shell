@@ -87,12 +87,6 @@ dist_theme_alttab_DATA = \
 	alttab/application-active.png \
 	$(NULL)
 
-theme_dropdowndir = $(DAWATI_THEME_DIR)/drop-down
-dist_theme_dropdown_DATA = \
-	drop-down/panel_shadow.png \
-	drop-down/panel_stub_shadow.png \
-	$(NULL)
-
 theme_cappletdir = $(DAWATI_THEME_DIR)/capplet
 dist_theme_capplet_DATA = \
 	capplet/capplet-background.png \

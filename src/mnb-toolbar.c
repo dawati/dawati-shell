@@ -2383,10 +2383,10 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
   MnbPanelOop       *panel;
 
   panel = mnb_panel_oop_new (name,
-                             TOOLBAR_X_PADDING,
-                             TOOLBAR_HEIGHT + 4,
-                             priv->old_screen_width - TOOLBAR_X_PADDING * 2,
-                             priv->old_screen_height - TOOLBAR_HEIGHT - 8);
+                             0,
+                             TOOLBAR_HEIGHT,
+                             priv->old_screen_width,
+                             priv->old_screen_height);
 
   if (panel)
     {
@@ -3392,8 +3392,8 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
      * shadow protrudes below the actor.
      */
     mnb_panel_set_size (tp->panel,
-                        screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT - 8 - TOOLBAR_X_PADDING);
+                        screen_width,
+                        screen_height - TOOLBAR_HEIGHT);
   }
 
   if (priv->input_region)
