@@ -6,7 +6,6 @@ MnpShell {
 {
   font-size: 22;
   font-family: "Open Sans";
-  font-weight: bold;
   color: #31c2eeff;
   padding: 4 4 2 15;
 }
@@ -26,14 +25,12 @@ MnpShell {
 *#EventPaneTitle
 {
   font-size: 16;
-  font-weight: bold;
   padding: 8;
 }
 
 *#TimeTitle, *#TaskPaneTitle
 {
   font-size: 16;
-  font-weight: bold;
 }
 
 *#TwelveHourButtonBox , *#EventButtonBox, *#TaskButtonBox
@@ -55,7 +52,6 @@ MnpShell {
 *#TaskPaneTitleDate
 {
   font-size: 14;
-  font-weight: bold;
   font-family: "Open Sans";
   color: #3e3e3eff;
 }
@@ -146,7 +142,6 @@ MxButton.CompletionListButton:hover
   padding: 6 0 1 1;
   font-size: 12;
   font-family: "Open Sans";
-  font-weight: bold;
 
 }
 
@@ -260,7 +255,6 @@ MxLabel.PengeEventTimeLabel
 {
   color: black;
   font-size:12;
-  font-weight: bold;
   font-family: "Open Sans";
 }
 
@@ -268,7 +262,6 @@ MxLabel.PengeEventTimeLabel:past
 {
   color: black;
   font-size:12;
-  font-weight: bold;
   font-family: "Open Sans";
 }
 

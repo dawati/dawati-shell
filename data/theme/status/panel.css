@@ -2,7 +2,6 @@
 {
   color: #2a3c4a;
   font-size: 22px;
-  font-weight: bold;
   padding: 0 0 0 15;
 }
 
@@ -135,9 +134,8 @@ MpsTweetCard.mps-tweet-card-last:active
 
 *.mps-switcher-placeholder-title
 {
-  color: #a0da00;
+  color: #2a3c4a;
   font-size: 22px;
-  font-weight: bold;
 }
 
 *.mps-switcher-placeholder-header

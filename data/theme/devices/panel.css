@@ -12,9 +12,8 @@ MplContentPane > .header {
 }
 
 MplContentPane > MxBoxLayout > .title {
-  color: #616261;
+  color: #2a3c4a;
   font-size: 16px;
-  font-weight: bold;
 }
 
 
@@ -43,7 +42,6 @@ MpdShell {
 #panel-label {
   color: #2a3c4a;
   font-size: 22px;
-  font-weight: bold;
   padding: 6 6 6 15;
 }
 
@@ -60,14 +58,12 @@ MpdComputerPane, MpdDevicesPane {
 #computer-pane-label {
   color: #606261;
   font-size: 16px;
-  font-weight: bold;
 }
 
 #pane-label {
   border-image: url('content-pane-header.png') 2;
   color: #606261;
   font-size: 16px;
-  font-weight: bold;
   padding: 10 10 10 15;
 }
 
@@ -97,6 +93,5 @@ MxLabel.message {
 }
 
 #volume-tile-label, #brightness-tile-label {
-  font-weight: bold;
 }
 

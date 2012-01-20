@@ -2,7 +2,6 @@ MxLabel#myzone-panel-header-label
 {
   color: #2a3c4a;
   font-size: 22px;
-  font-weight: bold;
   padding: 0 0 0 15;
 }
 
@@ -33,7 +32,6 @@ PengeAppsPane
 MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
 {
   font-size: 16px;
-  font-weight: bold;
   color: #616261ff;
 }
 
@@ -187,7 +185,6 @@ PengeWelcomeTile
 {
   color: #31c2eeff;
   font-size:22px;
-  font-weight: bold;
 }
 
 *#penge-welcome-secondary-text
