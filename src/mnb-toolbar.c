@@ -317,6 +317,7 @@ mnb_toolbar_get_default_panel_list (void)
                                     "dawati-panel-music",
                                     "dawati-panel-devices",
                                     "dawati-panel-datetime",
+                                    "dawati-panel-bluetooth",
                                     "carrick",
                                     "dawati-power-icon" };
   gint i;

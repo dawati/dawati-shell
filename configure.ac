@@ -238,7 +238,7 @@ AC_SUBST(GJS_CONSOLE)
 ###########################
 
 # Default list of panels to compile
-WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,zones"
+WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,zones,bluetooth"
 
 # Provide a --with-panels/--without-panels configure option
 AS_DAWATI_ARG_WITH_PANELS
@@ -253,7 +253,11 @@ AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                libgnome-menu-3.0])
 
 # Bluetooth
-AS_DAWATI_PANEL(bluetooth, [])
+AS_DAWATI_PANEL(bluetooth, [$MX_DEPS
+                            libnotify
+                            gnome-bluetooth-1.0])
+BLUETOOTH_APPLET_LIBS=`$PKG_CONFIG --variable=applet_libs gnome-bluetooth-1.0`
+AC_SUBST(BLUETOOTH_APPLET_LIBS)
 
 # Date & time
 AS_DAWATI_PANEL(datetime, [glib-2.0
@@ -612,6 +616,10 @@ panels/web/netpanel/Makefile
 panels/zones/Makefile
 panels/zones/data/Makefile
 panels/zones/src/Makefile
+
+panels/bluetooth/Makefile
+panels/bluetooth/src/Makefile
+panels/bluetooth/data/Makefile
 ])
 
 echo "

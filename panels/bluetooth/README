@@ -1,0 +1,29 @@
+Dawati Bluetooth panel
+
+This is a bluetooth panel for Dawati-shell. It handles:
+ * bluetooth state through Connman
+ * showing currently connected devices through gnome-bluetooth
+ * showing current requests (pairing and service auth) through gnome-bluetooth
+
+Note that bluetooth-applet part of gnome-bluetooth is not
+really public: the lib and gobject-introspection are installed but
+the header is not -- at the moment we have a copy in src/ because
+we really really want to use it.
+
+Components:
+ * dawati-panel-bt.c:
+     main() with the MplPanel integration and the standalone test rig
+ * DawatiBtShell:
+    Panel UI. Connman, gnome-bluetooth and libnotify calls/handlers
+ * DawatiBtDevice:
+    UI for a connected device, controlled by DawatiBtShell
+ * DawatiBtRequest:
+    UI for a request from another device, controlled by DawatiBtShell
+
+Issues/Todo:
+ * panel button is broken
+ * testing the agent-implementation is bloody difficult -- 
+   is it possible to unregister the agent that gnome-shell registers?
+   
+Tizen issues:
+ * gnome-bluetooth not installed on tizen netbook

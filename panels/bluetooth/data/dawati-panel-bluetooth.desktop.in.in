@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-bluetooth
+TryExec=@libexecdir@/dawati-panel-bluetooth
+_Name=bluetooth
+Icon=dawati-panel-bluetooth
+_Comment=Bluetooth panel
+Terminal=false
+Categories=
+OnlyShowIn=dawati;
+X-Meego-Priority=Low
+X-Dawati-Service=com.dawati.UX.Shell.Panels.bluetooth
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=bluetooth-button

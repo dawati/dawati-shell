@@ -43,3 +43,7 @@ endif
 if USE_PANEL_ZONES
 SUBDIRS += zones
 endif
+
+if USE_PANEL_BLUETOOTH
+SUBDIRS += bluetooth
+endif
