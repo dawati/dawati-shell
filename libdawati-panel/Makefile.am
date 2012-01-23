@@ -1,6 +1,6 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-SUBDIRS = dawati-panel theme tests docs
+SUBDIRS = dawati-panel js theme tests docs
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = dawati-panel.pc

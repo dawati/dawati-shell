@@ -1,0 +1,15 @@
+let LOCALE_DIR = "@localedir@";
+let THEME_DIR = "@pkgdatadir@/theme/";
+let DATA_DIR = "@pkgdatadir@";
+
+function get_panel_theme_dir(panel_name) {
+    return THEME_DIR + "/" + panel_name;
+}
+
+function get_panel_css_path(panel_name) {
+    return get_panel_theme_dir(panel_name) + "/panel.css";
+}
+
+function get_panel_data_dir(panel_name) {
+    return BASE_PANEL_DATA_DIR + "/" + panel_name;
+}

@@ -131,12 +131,12 @@ MnbToolbarButton#internet-button:hover, MnbToolbarButton#internet-button:active,
   background-image: url("panel/internet-coloured.png");
 }
 
-/* media button */
-MnbToolbarButton#media-button {
-  background-image: url("panel/media-normal.png");
+/* music button */
+MnbToolbarButton#music-button {
+  background-image: url("panel/music-normal.png");
 }
-MnbToolbarButton#media-button:hover, MnbToolbarButton#media-button:active, MnbToolbarButton#media-button:checked {
-  background-image: url("panel/media-coloured.png");
+MnbToolbarButton#music-button:hover, MnbToolbarButton#music-button:active, MnbToolbarButton#music-button:checked {
+  background-image: url("panel/music-coloured.png");
 }
 
 /* myzone button */
