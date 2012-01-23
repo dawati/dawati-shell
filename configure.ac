@@ -1,4 +1,3 @@
-m4_define([mutter_version], [2.31.5_1.0])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [90])
 m4_define([plugin_micro_version], [7])
@@ -29,16 +28,14 @@ AC_CONFIG_SRCDIR(src/dawati-netbook.c)
 
 AM_INIT_AUTOMAKE([foreign -Wno-portability tar-ustar no-dist-gzip dist-xz])
 
-PLUGIN_MAJOR_VERSION=plugin_major_version
-PLUGIN_MINOR_VERSION=plugin_minor_version
-PLUGIN_MICRO_VERSION=plugin_micro_version
-PLUGIN_VERSION=plugin_version
-PLUGIN_API_VERSION=plugin_api_version
-AC_SUBST(PLUGIN_MAJOR_VERSION)
-AC_SUBST(PLUGIN_MINOR_VERSION)
-AC_SUBST(PLUGIN_MICRO_VERSION)
-AC_SUBST(PLUGIN_VERSION)
-AC_SUBST(PLUGIN_API_VERSION)
+DAWATI_PANEL_MAJOR_VERSION=plugin_major_version
+DAWATI_PANEL_MINOR_VERSION=plugin_minor_version
+DAWATI_PANEL_MICRO_VERSION=plugin_micro_version
+DAWATI_PANEL_VERSION=plugin_version
+AC_SUBST(DAWATI_PANEL_MAJOR_VERSION)
+AC_SUBST(DAWATI_PANEL_MINOR_VERSION)
+AC_SUBST(DAWATI_PANEL_MICRO_VERSION)
+AC_SUBST(DAWATI_PANEL_VERSION)
 
 AM_CONFIG_HEADER([config.h])
 
@@ -115,8 +112,8 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   [gio-unix-2.0
                    dbus-glib-1
                    gconf-2.0
-                   mutter-plugins >= mutter_version
-                   libmutter >= mutter_version
+                   mutter-plugins >= 3.2
+                   libmutter >= 3.2
                    libstartup-notification-1.0
                    $GTK_DEPS
                    $MX_DEPS
@@ -197,6 +194,10 @@ GTK_DOC_CHECK([1.11])
 # we use autogen.sh as it exists only inside the Git clones, and it
 # is not packaged into tarballs.
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "$enable_gtk_doc" = "yes" || test ! -f "autogen.sh"])
+
+# GObject-Introspection check
+
+GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
 # prefixes for fixing gtk-doc references
 CLUTTER_PREFIX="`$PKG_CONFIG --variable=prefix clutter-1.0`"

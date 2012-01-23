@@ -274,9 +274,9 @@ mpl_panel_gtk_set_child (MplPanelGtk *panel, GtkWidget *child)
  * mpl_panel_gtk_get_window:
  * @panel: #MplPanelGtk
  *
- * Returns the top level window of the panel.
+ * Returns the top level #GtkWindow of the panel.
  *
- * Return value: top level #GtkWidget
+ * Returns: (transfer none): top level #GtkWindow
  */
 GtkWidget *
 mpl_panel_gtk_get_window (MplPanelGtk *panel)
