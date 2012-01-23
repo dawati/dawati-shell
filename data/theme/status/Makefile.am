@@ -17,7 +17,6 @@ dist_theme_DATA = \
 	tweet-reply-hover.png \
 	icon-bg-hover.png \
 	location-box-bg.png \
-	content-panel-background.png \
 	panel-background.png \
 	background-gradient.png \
 	people.png \

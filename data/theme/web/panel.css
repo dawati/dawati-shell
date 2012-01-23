@@ -135,7 +135,7 @@ MxScrollview
 }
 
 #pane {
-  border-image: url('content-pane-background.png') 3;
+  border-image: url('../common/content-pane-background.png') 3;
   padding: 2;
 }
 

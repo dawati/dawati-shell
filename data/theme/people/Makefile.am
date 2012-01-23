@@ -19,7 +19,6 @@ dist_theme_DATA = \
 	frame-header-background.png \
 	frame-background.png \
 	panel-background.png \
-	content-panel-background.png \
 	content-panel-header-grey.png \
 	box-background-border-bottom.png \
 	background-gradient.png \

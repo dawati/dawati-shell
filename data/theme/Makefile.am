@@ -1,6 +1,7 @@
 SUBDIRS = \
 	applications \
 	bluetooth \
+	common \
 	datetime \
 	devices \
 	myzone \
@@ -92,7 +93,6 @@ dist_theme_capplet_DATA = \
 	capplet/capplet-background.png \
 	capplet/close-icon.png \
 	capplet/close-icon-hover.png \
-	capplet/content-background.png \
 	capplet/content-header.png \
 	capplet/drop-target-area.png \
 	capplet/toolbar-background.png \

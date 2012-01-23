@@ -64,7 +64,6 @@ dist_theme_DATA = \
 	count-frame-zero.png \
 	frame-header.png \
 	content-panel-background-highlight.png \
-	content-panel-background.png \
 	content-panel-header-grey.png \
 	tasks-icon.png \
 	top-fade.png \

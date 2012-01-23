@@ -479,6 +479,7 @@ data/Makefile
 data/theme/Makefile
 data/theme/applications/Makefile
 data/theme/bluetooth/Makefile
+data/theme/common/Makefile
 data/theme/datetime/Makefile
 data/theme/devices/Makefile
 data/theme/devices/icons/Makefile
