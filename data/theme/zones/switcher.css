@@ -1,6 +1,6 @@
 SwZone
 {
-  border-image: url('content-panel-background.png') 4;
+  border-image: url('../common/content-pane-background.png') 4;
   padding: 3;
 }
 

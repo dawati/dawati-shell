@@ -11,7 +11,6 @@ dist_theme_DATA = \
 	placeholder-bg.png \
 	thumbnail_hover.png \
 	thumbnail.png \
-	content-pane-background.png \
 	content-pane-header.png \
 	o2_globe.png \
 	o2_history.png \

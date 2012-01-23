@@ -15,6 +15,7 @@
 
 %.css: %.css.in Makefile
 	$(AM_V_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< | \
+		   sed -e "s|\@DAWATI_THEME_DIR\@|$(DAWATI_THEME_DIR)|" | \
 		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
 		   sed -e "s|\@PANEL_NETWORKS_DATADIR\@|$(PANEL_NETWORKS_DATADIR)|" | \
 		   sed -e "s|\@PANEL_BLUETOOTH_THEMEDIR\@|$(PANEL_BLUETOOTH_THEMEDIR)|" | \

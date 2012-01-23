@@ -14,7 +14,7 @@
 MpsFeedSwitcher
 {
   padding: 8;
-  border-image: url("content-panel-background.png") 5;
+  border-image: url("../common/content-pane-background.png") 5;
 }
 
 MpsFeedSwitcher.first-run

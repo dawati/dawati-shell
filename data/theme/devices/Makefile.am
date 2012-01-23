@@ -3,7 +3,6 @@ SUBDIRS = icons
 themedir = $(PANEL_DEVICES_THEMEDIR)
 dist_theme_DATA = \
 	toolbar-button.css \
-	content-pane-background.png \
 	content-pane-header.png \
 	devices-coloured.png \
 	devices-normal.png \

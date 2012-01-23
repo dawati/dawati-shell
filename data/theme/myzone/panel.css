@@ -12,13 +12,13 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('content-panel-background.png') 5 5 5 5;
+  border-image: url('../common/content-pane-background.png') 5 5 5 5;
   padding: 3;
 }
 
 PengeAppsPane
 {
-  border-image: url('content-panel-background.png') 5 5 5 5;
+  border-image: url('../common/content-pane-background.png') 5 5 5 5;
   padding: 4;
 }
 
@@ -78,7 +78,7 @@ PengeAppTile:active
 
 PengeRecentFileTile, PengePeopleTile
 {
-  border-image: url('content-panel-background.png') 5;
+  border-image: url('../common/content-pane-background.png') 5;
   padding: 4 4 4 4;
 }
 
@@ -92,7 +92,7 @@ PengeRecentFileTile:active, PengePeopleTile:active
 
 PengeCountTile
 {
-  border-image: url('content-panel-background.png') 5;
+  border-image: url('../common/content-pane-background.png') 5;
   padding: 6;
 }
 
@@ -196,7 +196,7 @@ PengeWelcomeTile
 
 *#penge-welcome-launcher
 {
-  border-image: url('content-panel-background.png') 5;
+  border-image: url('../common/content-pane-background.png') 5;
   padding: 4 4 4 4;
 }
 
