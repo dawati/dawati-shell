@@ -7,6 +7,9 @@ AM_CPPFLAGS = \
 	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)/dawati-panel\" \
 	-DDAWATI_APP_LAUNCHES_STORE=\"$(libexecdir)/dawati-app-launches-store\"
 
+# these are the gir files we generate using g-ir-scanner
+INTROSPECTION_GIRS =
+
 #
 # Application launch utility
 #
@@ -40,16 +43,17 @@ source_h = \
 		$(srcdir)/mpl-app-launch-context.h \
 		$(srcdir)/mpl-app-launches-query.h \
 		$(srcdir)/mpl-app-launches-store.h\
-		$(srcdir)/mpl-version.h			\
+		$(srcdir)/mpl-audio-item.h \
+		$(srcdir)/mpl-version.h	\
 		$(srcdir)/mpl-content-pane.h \
-		$(srcdir)/mpl-entry.h			\
-		$(srcdir)/mpl-icon-theme.h		\
-		$(srcdir)/mpl-panel-client.h		\
-		$(srcdir)/mpl-panel-clutter.h		\
-		$(srcdir)/mpl-panel-common.h		\
-		$(srcdir)/mpl-panel-gtk.h		\
-		$(srcdir)/mpl-panel-windowless.h	\
-		$(srcdir)/mpl-app-bookmark-manager.h	\
+		$(srcdir)/mpl-entry.h \
+		$(srcdir)/mpl-icon-theme.h \
+		$(srcdir)/mpl-panel-client.h \
+		$(srcdir)/mpl-panel-clutter.h \
+		$(srcdir)/mpl-panel-common.h \
+		$(srcdir)/mpl-panel-gtk.h \
+		$(srcdir)/mpl-panel-windowless.h \
+		$(srcdir)/mpl-app-bookmark-manager.h \
 		$(srcdir)/mpl-utils.h
 
 private_h = \
@@ -62,24 +66,30 @@ source_c = \
 		$(srcdir)/mpl-app-launch-context.c \
 		$(srcdir)/mpl-app-launches-query.c \
 		$(srcdir)/mpl-app-launches-store.c \
-		$(srcdir)/mnb-enum-types.c		\
+		$(srcdir)/mpl-audio-item.c \
+		$(srcdir)/mnb-enum-types.c \
 		$(srcdir)/mpl-content-pane.c \
-		$(srcdir)/mpl-entry.c			\
-		$(srcdir)/mpl-icon-theme.c		\
-		$(srcdir)/mpl-panel-background.c	\
-		$(srcdir)/mpl-panel-client.c		\
-		$(srcdir)/mpl-panel-clutter.c		\
-		$(srcdir)/mpl-panel-gtk.c		\
-		$(srcdir)/mpl-panel-windowless.c	\
-		$(srcdir)/mpl-app-bookmark-manager.c	\
-		$(srcdir)/mpl-utils.c			\
+		$(srcdir)/mpl-entry.c \
+		$(srcdir)/mpl-icon-theme.c \
+		$(srcdir)/mpl-panel-background.c \
+		$(srcdir)/mpl-panel-client.c \
+		$(srcdir)/mpl-panel-clutter.c \
+		$(srcdir)/mpl-panel-gtk.c \
+		$(srcdir)/mpl-panel-windowless.c \
+		$(srcdir)/mpl-app-bookmark-manager.c \
+		$(srcdir)/mpl-utils.c
+
+generated_source_c = \
 		$(DBUS_GLUE)				\
 		$(DBUS_BINDINGS)			\
 		$(MARSHALS)
 
+
 libdawati_panel_includedir = $(includedir)/libdawati-panel/dawati-panel
 libdawati_panel_include_HEADERS = $(source_h)
-libdawati_panel_la_SOURCES = $(source_c)
+libdawati_panel_la_SOURCES = $(source_c) $(generated_source_c) $(source_h)
+
+libdawati_panel_la_gir_sources = $(source_c) $(source_h)
 
 libdawati_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 
@@ -150,3 +160,27 @@ BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS) $(ENUMS)
 CLEANFILES = $(BUILT_SOURCES) $(STAMPS)
 
 EXTRA_DIST= $(private_h)
+
+# gobject-introspection rules
+-include $(INTROSPECTION_MAKEFILE)
+
+if HAVE_INTROSPECTION
+DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir: libdawati-panel.la
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_INCLUDES = Gdk-3.0 GdkX11-3.0 Gtk-3.0 Clutter-1.0 Mx-1.0
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_CFLAGS = $(libdawati_panel_la_CPPFLAGS) -I $(top_srcdir)/libdawati-panel -I $(srcdir) --accept-unprefixed --warn-all
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_LIBS = libdawati-panel.la
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_FILES = $(source_c) $(source_h)
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_SCANNERFLAGS = --add-include-path=$(MUTTER_GIR_DIR)
+INTROSPECTION_GIRS += DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir
+CLEANFILES += DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir
+
+# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
+# install anything - we need to install inside our prefix.
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+endif # HAVE_INTROSPECTION

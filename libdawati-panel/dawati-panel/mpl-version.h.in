@@ -30,28 +30,28 @@
  *
  * The major version of the dawati-panel library (1, if %DAWATI_PANEL_VERSION is 1.2.3)
  */
-#define DAWATI_PANEL_MAJOR_VERSION   (@PLUGIN_MAJOR_VERSION@)
+#define DAWATI_PANEL_MAJOR_VERSION   (@DAWATI_PANEL_MAJOR_VERSION@)
 
 /**
  * DAWATI_PANEL_MINOR_VERSION:
  *
  * The minor version of the dawati-panel library (2, if %DAWATI_PANEL_VERSION is 1.2.3)
  */
-#define DAWATI_PANEL_MINOR_VERSION   (@PLUGIN_MINOR_VERSION@)
+#define DAWATI_PANEL_MINOR_VERSION   (@DAWATI_PANEL_MINOR_VERSION@)
 
 /**
  * DAWATI_PANEL_MICRO_VERSION:
  *
  * The micro version of the dawati-panel library (3, if %DAWATI_PANEL_VERSION is 1.2.3)
  */
-#define DAWATI_PANEL_MICRO_VERSION   (@PLUGIN_MICRO_VERSION@)
+#define DAWATI_PANEL_MICRO_VERSION   (@DAWATI_PANEL_MICRO_VERSION@)
 
 /**
  * DAWATI_PANEL_VERSION:
  *
  * The full version of the dawati-panel library, like 1.2.3
  */
-#define DAWATI_PANEL_VERSION         @PLUGIN_VERSION@
+#define DAWATI_PANEL_VERSION         @DAWATI_PANEL_VERSION@
 
 /**
  * DAWATI_PANEL_VERSION_S:
@@ -59,16 +59,16 @@
  * The full version of the dawati-panel library, in string form (suited for
  * string concatenation)
  */
-#define DAWATI_PANEL_VERSION_S       "@PLUGIN_VERSION@"
+#define DAWATI_PANEL_VERSION_S       "@DAWATI_PANEL_VERSION@"
 
 /**
  * DAWATI_PANEL_VERSION_HEX:
  *
  * Numerically encoded version of the dawati-panel library, like 0x010203
  */
-#define DAWATI_PANEL_VERSION_HEX     ((PLUGIN_MAJOR_VERSION << 24) | \
-                                 (PLUGIN_MINOR_VERSION << 16) | \
-                                 (PLUGIN_MICRO_VERSION << 8))
+#define DAWATI_PANEL_VERSION_HEX     ((DAWATI_PANEL_MAJOR_VERSION << 24) | \
+                                      (DAWATI_PANEL_MINOR_VERSION << 16) | \
+                                      (DAWATI_PANEL_MICRO_VERSION << 8))
 
 /**
  * DAWATI_PANEL_CHECK_VERSION:

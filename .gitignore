@@ -33,6 +33,8 @@
 /data/theme/power-icon/power-icon.css
 /gtk-doc.make
 /libdawati-panel/*.pc
+/libdawati-panel/dawati-panel/DawatiPanel-*.gir
+/libdawati-panel/dawati-panel/DawatiPanel-*.typelib
 /libdawati-panel/dawati-panel/dawati-app-launches-store
 /libdawati-panel/dawati-panel/dawati-launch
 /libdawati-panel/dawati-panel/marshal.[ch]
@@ -43,6 +45,7 @@
 /libdawati-panel/dawati-panel/mpl-version.h
 /libdawati-panel/dawati-panel/stamp-marshal.h
 /libdawati-panel/dawati-panel/stamp-mnb-enum-types.h
+/libdawati-panel/docs/reference/libdawati-panel/dawati-panel-decl-list.txt.bak
 /libdawati-panel/docs/reference/libdawati-panel/dawati-panel-decl-list.txt
 /libdawati-panel/docs/reference/libdawati-panel/dawati-panel-decl.txt
 /libdawati-panel/docs/reference/libdawati-panel/dawati-panel-decl.txt.bak

@@ -377,7 +377,7 @@ mpl_panel_clutter_new (const gchar *name,
  *
  * Returns the top-level #ClutterActor of the panel.
  *
- * Return value: #ClutterActor.
+ * Returns: (transfer none): #ClutterActor.
  */
 ClutterActor *
 mpl_panel_clutter_get_stage (MplPanelClutter *panel)
