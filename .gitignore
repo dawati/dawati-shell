@@ -70,6 +70,7 @@
 /libdawati-panel/docs/reference/libdawati-panel/tmpl.stamp
 /libdawati-panel/docs/reference/libdawati-panel/tmpl/
 /libdawati-panel/docs/reference/libdawati-panel/xml/
+/libdawati-panel/js/path.js
 /libdawati-panel/tests/*.css
 /libdawati-panel/tests/test-content-pane
 /libdawati-panel/tests/test-entry
@@ -89,6 +90,8 @@
 /panels/devices/data/dawati-panel-devices.desktop
 /panels/devices/data/dawati-panel-devices.schemas
 /panels/devices/src/dawati-panel-devices
+/panels/music/dawati-panel-music
+/panels/music/dawati-panel-music.desktop
 /panels/myzone/data/dawati-panel-myzone.desktop
 /panels/myzone/data/dawati-panel-myzone.schemas
 /panels/myzone/data/myzone.desktop

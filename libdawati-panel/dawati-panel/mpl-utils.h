@@ -16,7 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef _MPL_UTILS_H
+#define _MPL_UTILS_H
 
 #include <glib.h>
+#include <gtk/gtk.h>
 
 gchar *mpl_utils_get_thumbnail_path (const gchar *uri);
+
+GtkListStore *mpl_create_audio_store (void);
+
+void mpl_audio_store_set (GtkListStore *store,
+                          GtkTreeIter *iter,
+                          const gchar *id,
+                          const gchar *thumbnail,
+                          const gchar *track_name,
+                          const gchar *artist_name,
+                          const gchar *album_name);
+
+#endif /* _MPL_UTILS_H */

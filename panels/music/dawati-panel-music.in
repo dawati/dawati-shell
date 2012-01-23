@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if test x"$GJS_PATH" = x ; then
+    export GJS_PATH=@pkgdatadir@/js:@PANEL_MUSIC_DATADIR@
+else
+    export GJS_PATH=@pkgdatadir@/js:@PANEL_MUSIC_DATADIR@:$GJS_PATH
+fi
+
+if test x"$GI_TYPELIB_PATH" = x ; then
+    export GI_TYPELIB_PATH=@libdir@/girepository-1.0
+else
+    export GI_TYPELIB_PATH=@libdir@/girepository-1.0:$GI_TYPELIB_PATH
+fi
+
+if test x"$LD_LIBRARY_PATH" = x ; then
+    export LD_LIBRARY_PATH=@pkglibdir@
+else
+    export LD_LIBRARY_PATH=@pkglibdir@:$LD_LIBRARY_PATH
+fi
+
+@GJS_CONSOLE@ @PANEL_MUSIC_DATADIR@/main.js

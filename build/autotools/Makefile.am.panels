@@ -1,23 +1,29 @@
 # TODO: We should find a better way to do that ...
 # Inspecting all the environnement variable might be a way.
 
+do_subst = sed -e 's|@abs_top_srcdir[@]|$(abs_top_srcdir)|g' \
+               -e 's|@abs_top_builddir[@]|$(abs_top_builddir)|g' \
+               -e 's|@localedir[@]|$(localedir)|g' \
+               -e 's|@bindir[@]|$(bindir)|g' \
+               -e 's|@libdir[@]|$(libdir)|g' \
+               -e 's|@libexecdir[@]|$(libexecdir)|g' \
+               -e 's|@pkglibdir[@]|$(pkglibdir)|g' \
+               -e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
+               -e 's|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|g' \
+               -e "s|@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|g" \
+               -e 's|@PANEL_NETWORKS_DATADIR[@]|$(PANEL_NETWORKS_DATADIR)|g' \
+               -e 's|@PANEL_POWER_ICON_THEMEDIR[@]|$(PANEL_POWER_ICON_THEMEDIR)|g' \
+               -e 's|@DAWATI_THEME_DIR[@]|$(DAWATI_THEME_DIR)|g' \
+               -e 's|@PANEL_BLUETOOTH_THEMEDIR[@]|$(PANEL_BLUETOOTH_THEMEDIR)|g' \
+               -e 's|@PANEL_POWER_ICON_THEMEDIR[@]|$(PANEL_POWER_ICON_THEMEDIR)|g' \
+               -e 's|@PANEL_MUSIC_DATADIR[@]|$(PANEL_MUSIC_DATADIR)|g'
+
+
 %.desktop.in: %.desktop.in.in Makefile
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< | \
-		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
-		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
-		   > $@
+	$(AM_V_GEN) $(do_subst) $< > $@
 
 %.service: %.service.in Makefile
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< | \
-		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
-		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
-		   > $@
+	$(AM_V_GEN) $(do_subst) $< > $@
 
 %.css: %.css.in Makefile
-	$(AM_V_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< | \
-		   sed -e "s|\@DAWATI_THEME_DIR\@|$(DAWATI_THEME_DIR)|" | \
-		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
-		   sed -e "s|\@PANEL_NETWORKS_DATADIR\@|$(PANEL_NETWORKS_DATADIR)|" | \
-		   sed -e "s|\@PANEL_BLUETOOTH_THEMEDIR\@|$(PANEL_BLUETOOTH_THEMEDIR)|" | \
-		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
-		   > $@
+	$(AM_V_GEN) $(do_subst) $< > $@

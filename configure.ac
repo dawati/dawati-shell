@@ -226,12 +226,15 @@ PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_LT_VERSION"
 AC_SUBST(PLUGIN_LT_VERSION)
 AC_SUBST(PLUGIN_LT_LDFLAGS)
 
+GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
+AC_SUBST(GJS_CONSOLE)
+
 ###########################
 # Available panels
 ###########################
 
 # Default list of panels to compile
-WITH_PANELS="applications,datetime,devices,myzone,networks,people,power-icon,status,web,zones"
+WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,zones"
 
 # Provide a --with-panels/--without-panels configure option
 AS_DAWATI_ARG_WITH_PANELS
@@ -269,6 +272,9 @@ AS_DAWATI_PANEL(devices, [glib-2.0
                           xext
                           libpulse-mainloop-glib >= 0.9.15,
                           libnotify])
+
+# Music
+AS_DAWATI_PANEL(music, [])
 
 # Myzone
 AS_DAWATI_PANEL(myzone, [gconf-2.0
@@ -484,6 +490,7 @@ data/theme/common/Makefile
 data/theme/datetime/Makefile
 data/theme/devices/Makefile
 data/theme/devices/icons/Makefile
+data/theme/music/Makefile
 data/theme/myzone/Makefile
 data/theme/networks/Makefile
 data/theme/networks/icons/Makefile
@@ -509,6 +516,7 @@ libdawati-panel/docs/reference/libdawati-panel/dawati-panel-docs.xml
 libdawati-panel/dawati-panel.pc
 libdawati-panel/dawati-panel/Makefile
 libdawati-panel/dawati-panel/mpl-version.h
+libdawati-panel/js/Makefile
 libdawati-panel/theme/Makefile
 libdawati-panel/tests/Makefile
 
@@ -544,6 +552,8 @@ panels/devices/data/Makefile
 panels/devices/data/dawati-panel-devices.schemas
 panels/devices/src/Makefile
 panels/devices/tests/Makefile
+
+panels/music/Makefile
 
 panels/myzone/Makefile
 panels/myzone/capplet/Makefile

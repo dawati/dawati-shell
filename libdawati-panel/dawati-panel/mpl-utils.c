@@ -98,3 +98,39 @@ success:
   return thumbnail_path;
 }
 
+
+/**
+ * mpl_create_audio_store:
+ *
+ * Creates a new #GtkListStore to store audio items.
+ *
+ * Return value: (transfer full): a #GtkListStore
+ */
+GtkListStore *
+mpl_create_audio_store (void)
+{
+  return gtk_list_store_new (5,
+                             G_TYPE_STRING,  // Id
+                             G_TYPE_STRING,  // Thumbnail
+                             G_TYPE_STRING,  // Track name
+                             G_TYPE_STRING,  // Artist name
+                             G_TYPE_STRING); // Album name
+}
+
+void
+mpl_audio_store_set (GtkListStore *store,
+                     GtkTreeIter *iter,
+                     const gchar *id,
+                     const gchar *thumbnail,
+                     const gchar *track_name,
+                     const gchar *artist_name,
+                     const gchar *album_name)
+{
+  gtk_list_store_set (store, iter,
+                      0, id,
+                      1, thumbnail,
+                      2, track_name,
+                      3, artist_name,
+                      4, album_name,
+                      -1);
+}

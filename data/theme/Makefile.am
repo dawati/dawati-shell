@@ -4,6 +4,7 @@ SUBDIRS = \
 	common \
 	datetime \
 	devices \
+	music \
 	myzone \
 	networks \
 	people \
@@ -29,8 +30,8 @@ dist_theme_panel_DATA = \
 	panel/devices-active-normal.png \
 	panel/internet-coloured.png \
 	panel/internet-normal.png \
-	panel/media-coloured.png \
-	panel/media-normal.png \
+	panel/music-coloured.png \
+	panel/music-normal.png \
 	panel/myzone-coloured.png \
 	panel/myzone-normal.png \
 	panel/network-coloured.png \
