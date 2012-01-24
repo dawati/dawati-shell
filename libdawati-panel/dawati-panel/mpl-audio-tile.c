@@ -19,15 +19,19 @@
  * Author: Lionel Landwerlin <lionel.g.landwerlin@linux.intel.com>
  */
 
-#include "mpl-audio-item.h"
+#include "mpl-audio-tile.h"
 
-G_DEFINE_TYPE (MplAudioItem, mpl_audio_item, MX_TYPE_BIN)
+#define DEFAULT_COVER_WIDTH (64)
+#define DEFAULT_COVER_HEIGHT (64)
+
+G_DEFINE_TYPE (MplAudioTile, mpl_audio_tile, MX_TYPE_BIN)
 
 enum
 {
   PROP_0,
 
-  PROP_MAX_WIDTH,
+  PROP_COVER_WIDTH,
+  PROP_COVER_HEIGHT,
 
   PROP_URI,
   PROP_COVER_ART,
@@ -36,14 +40,15 @@ enum
   PROP_ALBUM_TITLE
 };
 
-#define MPL_AUDIO_ITEM_PRIVATE(o)                                       \
+#define MPL_AUDIO_TILE_PRIVATE(o)                                       \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o),                                    \
-                                MPL_TYPE_AUDIO_ITEM,                    \
-                                MplAudioItemPrivate))
+                                MPL_TYPE_AUDIO_TILE,                    \
+                                MplAudioTilePrivate))
 
-struct _MplAudioItemPrivate
+struct _MplAudioTilePrivate
 {
-  guint max_width;
+  gint cover_width;
+  gint cover_height;
 
   gchar *uri;
   gchar *cover_art_path;
@@ -55,18 +60,22 @@ struct _MplAudioItemPrivate
 };
 
 static void
-mpl_audio_item_get_property (GObject    *object,
+mpl_audio_tile_get_property (GObject    *object,
                              guint       property_id,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  MplAudioItem        *self = MPL_AUDIO_ITEM (object);
-  MplAudioItemPrivate *priv = self->priv;
+  MplAudioTile        *self = MPL_AUDIO_TILE (object);
+  MplAudioTilePrivate *priv = self->priv;
 
   switch (property_id)
     {
-    case PROP_MAX_WIDTH:
-      g_value_set_uint (value, priv->max_width);
+    case PROP_COVER_WIDTH:
+      g_value_set_int (value, priv->cover_width);
+      break;
+
+    case PROP_COVER_HEIGHT:
+      g_value_set_int (value, priv->cover_height);
       break;
 
     case PROP_URI:
@@ -95,18 +104,23 @@ mpl_audio_item_get_property (GObject    *object,
 }
 
 static void
-mpl_audio_item_set_property (GObject      *object,
+mpl_audio_tile_set_property (GObject      *object,
                              guint         property_id,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  MplAudioItem        *self = MPL_AUDIO_ITEM (object);
-  MplAudioItemPrivate *priv = self->priv;
+  MplAudioTile        *self = MPL_AUDIO_TILE (object);
+  MplAudioTilePrivate *priv = self->priv;
 
   switch (property_id)
     {
-    case PROP_MAX_WIDTH:
-      priv->max_width = g_value_get_uint (value);
+    case PROP_COVER_WIDTH:
+      priv->cover_width = g_value_get_int (value);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+      break;
+
+    case PROP_COVER_HEIGHT:
+      priv->cover_height = g_value_get_int (value);
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
       break;
 
@@ -144,10 +158,10 @@ mpl_audio_item_set_property (GObject      *object,
 }
 
 static void
-mpl_audio_item_dispose (GObject *object)
+mpl_audio_tile_dispose (GObject *object)
 {
-  MplAudioItem        *self = MPL_AUDIO_ITEM (object);
-  MplAudioItemPrivate *priv = self->priv;
+  MplAudioTile        *self = MPL_AUDIO_TILE (object);
+  MplAudioTilePrivate *priv = self->priv;
 
   g_free (priv->cover_art_path);
   priv->cover_art_path = NULL;
@@ -179,109 +193,27 @@ mpl_audio_item_dispose (GObject *object)
       priv->song_title = NULL;
     }
 
-  G_OBJECT_CLASS (mpl_audio_item_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpl_audio_tile_parent_class)->dispose (object);
 }
 
 static void
-mpl_audio_item_finalize (GObject *object)
+mpl_audio_tile_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (mpl_audio_item_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mpl_audio_tile_parent_class)->finalize (object);
 }
 
 static void
-mpl_audio_item_get_preferred_width (ClutterActor *actor,
-                                    gfloat        for_height,
-                                    gfloat       *min_width_p,
-                                    gfloat       *nat_width_p)
-{
-  MplAudioItemPrivate *priv = ((MplAudioItem *) actor)->priv;
-  MxPadding padding;
-  gfloat min, nat;
-  gfloat tmin, tnat;
-
-  mx_widget_get_padding (MX_WIDGET (actor), &padding);
-
-  for_height -= padding.top + padding.bottom;
-
-  tmin = tnat = padding.left + padding.right;
-
-  clutter_actor_get_preferred_width (priv->cover_art, for_height, &min, &nat);
-  tmin += min;
-  tnat += nat;
-
-  clutter_actor_get_preferred_width (priv->song_title, for_height, &min, &nat);
-  tmin = MIN (tmin + min, priv->max_width);
-  tnat = MIN (tnat + nat, priv->max_width);
-
-  clutter_actor_get_preferred_width (priv->artist_name, for_height, &min, &nat);
-  tmin = MIN (tmin + min, priv->max_width);
-  tnat = MIN (tnat + nat, priv->max_width);
-
-  clutter_actor_get_preferred_width (priv->album_title, for_height, &min, &nat);
-  tmin = MIN (tmin + min, priv->max_width);
-  tnat = MIN (tnat + nat, priv->max_width);
-
-  if (min_width_p)
-    *min_width_p = tmin;
-  if (nat_width_p)
-    *nat_width_p = tnat;
-}
-
-static void
-mpl_audio_item_get_preferred_height (ClutterActor *actor,
-                                     gfloat        for_width,
-                                     gfloat       *min_height_p,
-                                     gfloat       *nat_height_p)
-{
-  MplAudioItemPrivate *priv = ((MplAudioItem *) actor)->priv;
-  MxPadding padding;
-  gfloat min, nat, min2, nat2;
-  gfloat tmin, tnat;
-
-  mx_widget_get_padding (MX_WIDGET (actor), &padding);
-
-  for_width -= padding.left + padding.right;
-
-  tmin = tnat = padding.top + padding.bottom;
-  clutter_actor_get_preferred_height (priv->cover_art, for_width, &min, &nat);
-  tmin += min;
-  tnat += nat;
-
-  min = nat = padding.top + padding.bottom;
-  clutter_actor_get_preferred_height (priv->song_title, for_width, &min2, &nat2);
-  min += min2;
-  nat += nat2;
-
-  clutter_actor_get_preferred_height (priv->artist_name, for_width, &min2, &nat2);
-  min += min2;
-  nat += nat2;
-
-  clutter_actor_get_preferred_height (priv->album_title, for_width, &min2, &nat2);
-  min += min2;
-  nat += nat2;
-
-  tmin = /* MIN ( */MAX (tmin, min)/* , priv->max_height) */;
-  tnat = /* MIN ( */MAX (tnat, nat)/* , priv->max_height) */;
-
-  if (min_height_p)
-    *min_height_p = tmin;
-  if (nat_height_p)
-    *nat_height_p = tnat;
-}
-
-
-static void
-mpl_audio_item_allocate (ClutterActor           *actor,
+mpl_audio_tile_allocate (ClutterActor           *actor,
                          const ClutterActorBox  *box,
                          ClutterAllocationFlags  flags)
 {
-  MplAudioItemPrivate *priv = ((MplAudioItem *) actor)->priv;
+  MplAudioTilePrivate *priv = ((MplAudioTile *) actor)->priv;
   MxPadding padding;
   ClutterActorBox child_box;
   gfloat available_width, available_height;
   gfloat min, nat;
 
-  CLUTTER_ACTOR_CLASS (mpl_audio_item_parent_class)->allocate (actor, box, flags);
+  CLUTTER_ACTOR_CLASS (mpl_audio_tile_parent_class)->allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
   available_width = box->x2 - box->x1 - padding.left - padding.right;
@@ -319,9 +251,9 @@ mpl_audio_item_allocate (ClutterActor           *actor,
 }
 
 static void
-mpl_audio_item_paint (ClutterActor *actor)
+mpl_audio_tile_paint (ClutterActor *actor)
 {
-  MplAudioItemPrivate *priv = ((MplAudioItem *)actor)->priv;
+  MplAudioTilePrivate *priv = ((MplAudioTile *)actor)->priv;
 
   clutter_actor_paint (priv->cover_art);
   clutter_actor_paint (priv->song_title);
@@ -330,32 +262,39 @@ mpl_audio_item_paint (ClutterActor *actor)
 }
 
 static void
-mpl_audio_item_class_init (MplAudioItemClass *klass)
+mpl_audio_tile_class_init (MplAudioTileClass *klass)
 {
   GParamSpec        *pspec;
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MplAudioItemPrivate));
+  g_type_class_add_private (klass, sizeof (MplAudioTilePrivate));
 
-  object_class->get_property = mpl_audio_item_get_property;
-  object_class->set_property = mpl_audio_item_set_property;
-  object_class->dispose      = mpl_audio_item_dispose;
-  object_class->finalize     = mpl_audio_item_finalize;
+  object_class->get_property = mpl_audio_tile_get_property;
+  object_class->set_property = mpl_audio_tile_set_property;
+  object_class->dispose      = mpl_audio_tile_dispose;
+  object_class->finalize     = mpl_audio_tile_finalize;
 
-  actor_class->get_preferred_height = mpl_audio_item_get_preferred_height;
-  actor_class->get_preferred_width  = mpl_audio_item_get_preferred_width;
-  actor_class->allocate             = mpl_audio_item_allocate;
-  actor_class->paint                = mpl_audio_item_paint;
+  actor_class->allocate             = mpl_audio_tile_allocate;
+  actor_class->paint                = mpl_audio_tile_paint;
 
-  pspec = g_param_spec_uint ("max-width",
-                             "Max width",
-                             "Maximum width",
-                             0, G_MAXUINT, 200,
-                             G_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT |
-                             G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_MAX_WIDTH, pspec);
+  pspec = g_param_spec_int ("tile-width",
+                            "Tile width",
+                            "Tile width",
+                            0, G_MAXINT,
+                            DEFAULT_COVER_WIDTH,
+                            G_PARAM_READWRITE |
+                            G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class, PROP_COVER_WIDTH, pspec);
+
+  pspec = g_param_spec_int ("tile-height",
+                            "Tile height",
+                            "Tile height",
+                            0, G_MAXINT,
+                            DEFAULT_COVER_HEIGHT,
+                            G_PARAM_READWRITE |
+                            G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class, PROP_COVER_HEIGHT, pspec);
 
   pspec = g_param_spec_string ("uri",
                                "URI",
@@ -394,13 +333,16 @@ mpl_audio_item_class_init (MplAudioItemClass *klass)
 }
 
 static void
-mpl_audio_item_init (MplAudioItem *self)
+mpl_audio_tile_init (MplAudioTile *self)
 {
   ClutterActor *actor = CLUTTER_ACTOR (self);
-  MplAudioItemPrivate *priv = self->priv = MPL_AUDIO_ITEM_PRIVATE (self);
+  MplAudioTilePrivate *priv = self->priv = MPL_AUDIO_TILE_PRIVATE (self);
+
+  priv->cover_width = DEFAULT_COVER_WIDTH;
+  priv->cover_height = DEFAULT_COVER_HEIGHT;
 
   priv->cover_art = mx_image_new ();
-  clutter_actor_set_name (priv->cover_art, "dawati-audio-item-cover");
+  clutter_actor_set_name (priv->cover_art, "dawati-audio-tile-cover");
   mx_image_set_from_cogl_texture (MX_IMAGE (priv->cover_art),
                                   cogl_texture_new_with_size (1, 1, COGL_TEXTURE_NO_SLICING,
                                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE));
@@ -408,26 +350,26 @@ mpl_audio_item_init (MplAudioItem *self)
 
   priv->song_title = mx_label_new ();
   clutter_actor_set_parent (priv->song_title, actor);
-  clutter_actor_set_name (priv->song_title, "dawati-audio-item-title");
+  clutter_actor_set_name (priv->song_title, "dawati-audio-tile-title");
 
   priv->artist_name = mx_label_new ();
   clutter_actor_set_parent (priv->artist_name, actor);
-  clutter_actor_set_name (priv->song_title, "dawati-audio-item-artist");
+  clutter_actor_set_name (priv->song_title, "dawati-audio-tile-artist");
 
   priv->album_title = mx_label_new ();
   clutter_actor_set_parent (priv->album_title, actor);
-  clutter_actor_set_name (priv->song_title, "dawati-audio-item-album");
+  clutter_actor_set_name (priv->song_title, "dawati-audio-tile-album");
 }
 
 /**
- * mpl_audio_item_new:
+ * mpl_audio_tile_new:
  *
- * Create a new #MplAudioItem
+ * Create a new #MplAudioTile
  *
- * Returns: a new #MplAudioItem
+ * Returns: a new #MplAudioTile
  */
 ClutterActor *
-mpl_audio_item_new (void)
+mpl_audio_tile_new (void)
 {
-  return g_object_new (MPL_TYPE_AUDIO_ITEM, NULL);
+  return g_object_new (MPL_TYPE_AUDIO_TILE, NULL);
 }

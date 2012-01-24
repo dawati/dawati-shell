@@ -301,10 +301,6 @@ MprisPlayerProxy.prototype = {
         this.remotePlayerActive = false;
     },
 
-    _on_metadata_changed: function() {
-        log('fuck');
-    },
-
     _update_metadatas: function(dict) {
         if (dict['xesam:title'])
             this.title = "" + dict['xesam:title'];
@@ -395,7 +391,8 @@ NowPlaying.prototype = {
         this._player = new MprisPlayerProxy(this, this._updated_player);
 
         this.controls_actor =
-            new Mx.BoxLayout({ orientation: Mx.Orientation.VERTICAL });
+            new Mx.BoxLayout({ name: 'playing-widgets',
+                               orientation: Mx.Orientation.VERTICAL });
 
         let hbox = new Mx.BoxLayout({ orientation: Mx.Orientation.HORIZONTAL });
         this.controls_actor.add_actor(hbox, 0);
@@ -404,18 +401,20 @@ NowPlaying.prototype = {
         let hbox1 = new Mx.BoxLayout({ orientation: Mx.Orientation.HORIZONTAL });
         hbox.add_actor(hbox1, 0);
 
-        this._playing_item = new DawatiPanel.MplAudioItem();
+        this._playing_item = new DawatiPanel.MplAudioTile({ name: 'playing-item' });
+        this._playing_item.set_size(180, 90);
         hbox1.add_actor(this._playing_item, 0);
 
         // Controls
-        let table = new Mx.Table();
+        let table = new Mx.Table({ name : 'playing-controls' });
         hbox.add_actor(table, 1);
         hbox.child_set_x_align(table, Mx.Align.MIDDLE);
         hbox.child_set_y_align(table, Mx.Align.MIDDLE);
         hbox.child_set_y_fill(table, true);
         hbox.child_set_expand(table, true);
 
-        let button = new Mx.Button({ icon_name: "player_rew", icon_size: 22 });
+        let button = new Mx.Button({ icon_name: "player_rew",
+                                     icon_size: 22 });
         table.add_actor(button, 0, 0);
         table.child_set_x_expand(button, false);
         table.child_set_y_expand(button, false);
@@ -438,7 +437,8 @@ NowPlaying.prototype = {
                                             this._player.PlayPauseRemote();
                                         }));
 
-        let button = new Mx.Button({ icon_name: "player_fwd", icon_size: 22 });
+        let button = new Mx.Button({ icon_name: "player_fwd",
+                                     icon_size: 22 });
         table.add_actor(button, 0, 2);
         table.child_set_x_expand(button, false);
         table.child_set_y_expand(button, false);
@@ -453,17 +453,18 @@ NowPlaying.prototype = {
         let hbox = new Mx.BoxLayout({ orientation: Mx.Orientation.HORIZONTAL });
         this.controls_actor.add_actor(hbox, 1);
 
-        this._elapsed = new Mx.Label();
+        this._elapsed = new Mx.Label({ name: 'playing-elapsed' });
         hbox.add_actor(this._elapsed, 0);
 
-        this._slider = new Mx.Slider({ live_value: false });
+        this._slider = new Mx.Slider({ name: 'playing-slider',
+                                       live_value: false });
         hbox.add_actor(this._slider, 1);
         hbox.child_set_expand(this._slider, true);
         this._in_slider_update = false;
         this._slider.connect('notify::value',
                              Lang.bind(this, this._user_update_slider));
 
-        this._remaining = new Mx.Label();
+        this._remaining = new Mx.Label({ name: 'playing-elapsed' });
         hbox.add_actor(this._remaining, 2);
 
         // Playlist
@@ -581,11 +582,7 @@ style.load_from_file(Path.get_panel_css_path('music'));
 let panel = new DawatiPanel.MplPanelGtk({ name: 'Music',
                                           tooltip: 'Music' });
 
-// TODO: we need to put that into libdawati-panel
-// Comment the next line and uncomment the following one to enable
-// standalone mode.
 let mwindow = panel.get_window();
-// let mwindow = new Gtk.Window ({ type : Gtk.WindowType.TOPLEVEL });
 
 let embed = new GtkClutter.Embed();
 embed.set_hexpand(true);
@@ -604,13 +601,13 @@ let label = new Mx.Label({ name: 'panel-label',
                            text: _("Music") });
 vbox.add_actor(label, 0);
 
-let table = new Mx.Table();
+let table = new Mx.Table({ name: 'panel-grid' });
 vbox.add_actor(table, 1);
 vbox.child_set_expand(table, true);
 
 
 let label = new Mx.Label({ name: 'content-pane-label',
-                                text: _("Library") });
+                           text: _("Library") });
 table.add_actor(label, 0, 0);
 table.child_set_x_fill(label, false);
 table.child_set_x_expand(label, false);
@@ -619,7 +616,7 @@ table.child_set_y_expand(label, false);
 table.child_set_x_align(label, Mx.Align.START);
 
 let label = new Mx.Label({ name: 'content-pane-label',
-                            text: _("Now Playing") });
+                           text: _("Now Playing") });
 table.add_actor(label, 0, 1);
 table.child_set_x_fill(label, false);
 table.child_set_x_expand(label, false);
@@ -645,7 +642,5 @@ table.child_set_y_expand(player.controls_actor, false);
 
 table.add_actor(player.listview_actor, 2, 1);
 table.child_set_x_expand(player.listview_actor, false);
-
-mwindow.show_all();
 
 Gtk.main();
