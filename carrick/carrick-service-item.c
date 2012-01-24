@@ -2454,8 +2454,8 @@ carrick_service_item_constructor (GType                  gtype,
     priv->state = g_strdup ("idle");
     priv->strength = 0;
     carrick_service_item_set_type (CARRICK_SERVICE_ITEM (obj), "cellular");
-    gtk_widget_set_visible (priv->connect_box, FALSE);
  }
+ gtk_widget_set_visible (priv->connect_box, !priv->is_modem_dummy);
 
   _set_state (CARRICK_SERVICE_ITEM (obj));
 
