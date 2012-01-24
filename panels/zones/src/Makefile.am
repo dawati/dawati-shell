@@ -8,6 +8,7 @@ libexec_PROGRAMS = dawati-panel-zones
 
 dawati_panel_zones_LDADD = \
 	$(PANEL_ZONES_LIBS) \
+	-lm \
 	$(NULL)
 
 dawati_panel_zones_SOURCES = \
