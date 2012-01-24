@@ -11,9 +11,14 @@ desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 panelfilesdir = $(DAWATI_PANELS_DIR)
 panelfiles_DATA = $(desktopfiles_files)
 
+servicedir = $(datadir)/dbus-1/services
+service_in_files = com.dawati.UX.Shell.Panels.music.service.in
+service_DATA = com.dawati.UX.Shell.Panels.music.service
+
 EXTRA_DIST = \
 	dawati-panel-music.in \
 	dawati-panel-music.desktop.in.in \
+	$(service_in_files) \
 	$(NULL)
 
 CLEAN_FILES = \
