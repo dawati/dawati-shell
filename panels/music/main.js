@@ -81,15 +81,17 @@ ResultSet.prototype = {
             cursor.next_async(null,
                               Lang.bind(this, this._tracker_process_item));
         } else {
-            while (this.data_array.length >= 1) {
-                let ldata = this.data_array.shift();
-                let iter = this.store.append();
-                DawatiPanel.mpl_audio_store_set(this.store, iter,
-                                                ldata[0],
-                                                ldata[1],
-                                                ldata[2],
-                                                ldata[3],
-                                                ldata[4]);
+            if (this.data_array != null) {
+                while (this.data_array.length >= 1) {
+                    let ldata = this.data_array.shift();
+                    let iter = this.store.append();
+                    DawatiPanel.mpl_audio_store_set(this.store, iter,
+                                                    ldata[0],
+                                                    ldata[1],
+                                                    ldata[2],
+                                                    ldata[3],
+                                                    ldata[4]);
+                }
             }
             this.data_array = new Array();
             log("loading done.");
@@ -579,7 +581,7 @@ Gio.DesktopAppInfo.set_desktop_env('GNOME');
 let style = Mx.Style.get_default();
 style.load_from_file(Path.get_panel_css_path('music'));
 
-let panel = new DawatiPanel.MplPanelGtk({ name: 'Music',
+let panel = new DawatiPanel.MplPanelGtk({ name: 'music',
                                           tooltip: 'Music' });
 
 let mwindow = panel.get_window();
