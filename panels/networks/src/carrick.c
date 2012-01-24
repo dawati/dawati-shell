@@ -232,6 +232,17 @@ popup_window (GtkWindow *window,
   return TRUE;
 }
 
+static void
+_window_notify_is_active_cb (GtkWindow *win,
+                             GParamSpec *property,
+                             CarrickPane *pane)
+{
+  /* simulate panel showing when the window becomes active */
+  if (gtk_window_is_active (win))
+    carrick_pane_update (pane);
+}
+
+
 /* TODO: Stubs for now */
 void carrick_shell_request_focus (void) {}
 void carrick_shell_hide (void) {}
@@ -416,11 +427,17 @@ main (int    argc,
                       "activate",
                       (GCallback) _activate_cb,
                       NULL);
+    g_signal_connect (window,
+                      "notify::is-active",
+                      (GCallback) _window_notify_is_active_cb,
+                      pane);
 
     g_signal_connect (pane,
                       "connection-changed",
                       (GCallback) _connection_changed_cb,
                       NULL);
+
+
 #endif
   }
 

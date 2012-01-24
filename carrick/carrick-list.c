@@ -1365,6 +1365,7 @@ carrick_list_constructor (GType                  gtype,
   gtk_box_pack_start (GTK_BOX (box), priv->modem_box,
                       FALSE, FALSE, 2);
   gtk_widget_set_vexpand (priv->modem_box, FALSE);
+  gtk_widget_set_no_show_all (priv->modem_box, TRUE);
 
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (box), priv->box,
