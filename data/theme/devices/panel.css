@@ -39,7 +39,7 @@ MpdShell {
   padding: 5;
 }
 
-#panel-label {
+#title {
   color: #2a3c4a;
   font-size: 16px;
   padding: 6 6 6 15;
@@ -50,20 +50,20 @@ MpdComputerPane, MpdDevicesPane {
   padding: 3;
 }
 
-#computer-pane-header {
+#computer-section-header {
   border-image: url('content-pane-header.png') 2;
   padding: 6 10 6 15;
 }
 
-#computer-pane-label {
-  color: #606261;
-  font-size: 16px;
+#computer-section-title {
+  color: #2a3c4a;
+  font-size: 14px;
 }
 
-#pane-label {
+#device-section-header {
   border-image: url('content-pane-header.png') 2;
-  color: #606261;
-  font-size: 16px;
+  color: #2a3c4a;
+  font-size: 14px;
   padding: 10 10 10 15;
 }
 

@@ -105,7 +105,7 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_DEVICES_PANE_WIDTH);
 
   label = mx_label_new_with_text (_("Other devices"));
-  clutter_actor_set_name (label, "pane-label");
+  clutter_actor_set_name (label, "device-section-header");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_devices_tile_new ();
