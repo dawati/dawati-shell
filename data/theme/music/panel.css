@@ -9,10 +9,12 @@
 }
 
 /* Library / Now Playing */
-MxLabel.panel-sublabel {
-    color: #ff0000;
+MxLabel.section-title {
+    color: #2a3c4a;
+    font-size: 14px;
 }
 
 MplAudioTile > *#dawati-audio-tile-title {
     color: #ff0000;
+    font-size: 12px;
 }
