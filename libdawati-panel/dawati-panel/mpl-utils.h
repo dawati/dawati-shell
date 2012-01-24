@@ -34,4 +34,6 @@ void mpl_audio_store_set (GtkListStore *store,
                           const gchar *artist_name,
                           const gchar *album_name);
 
+gboolean mpl_utils_panel_in_standalone_mode (void);
+
 #endif /* _MPL_UTILS_H */

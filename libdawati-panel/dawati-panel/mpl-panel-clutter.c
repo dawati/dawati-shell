@@ -31,6 +31,7 @@
 
 #include "mpl-panel-clutter.h"
 #include "mpl-panel-background.h"
+#include "mpl-utils.h"
 
 /**
  * SECTION:mpl-panel-clutter
@@ -165,32 +166,35 @@ mpl_panel_clutter_ensure_window (MplPanelClutter *panel)
   if (priv->needs_gdk_pump)
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
 
-  MPL_X_ERROR_TRAP ();
+  if (!mpl_utils_panel_in_standalone_mode ())
+    {
+      MPL_X_ERROR_TRAP ();
 
-  /*
-   * Make dock, sticky and position at the correct place.
-   */
-  atom1 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE", False);
-  atom2 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
+      /*
+       * Make dock, sticky and position at the correct place.
+       */
+      atom1 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE", False);
+      atom2 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
 
-  XChangeProperty (xdpy,
-                   xwin,
-                   atom1,
-                   XA_ATOM, 32,
-                   PropModeReplace, (unsigned char *) &atom2, 1);
+      XChangeProperty (xdpy,
+                       xwin,
+                       atom1,
+                       XA_ATOM, 32,
+                       PropModeReplace, (unsigned char *) &atom2, 1);
 
-  atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
-  myint = -1;
+      atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
+      myint = -1;
 
-  XChangeProperty (xdpy,
-                   xwin,
-                   atom1,
-                   XA_CARDINAL, 32,
-                   PropModeReplace, (unsigned char *) &myint, 1);
+      XChangeProperty (xdpy,
+                       xwin,
+                       atom1,
+                       XA_CARDINAL, 32,
+                       PropModeReplace, (unsigned char *) &myint, 1);
 
-  XSync (xdpy, False);
+      XSync (xdpy, False);
 
-  MPL_X_ERROR_UNTRAP ();
+      MPL_X_ERROR_UNTRAP ();
+    }
 }
 
 static void

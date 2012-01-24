@@ -216,6 +216,7 @@ mpl_audio_tile_allocate (ClutterActor           *actor,
   CLUTTER_ACTOR_CLASS (mpl_audio_tile_parent_class)->allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
   available_width = box->x2 - box->x1 - padding.left - padding.right;
   available_height = box->y2 - box->y1 - padding.top - padding.bottom;
 
