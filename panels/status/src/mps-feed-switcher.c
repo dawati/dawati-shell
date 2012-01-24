@@ -328,19 +328,18 @@ _new_service_button_clicked_cb (MxButton        *button,
 {
   GDesktopAppInfo *app_info;
   GError *error = NULL;
-  const gchar *args[3] = { NULL, };
+  const gchar *args[2] = { NULL, };
 
-  app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+  app_info = g_desktop_app_info_new ("bisho.desktop");
 
   if (!app_info)
   {
-    g_critical (G_STRLOC ": Unable to get app infor for gnome-control-center");
+    g_critical (G_STRLOC ": Unable to get app infor for bisho");
     return;
   }
 
   args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
-  args[1] = "bisho.desktop";
-  args[2] = NULL;
+  args[1] = NULL;
 
   if (!g_spawn_async (NULL,
                       (gchar **)args,
@@ -351,7 +350,7 @@ _new_service_button_clicked_cb (MxButton        *button,
                       NULL,
                       &error))
   {
-    g_warning (G_STRLOC ": Error starting control center for bisho: %s",
+    g_warning (G_STRLOC ": Error starting bisho: %s",
                error->message);
     g_clear_error (&error);
   } else {
