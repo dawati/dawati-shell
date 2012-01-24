@@ -43,7 +43,7 @@ source_h = \
 		$(srcdir)/mpl-app-launch-context.h \
 		$(srcdir)/mpl-app-launches-query.h \
 		$(srcdir)/mpl-app-launches-store.h\
-		$(srcdir)/mpl-audio-item.h \
+		$(srcdir)/mpl-audio-tile.h \
 		$(srcdir)/mpl-version.h	\
 		$(srcdir)/mpl-content-pane.h \
 		$(srcdir)/mpl-entry.h \
@@ -66,7 +66,7 @@ source_c = \
 		$(srcdir)/mpl-app-launch-context.c \
 		$(srcdir)/mpl-app-launches-query.c \
 		$(srcdir)/mpl-app-launches-store.c \
-		$(srcdir)/mpl-audio-item.c \
+		$(srcdir)/mpl-audio-tile.c \
 		$(srcdir)/mnb-enum-types.c \
 		$(srcdir)/mpl-content-pane.c \
 		$(srcdir)/mpl-entry.c \

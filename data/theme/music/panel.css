@@ -1,6 +1,18 @@
 #panel-label {
-  color: #2a3c4a;
-  font-size: 16px;
-  padding: 6 6 6 15;
+    color: #2a3c4a;
+    font-size: 16px;
+    padding: 6 6 6 15;
 }
 
+/* Container of all widgets (the big box) excluding the label above */
+#panel-grid {
+}
+
+/* Library / Now Playing */
+MxLabel.panel-sublabel {
+    color: #ff0000;
+}
+
+MplAudioTile > *#dawati-audio-tile-title {
+    color: #ff0000;
+}
