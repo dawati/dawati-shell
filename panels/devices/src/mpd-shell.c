@@ -126,7 +126,7 @@ mpd_shell_init (MpdShell *self)
                     G_CALLBACK (_width_notify_cb), NULL);
 
   label = mx_label_new_with_text (_("Devices"));
-  clutter_actor_set_name (label, "panel-label");
+  clutter_actor_set_name (label, "title");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   hbox = mx_box_layout_new ();
