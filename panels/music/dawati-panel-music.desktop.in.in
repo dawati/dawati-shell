@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-music
+TryExec=@libexecdir@/dawati-panel-music
+Name=music
+Icon=dawati-panel-music
+_Comment=Music panel
+Terminal=false
+Categories=
+OnlyShowIn=dawati;
+X-Meego-Priority=Highest
+X-GNOME-Autostart-enable=true
+X-Dawati-Service=com.dawati.UX.Shell.Panels.music
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=music-button
