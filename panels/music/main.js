@@ -457,7 +457,7 @@ NowPlaying.prototype = {
         hbox.add_actor(this._elapsed, 0);
 
         this._slider = new Mx.Slider({ name: 'playing-slider',
-                                       live_value: false });
+                                       live_update: false });
         hbox.add_actor(this._slider, 1);
         hbox.child_set_expand(this._slider, true);
         this._in_slider_update = false;
