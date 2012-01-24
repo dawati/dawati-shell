@@ -476,7 +476,7 @@ penge_grid_view_init (PengeGridView *self)
   self->priv = priv;
 
   priv->header_label = mx_label_new_with_text ("Myzone");
-  clutter_actor_set_name (priv->header_label, "myzone-panel-header-label");
+  clutter_actor_set_name (priv->header_label, "title");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->header_label,
                                       0, 0,
