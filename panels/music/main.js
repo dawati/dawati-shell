@@ -599,7 +599,7 @@ vbox.add_constraint (new Clutter.BindConstraint({ coordinate: Clutter.BindCoordi
                                                   source: stage }));
 stage.add_actor(vbox);
 
-let label = new Mx.Label({ name: 'panel-label',
+let label = new Mx.Label({ name: 'title',
                            text: _("Music") });
 vbox.add_actor(label, 0);
 
