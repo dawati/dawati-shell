@@ -37,6 +37,7 @@
 #include "mpl-app-launches-store.h"
 #include "mpl-panel-client.h"
 #include "mpl-panel-common.h"
+#include "mpl-utils.h"
 #include "marshal.h"
 #include "mnb-enum-types.h"
 
@@ -977,6 +978,12 @@ mpl_panel_client_ready_idle_cb (gpointer data)
   g_signal_emit (panel, signals[READY], 0);
 
   panel->priv->ready_emitted = TRUE;
+
+  if (mpl_utils_panel_in_standalone_mode ())
+    {
+      mnb_panel_dbus_set_size (panel, 1024, 600, NULL);
+      mnb_panel_dbus_show (panel, NULL);
+    }
 
   return FALSE;
 }

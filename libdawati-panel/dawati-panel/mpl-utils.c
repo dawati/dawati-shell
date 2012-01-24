@@ -134,3 +134,17 @@ mpl_audio_store_set (GtkListStore *store,
                       4, album_name,
                       -1);
 }
+
+gboolean
+mpl_utils_panel_in_standalone_mode (void)
+{
+  static gboolean initialized = FALSE;
+  static gboolean in_standalone;
+
+  if (G_UNLIKELY (!initialized))
+    {
+      in_standalone = g_getenv ("DAWATI_PANEL_STANDALONE") != NULL;
+    }
+
+  return in_standalone;
+}

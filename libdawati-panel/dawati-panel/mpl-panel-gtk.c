@@ -26,6 +26,7 @@
 #include <math.h>
 
 #include "mpl-panel-gtk.h"
+#include "mpl-utils.h"
 
 /**
  * SECTION:mpl-panel-gtk
@@ -208,8 +209,11 @@ mpl_panel_gtk_constructed (GObject *self)
 
   priv->window = window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (priv->window, "MplPanelGtk");
-  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
-  gtk_window_stick (GTK_WINDOW (window));
+  if (!mpl_utils_panel_in_standalone_mode ())
+    {
+      gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
+      gtk_window_stick (GTK_WINDOW (window));
+    }
 
   /*
    * Realize the window so we can get the xid.
