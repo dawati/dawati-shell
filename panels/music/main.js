@@ -608,7 +608,7 @@ vbox.add_actor(table, 1);
 vbox.child_set_expand(table, true);
 
 
-let label = new Mx.Label({ name: 'content-pane-label',
+let label = new Mx.Label({ name: 'section-title',
                            text: _("Library") });
 table.add_actor(label, 0, 0);
 table.child_set_x_fill(label, false);
@@ -617,7 +617,7 @@ table.child_set_y_fill(label, false);
 table.child_set_y_expand(label, false);
 table.child_set_x_align(label, Mx.Align.START);
 
-let label = new Mx.Label({ name: 'content-pane-label',
+let label = new Mx.Label({ name: 'section-title',
                            text: _("Now Playing") });
 table.add_actor(label, 0, 1);
 table.child_set_x_fill(label, false);
