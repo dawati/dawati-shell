@@ -42,19 +42,6 @@ stage_width_notify_cb (ClutterActor  *stage,
 
   mnb_launcher_clear_filter (launcher);
   clutter_actor_set_width (CLUTTER_ACTOR (launcher), width);
-
-  if (width > 1024)
-    {
-      gboolean expander_config;
-      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
-
-      /* Big-screen mode. */
-      mnb_launcher_set_show_expanders (launcher, expander_config);
-    }
-  else
-    {
-      mnb_launcher_set_show_expanders (launcher, TRUE);
-    }
 }
 
 static void
@@ -68,24 +55,6 @@ stage_height_notify_cb (ClutterActor  *stage,
 }
 
 static void
-show_expanders_in_bcm_changed_cb (MnbLauncher  *launcher,
-                                  GParamSpec   *pspec,
-                                  ClutterActor *stage)
-{
-  guint width = clutter_actor_get_width (stage);
-
-  if (width > 1024)
-    {
-      gboolean expander_config;
-
-      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
-      mnb_launcher_set_show_expanders (launcher, expander_config);
-    }
-}
-
-
-
-static void
 panel_set_size_cb (MplPanelClient *panel,
                    guint           width,
                    guint           height,
@@ -93,18 +62,6 @@ panel_set_size_cb (MplPanelClient *panel,
 {
   mnb_launcher_clear_filter (launcher);
   clutter_actor_set_size (CLUTTER_ACTOR (launcher), width, height);
-
-  if (width > 1024)
-    {
-      gboolean expander_config;
-      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
-      /* Big-screen mode. */
-      mnb_launcher_set_show_expanders (launcher, expander_config);
-    }
-  else
-    {
-      mnb_launcher_set_show_expanders (launcher, TRUE);
-    }
 }
 
 static void
@@ -292,9 +249,6 @@ main (int     argc,
                         G_CALLBACK (launcher_activated_cb), panel);
       g_signal_connect (launcher, "commandline-launch-activated",
                         G_CALLBACK (commandline_launch_activated_cb), panel);
-      g_signal_connect (launcher, "notify::show-expanders-in-bcm",
-                        G_CALLBACK (show_expanders_in_bcm_changed_cb), stage);
-
       g_signal_connect (panel, "show-begin",
                         G_CALLBACK (panel_show_begin_cb), launcher);
       g_signal_connect (panel, "show-end",

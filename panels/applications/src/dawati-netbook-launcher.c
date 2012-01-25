@@ -6,6 +6,7 @@
  * Author: Tomas Frydrych    <tf@linux.intel.com>
  *         Chris Lord        <christopher.lord@intel.com>
  *         Robert Staudinger <robertx.staudinger@intel.com>
+ *         Michael Wood      <michael.g.wood@intel.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -55,9 +56,9 @@
 #define APPS_GRID_COLUMN_GAP   17
 #define APPS_GRID_ROW_GAP      2
 
-#define LAUNCHER_BUTTON_WIDTH     210
-#define LAUNCHER_BUTTON_HEIGHT     65
-#define LAUNCHER_BUTTON_ICON_SIZE  48
+#define LAUNCHER_BUTTON_WIDTH     115
+#define LAUNCHER_BUTTON_HEIGHT     120
+#define LAUNCHER_BUTTON_ICON_SIZE  64
 
 #define PLACEHOLDER_TEXT _("To see your favourite applications here and on the myzone, hover your pointer over the application you want to add and select the pin in the top right.")
 
@@ -108,21 +109,17 @@ struct MnbLauncherPrivate_
   MplAppBookmarkManager   *manager;
   MplAppLaunchesStore     *app_launches;
   MnbLauncherMonitor      *monitor;
-  GHashTable              *expanders;
+  GHashTable              *categories;
   MxExpander              *first_expander;
   GSList                  *launchers;
-  gboolean                 show_expanders;
-  /* Show exapnders in Big Screen Mode */
-  gboolean                 show_expanders_in_bcm;
-  guint                   fav_grid_items;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
   ClutterActor            *filter;
   ClutterActor            *scrollview;
-  MxExpander              *default_expander;
-  ClutterActor            *fav_grid;
-  ClutterActor            *placeholder_label;
+
+  ClutterActor            *category_section;
+  MxButtonGroup           *category_group;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
@@ -170,6 +167,7 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
 }
 
+
 static void
 launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
                                 MnbLauncher        *self)
@@ -181,13 +179,13 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   if (mnb_launcher_button_get_favorite (launcher))
     {
       MxWidget *clone = mnb_launcher_button_create_favorite (launcher);
-      clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
-                             CLUTTER_ACTOR (clone), NULL);
+
       g_signal_connect (clone, "activated",
                         G_CALLBACK (launcher_button_activated_cb),
                         self);
 
       /* Update bookmarks. */
+
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
                 MNB_LAUNCHER_BUTTON (clone)));
@@ -264,88 +262,6 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
   return button;
 }
 
-typedef struct
-{
-  MnbLauncher   *self;
-  ClutterActor  *expander;
-} expander_expand_complete_idle_cb_t;
-
-static gboolean
-expander_expand_complete_idle_cb (expander_expand_complete_idle_cb_t *data)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (data->self);
-
-  if (data->expander)
-    {
-      ClutterGeometry geometry;
-      clutter_actor_get_geometry (data->expander, &geometry);
-      mx_scroll_view_ensure_visible (MX_SCROLL_VIEW (priv->scrollview), &geometry);
-    }
-
-  return FALSE;
-}
-
-static void
-expander_expand_complete_cb (MxExpander       *expander,
-                             MnbLauncher      *self)
-{
-  if (mx_expander_get_expanded (expander))
-    {
-      /* FIXME: For some reason mx_scroll_view_ensure_visible() does not achieve the
-       * desired effect. Using the idle hook works but the animation is not
-       * totally smooth. */
-      expander_expand_complete_idle_cb_t *data = g_new0 (expander_expand_complete_idle_cb_t, 1);
-      data->self = self;
-      data->expander = (ClutterActor *) expander;
-      g_idle_add_full (G_PRIORITY_HIGH_IDLE,
-                       (GSourceFunc) expander_expand_complete_idle_cb,
-                       data,
-                       g_free);
-    }
-}
-
-static void
-expander_expanded_notify_cb (MxExpander      *expander,
-                             GParamSpec      *pspec,
-                             MnbLauncher     *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MxExpander      *e;
-  const gchar     *category;
-  GHashTableIter   iter;
-
-  /* Close other open expander, so that just the newly opended one is expanded. */
-  if (mx_expander_get_expanded (expander))
-    {
-      g_hash_table_iter_init (&iter, priv->expanders);
-      while (g_hash_table_iter_next (&iter,
-                                     (gpointer *) &category,
-                                     (gpointer *) &e))
-        {
-          if (e != expander)
-            {
-              mx_expander_set_expanded (e, FALSE);
-            }
-        }
-    }
-}
-
-static void
-expander_frame_allocated_cb (MxExpander             *expander,
-                             ClutterActorBox const  *box,
-                             MnbLauncher            *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  ClutterGeometry geometry;
-
-  geometry.x = box->x1;
-  geometry.y = box->y1;
-  geometry.width = box->x2 - box->x1;
-  geometry.height = box->y2 - box->y1;
-
-  mx_scroll_view_ensure_visible (MX_SCROLL_VIEW (priv->scrollview), &geometry);
-}
-
 static void
 mnb_launcher_cancel_search (MnbLauncher     *self)
 {
@@ -369,11 +285,10 @@ mnb_launcher_reset (MnbLauncher     *self)
   mnb_launcher_cancel_search (self);
 
   /* Clear fav apps */
-  if (priv->fav_grid)
+  if (priv->category_section)
     {
-      clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                 (ClutterCallback) clutter_actor_destroy,
-                                 NULL);
+      clutter_actor_destroy (priv->category_section);
+      priv->category_section = NULL;
     }
 
   /* Clear apps */
@@ -383,10 +298,10 @@ mnb_launcher_reset (MnbLauncher     *self)
       priv->apps_grid = NULL;
     }
 
-  if (priv->expanders)
+  if (priv->categories)
     {
-      g_hash_table_destroy (priv->expanders);
-      priv->expanders = NULL;
+      g_hash_table_destroy (priv->categories);
+      priv->categories = NULL;
     }
 
   if (priv->launchers)
@@ -441,80 +356,183 @@ _launches_changed_cb (MplAppLaunchesStore *store,
   mnb_launcher_update_last_launched (self);
 }
 
-static void
-_launcher_gconf_key_changed_cb (GConfClient *client,
-                                guint cnxn_id,
-                                GConfEntry *entry,
-                                gpointer data)
+static gboolean
+mnb_launcher_filter_cb (MnbLauncher *self)
 {
-  MnbLauncher *launcher = MNB_LAUNCHER (data);
-  MnbLauncherPrivate *priv = launcher->priv;
-  const gchar *key;
-  GConfValue *value;
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  key = gconf_entry_get_key (entry);
-  if (!key)
-    {
-      g_warning (G_STRLOC ": no key!");
-      return;
-    }
+  GSList *iter;
 
-  value = gconf_entry_get_value (entry);
-  if (!value)
+  if (priv->lcase_needle)
     {
-      g_warning (G_STRLOC ": no value!");
-      return;
-    }
-
-  if (!strcmp (key, KEY_SHOW_EXPANDERS))
-    {
-      if (value->type != GCONF_VALUE_BOOL)
+      /* Need to switch to filter mode? */
+      if (!priv->is_filtering)
         {
-          g_warning (G_STRLOC ": %s does not contain a bool!",
-                     KEY_SHOW_EXPANDERS);
-          return;
+          priv->is_filtering = TRUE;
+
+          mnb_launcher_grid_set_x_expand_children (
+                            MNB_LAUNCHER_GRID (priv->apps_grid),
+                            FALSE);
         }
 
-      priv->show_expanders_in_bcm = gconf_value_get_bool (value);
-      g_object_notify (G_OBJECT (launcher),
-                       "show-expanders-in-bcm");
+      /* Perform search. */
 
-      return;
+      for (iter = priv->launchers; iter; iter = iter->next)
+        {
+          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+          if (mnb_launcher_button_match (button, priv->lcase_needle))
+            {
+              clutter_actor_show (CLUTTER_ACTOR (button));
+            }
+          else
+            {
+              clutter_actor_hide (CLUTTER_ACTOR (button));
+              mx_stylable_set_style_pseudo_class (MX_STYLABLE (button), NULL);
+            }
+        }
+
+      g_free (priv->lcase_needle);
+      priv->lcase_needle = NULL;
     }
 
-  g_warning (G_STRLOC ": Unknown key %s", key);
+
+  else if (priv->is_filtering)
+    {
+      /* Did filter, now switch back to normal mode */
+      priv->is_filtering = FALSE;
+
+      for (iter = priv->launchers; iter; iter = iter->next)
+        {
+          ClutterActor *launcher = CLUTTER_ACTOR (iter->data);
+          clutter_actor_show (launcher);
+        }
+    }
+
+  return FALSE;
+}
+
+
+
+
+static void
+_filter_text_notify_cb (MnbFilter     *filter,
+                        GParamSpec    *pspec,
+                        MnbLauncher   *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  gchar *needle;
+
+  MxButton *active_button;
+
+  if ((active_button =
+       mx_button_group_get_active_button (priv->category_group)))
+    mx_button_set_toggled (active_button, FALSE);
+
+  mnb_launcher_cancel_search (self);
+
+  needle = g_strdup (mnb_filter_get_text (MNB_FILTER (filter)));
+  needle = g_strstrip (needle);
+
+  if (needle && *needle)
+    priv->lcase_needle = g_utf8_strdown (needle, -1);
+  priv->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
+                                              (GSourceFunc) mnb_launcher_filter_cb,
+                                              self);
+
+  g_free (needle);
 }
 
 static void
-mnb_launcher_setup_gconf (MnbLauncher *launcher)
+_category_button_toggled_cb (ClutterActor *button,
+                             GParamSpec   *pspec,
+                             MnbLauncher  *self)
 {
-  MnbLauncherPrivate *priv = launcher->priv;
-  GError *error  = NULL;
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  gchar *needle;
 
-  priv->gconf_client = gconf_client_get_default ();
+  mnb_launcher_cancel_search (self);
 
-  gconf_client_add_dir (priv->gconf_client,
-                        KEY_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE,
-                        &error);
-
-  if (error)
+  /* If I'm the all button/category then reset the filter */
+  if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "all") == 0)
     {
-      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
-                 error->message);
-      g_clear_error (&error);
+      mnb_launcher_filter_cb (self);
+      return;
     }
 
-  gconf_client_notify_add (priv->gconf_client,
-                           KEY_DIR,
-                           _launcher_gconf_key_changed_cb,
-                           launcher,
-                           NULL,
-                           &error);
+  needle = g_strdup (mx_button_get_label (MX_BUTTON (button)));
+  needle = g_strstrip (needle);
 
-  priv->show_expanders_in_bcm = gconf_client_get_bool (priv->gconf_client,
-                                                       KEY_SHOW_EXPANDERS,
-                                                       NULL);
+  if (needle && *needle)
+    priv->lcase_needle = g_utf8_strdown (needle, -1);
+
+  mnb_launcher_filter_cb (self);
+
+  g_free (needle);
+}
+
+
+static gboolean
+_category_button_label_clicked_cb (ClutterActor *label,
+                                   ClutterEvent *event,
+                                   ClutterActor *button)
+{
+  mx_button_set_toggled (MX_BUTTON (button), TRUE);
+
+  return FALSE;
+}
+
+
+
+static ClutterActor *
+mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
+{
+  MnbLauncherPrivate *priv = self->priv;
+
+  ClutterActor *box;
+
+  ClutterActor *button;
+  ClutterActor *label;
+
+  /*  -------------
+   *  | [x] | label |
+   *  -------------
+   */
+
+  /* Container */
+  box = mx_box_layout_new ();
+
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box),
+                                 MX_ORIENTATION_HORIZONTAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (box), 3);
+
+  /* Button */
+  button = mx_button_new_with_label (text);
+
+  clutter_actor_set_name (button, "cat-button");
+  mx_button_set_label_visible (MX_BUTTON (button), FALSE);
+  mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
+  mx_button_group_add (priv->category_group, MX_BUTTON (button));
+  mx_stylable_set_style_class (MX_STYLABLE (button), "check-box");
+
+  g_signal_connect (button, "notify::toggled",
+                   G_CALLBACK (_category_button_toggled_cb),
+                   self);
+  /* connect to notify::toggled */
+
+  /* Label */
+  if (g_strcmp0 (text, "all") == 0)
+    text = _("All");
+
+  label = mx_label_new_with_text (text);
+  clutter_actor_set_reactive (label, TRUE);
+  g_signal_connect (label, "button-release-event",
+                    G_CALLBACK (_category_button_label_clicked_cb),
+                    button);
+
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), button, 0);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), label, 1);
+
+  return box;
 }
 
 static gboolean
@@ -523,8 +541,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   MnbLauncherDirectory  *directory;
   GList                 *entries_iter;
-  ClutterActor          *inner_grid;
   int                    n_buttons = 0;
+
 
   if (priv->tree == NULL)
     {
@@ -542,13 +560,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   if (priv->directory_iter == NULL)
     {
       /* Last invocation. */
-
-      /* Expand default expander */
-      if (priv->default_expander)
-        mx_expander_set_expanded (priv->default_expander, TRUE);
-      else
-        g_warning ("%s : No default expander 'Internet'", G_STRLOC);
-
       /* Alphabetically sort buttons, so they are in order while filtering. */
       priv->launchers = g_slist_sort (priv->launchers,
                                       (GCompareFunc) mnb_launcher_button_compare);
@@ -576,12 +587,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 
   directory = (MnbLauncherDirectory *) priv->directory_iter->data;
 
-  inner_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  clutter_actor_set_reactive (inner_grid, TRUE);
-  mx_grid_set_column_spacing (MX_GRID (inner_grid), APPS_GRID_COLUMN_GAP);
-  mx_grid_set_row_spacing (MX_GRID (inner_grid), APPS_GRID_ROW_GAP);
-  clutter_actor_set_name (inner_grid, "launcher-expander-grid");
-
   for (entries_iter = directory->entries; entries_iter; entries_iter = entries_iter->next)
     {
       MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
@@ -590,15 +595,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                                                             priv->theme);
       if (button)
         {
-          /* Assuming limited number of fav apps, linear search should do for now. */
-          if (priv->fav_grid)
-            {
-              clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                          (ClutterCallback) mnb_launcher_button_sync_if_favorite,
-                                          button);
-            }
-
-          clutter_container_add (CLUTTER_CONTAINER (inner_grid),
+          clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
                                   CLUTTER_ACTOR (button), NULL);
           g_signal_connect (button, "activated",
                             G_CALLBACK (launcher_button_activated_cb),
@@ -612,43 +609,16 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         }
     }
 
-    /* Create expander if at least 1 launcher inside. */
+    /* Create category if at least 1 launcher inside.*/
     if (n_buttons > 0)
       {
-        ClutterActor *expander;
+        ClutterActor *category;
 
-        expander = CLUTTER_ACTOR (mnb_expander_new ());
-        mx_expander_set_label (MX_EXPANDER (expander),
-                                  directory->name);
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
-                                     expander);
-        g_hash_table_insert (priv->expanders,
-                              g_strdup (directory->name), expander);
-        clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
+        category = mnb_launcher_category_button_new (self, directory->name);
 
-        /* This expander will be opened by default. */
-        if (0 == g_strcmp0 ("Internet", directory->id))
-          {
-            priv->default_expander = MX_EXPANDER (expander);
-            g_object_add_weak_pointer ((GObject *) priv->default_expander,
-                                       (gpointer *) &priv->default_expander);
-          }
-
-        g_signal_connect (expander, "notify::expanded",
-                          G_CALLBACK (expander_expanded_notify_cb),
-                          self);
-        g_signal_connect (expander, "expand-complete",
-                          G_CALLBACK (expander_expand_complete_cb),
-                          self);
-        g_signal_connect (expander, "frame-allocated",
-                          G_CALLBACK (expander_frame_allocated_cb),
-                          self);
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
+                                     category);
       }
-    else
-      {
-        clutter_actor_destroy (inner_grid);
-      }
-
   return TRUE;
 }
 
@@ -659,7 +629,6 @@ mnb_launcher_fill_plain (MnbLauncher  *self)
   MnbLauncherTree *tree;
   GList           *directories;
   GList const     *directories_iter;
-  GSList const    *launchers_iter;
 
   /* Build list of launchers in priv->launchers. */
 
@@ -682,14 +651,6 @@ mnb_launcher_fill_plain (MnbLauncher  *self)
                                                                 priv->theme);
           if (button)
             {
-              /* Assuming limited number of fav apps, linear search should do for now. */
-              if (priv->fav_grid)
-                {
-                  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                             (ClutterCallback) mnb_launcher_button_sync_if_favorite,
-                                             button);
-                }
-
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_button_activated_cb),
                                 self);
@@ -699,18 +660,6 @@ mnb_launcher_fill_plain (MnbLauncher  *self)
               priv->launchers = g_slist_prepend (priv->launchers, button);
             }
         }
-    }
-
-  /* Sort and add to grid */
-
-  priv->launchers = g_slist_sort (priv->launchers,
-                                  (GCompareFunc) mnb_launcher_button_compare);
-  for (launchers_iter = priv->launchers;
-       launchers_iter != NULL;
-       launchers_iter = launchers_iter->next)
-    {
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
-                                   CLUTTER_ACTOR (launchers_iter->data));
     }
 
   /* Watch for changes in installed apps */
@@ -730,13 +679,11 @@ mnb_launcher_fill (MnbLauncher  *self)
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
   GList *fav_apps;
-  gboolean have_fav_apps;
 
   /*
    * Fav apps.
    */
 
-  have_fav_apps = FALSE;
   fav_apps = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
   if (fav_apps)
     {
@@ -766,22 +713,20 @@ mnb_launcher_fill (MnbLauncher  *self)
           if (entry)
             {
               button = launcher_button_create_from_entry (entry, NULL, priv->theme);
-              if (button)
+              /*              if (button)
                 {
-                  mnb_launcher_button_make_favorite (MNB_LAUNCHER_BUTTON (button),
+                mnb_launcher_button_make_favorite (MNB_LAUNCHER_BUTTON (button),
                                                      LAUNCHER_BUTTON_HEIGHT,
                                                      LAUNCHER_BUTTON_HEIGHT);
-                }
+                }*/
               g_object_unref (entry);
             }
 
           if (button)
             {
-              have_fav_apps = TRUE;
               mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button),
                                                 TRUE);
-              clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
-                                     CLUTTER_ACTOR (button), NULL);
+
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_button_activated_cb),
                                 self);
@@ -802,26 +747,16 @@ mnb_launcher_fill (MnbLauncher  *self)
   clutter_actor_set_name (priv->apps_grid, "apps-grid");
   mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid), APPS_GRID_ROW_GAP);
+
+
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
                                priv->apps_grid);
 
-  if (priv->show_expanders)
-    {
-      mnb_launcher_grid_set_x_expand_children (MNB_LAUNCHER_GRID (priv->apps_grid),
-                                               TRUE);
-
-      priv->expanders = g_hash_table_new_full (g_str_hash,
-                                               g_str_equal,
-                                               g_free,
-                                               NULL);
-
-      while (mnb_launcher_fill_category (self))
+  while (mnb_launcher_fill_category (self))
         ;
-    }
-  else
-    {
+
       mnb_launcher_fill_plain (self);
-    }
+/*    } */
 
   mnb_launcher_update_last_launched (self);
 }
@@ -831,9 +766,6 @@ mnb_launcher_theme_changed_cb (GtkIconTheme    *theme,
                                 MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                             (ClutterCallback) launcher_button_reload_icon_cb,
-                             priv->theme);
 
   g_slist_foreach (priv->launchers,
                    (GFunc) launcher_button_reload_icon_cb,
@@ -848,139 +780,8 @@ mnb_launcher_monitor_cb (MnbLauncherMonitor  *monitor,
   mnb_launcher_fill (self);
 }
 
-static gboolean
-mnb_launcher_filter_cb (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  GSList *iter;
 
-  if (priv->lcase_needle)
-    {
-      /* Need to switch to filter mode? */
-      if (!priv->is_filtering)
-        {
-          GSList          *iter;
-          GHashTableIter   expander_iter;
-          ClutterActor    *expander;
-
-          priv->is_filtering = TRUE;
-
-          mnb_launcher_grid_set_x_expand_children (
-                            MNB_LAUNCHER_GRID (priv->apps_grid),
-                            FALSE);
-
-          if (priv->show_expanders)
-            {
-              /* Hide expanders. */
-              g_hash_table_iter_init (&expander_iter, priv->expanders);
-              while (g_hash_table_iter_next (&expander_iter,
-                                              NULL,
-                                              (gpointer *) &expander))
-                {
-                  clutter_actor_hide (expander);
-                }
-
-              /* Reparent launchers onto grid.
-                * Launchers are initially invisible to avoid bogus matches. */
-              for (iter = priv->launchers; iter; iter = iter->next)
-                {
-                  MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
-                  clutter_actor_hide (CLUTTER_ACTOR (launcher));
-                  clutter_actor_reparent (CLUTTER_ACTOR (launcher),
-                                          priv->apps_grid);
-                  mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher),
-                                                      NULL);
-                }
-            }
-        }
-
-      /* Perform search. */
-
-      for (iter = priv->launchers; iter; iter = iter->next)
-        {
-          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-          if (mnb_launcher_button_match (button, priv->lcase_needle))
-            {
-              clutter_actor_show (CLUTTER_ACTOR (button));
-            }
-          else
-            {
-              clutter_actor_hide (CLUTTER_ACTOR (button));
-              mx_stylable_set_style_pseudo_class (MX_STYLABLE (button), NULL);
-            }
-        }
-
-      g_free (priv->lcase_needle);
-      priv->lcase_needle = NULL;
-    }
-  else if (priv->is_filtering)
-    {
-      /* Did filter, now switch back to normal mode */
-      GHashTableIter   expander_iter;
-      ClutterActor    *expander;
-
-      priv->is_filtering = FALSE;
-
-      if (priv->show_expanders)
-        {
-          mnb_launcher_grid_set_x_expand_children (
-                                      MNB_LAUNCHER_GRID (priv->apps_grid),
-                                      TRUE);
-
-          /* Reparent launchers into expanders. */
-          for (iter = priv->launchers; iter; iter = iter->next)
-            {
-              MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
-              const gchar       *category   = mnb_launcher_button_get_category (launcher);
-              ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
-              ClutterActor      *inner_grid = mx_bin_get_child (MX_BIN (e));
-
-              mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher), NULL);
-              clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
-            }
-
-          /* Show expanders. */
-          g_hash_table_iter_init (&expander_iter, priv->expanders);
-          while (g_hash_table_iter_next (&expander_iter, NULL, (gpointer *) &expander))
-            {
-              clutter_actor_show (expander);
-            }
-        }
-      else
-        {
-          for (iter = priv->launchers; iter; iter = iter->next)
-            {
-              ClutterActor *launcher = CLUTTER_ACTOR (iter->data);
-              clutter_actor_show (launcher);
-            }
-        }
-    }
-
-  return FALSE;
-}
-
-static void
-_filter_text_notify_cb (MnbFilter     *filter,
-                        GParamSpec    *pspec,
-                        MnbLauncher   *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  gchar *needle;
-
-  mnb_launcher_cancel_search (self);
-
-  needle = g_strdup (mnb_filter_get_text (MNB_FILTER (filter)));
-  needle = g_strstrip (needle);
-
-  if (needle && *needle)
-    priv->lcase_needle = g_utf8_strdown (needle, -1);
-  priv->timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
-                                              (GSourceFunc) mnb_launcher_filter_cb,
-                                              self);
-
-  g_free (needle);
-}
 
 static void
 _dispose (GObject *object)
@@ -1147,30 +948,6 @@ _filter_captured_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
-static void
-_fav_add_complete_cb (ClutterActor *grid,
-                      ClutterActor *button,
-                      MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (MNB_LAUNCHER (self));
-  priv->fav_grid_items++;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->placeholder_label))
-    clutter_actor_hide (priv->placeholder_label);
-}
-
-static void
-_fav_remove_complete_cb (ClutterActor *grid,
-                         ClutterActor *button,
-                         MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (MNB_LAUNCHER (self));
-  priv->fav_grid_items--;
-
- if (priv->fav_grid_items == 0)
-   clutter_actor_show (priv->placeholder_label);
-}
-
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1202,20 +979,21 @@ _constructor (GType                  gtype,
                                NULL);
 
   /*
-   * Fav apps pane
+   * categories section
    */
-  pane = mpl_content_pane_new (_("Favorite applications"));
+  priv->category_group = mx_button_group_new ();
+
+  pane = mpl_content_pane_new ("");
   clutter_actor_set_width (pane, FAV_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
 
-
-  priv->placeholder_label = mx_label_new_with_text (PLACEHOLDER_TEXT);
-  mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_label),
-                               "placeholder");
-
-  mx_label_set_line_wrap (MX_LABEL (priv->placeholder_label), TRUE);
-
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (pane), priv->placeholder_label, 1);
+  priv->category_section = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->category_section),
+                                 MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->category_section),
+                             5);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
+                               mnb_launcher_category_button_new (self, "all"));
 
   fav_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (fav_scroll, "fav-pane-content");
@@ -1228,32 +1006,11 @@ _constructor (GType                  gtype,
                                "x-fill", TRUE,
                                "y-fill", TRUE,
                                NULL);
+  /* add cateogires box here */
 
-  priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  mx_stylable_set_style_class (MX_STYLABLE (priv->fav_grid), "fav-grid");
-//  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), APPS_GRID_COLUMN_GAP);
-  mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), APPS_GRID_ROW_GAP);
+  clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll),
+                               priv->category_section);
 
-  g_signal_connect (priv->fav_grid, "actor-added",
-                    G_CALLBACK (_fav_add_complete_cb), self);
-
-  g_signal_connect (priv->fav_grid, "actor-removed",
-                    G_CALLBACK (_fav_remove_complete_cb), self);
-
-//  mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 4);
-  clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
-
-  /*
-   * Applications
-   */
-
-  pane = mpl_content_pane_new (_("Your applications"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (columns), pane,
-                               "expand", TRUE,
-                               "x-fill", TRUE,
-                               "y-fill", TRUE,
-                               NULL);
 
   /* Filter */
   priv->filter = mnb_filter_new ();
@@ -1261,6 +1018,20 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->filter, "captured-event",
                     G_CALLBACK (_filter_captured_event_cb), self);
   mpl_content_pane_set_header_actor (MPL_CONTENT_PANE (pane), priv->filter);
+
+
+
+  /*
+   * Applications
+   * Your Applications
+   */
+  pane = mpl_content_pane_new ("");
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (columns), pane,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
 
   /* Apps */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
@@ -1285,8 +1056,6 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->app_launches, "changed",
                     G_CALLBACK (_launches_changed_cb), self);
 
-  mnb_launcher_setup_gconf (self);
-
   mnb_launcher_fill (self);
 
   /* Hook up search. */
@@ -1302,22 +1071,6 @@ _get_property (GObject    *object,
                GValue     *value,
                GParamSpec *pspec)
 {
-  switch (prop_id)
-    {
-      case PROP_SHOW_EXPANDERS:
-        g_value_set_boolean (value,
-                             mnb_launcher_get_show_expanders (
-                                MNB_LAUNCHER (object)));
-        break;
-      case PROP_SHOW_EXPANDERS_IN_BCM:
-        g_value_set_boolean (value,
-                             mnb_launcher_get_show_expanders_in_bcm (
-                                MNB_LAUNCHER (object)));
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
-    }
 }
 
 static void
@@ -1326,16 +1079,6 @@ _set_property (GObject      *object,
                const GValue *value,
                GParamSpec   *pspec)
 {
-  switch (prop_id)
-    {
-      case PROP_SHOW_EXPANDERS:
-        mnb_launcher_set_show_expanders (MNB_LAUNCHER (object),
-                                         g_value_get_boolean (value));
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
-    }
 }
 
 static void
@@ -1352,27 +1095,6 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
   object_class->get_property = _get_property;
 
   /* Properties */
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHOW_EXPANDERS,
-                                   g_param_spec_boolean ("show-expanders",
-                                                         "Show expanders",
-                                                         "Whether to show expanders",
-                                                         TRUE,
-                                                         G_PARAM_READWRITE |
-                                                         G_PARAM_CONSTRUCT));
-
-
-  g_object_class_install_property (object_class,
-                                   PROP_SHOW_EXPANDERS_IN_BCM,
-                                   g_param_spec_boolean ("show-expanders-in-bcm",
-                                                         "Show expanders in"
-                                                         "big screen mode",
-                                                         "Whether to show expanders"
-                                                         " in big screen mode",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-                                                         //G_PARAM_CONSTRUCT));
 
   /* Signals */
 
@@ -1420,50 +1142,4 @@ mnb_launcher_clear_filter (MnbLauncher *self)
                                  NULL,
                                  &adjust);
   mx_adjustment_set_value (adjust, 0.0);
-
-  /* Expand default expander. */
-  if ((priv->show_expanders) && (priv->default_expander))
-    {
-      mx_expander_set_expanded (priv->default_expander, TRUE);
-    }
-}
-
-gboolean
-mnb_launcher_get_show_expanders (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MNB_IS_LAUNCHER (self), FALSE);
-
-  return priv->show_expanders;
-}
-
-void
-mnb_launcher_set_show_expanders (MnbLauncher *self,
-                                 gboolean     show_expanders)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  g_return_if_fail (MNB_IS_LAUNCHER (self));
-
-  if (show_expanders != priv->show_expanders)
-    {
-      priv->show_expanders = show_expanders;
-      if (priv->is_constructed)
-        {
-          mnb_launcher_reset (self);
-          mnb_launcher_fill (self);
-        }
-      g_object_notify (G_OBJECT (self), "show-expanders");
-    }
-}
-
-gboolean
-mnb_launcher_get_show_expanders_in_bcm (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MNB_IS_LAUNCHER (self), FALSE);
-
-  return priv->show_expanders_in_bcm;
 }

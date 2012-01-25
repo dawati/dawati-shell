@@ -58,7 +58,6 @@ struct _MnbLauncherButtonPrivate
 {
   ClutterActor  *icon;
   MxLabel       *title;
-  MxLabel       *launched;
   ClutterActor  *fav_toggle;
 
   char          *description;
@@ -405,8 +404,6 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
-  mx_table_set_column_spacing (MX_TABLE (self), COL_SPACING);
-
   g_signal_connect (self, "leave-event",
                     G_CALLBACK (_leave_event_cb), NULL);
   g_signal_connect (self, "key-focus-out",
@@ -418,41 +415,27 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   /* "app" label */
   self->priv->title = (MxLabel *) mx_label_new ();
+  mx_label_set_x_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
+
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
                           "mnb-launcher-button-title");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->title),
-                                        0, 1,
-                                        "x-align", MX_ALIGN_START,
+                                        1, 0,
+                                        "x-align", MX_ALIGN_MIDDLE,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
-                                        "y-align", MX_ALIGN_START,
+                                        "y-align", MX_ALIGN_MIDDLE,
                                         "y-expand", TRUE,
                                         "y-fill", TRUE,
                                         NULL);
 
   label = mx_label_get_clutter_text (self->priv->title);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
-  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_CENTER);
   clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (label), PANGO_WRAP_WORD_CHAR);
-
-  /* last launched */
-  self->priv->launched = (MxLabel *) mx_label_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->launched),
-                          "mnb-launcher-button-launched");
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      CLUTTER_ACTOR (self->priv->launched),
-                                      1, 1,
-                                      "column-span", 2,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-align", MX_ALIGN_END,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
 
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (mx_button_new ()));
@@ -462,7 +445,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
   mx_table_add_actor (MX_TABLE (self),
                       CLUTTER_ACTOR (self->priv->fav_toggle),
-                      0, 2);
+                      0, 0);
 
   g_signal_connect (self->priv->fav_toggle, "notify::toggled",
                     G_CALLBACK (fav_button_notify_toggled_cb), self);
@@ -653,8 +636,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
     mx_table_add_actor_with_properties (MX_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
                                           0, 0,
-                                          "row-span", 2,
-                                          "x-align", MX_ALIGN_START,
+                                          "x-align", MX_ALIGN_MIDDLE,
                                           "x-expand", FALSE,
                                           "x-fill", FALSE,
                                           "y-align", MX_ALIGN_MIDDLE,
@@ -680,12 +662,6 @@ mnb_launcher_button_set_last_launched (MnbLauncherButton  *self,
       time.tv_sec = last_launched;
       text = mx_utils_format_time (&time);
     }
-
-  if (0 != g_strcmp0 (text, mx_label_get_text (self->priv->launched)))
-    {
-      mx_label_set_text (self->priv->launched, text);
-    }
-
   g_free (text);
 }
 
@@ -787,8 +763,6 @@ mnb_launcher_button_make_favorite (MnbLauncherButton *self,
 
   clutter_actor_destroy ((ClutterActor *) self->priv->title);
   self->priv->title = NULL;
-  clutter_actor_destroy ((ClutterActor *) self->priv->launched);
-  self->priv->launched = NULL;
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), width, height);
 }
