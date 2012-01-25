@@ -555,9 +555,9 @@ _set_form_state (CarrickServiceItem *self)
       gtk_combo_box_set_active (combo, IPV6_METHOD_OFF);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
     }
-  else if (priv->method)
+  else if (priv->ipv6_method)
     {
-      g_warning ("Unknown service ipv6 method '%s'", priv->method);
+      g_warning ("Unknown service ipv6 method '%s'", priv->ipv6_method);
     }
 
   gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
