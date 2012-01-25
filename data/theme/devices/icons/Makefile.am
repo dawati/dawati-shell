@@ -23,7 +23,6 @@ dist_icons_DATA = \
 	brightness-bars-87.png \
 	brightness-bars-93.png \
 	brightness-icon.png \
-	computer-icon.png \
 	device-usb.png \
 	directory-documents.png \
 	directory-download.png \
