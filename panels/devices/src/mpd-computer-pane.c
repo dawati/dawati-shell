@@ -133,11 +133,13 @@ mpd_computer_pane_init (MpdComputerPane *self)
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
-                               "expand", false,
-                               "y-fill", false,
-                               NULL);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           button,
+                                           2,
+                                           "expand", false,
+                                           "x-fill", false,
+                                           "y-fill", false,
+                                           NULL);
 }
 
 ClutterActor *
