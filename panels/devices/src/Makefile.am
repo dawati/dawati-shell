@@ -45,6 +45,8 @@ dawati_panel_devices_SOURCES = \
 	mpd-folder-button.h \
 	mpd-folder-tile.c \
 	mpd-folder-tile.h \
+	mpd-fs-pane.c \
+	mpd-fs-pane.h \
 	mpd-gobject.c \
 	mpd-gobject.h \
 	mpd-panel.c \

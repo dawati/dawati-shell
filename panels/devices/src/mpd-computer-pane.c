@@ -1,4 +1,3 @@
-
 /*
  * Copyright © 2010 Intel Corp.
  *
@@ -24,7 +23,6 @@
 
 #include "mpd-computer-pane.h"
 #include "mpd-computer-tile.h"
-#include "mpd-folder-tile.h"
 #include "mpd-shell-defines.h"
 
 G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
@@ -104,7 +102,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_PANE_HEADER_SPACING);
-  clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_COMPUTER_PANE_WIDTH);
+  clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_PANE_WIDTH);
 
   /* Title */
   hbox = mx_box_layout_new ();
@@ -116,7 +114,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
                                "y-fill", false,
                                NULL);
 
-  label = mx_label_new_with_text (_("Your computer"));
+  label = mx_label_new_with_text (_("My Netbook"));
   clutter_actor_set_name (label, "computer-section-title");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
   clutter_container_child_set (CLUTTER_CONTAINER (hbox), label,
@@ -125,36 +123,20 @@ mpd_computer_pane_init (MpdComputerPane *self)
                                "y-fill", false,
                                NULL);
 
-  button = mx_button_new_with_label (_("All settings"));
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (_settings_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), button);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
-                               "expand", false,
-                               "y-fill", false,
-                               NULL);
-
   /* Content */
-  hbox = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_COMPUTER_PANE_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
-
   tile = mpd_computer_tile_new ();
   clutter_actor_set_width (tile,  MPD_COMPUTER_TILE_WIDTH);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
-  tile = mpd_folder_tile_new ();
-  clutter_actor_set_width (tile,  MPD_FOLDER_TILE_WIDTH);
-  g_signal_connect (tile, "request-hide",
-                    G_CALLBACK (_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), tile,
-                               "expand", true,
-                               "x-fill", true,
-                               "y-fill", true,
+  button = mx_button_new_with_label (_("All settings"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (_settings_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
+                               "expand", false,
+                               "y-fill", false,
                                NULL);
 }
 
