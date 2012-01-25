@@ -104,7 +104,7 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_PANE_WIDTH);
 
-  label = mx_label_new_with_text (_("Other devices"));
+  label = mx_label_new_with_text (_("My Devices"));
   clutter_actor_set_name (label, "device-section-header");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 

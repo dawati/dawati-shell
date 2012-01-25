@@ -114,7 +114,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
                                "y-fill", false,
                                NULL);
 
-  label = mx_label_new_with_text (_("My Netbook"));
+  label = mx_label_new_with_text (_("My Computer"));
   clutter_actor_set_name (label, "computer-section-title");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
   clutter_container_child_set (CLUTTER_CONTAINER (hbox), label,
