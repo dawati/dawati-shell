@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 
 #include "mpd-computer-pane.h"
+#include "mpd-fs-pane.h"
 #include "mpd-devices-pane.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
@@ -125,7 +126,7 @@ mpd_shell_init (MpdShell *self)
   g_signal_connect (self, "notify::width",
                     G_CALLBACK (_width_notify_cb), NULL);
 
-  label = mx_label_new_with_text (_("Devices"));
+  label = mx_label_new_with_text (_("Devices and quick settings"));
   clutter_actor_set_name (label, "title");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
@@ -143,15 +144,14 @@ mpd_shell_init (MpdShell *self)
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), pane,
-                               "expand", true,
-                               "x-fill", true,
-                               "y-fill", true,
-                               NULL);
+
+  pane = mpd_fs_pane_new ();
+  g_signal_connect (pane, "request-hide",
+                    G_CALLBACK (_pane_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
 
   pane = mpd_devices_pane_new ();
   priv->pane = pane;
-  clutter_actor_set_width (pane, MPD_DEVICES_PANE_WIDTH);
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   g_signal_connect (pane, "request-show",
