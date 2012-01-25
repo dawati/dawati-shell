@@ -107,34 +107,16 @@ static void
 mpd_disk_tile_init (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor  *icon;
-  ClutterActor  *vbox;
-  GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_ICON_SPACING);
-
-  icon = clutter_texture_new_from_file (PKGICONDIR "/computer-icon.png",
-                                        &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  } else {
-    clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true);
-    clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
-  }
-
-  vbox = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
   priv->label = mx_label_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
   clutter_text_set_ellipsize (CLUTTER_TEXT (mx_label_get_clutter_text (
                                 MX_LABEL (priv->label))), PANGO_ELLIPSIZE_NONE);
 
   priv->meter = mx_progress_bar_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->meter);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
 
   /* Display size of the volume $HOME is on. */
   priv->storage = mpd_storage_device_new (g_get_home_dir ());
