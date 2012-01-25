@@ -87,9 +87,6 @@ mpd_computer_tile_init (MpdComputerTile *self)
   tile = mpd_volume_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
-  tile = mpd_battery_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-
   display = mpd_display_device_new ();
   show_brightness_tile = mpd_display_device_is_enabled (display);
   if (show_brightness_tile)
@@ -97,6 +94,10 @@ mpd_computer_tile_init (MpdComputerTile *self)
     tile = mpd_brightness_tile_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
   }
+
+  tile = mpd_battery_tile_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+
   /* FIXME: Makes crash when unref'd.
    * GpmBrightnessXRandR doesn't remove filter from root window in ::finalize()
    * but doesn't seem to be it.
