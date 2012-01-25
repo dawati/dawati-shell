@@ -1892,7 +1892,7 @@ carrick_service_item_set_property (GObject *object, guint property_id,
       break;
 
     case PROP_OFONO_AGENT:
-      priv->ofono = CARRICK_OFONO_AGENT (g_value_get_object (value));
+      priv->ofono = CARRICK_OFONO_AGENT (g_value_dup_object (value));
       break;
 
     case PROP_NOTIFICATIONS:
@@ -1968,6 +1968,21 @@ carrick_service_item_dispose (GObject *object)
   priv->nameservers = NULL;
   g_free (priv->mac_address);
   priv->mac_address = NULL;
+
+
+  if (priv->ofono) {
+    g_signal_handlers_disconnect_by_func (priv->ofono,
+                                          G_CALLBACK (_ofono_notify_required_pins_cb),
+                                          object);
+    g_signal_handlers_disconnect_by_func (priv->ofono,
+                                          G_CALLBACK (_ofono_notify_locked_puks_cb),
+                                          object);
+    g_signal_handlers_disconnect_by_func (priv->ofono,
+                                          G_CALLBACK (_ofono_retries_changed_cb),
+                                          object);
+    g_object_unref (priv->ofono);
+    priv->ofono = NULL;
+  }
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
