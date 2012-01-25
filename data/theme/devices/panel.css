@@ -72,10 +72,6 @@ MpdBatteryTile, MpdBrightnessTile, MpdDiskTile, MpdVolumeTile {
   padding: 10 10 10 18;
 }
 
-#settings-button-tile {
-  padding: 10 20 10 18;
-}
-
 MpdDefaultDeviceTile, MpdStorageDeviceTile {
   padding: 12 12 0 12;
 }
