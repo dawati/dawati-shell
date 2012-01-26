@@ -24,10 +24,6 @@ MxLabel {
   color: #606261;
 }
 
-MxIcon.separator {
-  background-image: url('seperator.png');
-}
-
 MpdFolderButton {
   border-image: none;
 }
@@ -74,11 +70,6 @@ MpdBatteryTile, MpdBrightnessTile, MpdDiskTile, MpdVolumeTile {
 
 MpdDefaultDeviceTile, MpdStorageDeviceTile {
   padding: 12 12 0 12;
-}
-
-MpdStorageDeviceTile > MxFrame.separator {
-  background-image: url('seperator.png');
-  padding: 18 0 0 0;
 }
 
 MpdDefaultDeviceTile > MxBoxLayout {

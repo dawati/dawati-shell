@@ -76,7 +76,6 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
   ClutterActor  *hbox;
   ClutterActor  *icon;
   ClutterActor  *label;
-  ClutterActor  *separator;
   GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -114,12 +113,6 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
                                 "y-align", MX_ALIGN_MIDDLE,
                                 "y-fill", false,
                                 NULL);
-
-  /* Separator */
-  separator = mx_icon_new ();
-  clutter_actor_set_height (separator, 1.0);
-  mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), separator);
 }
 
 ClutterActor *
