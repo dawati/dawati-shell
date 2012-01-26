@@ -32,6 +32,7 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
+#include "presence/gsm-manager.h"
 #include "presence/gsm-presence.h"
 
 #include "mnb-input-manager.h"
@@ -116,6 +117,7 @@ struct _DawatiNetbookPluginPrivate
   MetaWindowActor       *screen_saver_mcw;
 
   /* Presence manager */
+  GsmManager            *manager;
   GsmPresence           *presence;
 
   int                    saver_base;
