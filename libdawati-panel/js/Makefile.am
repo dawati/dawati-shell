@@ -1,5 +1,5 @@
 mainjsdir = $(pkgdatadir)/js/
-dist_mainjs_DATA = \
+mainjs_DATA = \
 	path.js \
 	$(NULL)
 
@@ -16,9 +16,6 @@ do_subst = sed -e 's|@abs_top_srcdir[@]|$(abs_top_srcdir)|g' \
 
 path.js: Makefile path.js.in
 	$(AM_V_GEN) $(do_subst) $(srcdir)/path.js.in > $@
-
-nodist_mainjs_DATA = \
-    path.js
 
 CLEANFILES = \
     $(BUILT_SOURCES)
