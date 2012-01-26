@@ -557,7 +557,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   ClutterText   *text;
-  ClutterActor  *separator;
   ClutterActor *flow;
 
   priv->processes = NULL;
@@ -580,8 +579,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 2 |  Open  Eject  Import     |
   +------+-------------------+ VBox
 3 | <message> .. Import data |
-  +--------------------------+
-4 | ======================== |
   +--------------------------+
 */
 
@@ -667,22 +664,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   g_signal_connect (priv->import, "clicked",
                     G_CALLBACK (_import_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->import);
-
-  /*
-   * 4th row: separator
-   */
-
-  /* Separator */
-  separator = mx_frame_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), separator,
-                                           -1,
-                                           "expand", false,
-                                           "x-align", MX_ALIGN_MIDDLE,
-                                           "x-fill", true,
-                                           "y-align", MX_ALIGN_START,
-                                           "y-fill", false,
-                                           NULL);
 }
 
 ClutterActor *
