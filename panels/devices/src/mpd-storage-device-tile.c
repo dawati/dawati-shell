@@ -973,7 +973,8 @@ _panel_show_cb (MplPanelClient *client,
 }
 
 void
-mpd_storage_device_tile_set_client (MpdStorageDeviceTile *self, MplPanelClient *client)
+mpd_storage_device_tile_set_client (MpdStorageDeviceTile *self,
+                                    MplPanelClient       *client)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 

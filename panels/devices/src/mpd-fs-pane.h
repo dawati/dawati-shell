@@ -65,7 +65,7 @@ struct _MpdFsPaneClass
 
 GType mpd_fs_pane_get_type (void) G_GNUC_CONST;
 
-MpdFsPane *mpd_fs_pane_new (void);
+ClutterActor *mpd_fs_pane_new (void);
 
 G_END_DECLS
 

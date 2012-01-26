@@ -64,10 +64,8 @@ _gconf_mpd_notify_cb (GConfClient   *client,
                       MpdConf       *self)
 {
   char const  *key;
-  GConfValue  *value;
 
   key = gconf_entry_get_key (entry);
-  value = gconf_entry_get_value (entry);
 
   if (0 == g_strcmp0 (key, MPD_CONF_SUSPEND_IDLE_TIME))
   {
