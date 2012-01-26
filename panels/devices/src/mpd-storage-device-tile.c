@@ -634,36 +634,55 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                       NULL);
 
   /* Buttons */
-  flow = mx_grid_new ();
-  mx_grid_set_homogenous_rows (MX_GRID (flow), FALSE);
-  mx_grid_set_homogenous_columns (MX_GRID (flow), FALSE);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), flow, 2, 1,
+  flow = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (flow),
+                                 MX_ORIENTATION_HORIZONTAL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), flow, 2, 0,
                                       "x-align", MX_ALIGN_START,
-                                      "x-expand", false,
-                                      "x-fill", false,
+                                      "x-expand", FALSE,
+                                      "x-fill", TRUE,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-expand", true,
                                       "y-fill", true,
+                                      "column-span", 2,
                                       NULL);
 
   /* Open button */
   priv->open = mx_button_new_with_label (_("Open"));
   g_signal_connect (priv->open, "clicked",
                     G_CALLBACK (_open_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->open);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
+                                           priv->open,
+                                           -1,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "y-fill", FALSE,
+                                           NULL);
 
   /* Eject button */
   priv->eject = mx_button_new_with_label (_("Eject"));
   g_signal_connect (priv->eject, "clicked",
                     G_CALLBACK (_eject_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->eject);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
+                                           priv->eject,
+                                           -1,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "y-fill", FALSE,
+                                           NULL);
 
   /* Import button */
   priv->import = mx_button_new ();
   clutter_actor_set_name (priv->import, "import");
   g_signal_connect (priv->import, "clicked",
                     G_CALLBACK (_import_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->import);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
+                                           priv->import,
+                                           -1,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "y-fill", FALSE,
+                                           NULL);
 }
 
 ClutterActor *
