@@ -83,3 +83,12 @@ MxLabel.message {
 #volume-tile-label, #brightness-tile-label {
 }
 
+MxIcon#brightness-on {
+  border-image: none;
+  -mx-content-image: url('icon-slider-brightness-on.png');
+}
+
+MxIcon#brightness-off {
+  border-image: none;
+  -mx-content-image: url('icon-slider-brightness-off.png');
+}

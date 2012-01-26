@@ -1,9 +1,10 @@
 
 /*
- * Copyright © 2010 Intel Corp.
+ * Copyright © 2010, 2012 Intel Corporation
  *
  * Authors: Rob Bradford <rob@linux.intel.com> (dalston-volume-applet.c)
  *          Rob Staudinger <robert.staudinger@intel.com>
+ *          Damien Lespiau <damien.lespiau@intel.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -42,13 +43,7 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
                           GvcMixerStream  *stream);
 
 static void
-update_mute_toggle (MpdVolumeTile *self);
-
-static void
 update_volume_slider (MpdVolumeTile *self);
-
-static void
-update_stream_mute (MpdVolumeTile *self);
 
 static void
 update_stream_volume (MpdVolumeTile *self);
@@ -68,10 +63,7 @@ enum
 typedef struct
 {
   /* Managed by clutter */
-  ClutterActor    *icon;
-  ClutterActor    *bars;
   ClutterActor    *volume_slider;
-  ClutterActor    *mute_toggle;
 
   /* Data */
   GvcMixerControl *control;
@@ -173,71 +165,12 @@ update_volume_label (MpdVolumeTile  *self,
 }
 #endif
 
-static char *
-build_icon_name_15 (char const *template,
-                    float       value,
-                    char const *suffix)
-{
-  char *name;
-
-  value = CLAMP (value, 0.0, 1.0);
-
-  if (value < 0.067)
-    name = g_strdup_printf ("%s7.%s", template, suffix);
-  else if (value < 0.133)
-    name = g_strdup_printf ("%s13.%s", template, suffix);
-  else if (value < 0.200)
-    name = g_strdup_printf ("%s20.%s", template, suffix);
-  else if (value < 0.267)
-    name = g_strdup_printf ("%s27.%s", template, suffix);
-  else if (value < 0.333)
-    name = g_strdup_printf ("%s33.%s", template, suffix);
-  else if (value < 0.400)
-    name = g_strdup_printf ("%s40.%s", template, suffix);
-  else if (value < 0.467)
-    name = g_strdup_printf ("%s47.%s", template, suffix);
-  else if (value < 0.533)
-    name = g_strdup_printf ("%s53.%s", template, suffix);
-  else if (value < 0.600)
-    name = g_strdup_printf ("%s60.%s", template, suffix);
-  else if (value < 0.667)
-    name = g_strdup_printf ("%s67.%s", template, suffix);
-  else if (value < 0.733)
-    name = g_strdup_printf ("%s73.%s", template, suffix);
-  else if (value < 0.800)
-    name = g_strdup_printf ("%s80.%s", template, suffix);
-  else if (value < 0.867)
-    name = g_strdup_printf ("%s87.%s", template, suffix);
-  else if (value < 0.933)
-    name = g_strdup_printf ("%s93.%s", template, suffix);
-  else
-    name = g_strdup_printf ("%s100.%s", template, suffix);
-
-  return name;
-}
-
-static void
-_mute_toggle_notify_cb (MxToggle      *toggle,
-                        GParamSpec    *pspec,
-                        MpdVolumeTile *self)
-{
-  update_stream_mute (self);
-}
-
 static void
 _volume_slider_value_notify_cb (MxSlider      *slider,
                                 GParamSpec    *pspec,
                                 MpdVolumeTile *self)
 {
   update_stream_volume (self);
-}
-
-static void
-_stream_is_muted_notify_cb (GObject       *object,
-                            GParamSpec    *pspec,
-                            MpdVolumeTile *self)
-{
-  update_mute_toggle (self);
 }
 
 static void
@@ -338,79 +271,27 @@ static void
 mpd_volume_tile_init (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor  *hbox;
-  ClutterActor  *label;
-  ClutterActor  *mute_hbox;
-  ClutterActor  *mute_label;
-  ClutterActor  *vbox;
-  GError        *error = NULL;
+  ClutterActor  *icon;
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  /* Layout */
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_ICON_SPACING);
 
-  /* First row. */
-  hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_VOLUME_TILE_HEADER_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
-
-  label = mx_label_new_with_text (_("Computer volume"));
-  clutter_actor_set_name (label, "volume-tile-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
-
-  mute_hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_hbox),
-                             MPD_VOLUME_TILE_HEADER_MUTE_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), mute_hbox);
-
-  priv->mute_toggle = mx_button_new ();
-  mx_button_set_is_toggle (MX_BUTTON (priv->mute_toggle), true);
-  mx_stylable_set_style_class (MX_STYLABLE (priv->mute_toggle), "check-box");
-  g_signal_connect (priv->mute_toggle, "notify::toggled",
-                    G_CALLBACK (_mute_toggle_notify_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), priv->mute_toggle);
-  clutter_actor_set_size (priv->mute_toggle, 16, 16);
-
-  mute_label = mx_label_new_with_text (_("Mute"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), mute_label);
-  clutter_container_child_set (CLUTTER_CONTAINER (mute_hbox), mute_label,
-                               "expand", false,
-                               "x-align", MX_ALIGN_START,
-                               "y-align", MX_ALIGN_MIDDLE,
-                               NULL);
-
-  /* Second row. */
-  hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_ICON_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
-
-  priv->icon = clutter_texture_new ();
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  } else {
-    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), true);
-    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->icon);
-    /*
-    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->icon,
-                                 "expand", false,
-                                 "x-fill", false,
-                                 "y-fill", false,
-                                 NULL);
-    */
-  }
-
-  vbox = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), vbox);
-
-  priv->bars = clutter_texture_new ();
-  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->bars), true);
-  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->bars);
+  icon = mx_icon_new ();
+  clutter_actor_set_name (icon, "brightness-off");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
 
   priv->volume_slider = mx_slider_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_slider);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           priv->volume_slider,
+                                           -1,
+                                           "expand", TRUE,
+                                           NULL);
   g_signal_connect (priv->volume_slider, "notify::value",
                     G_CALLBACK (_volume_slider_value_notify_cb), self);
+
+  icon = mx_icon_new ();
+  clutter_actor_set_name (icon, "brightness-on");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
 
   /* Control */
   priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);
@@ -449,9 +330,6 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
   if (priv->sink)
   {
     g_signal_handlers_disconnect_by_func (priv->sink,
-                                          _stream_is_muted_notify_cb,
-                                          self);
-    g_signal_handlers_disconnect_by_func (priv->sink,
                                           _stream_volume_notify_cb,
                                           self);
     g_object_unref (priv->sink);
@@ -462,12 +340,9 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
   {
     priv->sink = g_object_ref (sink);
 
-    g_signal_connect (priv->sink, "notify::is-muted",
-                      G_CALLBACK (_stream_is_muted_notify_cb), self);
     g_signal_connect (priv->sink, "notify::volume",
                       G_CALLBACK (_stream_volume_notify_cb), self);
 
-    update_mute_toggle (self);
     update_volume_slider (self);
   }
 
@@ -475,84 +350,6 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
   {
     g_object_notify (G_OBJECT (self), "sink");
   }
-}
-
-static void
-update_volume_icon (MpdVolumeTile *self)
-{
-  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  bool     is_muted;
-  double   volume;
-  double   value;
-  char    *icon_file;
-  GError  *error = NULL;
-
-  is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
-  volume = gvc_mixer_stream_get_volume (priv->sink);
-  value = volume / PA_VOLUME_NORM;
-
-  if (is_muted || (value == 0.0))
-  {
-    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                   PKGICONDIR "/volume-icon-mute.png",
-                                   &error);
-  } else {
-    if (value < 0.166)
-    {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     PKGICONDIR "/volume-icon-0.png",
-                                     &error);
-    } else if (value < 0.5) {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     PKGICONDIR "/volume-icon-33.png",
-                                     &error);
-    } else if (value < 0.833) {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     PKGICONDIR "/volume-icon-66.png",
-                                     &error);
-    } else {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     PKGICONDIR "/volume-icon-100.png",
-                                     &error);
-    }
-  }
-
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-
-  icon_file = build_icon_name_15 (PKGICONDIR "/volume-bars-", value, "png");
-  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->bars),
-                                 icon_file,
-                                 &error);
-  g_free (icon_file);
-
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-}
-
-static void
-update_mute_toggle (MpdVolumeTile *self)
-{
-  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  bool is_muted;
-
-  g_signal_handlers_disconnect_by_func (priv->mute_toggle,
-                                        _mute_toggle_notify_cb,
-                                        self);
-
-  is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
-  mx_button_set_toggled (MX_BUTTON (priv->mute_toggle), is_muted);
-
-  g_signal_connect (priv->mute_toggle, "notify::toggled",
-                    G_CALLBACK (_mute_toggle_notify_cb), self);
-
-  update_volume_icon (self);
 }
 
 static void
@@ -573,26 +370,6 @@ update_volume_slider (MpdVolumeTile *self)
   g_signal_connect (priv->volume_slider, "notify::value",
                     G_CALLBACK (_volume_slider_value_notify_cb), self);
 
-  update_volume_icon (self);
-}
-
-static void
-update_stream_mute (MpdVolumeTile *self)
-{
-  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  bool is_muted;
-
-  g_signal_handlers_disconnect_by_func (priv->sink,
-                                        _stream_is_muted_notify_cb,
-                                        self);
-
-  is_muted = mx_button_get_toggled (MX_BUTTON (priv->mute_toggle));
-  gvc_mixer_stream_change_is_muted (priv->sink, is_muted);
-
-  g_signal_connect (priv->sink, "notify::is-muted",
-                    G_CALLBACK (_stream_is_muted_notify_cb), self);
-
-  update_volume_icon (self);
 }
 
 static void
@@ -616,6 +393,5 @@ update_stream_volume (MpdVolumeTile *self)
   g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
 
-  update_volume_icon (self);
 }
 
