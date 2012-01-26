@@ -1,4 +1,3 @@
-
 /*
  * Copyright © 2010 Intel Corp.
  *
@@ -101,9 +100,10 @@ main (int     argc,
     { NULL }
   };
 
-  ClutterActor    *shell;
-  GOptionContext  *context;
-  GError          *error = NULL;
+  ClutterActor     *shell;
+  GOptionContext   *context;
+  ClutterInitError  clutter_error;
+  GError           *error = NULL;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -122,8 +122,15 @@ main (int     argc,
   }
   g_option_context_free (context);
 
-  clutter_init (&argc, &argv);
+  clutter_error = clutter_init (&argc, &argv);
+  if (clutter_error != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Unable to initialise clutter");
+      return EXIT_FAILURE;
+    }
+
   notify_init (_("Dawati Devices Panel"));
+
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
 
@@ -176,7 +183,7 @@ main (int     argc,
                                            _("devices"),
                                            "devices-button");
     shell = mpd_shell_new ();
-    mpd_shell_set_client (shell, panel);
+    mpd_shell_set_client (MPD_SHELL (shell), panel);
     g_signal_connect (shell, "request-hide",
                       G_CALLBACK (_shell_request_hide_cb), panel);
     g_signal_connect (shell, "request-show",

@@ -64,6 +64,10 @@ mpd_storage_device_tile_new (char const *name,
                              char const *mime_type,
                              char const *icon_file);
 
+void
+mpd_storage_device_tile_set_client (MpdStorageDeviceTile *self,
+                                    MplPanelClient       *client);
+
 char const *
 mpd_storage_device_tile_get_icon_file (MpdStorageDeviceTile *self);
 

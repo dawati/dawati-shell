@@ -459,7 +459,8 @@ add_tile_from_mount (MpdDevicesTile *self,
                                       mime_types ? mime_types[0] : NULL,
                                       icon_file);
 
-  mpd_storage_device_tile_set_client (tile, priv->panel_client);
+  mpd_storage_device_tile_set_client (MPD_STORAGE_DEVICE_TILE (tile),
+                                      priv->panel_client);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",

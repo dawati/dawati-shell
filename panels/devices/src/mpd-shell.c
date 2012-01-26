@@ -151,7 +151,7 @@ mpd_shell_init (MpdShell *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
 
   pane = mpd_devices_pane_new ();
-  priv->pane = pane;
+  priv->pane = MPD_DEVICES_PANE (pane);
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   g_signal_connect (pane, "request-show",

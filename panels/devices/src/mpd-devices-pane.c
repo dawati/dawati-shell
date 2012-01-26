@@ -109,7 +109,7 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_devices_tile_new ();
-  priv->devices_tile = tile;
+  priv->devices_tile = MPD_DEVICES_TILE (tile);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
   g_signal_connect (tile, "request-show",

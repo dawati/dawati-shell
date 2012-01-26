@@ -88,7 +88,7 @@ mpd_fs_pane_init (MpdFsPane *self)
                                NULL);
 }
 
-MpdFsPane *
+ClutterActor *
 mpd_fs_pane_new (void)
 {
   return g_object_new (MPD_TYPE_FS_PANEL, NULL);
