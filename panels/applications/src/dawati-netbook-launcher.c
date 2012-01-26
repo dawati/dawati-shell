@@ -278,17 +278,30 @@ mnb_launcher_cancel_search (MnbLauncher     *self)
 }
 
 static void
+_destroy_cat_children_cb (ClutterActor *actor, gpointer data)
+{
+  /* We don't want to destroy the "All" category as this will
+   * always be valid.
+   */
+  if (g_strcmp0 (clutter_actor_get_name (actor), "all") == 0)
+    return;
+
+  clutter_actor_destroy (actor);
+}
+
+static void
 mnb_launcher_reset (MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
   mnb_launcher_cancel_search (self);
 
-  /* Clear fav apps */
+  /* Clear contents of categories section to refresh them */
   if (priv->category_section)
     {
-      clutter_actor_destroy (priv->category_section);
-      priv->category_section = NULL;
+      clutter_container_foreach (CLUTTER_CONTAINER (priv->category_section),
+                                 CLUTTER_CALLBACK (_destroy_cat_children_cb),
+                                 NULL);
     }
 
   /* Clear apps */
@@ -521,7 +534,10 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
 
   /* Label */
   if (g_strcmp0 (text, "all") == 0)
-    text = _("All");
+    {
+      clutter_actor_set_name (box, "all");
+      text = _("All");
+    }
 
   label = mx_label_new_with_text (text);
   clutter_actor_set_reactive (label, TRUE);
@@ -992,6 +1008,7 @@ _constructor (GType                  gtype,
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->category_section),
                              5);
+
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
                                mnb_launcher_category_button_new (self, "all"));
 
@@ -1006,8 +1023,8 @@ _constructor (GType                  gtype,
                                "x-fill", TRUE,
                                "y-fill", TRUE,
                                NULL);
-  /* add cateogires box here */
 
+  /* add cateogires boxes here */
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll),
                                priv->category_section);
 
