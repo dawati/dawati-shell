@@ -566,7 +566,8 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (self), true);
 
   priv->table = mx_table_new ();
-  mx_table_set_column_spacing (MX_TABLE (priv->table), 5);
+  mx_table_set_column_spacing (MX_TABLE (priv->table), 8);
+  mx_table_set_row_spacing (MX_TABLE (priv->table), 8);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->table, -1,
                                            "x-fill", true,
                                            NULL);
