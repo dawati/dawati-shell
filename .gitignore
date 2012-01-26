@@ -19,8 +19,8 @@
 /callouts/3g/carrick-3g-wizard
 /callouts/openconnect/carrick-openconnect-dialog
 /carrick/connman-manager-bindings.h
-/carrick/connman-marshal.c
-/carrick/connman-marshal.h
+/carrick/carrick-marshal.c
+/carrick/carrick-marshal.h
 /carrick/connman-service-bindings.h
 /carrick/connman-technology-bindings.h
 /config.rpath
