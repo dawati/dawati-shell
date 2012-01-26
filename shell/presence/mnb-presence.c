@@ -1,4 +1,3 @@
-/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
  * Copyright (c) 2010 Intel Corp.
@@ -28,27 +27,10 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include "../dawati-netbook.h"
-#include "gsm-presence.h"
-
-#define IDLE_KEY_DIR "/desktop/gnome/session"
-#define IDLE_KEY IDLE_KEY_DIR "/idle_delay"
+#include "gsm-manager.h"
 
 static void
-on_idle_delay_changed (GConfClient *client,
-                       guint        cnxn_id,
-                       GConfEntry  *entry,
-                       gpointer     user_data)
-{
-  DawatiNetbookPlugin *plugin = DAWATI_NETBOOK_PLUGIN (user_data);
-
-  if (entry->value && entry->value->type == GCONF_VALUE_INT) {
-    gsm_presence_set_idle_timeout (plugin->priv->presence,
-                                   gconf_value_get_int (entry->value) * 60000);
-  }
-}
-
-static void
-connect_to_dbus (GsmPresence *presence)
+connect_to_dbus (void)
 {
   DBusGConnection *connection;
   DBusGProxy *bus_proxy;
@@ -89,22 +71,7 @@ connect_to_dbus (GsmPresence *presence)
 void
 presence_init (DawatiNetbookPlugin *plugin)
 {
-  plugin->priv->presence = gsm_presence_new ();
-  gsm_presence_set_idle_enabled (plugin->priv->presence, TRUE);
+  connect_to_dbus ();
 
-  connect_to_dbus (plugin->priv->presence);
-
-  gconf_client_add_dir (plugin->priv->gconf_client,
-                        IDLE_KEY_DIR,
-                        GCONF_CLIENT_PRELOAD_ONELEVEL,
-                        NULL);
-
-  gconf_client_notify_add (plugin->priv->gconf_client,
-                           IDLE_KEY,
-                           on_idle_delay_changed,
-                           plugin,
-                           NULL,
-                           NULL);
-
-  gconf_client_notify (plugin->priv->gconf_client, IDLE_KEY);
+  plugin->priv->manager = gsm_manager_new ();
 }
