@@ -11,6 +11,8 @@ dist_theme_DATA = \
 	panel.css \
 	seperator.png \
 	volume-bars-0.png \
+	icon-slider-brightness-on.png \
+	icon-slider-brightness-off.png \
 	$(NULL)
 
 # Manage mutter-dawati's texture cache.
