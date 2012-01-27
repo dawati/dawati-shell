@@ -80,9 +80,6 @@ MxLabel.message {
   padding: 6 0 0 0;
 }
 
-#volume-tile-label, #brightness-tile-label {
-}
-
 MxIcon#brightness-on {
   border-image: none;
   -mx-content-image: url('icon-slider-brightness-on.png');
@@ -91,4 +88,14 @@ MxIcon#brightness-on {
 MxIcon#brightness-off {
   border-image: none;
   -mx-content-image: url('icon-slider-brightness-off.png');
+}
+
+MxIcon#volume-on {
+  border-image: none;
+  -mx-content-image: url('icon-slider-volume-on.png');
+}
+
+MxIcon#volume-off {
+  border-image: none;
+  -mx-content-image: url('icon-slider-volume-off.png');
 }

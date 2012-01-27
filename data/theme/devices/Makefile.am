@@ -13,6 +13,8 @@ dist_theme_DATA = \
 	volume-bars-0.png \
 	icon-slider-brightness-on.png \
 	icon-slider-brightness-off.png \
+	icon-slider-volume-on.png \
+	icon-slider-volume-off.png \
 	$(NULL)
 
 # Manage mutter-dawati's texture cache.
