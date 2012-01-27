@@ -108,7 +108,7 @@
  * tray manager and MnbDropDown -- this should not be hardcoded, and we need
  * a way for the drop down to query it from the panel.
  */
-#define TOOLBAR_HEIGHT 64
+#define TOOLBAR_HEIGHT 50
 #endif
 
 /*
@@ -3014,10 +3014,12 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_reactive (actor, TRUE);
 
   priv->hbox_buttons = mx_box_layout_new ();
+  clutter_actor_set_name (priv->hbox_buttons, "toolbar-left-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_buttons),
                                  MX_ORIENTATION_HORIZONTAL);
 
   priv->hbox_applets = mx_box_layout_new ();
+  clutter_actor_set_name (priv->hbox_applets, "toolbar-right-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_applets),
                                  MX_ORIENTATION_HORIZONTAL);
 

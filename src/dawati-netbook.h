@@ -43,7 +43,7 @@
 
 #define MAX_WORKSPACES 8
 
-#define TOOLBAR_HEIGHT 64
+#define TOOLBAR_HEIGHT 50
 #define TOOLBAR_X_PADDING 4
 
 typedef enum
