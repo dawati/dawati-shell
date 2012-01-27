@@ -57,7 +57,6 @@ dist_theme_panel_DATA = \
 	panel/status-coloured.png \
 	panel/status-normal.png \
 	panel/toolbar-button-normal.png \
-	panel/toolbar-button-active.png \
 	panel/toolbar-button-hover.png \
 	panel/toolbar-button-tray.png \
 	$(NULL)

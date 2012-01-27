@@ -27,7 +27,7 @@
 #include "mnb-toolbar-applet.h"
 #include "mnb-toolbar.h"
 
-G_DEFINE_TYPE (MnbToolbarApplet, mnb_toolbar_applet, MNB_TYPE_TOOLBAR_BUTTON)
+G_DEFINE_TYPE (MnbToolbarApplet, mnb_toolbar_applet, MX_TYPE_BUTTON)
 
 
 #define MNB_TOOLBAR_APPLET_GET_PRIVATE(obj)    \

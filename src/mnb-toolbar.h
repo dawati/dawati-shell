@@ -64,13 +64,13 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarPrivate MnbToolbarPrivate;
 
 typedef struct {
-  MxFrame parent;
+  MxBoxLayout parent;
 
   MnbToolbarPrivate *priv;
 } MnbToolbar;
 
 typedef struct {
-  MxFrameClass parent_class;
+  MxBoxLayoutClass parent_class;
 
   void (*show_completed) (MnbToolbar *toolbar);
   void (*hide_begin)     (MnbToolbar *toolbar);

@@ -30,7 +30,7 @@
 #define MNB_24H_KEY_DIR "/apps/date-time-panel"
 #define MNB_24H_KEY MNB_24H_KEY_DIR "/24_h_clock"
 
-G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MNB_TYPE_TOOLBAR_BUTTON)
+G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MX_TYPE_BUTTON)
 
 
 #define MNB_TOOLBAR_CLOCK_GET_PRIVATE(obj)    \
