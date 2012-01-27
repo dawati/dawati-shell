@@ -47,6 +47,10 @@ MpdComputerPane, MpdDevicesPane {
   padding: 3;
 }
 
+MpdComputerTile > MxLabel {
+  padding: 10 0 10 0;
+}
+
 #computer-section-header {
   border-image: url('content-pane-header.png') 2;
   padding: 6 10 6 15;

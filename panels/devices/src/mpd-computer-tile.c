@@ -78,38 +78,112 @@ mpd_computer_tile_class_init (MpdComputerTileClass *klass)
 static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor      *tile, *label;
+  ClutterActor      *tile, *label, *toggle;
   MpdDisplayDevice  *display;
   bool               show_brightness_tile;
 
+  /* Wifi */
+  label = mx_label_new_with_text (_("Wifi"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      0, 0,
+                                      "x-expand", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  toggle = mx_toggle_new ();
+  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), toggle,
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_MIDDLE,
+                                      NULL);
+
+  /* Bluetooth */
+  label = mx_label_new_with_text (_("Bluetooth"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      1, 0,
+                                      "x-expand", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  toggle = mx_toggle_new ();
+  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), toggle,
+                                      1, 1,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_MIDDLE,
+                                      NULL);
+
+  /* Bluetooth */
+  label = mx_label_new_with_text (_("Bluetooth"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      1, 0,
+                                      "x-expand", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  toggle = mx_toggle_new ();
+  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), toggle,
+                                      1, 1,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_MIDDLE,
+                                      NULL);
+
+  /* Flight mode */
+  label = mx_label_new_with_text (_("Flight Mode"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      2, 0,
+                                      "x-expand", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  toggle = mx_toggle_new ();
+  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), toggle,
+                                      2, 1,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_MIDDLE,
+                                      NULL);
+
+  /* Volume */
   /* Note to translators, volume here is sound volume */
   label = mx_label_new_with_text (_("Volume"));
   mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      0, 0,
+                                      3, 0,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-fill", FALSE,
                                       NULL);
 
   tile = mpd_volume_tile_new ();
   mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                      0, 1,
+                                      3, 1,
                                       "x-expand", TRUE,
                                       NULL);
 
+  /* Brightness */
   display = mpd_display_device_new ();
   show_brightness_tile = mpd_display_device_is_enabled (display);
   if (show_brightness_tile)
     {
       label = mx_label_new_with_text (_("Brightness"));
       mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                          1, 0,
+                                          4, 0,
                                           "y-align", MX_ALIGN_MIDDLE,
                                           "y-fill", FALSE,
                                           NULL);
 
       tile = mpd_brightness_tile_new ();
       mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                          1, 1,
+                                          4, 1,
                                           "x-expand", TRUE,
                                           NULL);
     }
