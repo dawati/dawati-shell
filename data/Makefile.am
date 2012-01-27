@@ -1,4 +1,4 @@
-SUBDIRS = theme
+SUBDIRS = theme style
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_in_files = mutter-dawati.schemas.in

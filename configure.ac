@@ -90,6 +90,9 @@ PKG_CHECK_MODULES(LIBMPL,
 DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([DAWATI_THEME_DIR])
 
+DAWATI_STYLE_DIR="${datadir}/${PACKAGE}/style"
+AC_SUBST([DAWATI_STYLE_DIR])
+
 DAWATI_PANELS_DIR="${datadir}/${PACKAGE}/panels"
 AC_SUBST([DAWATI_PANELS_DIR])
 
@@ -498,6 +501,8 @@ data/theme/power-icon/Makefile
 data/theme/status/Makefile
 data/theme/web/Makefile
 data/theme/zones/Makefile
+
+data/style/Makefile
 
 src/Makefile
 src/effects/Makefile

@@ -1,0 +1,35 @@
+* {
+  font-family: "Open Sans";
+  color: #364350;
+}
+
+.contentPane {
+  background-color: #ecede6;
+  padding: 10 15 10 15;
+}
+
+MxLabel.titleBar {
+  color: white;
+  border-image: url("title-bar-bg.png");
+  font-size: 18;
+  padding: 7 15 10 15;
+}
+
+.contentTile {
+  border-image: url("content-tile-bg.png") 8;
+}
+
+.contentPanel {
+  border-image: url("content-panel-bg.png") 8;
+  padding: 11;
+}
+
+.sectionHeader {
+  border-image: url("section-header-bg.png") 2;
+  font-size: 14;
+}
+
+.searchBox, .searchBox:focus {
+  border-image: url("search-box.png") 26 51 13 10;
+  padding: 10 51 10 10;
+}
