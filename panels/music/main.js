@@ -458,11 +458,14 @@ NowPlaying.prototype = {
         this._elapsed = new Mx.Label({ name: 'playing-elapsed' });
         hbox.add_actor(this._elapsed, 0);
 
-        this._slider = new Mx.Slider({ name: 'playing-slider',
-                                       live_update: false });
+        this._slider = new Mx.Slider({ name: 'playing-slider' });
         hbox.add_actor(this._slider, 1);
         hbox.child_set_expand(this._slider, true);
         this._in_slider_update = false;
+        this._slider.connect('slide-start',
+                             Lang.bind(this, this._user_slide_start));
+        this._slider.connect('slide-stop',
+                             Lang.bind(this, this._user_slide_stop));
         this._slider.connect('notify::value',
                              Lang.bind(this, this._user_update_slider));
 
@@ -485,7 +488,6 @@ NowPlaying.prototype = {
     },
 
     _updated_player: function() {
-        log("updating UI");
         this._update_item();
         this._update_playpause_button();
         this._current_position = this._player.position;
@@ -558,12 +560,22 @@ NowPlaying.prototype = {
 
     _auto_inc_slider: function() {
         this._current_position += 1000 * 1000;
-        this._update_slider(false);
+        if (!this._in_sliding)
+            this._update_slider(false);
         return true;
     },
 
+    _user_slide_start: function() {
+        this._in_sliding = true;
+    },
+
+    _user_slide_stop: function() {
+        this._player.SeekRemote((this._player.duration * this._slider.get_value ()) - this._current_position);
+        this._in_sliding = false;
+    },
+
     _user_update_slider: function() {
-        if (!this._in_slider_update) {
+        if (!this._in_slider_update && !this._in_sliding) {
             // Mpris seek is a bit... sick (huhuhu).
             this._player.SeekRemote((this._player.duration * this._slider.get_value ()) - this._current_position);
         }
