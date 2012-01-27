@@ -125,10 +125,13 @@ mpd_computer_pane_init (MpdComputerPane *self)
 
   /* Content */
   tile = mpd_computer_tile_new ();
-  clutter_actor_set_width (tile,  MPD_COMPUTER_TILE_WIDTH);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           tile,
+                                           1,
+                                           "expand", FALSE,
+                                           NULL);
 
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",

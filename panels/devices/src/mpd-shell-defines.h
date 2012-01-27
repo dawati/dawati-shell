@@ -32,7 +32,6 @@
 
 #define MPD_PANE_WIDTH           300.0
 
-#define MPD_COMPUTER_TILE_WIDTH  300.0
 #define MPD_COMPUTER_TILE_SPACING  6.0
 
 #define MPD_FOLDER_TILE_WIDTH    280.0

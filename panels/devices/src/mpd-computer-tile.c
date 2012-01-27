@@ -1,8 +1,9 @@
 
 /*
- * Copyright © 2010 Intel Corp.
+ * Copyright © 2010, 2012 Intel Corp.
  *
  * Authors: Rob Staudinger <robert.staudinger@intel.com>
+ *          Damien Lespiau <damien.lespiau@intel.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -30,7 +31,7 @@
 #include "mpd-volume-tile.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdComputerTile, mpd_computer_tile, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdComputerTile, mpd_computer_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_COMPUTER_TILE, MpdComputerTilePrivate))
@@ -77,26 +78,46 @@ mpd_computer_tile_class_init (MpdComputerTileClass *klass)
 static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor      *tile;
+  ClutterActor      *tile, *label;
   MpdDisplayDevice  *display;
   bool               show_brightness_tile;
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_COMPUTER_TILE_SPACING);
+  /* Note to translators, volume here is sound volume */
+  label = mx_label_new_with_text (_("Volume"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      0, 0,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
 
   tile = mpd_volume_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  mx_table_add_actor_with_properties (MX_TABLE (self), tile,
+                                      0, 1,
+                                      "x-expand", TRUE,
+                                      NULL);
 
   display = mpd_display_device_new ();
   show_brightness_tile = mpd_display_device_is_enabled (display);
   if (show_brightness_tile)
-  {
-    tile = mpd_brightness_tile_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-  }
+    {
+      label = mx_label_new_with_text (_("Brightness"));
+      mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                          1, 0,
+                                          "y-align", MX_ALIGN_MIDDLE,
+                                          "y-fill", FALSE,
+                                          NULL);
 
+      tile = mpd_brightness_tile_new ();
+      mx_table_add_actor_with_properties (MX_TABLE (self), tile,
+                                          1, 1,
+                                          "x-expand", TRUE,
+                                          NULL);
+    }
+
+#if 0
   tile = mpd_battery_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  mx_table_add_actor (MX_TABLE (self), tile, 2, 0);
+#endif
 
   /* FIXME: Makes crash when unref'd.
    * GpmBrightnessXRandR doesn't remove filter from root window in ::finalize()
