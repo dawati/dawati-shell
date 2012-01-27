@@ -312,11 +312,24 @@ mpl_panel_clutter_load_base_style (void)
 
   if (!already_loaded)
     {
+      GError *error = NULL;
+
       /* Load in a base cache and a base style */
       mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                      MX_CACHE);
+#if 0
       mx_style_load_from_file (mx_style_get_default (),
                                  THEMEDIR "/theme.css", NULL);
+#endif
+      mx_style_load_from_file (mx_style_get_default (),
+                               STYLEDIR "/shared/dawati-shared.css", &error);
+
+      if (error)
+        {
+          g_warning ("Error loading Dawati style: %s", error->message);
+          g_clear_error (&error);
+        }
+
       already_loaded = TRUE;
     }
 }
