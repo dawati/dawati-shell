@@ -265,7 +265,7 @@ main (int     argc,
   mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 
   /* The last item in the launcher is the filter entry */
-  mx_focusable_accept_focus (MX_FOCUSABLE (launcher), MX_FOCUS_HINT_LAST);
+  mx_focusable_accept_focus (MX_FOCUSABLE (launcher), MX_FOCUS_HINT_FIRST);
 
   clutter_main ();
 
