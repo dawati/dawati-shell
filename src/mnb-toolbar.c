@@ -120,7 +120,7 @@
 #define TOOLBAR_SHADOW_EXTRA  20
 #define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
 
-#define TOOLBAR_CUT_OUT 1
+#define TOOLBAR_CUT_OUT 0
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, MX_TYPE_BOX_LAYOUT)
 
@@ -955,6 +955,7 @@ mnb_toolbar_paint_background (MxWidget           *self,
 
   bimage = priv->mx_border_image;
 
+#if TOOLBAR_CUT_OUT
   cogl_material_set_layer (cogl_material, 1, priv->selector_image);
   cogl_material_set_layer_wrap_mode (cogl_material, 1,
                                      COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
@@ -967,6 +968,7 @@ mnb_toolbar_paint_background (MxWidget           *self,
                  error->message);
       g_error_free (error);
     }
+#endif
 
   cogl_set_source (cogl_material);
 
@@ -1067,8 +1069,6 @@ mnb_toolbar_paint_background (MxWidget           *self,
 
     cogl_rectangles_with_texture_coords (rectangles, 9);
   }
-
-  cogl_rectangle (0, 0, 100, 100);
 }
 
 static void
