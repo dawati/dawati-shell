@@ -21,41 +21,41 @@ dist_theme_DATA = \
 
 theme_paneldir = $(DAWATI_THEME_DIR)/panel
 dist_theme_panel_DATA = \
-	panel/apps-coloured.png \
-	panel/apps-normal.png \
+	panel/icon-apps-highlight.png \
+	panel/icon-apps.png \
 	panel/clock-background.png \
-	panel/devices-coloured.png \
-	panel/devices-normal.png \
-	panel/devices-active-coloured.png \
-	panel/devices-active-normal.png \
-	panel/internet-coloured.png \
-	panel/internet-normal.png \
-	panel/music-coloured.png \
-	panel/music-normal.png \
-	panel/myzone-coloured.png \
-	panel/myzone-normal.png \
-	panel/network-coloured.png \
-	panel/network-normal.png \
-	panel/panel-background.png \
+	panel/icon-devices-highlight.png \
+	panel/icon-devices.png \
+	panel/icon-devices-active-highlight.png \
+	panel/icon-devices-active.png \
+	panel/icon-internet-highlight.png \
+	panel/icon-internet.png \
+	panel/icon-music-highlight.png \
+	panel/icon-music.png \
+	panel/icon-myzone-highlight.png \
+	panel/icon-myzone.png \
+	panel/icon-network-highlight.png \
+	panel/icon-network.png \
+	panel/toolbar-bg.png \
 	panel/panel-shadow.png \
-	panel/pasteboard-coloured.png \
-	panel/pasteboard-normal.png \
-	panel/people-coloured.png \
-	panel/people-normal.png \
-	panel/people-active-coloured.png \
-	panel/people-active-normal.png \
-	panel/zones-coloured.png \
-	panel/zones-normal.png \
-	panel/zones-1-coloured.png \
-	panel/zones-1-normal.png \
-	panel/zones-2-coloured.png \
-	panel/zones-2-normal.png \
-	panel/zones-3-coloured.png \
-	panel/zones-3-normal.png \
-	panel/zones-4-coloured.png \
-	panel/zones-4-normal.png \
-	panel/status-coloured.png \
-	panel/status-normal.png \
+	panel/icon-pasteboard-highlight.png \
+	panel/icon-pasteboard.png \
+	panel/icon-im-highlight.png \
+	panel/icon-im.png \
+	panel/icon-im-active-highlight.png \
+	panel/icon-im-active.png \
+	panel/icon-switcher-highlight.png \
+	panel/icon-switcher.png \
+	panel/icon-switcher-highlight-1.png \
+	panel/icon-switcher-1.png \
+	panel/icon-switcher-highlight-2.png \
+	panel/icon-switcher-2.png \
+	panel/icon-switcher-highlight-3.png \
+	panel/icon-switcher-3.png \
+	panel/icon-switcher-highlight-4.png \
+	panel/icon-switcher-4.png \
+	panel/icon-status-highlight.png \
+	panel/icon-status.png \
 	panel/toolbar-button-normal.png \
 	panel/toolbar-button-hover.png \
 	panel/toolbar-button-tray.png \
