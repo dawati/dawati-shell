@@ -3,24 +3,24 @@
  */
 
 MnbToolbarButton#offline {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-offline.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-offline.png");
 }
 MnbToolbarButton#offline:hover, MnbToolbarButton#offline:active,MnbToolbarButton#offline:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-offline-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-offline-highlight.png");
 }
 
 MnbToolbarButton#connecting {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-connecting.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-connecting.png");
 }
 MnbToolbarButton#connecting:hover, MnbToolbarButton#connecting:active,MnbToolbarButton#connecting:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-connecting-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-connecting-highlight.png");
 }
 
 MnbToolbarButton#error {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-error.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-error.png");
 }
 MnbToolbarButton#error:hover, MnbToolbarButton#error:active,MnbToolbarButton#error:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-error-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-error-highlight.png");
 }
 
 
@@ -28,10 +28,10 @@ MnbToolbarButton#error:hover, MnbToolbarButton#error:active,MnbToolbarButton#err
  * Wired network
  */
 MnbToolbarButton#active {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-active.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-active.png");
 }
 MnbToolbarButton#active:hover, MnbToolbarButton#active:active,MnbToolbarButton#active:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-active-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-active-highlight.png");
 }
 
 /*
@@ -39,24 +39,24 @@ MnbToolbarButton#active:hover, MnbToolbarButton#active:active,MnbToolbarButton#a
  */
 
 MnbToolbarButton#wireless-strong {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-strong.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-4.png");
 }
 MnbToolbarButton#wireless-strong:hover, MnbToolbarButton#wireless-strong:active,MnbToolbarButton#wireless-strong:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-strong-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-highlight-4.png");
 }
 
 MnbToolbarButton#wireless-good {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-good.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-3.png");
 }
 MnbToolbarButton#wireless-good:hover, MnbToolbarButton#wireless-good:active,MnbToolbarButton#wireless-good:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-good-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-highlight-3.png");
 }
 
 MnbToolbarButton#wireless-weak {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-weak.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-2.png");
 }
 MnbToolbarButton#wireless-weak:hover, MnbToolbarButton#wireless-weak:active,MnbToolbarButton#wireless-weak:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wireless-weak-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-highlight-2.png");
 }
 
 /*
@@ -64,17 +64,17 @@ MnbToolbarButton#wireless-weak:hover, MnbToolbarButton#wireless-weak:active,MnbT
  */
 
 MnbToolbarButton#threeg-strong {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-3g-strong.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-3g-4.png");
 }
 MnbToolbarButton#threeg-strong:hover, MnbToolbarButton#threeg-strong:active,MnbToolbarButton#threeg-strong:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-3g-strong-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-3g-highlight-4.png");
 }
 
 MnbToolbarButton#threeg-weak {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-3g-weak.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-3g-2.png");
 }
 MnbToolbarButton#threeg-weak:hover, MnbToolbarButton#threeg-weak:active,MnbToolbarButton#threeg-weak:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-3g-weak-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-3g-highlight-2.png");
 }
 
 /*
@@ -82,31 +82,31 @@ MnbToolbarButton#threeg-weak:hover, MnbToolbarButton#threeg-weak:active,MnbToolb
  */
 
 MnbToolbarButton#bluetooth-strong {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-bluetooth-strong.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-bluetooth-highlight-4.png");
 }
 MnbToolbarButton#bluetooth-strong:hover, MnbToolbarButton#bluetooth-strong:active,MnbToolbarButton#bluetooth-strong:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-bluetooth-strong-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-bluetooth-highlight-4.png");
 }
 
 MnbToolbarButton#bluetooth-weak {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-bluetooth-weak.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-bluetooth-2.png");
 }
 MnbToolbarButton#bluetooth-weak:hover, MnbToolbarButton#bluetooth-weak:active,MnbToolbarButton#bluetooth-weak:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-bluetooth-weak-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-bluetooth-highlight-2.png");
 }
 
 /* WiMAX */
 
 MnbToolbarButton#wimax-strong {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wimax-strong.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-wimax-4.png");
 }
 MnbToolbarButton#wimax-strong:hover, MnbToolbarButton#wimax-strong:active,MnbToolbarButton#wimax-strong:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wimax-strong-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-wimax-strong-highlight-4.png");
 }
 
 MnbToolbarButton#wimax-weak {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wimax-weak.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-wimax-2.png");
 }
 MnbToolbarButton#wimax-weak:hover, MnbToolbarButton#wimax-weak:active,MnbToolbarButton#wimax-weak:checked {
-  background-image: url("@PANEL_NETWORKS_DATADIR@/icons/network-wimax-weak-hover.png");
+  background-image: url("@PANEL_NETWORKS_DATADIR@/icon-network-wimax-highlight-2.png");
 }

@@ -3,12 +3,12 @@ theme_DATA = \
 	bluetooth-panel.css \
 	$(NULL)
 dist_theme_DATA = \
-	bluetooth-off-hover.png \
-	bluetooth-off.png \
-	bluetooth-idle-hover.png \
-	bluetooth-idle.png \
-	bluetooth-connecting-hover.png \
-	bluetooth-connecting.png \
+	icon-bluetooth-off-highlight.png \
+	icon-bluetooth-off.png \
+	icon-bluetooth-idle-highlight.png \
+	icon-bluetooth-idle.png \
+	icon-bluetooth-connecting-highlight.png \
+	icon-bluetooth-connecting.png \
 	$(NULL)
 
 EXTRA_DIST = bluetooth-panel.css.in
