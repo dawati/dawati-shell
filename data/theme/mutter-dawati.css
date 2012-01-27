@@ -146,7 +146,7 @@ MxButton.ToolbarButton#people-button MxIcon {
     -mx-content-image: url("panel/icon-im.png");
 }
 MxButton.ToolbarButton#people-button:hover MxIcon, MxButton.ToolbarButton#people-button:active MxIcon, MxButton.ToolbarButton#people-button:checked MxIcon {
-    -mx-content-image: url("panel/icon-im-normal.png");
+    -mx-content-image: url("panel/icon-im-highlight.png");
 }
 
 MxButton.ToolbarButton#people-button-active MxIcon {
