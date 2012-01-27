@@ -277,7 +277,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_ICON_SPACING);
 
   icon = mx_icon_new ();
-  clutter_actor_set_name (icon, "brightness-off");
+  clutter_actor_set_name (icon, "volume-off");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
 
   priv->volume_slider = mx_slider_new ();
@@ -290,7 +290,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
                     G_CALLBACK (_volume_slider_value_notify_cb), self);
 
   icon = mx_icon_new ();
-  clutter_actor_set_name (icon, "brightness-on");
+  clutter_actor_set_name (icon, "volume-on");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
 
   /* Control */
