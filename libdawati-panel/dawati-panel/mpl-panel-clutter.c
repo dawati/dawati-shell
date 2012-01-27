@@ -322,7 +322,7 @@ mpl_panel_clutter_load_base_style (void)
                                  THEMEDIR "/theme.css", NULL);
 #endif
       mx_style_load_from_file (mx_style_get_default (),
-                               STYLEDIR "/shared/dawati-shared.css", &error);
+                               STYLEDIR "/shared/shared.css", &error);
 
       if (error)
         {
