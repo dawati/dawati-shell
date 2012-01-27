@@ -43,24 +43,33 @@ MxTable {
 }
 
 MxLabel#time-label {
-  color: #dadada;
+  color: #2a3c4a;
   font-size: 18px;
   font-weight: bold;
 }
 
 MxLabel#date-label {
-  color: #dadada;
+  color: ##2a3c4a;
   font-size: 12px;
 }
 
 MnbToolbar {
   border-image: url("panel/toolbar-bg.png") 0 0 0 0;
+  padding: 0 0 0 0;
 }
+
+/* theme the icon and text of the panel */
 
 MxButton.ToolbarButton {
   -mx-border-image-transition-duration: 0;
   background-color: #fff0;
   border-image: url("panel/toolbar-button-normal.png") 12;
+  color: #2a3c4a;
+  font-size: 13px;
+}
+
+MxButton.ToolbarButton MxIcon {
+    padding: 0 10 0 0;
 }
 
 MxButton.ToolbarButton:hover, MxButton.ToolbarButton:active {
@@ -68,19 +77,31 @@ MxButton.ToolbarButton:hover, MxButton.ToolbarButton:active {
   border-image: url("panel/toolbar-button-normal.png") 12;
 }
 
+/* theme the clock */
 MnbToolbarClock {
-  -mx-border-image-transition-duration: 0;
-  background-color: #fff0;
   border-image: url("panel/toolbar-button-normal.png") 12;
-  background-image: none;
   padding: 0 0 0 0;
+  color: #2a3c4a;
+  font-size: 22px;
 }
 
 MnbToolbarClock:hover, MnbToolbarClock:active, MnbToolbarClock:checked {
-  -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-normal.png") 12;
-  background-image: none;
   padding: 0 0 0 0;
+  color: #0d7a95;
+  font-size: 22px;
+}
+
+/* add the left padding for the panels by moving the panel container */
+MxBoxLayout#toolbar-left-box {
+  padding: 0 0 0 15;
+  -mx-spacing: 45;
+}
+
+/* add the right padding for the panels by moving the clock and utility items container */
+MxBoxLayout#toolbar-right-box {
+  padding: 0 15 0 0;
+  -mx-spacing: 45;
 }
 
 MnbToolbarApplet {
@@ -99,6 +120,7 @@ MnbToolbarApplet:hover, MnbToolbarApplet:active, MnbToolbarApplet:checked {
 /* All toolbar buttons */
 MxButton.ToolbarButton, MxButton.ToolbarButton:hover, MxButton.ToolbarButton:active, MxButton.ToolbarButton:checked {
     padding: 0 0 0 0;
+    font-family: "Open Sans";
 }
 
 /* applications button */

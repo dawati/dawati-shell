@@ -40,8 +40,6 @@ static void mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock);
 
 struct _MnbToolbarClockPrivate
 {
-  ClutterActor *time;
-
   guint         timeout_id;
   gulong        toolbar_show_id;
 
@@ -73,9 +71,6 @@ mnb_toolbar_clock_dispose (GObject *object)
       g_signal_handler_disconnect (ppriv->toolbar, priv->toolbar_show_id);
       priv->toolbar_show_id = 0;
     }
-
-  clutter_actor_destroy (priv->time);
-  priv->time = NULL;
 
   G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->dispose (object);
 }
@@ -145,7 +140,7 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
   else
     time_ptr = &time_str[0];
 
-  mx_label_set_text (MX_LABEL (priv->time), time_ptr);
+  mx_button_set_label (MX_BUTTON (clock), time_ptr);
 
   if (tmp)
     /* translators: translate this to a suitable date format for your locale.
@@ -217,12 +212,6 @@ mnb_toolbar_clock_timeout_cb (MnbToolbarClock *clock)
 }
 
 static void
-mnb_toolbar_show_cb (MnbToolbar *toolbar, MnbToolbarClock *clock)
-{
-  mnb_toolbar_clock_update_time_date (clock);
-}
-
-static void
 mnb_toolbar_clock_constructed (GObject *self)
 {
   MnbToolbarClockPrivate     *priv = MNB_TOOLBAR_CLOCK (self)->priv;
@@ -233,11 +222,6 @@ mnb_toolbar_clock_constructed (GObject *self)
     G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed (self);
 
   clutter_actor_push_internal (actor);
-
-  /* create time and date labels */
-  priv->time = mx_label_new ();
-  clutter_actor_set_name (priv->time, "time-label");
-  clutter_actor_set_parent (priv->time, actor);
 
   clutter_actor_pop_internal (actor);
 
@@ -261,129 +245,14 @@ mnb_toolbar_clock_constructed (GObject *self)
 }
 
 static void
-mnb_toolbar_clock_map (ClutterActor *actor)
-{
-  MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (actor)->priv;
-
-  /*
-   * The first time we are mapped we connect to the ClutterActor::show signal
-   * on the Toolbar for clock updates on show, MB#776 (we can't connect in the
-   * constructor, as at that point the Toolbar construction is not yet
-   * completed, so we have no way of getting at the object instance.
-   */
-  if (!priv->toolbar_show_id)
-    {
-      MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
-      DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-
-      priv->toolbar_show_id =
-        g_signal_connect (ppriv->toolbar, "show",
-                          G_CALLBACK (mnb_toolbar_show_cb),
-                          actor);
-    }
-
-  CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->map (actor);
-
-  clutter_actor_map (priv->time);
-}
-
-static void
-mnb_toolbar_clock_unmap (ClutterActor *actor)
-{
-  MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (actor)->priv;
-
-  clutter_actor_unmap (priv->time);
-
-  CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->unmap (actor);
-}
-
-static void
-mnb_toolbar_clock_allocate (ClutterActor          *actor,
-                            const ClutterActorBox *box,
-                            ClutterAllocationFlags flags)
-{
-  MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (actor)->priv;
-  ClutterActorBox         childbox;
-  MxPadding               padding = {0,};
-
-  CLUTTER_ACTOR_CLASS (
-             mnb_toolbar_clock_parent_class)->allocate (actor, box, flags);
-
-  mx_widget_get_padding (MX_WIDGET (actor), &padding);
-
-  childbox.x1 = padding.left;
-  childbox.y1 = padding.top;
-  childbox.x2 = (gfloat)((gint)(box->x2 - box->x1 - padding.right));
-  childbox.y2 = (gfloat)((gint)(box->y2 - box->y1 - padding.bottom));
-
-  mx_allocate_align_fill (priv->time, &childbox,
-                          MX_ALIGN_MIDDLE,
-                          MX_ALIGN_MIDDLE, FALSE, FALSE);
-
-  clutter_actor_allocate (priv->time, &childbox, flags);
-}
-
-static void
-mnb_toolbar_clock_paint (ClutterActor *self)
-{
-  MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->paint (self);
-
-  clutter_actor_paint (priv->time);
-}
-
-static void
-mnb_toolbar_clock_get_preferred_width (ClutterActor *self,
-                                       gfloat        for_height,
-                                       gfloat       *min_width_p,
-                                       gfloat       *natural_width_p)
-{
-  gfloat width;
-
-  width = CLOCK_WIDTH + BUTTON_INTERNAL_PADDING;
-
-  if (min_width_p)
-    *min_width_p = width;
-
-  if (natural_width_p)
-    *natural_width_p = width;
-}
-
-static void
-mnb_toolbar_clock_get_preferred_height (ClutterActor *self,
-                                        gfloat        for_width,
-                                        gfloat       *min_height_p,
-                                        gfloat       *natural_height_p)
-{
-  gfloat height;
-
-  height = BUTTON_HEIGHT;
-
-  if (min_height_p)
-    *min_height_p = height;
-
-  if (natural_height_p)
-    *natural_height_p = height;
-}
-
-static void
 mnb_toolbar_clock_class_init (MnbToolbarClockClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbToolbarClockPrivate));
 
   object_class->dispose             = mnb_toolbar_clock_dispose;
   object_class->constructed         = mnb_toolbar_clock_constructed;
-
-  actor_class->allocate             = mnb_toolbar_clock_allocate;
-  actor_class->map                  = mnb_toolbar_clock_map;
-  actor_class->unmap                = mnb_toolbar_clock_unmap;
-  actor_class->get_preferred_width  = mnb_toolbar_clock_get_preferred_width;
-  actor_class->get_preferred_height = mnb_toolbar_clock_get_preferred_height;
-  actor_class->paint                = mnb_toolbar_clock_paint;
 }
 
 static void
