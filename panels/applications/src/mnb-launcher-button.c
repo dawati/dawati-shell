@@ -626,7 +626,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
 
   if (error) {
     g_warning (G_STRLOC "%s", error->message);
-    g_error_free (error);
+    g_clear_error (&error);
   }
 
   if (self->priv->icon) {
@@ -657,7 +657,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
 
     if (error) {
         g_warning (G_STRLOC "%s", error->message);
-        g_error_free (error);
+        g_clear_error (&error);
     }
 
     cogl_material_set_layer (material, 1, texture);
@@ -679,7 +679,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
 
     if (error) {
         g_warning (G_STRLOC "%s", error->message);
-        g_error_free (error);
+        g_clear_error (&error);
     }
 
     cogl_material_set_layer (material, 4, texture);
@@ -692,7 +692,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
 
     if (error) {
         g_warning (G_STRLOC "%s", error->message);
-        g_error_free (error);
+        g_clear_error (&error);
     }
 
     cogl_material_set_layer_combine (material, 5,
