@@ -51,14 +51,14 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarAppletPrivate MnbToolbarAppletPrivate;
 
 typedef struct {
-  MnbToolbarButton parent;
+  MxButton parent;
 
   /*< private >*/
   MnbToolbarAppletPrivate *priv;
 } MnbToolbarApplet;
 
 typedef struct {
-  MnbToolbarButtonClass parent_class;
+  MxButtonClass parent_class;
 } MnbToolbarAppletClass;
 
 GType mnb_toolbar_applet_get_type (void);

@@ -51,14 +51,14 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarClockPrivate MnbToolbarClockPrivate;
 
 typedef struct {
-  MnbToolbarButton parent;
+  MxButton parent;
 
   /*< private >*/
   MnbToolbarClockPrivate *priv;
 } MnbToolbarClock;
 
 typedef struct {
-  MnbToolbarButtonClass parent_class;
+  MxButtonClass parent_class;
 } MnbToolbarClockClass;
 
 GType mnb_toolbar_clock_get_type (void);

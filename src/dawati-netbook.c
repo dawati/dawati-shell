@@ -573,10 +573,10 @@ dawati_netbook_compute_netbook_mode (MetaPlugin *plugin)
     }
 
 
-  if (force_small_screen || (!external && screen_width_mm < 280))
+  /* if (force_small_screen || (!external && screen_width_mm < 280)) */
     priv->netbook_mode = TRUE;
-  else
-    priv->netbook_mode = FALSE;
+  /* else */
+  /*   priv->netbook_mode = FALSE; */
 }
 
 static void
@@ -636,7 +636,7 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
   g_free (dawati_session);
 
   gconf_client_set_string (priv->gconf_client, KEY_THEME,
-                           priv->netbook_mode ? "Dawati" : "Nettop",
+                           priv->netbook_mode ? "Dawati" : "Dawati",
                            NULL);
 
   gconf_client_set_string (priv->gconf_client, KEY_BUTTONS,
@@ -657,8 +657,8 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
       mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_POLICY);
     }
   else if (priv->netbook_mode &&
-           /* CLUTTER_ACTOR_IS_VISIBLE (stage) && */
-           CLUTTER_ACTOR_IS_VISIBLE (toolbar) &&
+           CLUTTER_ACTOR_IS_VISIBLE (stage) &&
+           /* CLUTTER_ACTOR_IS_VISIBLE (toolbar) && */
            !mnb_toolbar_get_active_panel (toolbar))
     {
       gint   x, y, root_x, root_y;
