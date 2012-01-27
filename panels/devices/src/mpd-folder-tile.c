@@ -69,7 +69,7 @@ icon_path_from_special_dir (GUserDirectory directory)
     char const      *key;
   } _map[] = {
 	  { G_USER_DIRECTORY_DOCUMENTS, "documents" },
-	  { G_USER_DIRECTORY_DOWNLOAD, "download" },
+	  { G_USER_DIRECTORY_DOWNLOAD, "downloads" },
 	  { G_USER_DIRECTORY_MUSIC, "music" },
 	  { G_USER_DIRECTORY_PICTURES, "pictures" },
 	  { G_USER_DIRECTORY_VIDEOS, "videos" }
@@ -80,17 +80,14 @@ icon_path_from_special_dir (GUserDirectory directory)
   {
     if (directory == _map[i].directory)
     {
-      icon_path = g_strdup_printf ("%s/directory-%s.png",
+      icon_path = g_strdup_printf ("%s/folder-%s.png",
                                    PKGICONDIR,
                                    _map[i].key);
       break;
     }
   }
 
-  if (icon_path == NULL)
-  {
-    icon_path = g_strdup_printf ("%s/directory-generic.png", PKGICONDIR);
-  }
+  g_assert (icon_path);
 
   return icon_path;
 }
@@ -184,7 +181,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
   button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
                          "uri", "trash:///",
                          "label", _("Trash"),
-                         "icon-path", PKGICONDIR "/directory-trash.png",
+                         "icon-path", PKGICONDIR "/folder-trash.png",
                          NULL);
   clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
   g_signal_connect (button, "clicked",
