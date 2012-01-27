@@ -60,8 +60,6 @@
 #define LAUNCHER_BUTTON_HEIGHT     120
 #define LAUNCHER_BUTTON_ICON_SIZE  64
 
-#define PLACEHOLDER_TEXT _("To see your favourite applications here and on the myzone, hover your pointer over the application you want to add and select the pin in the top right.")
-
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
 
@@ -112,6 +110,7 @@ struct MnbLauncherPrivate_
   GHashTable              *categories;
   MxExpander              *first_expander;
   GSList                  *launchers;
+  GList                   *bookmarks_list;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
@@ -175,31 +174,40 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar   *uri = NULL;
   GError  *error = NULL;
+  gboolean fav_category_active;
+  MxButton *active_category;
+
+  /* If the favourites category is active make sure we update the visibility
+   * of the buttons accordingly. All othertimes they are visible regardless of
+   * favourited status.
+   */
+
+  active_category = mx_button_group_get_active_button (priv->category_group);
+
+  if (active_category &&
+     g_strcmp0 (mx_button_get_label (MX_BUTTON (active_category)), "fav") == 0)
+    fav_category_active = TRUE;
+
 
   if (mnb_launcher_button_get_favorite (launcher))
     {
-      MxWidget *clone = mnb_launcher_button_create_favorite (launcher);
-
-      g_signal_connect (clone, "activated",
-                        G_CALLBACK (launcher_button_activated_cb),
-                        self);
+      if (fav_category_active)
+        clutter_actor_show (CLUTTER_ACTOR (launcher));
 
       /* Update bookmarks. */
-
       uri = g_strdup_printf ("file://%s",
-              mnb_launcher_button_get_desktop_file_path (
-                MNB_LAUNCHER_BUTTON (clone)));
-      mpl_app_bookmark_manager_add_uri (priv->manager,
-                                        uri);
+                          mnb_launcher_button_get_desktop_file_path (launcher));
+      mpl_app_bookmark_manager_add_uri (priv->manager, uri);
     }
   else
     {
+      if (fav_category_active)
+        clutter_actor_hide (CLUTTER_ACTOR (launcher));
+
       /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
-              mnb_launcher_button_get_desktop_file_path (
-                MNB_LAUNCHER_BUTTON (launcher)));
-      mpl_app_bookmark_manager_remove_uri (priv->manager,
-                                           uri);
+                          mnb_launcher_button_get_desktop_file_path (launcher));
+      mpl_app_bookmark_manager_remove_uri (priv->manager, uri);
     }
 
   if (error)
@@ -226,14 +234,22 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
 
 }
 
+static gint
+_is_launcher_bookmarked (gconstpointer a, gconstpointer b)
+{
+  return g_strcmp0 (g_filename_from_uri (a, NULL, NULL), b);
+}
+
 static MxWidget *
 launcher_button_create_from_entry (MnbLauncherApplication *entry,
-                                   const gchar      *category,
-                                   GtkIconTheme     *theme)
+                                   const gchar            *category,
+                                   GtkIconTheme           *theme,
+                                   MnbLauncher            *self)
 {
-  const gchar *generic_name, *description, *exec, *icon_name;
+  const gchar *generic_name, *description, *exec, *icon_name, *desktop_file;
   gchar *icon_file;
   MxWidget  *button;
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
   description = NULL;
   exec = NULL;
@@ -248,10 +264,19 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
 
   if (generic_name && exec && icon_file)
     {
+      desktop_file = mnb_launcher_application_get_desktop_file (entry);
+
       button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_BUTTON_ICON_SIZE,
                                         generic_name, category,
                                         description, exec,
-                                        mnb_launcher_application_get_desktop_file (entry));
+                                        desktop_file);
+
+      if (g_list_find_custom (priv->bookmarks_list,
+                               desktop_file,
+                               (GCompareFunc)_is_launcher_bookmarked))
+        {
+          mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button), TRUE);        }
+
       clutter_actor_set_size (CLUTTER_ACTOR (button),
                               LAUNCHER_BUTTON_WIDTH,
                               LAUNCHER_BUTTON_HEIGHT);
@@ -280,10 +305,11 @@ mnb_launcher_cancel_search (MnbLauncher     *self)
 static void
 _destroy_cat_children_cb (ClutterActor *actor, gpointer data)
 {
-  /* We don't want to destroy the "All" category as this will
+  /* We don't want to destroy the "All" or "Fav" category as this will
    * always be valid.
    */
-  if (g_strcmp0 (clutter_actor_get_name (actor), "all") == 0)
+  if (g_strcmp0 (clutter_actor_get_name (actor), "all") == 0 ||
+      g_strcmp0 (clutter_actor_get_name (actor), "fav") == 0)
     return;
 
   clutter_actor_destroy (actor);
@@ -456,12 +482,50 @@ _filter_text_notify_cb (MnbFilter     *filter,
 }
 
 static void
+mnb_launcher_show_favourites (MnbLauncher *self, gboolean show)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  GSList *iter = NULL;
+
+  /* Hide non favourites */
+
+  for (iter = priv->launchers; iter; iter = iter->next)
+    {
+      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+      if (!mnb_launcher_button_get_favorite (button) && show)
+        {
+          clutter_actor_hide (CLUTTER_ACTOR (button));
+        }
+      else
+        {
+          clutter_actor_show (CLUTTER_ACTOR (button));
+        }
+    }
+}
+
+
+
+static void
 _category_button_toggled_cb (ClutterActor *button,
                              GParamSpec   *pspec,
                              MnbLauncher  *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
+  gboolean toggled_on;
+
+  toggled_on = mx_button_get_toggled (MX_BUTTON (button));
+
+
+  if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "fav") == 0)
+    {
+      mnb_launcher_show_favourites (self, toggled_on);
+      return;
+    }
+
+
+  if (!toggled_on)
+      return
 
   mnb_launcher_cancel_search (self);
 
@@ -533,10 +597,19 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
   /* connect to notify::toggled */
 
   /* Label */
+
+  /* special case "All" */
   if (g_strcmp0 (text, "all") == 0)
     {
       clutter_actor_set_name (box, "all");
       text = _("All");
+    }
+
+  /* special case "Favourites" */
+  if (g_strcmp0 (text, "fav") == 0)
+    {
+      clutter_actor_set_name (box, "fav");
+      text = _("Favourites");
     }
 
   label = mx_label_new_with_text (text);
@@ -608,7 +681,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
       MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
       MxWidget *button = launcher_button_create_from_entry (launcher,
                                                             directory->name,
-                                                            priv->theme);
+                                                            priv->theme,
+                                                            self);
       if (button)
         {
           clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
@@ -664,7 +738,8 @@ mnb_launcher_fill_plain (MnbLauncher  *self)
           MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
           MxWidget *button = launcher_button_create_from_entry (launcher,
                                                                 directory->name,
-                                                                priv->theme);
+                                                                priv->theme,
+                                                                self);
           if (button)
             {
               g_signal_connect (button, "activated",
@@ -693,71 +768,6 @@ static void
 mnb_launcher_fill (MnbLauncher  *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  GList *fav_apps;
-
-  /*
-   * Fav apps.
-   */
-
-  fav_apps = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
-  if (fav_apps)
-    {
-      GList *fav_apps_iter;
-
-      for (fav_apps_iter = fav_apps;
-           fav_apps_iter;
-           fav_apps_iter = fav_apps_iter->next)
-        {
-          gchar             *uri;
-          gchar             *desktop_file_path;
-          MnbLauncherApplication  *entry;
-          MxWidget          *button = NULL;
-          GError            *error = NULL;
-
-          uri = (gchar *) fav_apps_iter->data;
-          desktop_file_path = g_filename_from_uri (uri, NULL, &error);
-          if (error)
-            {
-              g_warning ("%s", error->message);
-              g_clear_error (&error);
-              continue;
-            }
-
-          entry = mnb_launcher_application_new_from_desktop_file (desktop_file_path);
-          g_free (desktop_file_path);
-          if (entry)
-            {
-              button = launcher_button_create_from_entry (entry, NULL, priv->theme);
-              /*              if (button)
-                {
-                mnb_launcher_button_make_favorite (MNB_LAUNCHER_BUTTON (button),
-                                                     LAUNCHER_BUTTON_HEIGHT,
-                                                     LAUNCHER_BUTTON_HEIGHT);
-                }*/
-              g_object_unref (entry);
-            }
-
-          if (button)
-            {
-              mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button),
-                                                TRUE);
-
-              g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_button_activated_cb),
-                                self);
-              g_signal_connect (button, "fav-toggled",
-                                G_CALLBACK (launcher_button_fav_toggled_cb),
-                                self);
-            }
-        }
-      g_list_free (fav_apps);
-    }
-
-  /*
-   * Apps browser.
-   */
-
   /* Grid */
   priv->apps_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   clutter_actor_set_name (priv->apps_grid, "apps-grid");
@@ -772,7 +782,6 @@ mnb_launcher_fill (MnbLauncher  *self)
         ;
 
       mnb_launcher_fill_plain (self);
-/*    } */
 
   mnb_launcher_update_last_launched (self);
 }
@@ -816,6 +825,13 @@ _dispose (GObject *object)
       g_object_unref (priv->manager);
       priv->manager = NULL;
     }
+
+  if (priv->bookmarks_list)
+    {
+      g_list_free (priv->bookmarks_list);
+      priv->bookmarks_list = NULL;
+    }
+
 
   mnb_launcher_reset (self);
 
@@ -964,6 +980,18 @@ _filter_captured_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static void
+_bookmakrs_changed_cb (MplAppBookmarkManager *manager,
+                       MnbLauncher *self)
+{
+  /* refresh the bookmarks list */
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  g_list_free (priv->bookmarks_list);
+
+  priv->bookmarks_list = mpl_app_bookmark_manager_get_bookmarks (manager);
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1011,6 +1039,9 @@ _constructor (GType                  gtype,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
                                mnb_launcher_category_button_new (self, "all"));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
+                               mnb_launcher_category_button_new (self, "fav"));
 
   fav_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (fav_scroll, "fav-pane-content");
@@ -1067,6 +1098,11 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->theme, "changed",
                     G_CALLBACK (mnb_launcher_theme_changed_cb), self);
   priv->manager = mpl_app_bookmark_manager_get_default ();
+
+  g_signal_connect (priv->manager, "bookmarks-changed",
+                    G_CALLBACK (_bookmakrs_changed_cb), self);
+
+  priv->bookmarks_list = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
   priv->is_constructed = TRUE;
 
   priv->app_launches = mpl_app_launches_store_new ();
