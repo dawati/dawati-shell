@@ -469,7 +469,7 @@ _filter_text_notify_cb (MnbFilter     *filter,
 
   mnb_launcher_cancel_search (self);
 
-  needle = g_strdup (mnb_filter_get_text (MNB_FILTER (filter)));
+  needle = g_strdup (mx_entry_get_text (MX_ENTRY (filter)));
   needle = g_strstrip (needle);
 
   if (needle && *needle)
@@ -589,7 +589,7 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
   mx_button_set_label_visible (MX_BUTTON (button), FALSE);
   mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
   mx_button_group_add (priv->category_group, MX_BUTTON (button));
-  mx_stylable_set_style_class (MX_STYLABLE (button), "check-box");
+  mx_stylable_set_style_class (MX_STYLABLE (button), "radio-button");
 
   g_signal_connect (button, "notify::toggled",
                    G_CALLBACK (_category_button_toggled_cb),
@@ -957,7 +957,7 @@ _filter_captured_event_cb (ClutterActor *actor,
             {
               const gchar *command;
 
-              command = mnb_filter_get_text (MNB_FILTER (actor));
+              command = mx_entry_get_text (MX_ENTRY (actor));
               if (command)
                 {
                   if (strlen (command) > 0)
@@ -973,7 +973,7 @@ _filter_captured_event_cb (ClutterActor *actor,
       else if (CLUTTER_Escape == key_event->keyval)
         {
           /* Clear filter, switch back to browse mode. */
-          mnb_filter_set_text (MNB_FILTER (priv->filter), "");
+          mx_entry_set_text (MX_ENTRY (priv->filter), "");
         }
     }
 
@@ -1011,10 +1011,12 @@ _constructor (GType                  gtype,
   /* Panel label */
   label = mx_label_new_with_text (_("Applications"));
   clutter_actor_set_name (label, "panel-label");
+  mx_stylable_set_style_class (MX_STYLABLE (label), "titleBar");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   columns = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 12.0);
+  mx_stylable_set_style_class (MX_STYLABLE (columns), "panel");
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 47.0);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), columns);
   clutter_container_child_set (CLUTTER_CONTAINER (self), columns,
                                "expand", TRUE,
@@ -1027,15 +1029,27 @@ _constructor (GType                  gtype,
    */
   priv->category_group = mx_button_group_new ();
 
-  pane = mpl_content_pane_new ("");
+  pane = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
   clutter_actor_set_width (pane, FAV_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (pane), 10);
+  mx_stylable_set_style_class (MX_STYLABLE (pane), "contentPanel");
 
+  /* Filter */
+  priv->filter = mx_entry_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->filter), "searchBox");
+  clutter_actor_set_width (priv->filter, FILTER_WIDTH);
+  g_signal_connect (priv->filter, "captured-event",
+                    G_CALLBACK (_filter_captured_event_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->filter);
+
+
+  /* category section */
   priv->category_section = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->category_section),
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->category_section),
-                             5);
+                             15);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
                                mnb_launcher_category_button_new (self, "all"));
@@ -1059,13 +1073,6 @@ _constructor (GType                  gtype,
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll),
                                priv->category_section);
 
-
-  /* Filter */
-  priv->filter = mnb_filter_new ();
-  clutter_actor_set_width (priv->filter, FILTER_WIDTH);
-  g_signal_connect (priv->filter, "captured-event",
-                    G_CALLBACK (_filter_captured_event_cb), self);
-  mpl_content_pane_set_header_actor (MPL_CONTENT_PANE (pane), priv->filter);
 
 
 
@@ -1188,7 +1195,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   MxAdjustment        *adjust;
 
-  mnb_filter_set_text (MNB_FILTER (priv->filter), "");
+  mx_entry_set_text (MX_ENTRY (priv->filter), "");
 
   /* Reset scroll position. */
   mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->apps_grid),

@@ -447,6 +447,9 @@ mnb_launcher_button_init (MnbLauncherButton *self)
                       CLUTTER_ACTOR (self->priv->fav_toggle),
                       0, 0);
 
+  /* hide fav_toggle until the new styling is available */
+  clutter_actor_hide (self->priv->fav_toggle);
+
   g_signal_connect (self->priv->fav_toggle, "notify::toggled",
                     G_CALLBACK (fav_button_notify_toggled_cb), self);
 
@@ -627,12 +630,14 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
   }
 
   if (self->priv->icon) {
+    CoglHandle material, texture;
 
     if (self->priv->icon_size > -1) {
       clutter_actor_set_size (self->priv->icon,
                               self->priv->icon_size,
                               self->priv->icon_size);
     }
+
     mx_table_add_actor_with_properties (MX_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
                                           0, 0,
@@ -643,6 +648,62 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                                           "y-expand", FALSE,
                                           "y-fill", FALSE,
                                           NULL);
+    material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (self->priv->icon));
+
+    texture = cogl_texture_new_from_file (STYLEDIR
+                                          "/shared/application-icon-texture-bg.png",
+                                          COGL_TEXTURE_NONE, COGL_PIXEL_FORMAT_ANY,
+                                          &error);
+
+    if (error) {
+        g_warning (G_STRLOC "%s", error->message);
+        g_error_free (error);
+    }
+
+    cogl_material_set_layer (material, 1, texture);
+
+    cogl_material_set_layer_combine (material, 2,
+                                     "RGBA = MODULATE (TEXTURE_1, 1-TEXTURE_0[A])",
+                                     NULL);
+
+    cogl_material_set_layer_combine (material, 3,
+                                     "RGBA = ADD (PREVIOUS, TEXTURE_0)",
+                                     NULL);
+
+
+    /* mask */
+    texture = cogl_texture_new_from_file (STYLEDIR
+                                          "/shared/application-icon-mask.png",
+                                          COGL_TEXTURE_NONE, COGL_PIXEL_FORMAT_ANY,
+                                          &error);
+
+    if (error) {
+        g_warning (G_STRLOC "%s", error->message);
+        g_error_free (error);
+    }
+
+    cogl_material_set_layer (material, 4, texture);
+
+
+    texture = cogl_texture_new_from_file (STYLEDIR
+                                          "/shared/application-mask.png",
+                                          COGL_TEXTURE_NONE, COGL_PIXEL_FORMAT_ANY,
+                                          &error);
+
+    if (error) {
+        g_warning (G_STRLOC "%s", error->message);
+        g_error_free (error);
+    }
+
+    cogl_material_set_layer_combine (material, 5,
+                                     "RGBA = MODULATE (PREVIOUS, 1-TEXTURE_6[A])",
+                                     NULL);
+
+
+    cogl_material_set_layer (material, 6, texture);
+    cogl_material_set_layer_combine (material, 6,
+                                     "RGBA = ADD (PREVIOUS, TEXTURE)",
+                                     NULL);
   }
 }
 
