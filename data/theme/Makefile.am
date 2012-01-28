@@ -19,7 +19,7 @@ dist_theme_DATA = \
 	mutter-dawati.css \
 	$(NULL)
 
-theme_paneldir = $(DAWATI_THEME_DIR)/panel
+theme_paneldir = $(DAWATI_THEME_DIR)/toolbar
 dist_theme_panel_DATA = \
 	toolbar/icon-apps-highlight.png \
 	toolbar/icon-apps.png \
@@ -37,7 +37,7 @@ dist_theme_panel_DATA = \
 	toolbar/icon-network-highlight.png \
 	toolbar/icon-network.png \
 	toolbar/toolbar-bg.png \
-	toolbar/panel-shadow.png \
+	toolbar/toolbar-shadow.png \
 	toolbar/icon-pasteboard-highlight.png \
 	toolbar/icon-pasteboard.png \
 	toolbar/icon-im-highlight.png \
