@@ -311,6 +311,7 @@ mnb_toolbar_get_default_panel_list (void)
                                     "dawati-panel-people",
                                     "dawati-panel-internet",
                                     "dawati-panel-music",
+                                    "dawati-panel-devices",
                                     "carrick",
                                     "dawati-panel-datetime"};
   gint i;
