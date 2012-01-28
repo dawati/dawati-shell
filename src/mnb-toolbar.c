@@ -3094,14 +3094,14 @@ mnb_toolbar_constructed (GObject *self)
    */
   sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
                                              THEMEDIR
-                                             "/panel/panel-shadow.png");
+                                             "/panel/toolbar-shadow.png");
   if (sh_texture)
     {
       shadow = mx_texture_frame_new (sh_texture,
-                                     0,   /* top */
-                                     200, /* right */
-                                     0,   /* bottom */
-                                     200  /* left */);
+                                     0, /* top */
+                                     0, /* right */
+                                     0, /* bottom */
+                                     0  /* left */);
       clutter_actor_set_size (shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
       clutter_actor_set_y (shadow, TOOLBAR_HEIGHT);
       clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), shadow);
