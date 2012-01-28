@@ -110,12 +110,15 @@ ResultSet.prototype = {
 // Audio Library
 //
 
-function AudioLibrary() {
-    this._init();
+function AudioLibrary(panel) {
+    this._init(panel);
 }
 
 AudioLibrary.prototype = {
-    _init: function() {
+    _init: function(panel) {
+        this._panel = panel;
+        this._player = new MprisProxy();
+
         this.controls_actor =
             new Mx.BoxLayout({ orientation: Mx.Orientation.HORIZONTAL });
 
@@ -136,7 +139,7 @@ AudioLibrary.prototype = {
         this.controls_actor.child_set_x_fill(button, false);
         this.controls_actor.child_set_y_fill(button, true);
 
-        this.player_info = Gio.DesktopAppInfo.new("rhythmbox.desktop");
+        this._player_info = Gio.DesktopAppInfo.new("rhythmbox.desktop");
         button.connect('clicked', Lang.bind(this, this._open_player));
 
 
@@ -212,7 +215,9 @@ AudioLibrary.prototype = {
 
 
     _open_player: function() {
-        this.player_info.launch([], null);
+        //this._player_info.launch([], null);
+        this._player.RaiseRemote();
+        this._panel.hide();
     },
 
     _switched_model: function() {
@@ -225,7 +230,7 @@ AudioLibrary.prototype = {
 //
 
 const freedesktopPropertiesIface = {
-    signals: [{ name: 'PropertiesChanged', inSignature: 'sa{sv}a{sv}', outSignature: '' }]
+    signals: [{ name: 'PropertiesChanged', inSignature: 'sa{sv}a{sv}' }]
 };
 
 function FreeDesktopPropertiesProxy() {
@@ -379,6 +384,29 @@ MprisPlayerProxy.prototype = {
     }
 };
 DBus.proxifyPrototype(MprisPlayerProxy.prototype, mprisPlayerIface);
+
+const mprisIface = {
+    signals: [{ name: 'Quit' },
+              { name: 'Raise' }]
+};
+
+function MprisProxy() {
+    this._init();
+}
+
+MprisProxy.prototype = {
+    _init: function() {
+        DBus.session.proxifyObject(this,
+                                   'org.gnome.Rhythmbox3',
+                                   '/org/mpris/MediaPlayer2');
+        DBus.session.watch_name('org.gnome.Rhythmbox3',
+                                true, // do (not) launch a name-owner if none exists
+                                null,
+                                null);
+    }
+}
+DBus.proxifyPrototype(MprisProxy.prototype, MprisIface);
+
 
 //
 // NowPlaying
@@ -638,7 +666,7 @@ table.child_set_y_fill(label, false);
 table.child_set_y_expand(label, false);
 table.child_set_x_align(label, Mx.Align.START);
 
-let lib = new AudioLibrary();
+let lib = new AudioLibrary(panel);
 table.add_actor(lib.controls_actor, 1, 0);
 table.child_set_x_fill(lib.controls_actor, true);
 table.child_set_x_expand(lib.controls_actor, true);
