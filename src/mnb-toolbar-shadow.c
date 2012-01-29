@@ -22,6 +22,9 @@
 #include "mnb-toolbar-shadow.h"
 #include "mnb-toolbar.h"
 
+#undef TOOLBAR_CUT_OUT
+#define TOOLBAR_CUT_OUT 0
+
 G_DEFINE_TYPE (MnbToolbarShadow, mnb_toolbar_shadow, MX_TYPE_TEXTURE_FRAME)
 
 #define TOOLBAR_SHADOW_PRIVATE(o) \
