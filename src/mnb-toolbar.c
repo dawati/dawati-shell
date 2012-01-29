@@ -54,6 +54,7 @@
 #include "mnb-toolbar-applet.h"
 #include "mnb-toolbar-icon.h"
 #include "mnb-toolbar-clock.h"
+#include "mnb-toolbar-shadow.h"
 #include "mnb-spinner.h"
 
 /* For systray windows stuff */
@@ -119,8 +120,6 @@
  */
 #define TOOLBAR_SHADOW_EXTRA  20
 #define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
-
-#define TOOLBAR_CUT_OUT 0
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, MX_TYPE_BOX_LAYOUT)
 
@@ -3097,11 +3096,11 @@ mnb_toolbar_constructed (GObject *self)
                                              "/panel/toolbar-shadow.png");
   if (sh_texture)
     {
-      shadow = mx_texture_frame_new (sh_texture,
-                                     0, /* top */
-                                     0, /* right */
-                                     0, /* bottom */
-                                     0  /* left */);
+      shadow = mnb_toolbar_shadow_new (sh_texture,
+                                       0, /* top */
+                                       0, /* right */
+                                       0, /* bottom */
+                                       0  /* left */);
       clutter_actor_set_size (shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
       clutter_actor_set_y (shadow, TOOLBAR_HEIGHT);
       clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), shadow);

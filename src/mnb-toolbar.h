@@ -42,6 +42,8 @@
 #define TRAY_BUTTON_HEIGHT 64
 #define CLOCK_WIDTH        106
 
+#define TOOLBAR_CUT_OUT 0
+
 G_BEGIN_DECLS
 
 #define MNB_TYPE_TOOLBAR mnb_toolbar_get_type()
