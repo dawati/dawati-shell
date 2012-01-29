@@ -59,6 +59,7 @@ dist_theme_panel_DATA = \
 	toolbar/toolbar-button-normal.png \
 	toolbar/toolbar-button-hover.png \
 	toolbar/toolbar-button-tray.png \
+	toolbar/toolbar-selection.png \
 	$(NULL)
 
 theme_genericdir = $(DAWATI_THEME_DIR)/generic

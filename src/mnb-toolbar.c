@@ -230,6 +230,7 @@ struct _MnbToolbarPrivate
   ClutterTexture *border_image;
   CoglHandle selector_image;
   ClutterActor *light_spot;
+  ClutterActorBox next_selector_pos;
 
   ClutterActor *lowlight;
   ClutterActor *panel_stub;
@@ -977,7 +978,7 @@ mnb_toolbar_paint_background (MxWidget           *self,
       && bimage->bottom == 0)
     {
 #if TOOLBAR_CUT_OUT
-      float spot_width;
+      float spot_width, spot_height;
       float coords[8] = {
         0, 0, 1, 1,
         0, 0, 0, 0
@@ -985,10 +986,11 @@ mnb_toolbar_paint_background (MxWidget           *self,
 
       clutter_actor_get_allocation_box (priv->light_spot, &box);
       spot_width = box.x2 - box.x1;
-      coords[4] = -(box.x1 / width) * (width / (spot_width));
-      coords[5] = 0;
-      coords[6] = width / (spot_width) -(box.x1 / width) * (width / (spot_width));
-      coords[7] = height / (spot_width);
+      spot_height = box.y2 - box.y1;
+      coords[4] = -(box.x1 / width) * (width / spot_width);
+      coords[5] = -(box.y1 / height) * (height / spot_height);
+      coords[6] = width / spot_width - (box.x1 / width) * (width / spot_width);
+      coords[7] = height / spot_height - (box.y1 / height) * (height / spot_height)/* height / spot_height */;
       cogl_rectangle_with_multitexture_coords(0, 0, width, height, coords, 8);
 #else
       cogl_rectangle (0, 0, width, height);
@@ -1316,6 +1318,60 @@ mnb_toolbar_button_button_release_cb (MnbToolbarButton   *button,
   return FALSE;
 }
 
+static void
+mnb_toolbar_hide_selector (MnbToolbar *self)
+{
+#if TOOLBAR_CUT_OUT
+  MnbToolbarPrivate *priv = self->priv;
+
+  clutter_actor_animate (priv->light_spot,
+                         CLUTTER_LINEAR, 300,
+                         "y", 10.0,
+                         NULL);
+#endif /* TOOLBAR_CUT_OUT */
+}
+
+static void
+mnb_toolbar_show_selector (MnbToolbar *self)
+{
+#if TOOLBAR_CUT_OUT
+  MnbToolbarPrivate *priv = self->priv;
+
+  clutter_actor_set_x (priv->light_spot,
+                       priv->next_selector_pos.x1);
+  clutter_actor_animate (priv->light_spot,
+                         CLUTTER_LINEAR, 300,
+                         "y", 0.0,
+                         NULL);
+#endif /* TOOLBAR_CUT_OUT */
+}
+
+static void
+mnb_toolbar_selector_animation_completed_cb (ClutterAnimation *anim,
+                                             MnbToolbar       *toolbar)
+{
+  mnb_toolbar_show_selector (toolbar);
+}
+
+static void
+mnb_toolbar_move_selector (MnbToolbar *self)
+{
+#if TOOLBAR_CUT_OUT
+  MnbToolbarPrivate *priv = self->priv;
+  ClutterAnimation  *animation;
+
+  animation = clutter_actor_animate (priv->light_spot,
+                                     CLUTTER_LINEAR, 300,
+                                     "y", 10.0,
+                                     NULL);
+
+  g_signal_connect_after (animation,
+                          "completed",
+                          G_CALLBACK (mnb_toolbar_selector_animation_completed_cb),
+                          self);
+#endif /* TOOLBAR_CUT_OUT */
+}
+
 /*
  * Toolbar button click handler.
  *
@@ -1331,6 +1387,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
   gboolean           checked;
   GList             *l;
   gboolean           button_click;
+  gboolean           previous_clicked = FALSE;
 
   static gboolean    recursion = FALSE;
 
@@ -1343,19 +1400,6 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
   priv->button_click = FALSE;
 
   checked = mx_button_get_toggled (button);
-
-#if TOOLBAR_CUT_OUT
-  if (checked)
-    {
-      ClutterActorBox box;
-
-      clutter_actor_get_allocation_box (CLUTTER_ACTOR (button), &box);
-      clutter_actor_animate (priv->light_spot,
-                             CLUTTER_LINEAR, 150,
-                             "x", box.x1,
-                             NULL);
-    }
-#endif /* TOOLBAR_CUT_OUT */
 
   /*
    * If the user clicked on a button to show panel, but currently focused
@@ -1383,6 +1427,11 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
       return;
     }
 
+  /* Update position of selected button */
+  if (checked)
+    clutter_actor_get_allocation_box (CLUTTER_ACTOR (button),
+                                      &priv->next_selector_pos);
+
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
    * then we are back to normal mode.
@@ -1397,24 +1446,28 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
         continue;
 
       if (tp->button != (ClutterActor*)button)
-      {
-        if (tp->button && mx_button_get_toggled (MX_BUTTON (tp->button)))
-          mx_button_set_toggled (MX_BUTTON (tp->button), FALSE);
+        {
+          if (tp->button && mx_button_get_toggled (MX_BUTTON (tp->button)))
+            {
+              previous_clicked = TRUE;
+              mx_button_set_toggled (MX_BUTTON (tp->button), FALSE);
+              mnb_toolbar_move_selector (toolbar);
+            }
 
-        if (tp->panel)
-          {
+          if (tp->panel)
+            {
             if (mnb_panel_is_mapped (tp->panel))
               {
                 mnb_panel_hide (tp->panel);
               }
-          }
+            }
 
-        /*
-         * Ensure the pinged flag is cleared (the user seems to have clicked
-         * some other buttons since they clicked on this one)
-         */
-        tp->pinged = FALSE;
-      }
+          /*
+           * Ensure the pinged flag is cleared (the user seems to have clicked
+           * some other buttons since they clicked on this one)
+           */
+          tp->pinged = FALSE;
+        }
     else
       {
         /*
@@ -1475,8 +1528,18 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                   mx_button_set_toggled (MX_BUTTON (tp->button), TRUE);
               }
           }
+
+        if (!checked)
+          {
+            previous_clicked = TRUE;
+            mnb_toolbar_hide_selector (toolbar);
+          }
       }
     }
+
+  if (!previous_clicked)
+    mnb_toolbar_show_selector (toolbar);
+
 
   recursion = FALSE;
 }
@@ -2571,11 +2634,6 @@ mnb_toolbar_init (MnbToolbar *self)
 
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
 
-  priv->selector_image =
-    cogl_texture_new_from_file (THEMEDIR "/panel/toolbar-button-active.png",
-                                COGL_TEXTURE_NO_SLICING, COGL_PIXEL_FORMAT_ANY,
-                                NULL);
-
   if (flags & MNB_OPTION_DISABLE_PANEL_RESTART)
     priv->no_autoloading = TRUE;
 
@@ -3161,15 +3219,25 @@ mnb_toolbar_constructed (GObject *self)
 
 
 #if TOOLBAR_CUT_OUT
+  priv->selector_image =
+    cogl_texture_new_from_file (THEMEDIR "/toolbar/toolbar-selection.png",
+                                COGL_TEXTURE_NO_SLICING, COGL_PIXEL_FORMAT_ANY,
+                                NULL);
+
   low_clr.red = 0xff;
+  low_clr.green = 0;
+  low_clr.blue = 0;
+  low_clr.alpha = 0x0;
   priv->light_spot = clutter_rectangle_new_with_color (&low_clr);
   clutter_actor_set_size (priv->light_spot,
                           cogl_texture_get_width (priv->selector_image),
                           cogl_texture_get_height (priv->selector_image));
-  clutter_actor_set_parent (priv->light_spot, wgroup);
+  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), priv->light_spot);
+  clutter_actor_show (priv->light_spot);
+  clutter_actor_lower_bottom (priv->light_spot);
   clutter_actor_set_position (priv->light_spot,
                               -clutter_actor_get_width (priv->light_spot),
-                              TOOLBAR_HEIGHT + clutter_actor_get_height (priv->light_spot));
+                              0);
 #endif /* TOOLBAR_CUT_OUT */
 }
 
