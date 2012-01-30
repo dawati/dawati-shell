@@ -106,7 +106,6 @@ mpd_computer_pane_init (MpdComputerPane *self)
 
   /* Title */
   hbox = mx_box_layout_new ();
-  clutter_actor_set_name (hbox, "computer-section-header");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
   clutter_container_child_set (CLUTTER_CONTAINER (self), hbox,
                                "expand", false,
@@ -115,7 +114,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
                                NULL);
 
   label = mx_label_new_with_text (_("My Computer"));
-  clutter_actor_set_name (label, "computer-section-title");
+  mx_stylable_set_style_class (MX_STYLABLE (label), "sectionHeader");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
   clutter_container_child_set (CLUTTER_CONTAINER (hbox), label,
                                "expand", true,

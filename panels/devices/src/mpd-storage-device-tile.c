@@ -861,10 +861,8 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
   {
     unsigned int percentage = 100 - (double) available_size / size * 100;
     char *size_text = g_format_size_for_display (size);
-    markup = g_strdup_printf (_("<span font-weight='bold'>%s</span> using "
-                                "<span color='%s'>%d%% of %s</span>"),
+    markup = g_strdup_printf (_("%s using %d%% of %s"),
                               priv->name,
-                              TEXT_COLOR,
                               percentage,
                               size_text);
     g_free (size_text);

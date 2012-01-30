@@ -62,9 +62,7 @@ update (MpdDiskTile *self)
   percentage = 100 - (double) available_size / size * 100;
 
   size_text = g_format_size_for_display (size);
-  markup = g_strdup_printf (_("<span font-weight='bold'>You are using</span> "
-                              "<span color='%s'>%d%% of %s</span>"),
-                            TEXT_COLOR,
+  markup = g_strdup_printf (_("You are using %d%% of %s"),
                             percentage,
                             size_text);
   clutter_text_set_markup (CLUTTER_TEXT (mx_label_get_clutter_text (
@@ -109,6 +107,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 5);
 
   priv->label = mx_label_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
@@ -116,6 +115,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
                                 MX_LABEL (priv->label))), PANGO_ELLIPSIZE_NONE);
 
   priv->meter = mx_progress_bar_new ();
+  clutter_actor_set_height (priv->meter, 12);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
 
   /* Display size of the volume $HOME is on. */

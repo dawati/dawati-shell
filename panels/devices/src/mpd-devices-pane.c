@@ -101,12 +101,13 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   ClutterActor  *label;
   ClutterActor  *tile;
 
+  mx_stylable_set_style_class (MX_STYLABLE (self), "contentPanel");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_PANE_WIDTH);
 
   label = mx_label_new_with_text (_("My Devices"));
-  clutter_actor_set_name (label, "device-section-header");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+  mx_stylable_set_style_class (MX_STYLABLE (label), "sectionHeader");
 
   tile = mpd_devices_tile_new ();
   priv->devices_tile = MPD_DEVICES_TILE (tile);
