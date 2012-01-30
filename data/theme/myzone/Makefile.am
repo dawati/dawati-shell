@@ -50,15 +50,13 @@ dist_theme_DATA = \
 	calendar-icon-29.png \
 	calendar-icon-30.png \
 	calendar-icon-31.png \
-	tile-dismiss-icon-hover.png \
-	tile-dismiss-icon-normal.png \
 	cat.png \
 	avatar-mask.png \
 	avatar_icon.png \
 	card_frame.png \
 	card_frame_hover.png \
-	dismiss_button.png \
-	dismiss_button_hover.png \
+	button-close.png \
+	button-close-hover.png \
 	count-frame.png \
 	count-frame-zero.png \
 	frame-header.png \
