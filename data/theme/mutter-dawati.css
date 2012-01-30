@@ -42,6 +42,23 @@ MxTable {
   background-color: #f000;
 }
 
+/* Status bar */
+
+MnbStatusbar {
+  background-color: #000000;
+  padding: 0 0 0 0;
+}
+
+MnbStatusbar MxButton, MnbStatusbar MxButton:hover, MnbStatusbar MxButton:active, MnbStatusbar MxButton:checked {
+  color: #ffffff;
+  font-size: 12px;
+  background-color: #00000;
+  border-image: url("toolbar/toolbar-button-normal.png");
+  padding: 0 0 0 0;
+}
+
+/* Toolbar */
+
 MxLabel#time-label {
   color: #2a3c4a;
   font-size: 18px;
@@ -49,13 +66,24 @@ MxLabel#time-label {
 }
 
 MxLabel#date-label {
-  color: ##2a3c4a;
+  color: #2a3c4a;
   font-size: 12px;
 }
 
-MnbToolbar {
+MnbToolbarBackground#toolbar-main-box {
   border-image: url("toolbar/toolbar-bg.png") 0 0 0 0;
   padding: 0 0 0 0;
+}
+
+/* add the left padding for the panels by moving the panel container */
+MxBoxLayout#toolbar-left-box {
+  padding: 0 0 0 15;
+  -mx-spacing: 45;
+}
+
+MxBoxLayout#toolbar-left-box {
+  padding: 0 0 0 15;
+  -mx-spacing: 45;
 }
 
 /* theme the icon and text of the panel */
@@ -90,12 +118,6 @@ MnbToolbarClock:hover, MnbToolbarClock:active, MnbToolbarClock:checked {
   padding: 0 0 0 0;
   color: #0d7a95;
   font-size: 22px;
-}
-
-/* add the left padding for the panels by moving the panel container */
-MxBoxLayout#toolbar-left-box {
-  padding: 0 0 0 15;
-  -mx-spacing: 45;
 }
 
 /* add the right padding for the panels by moving the clock and utility items container */

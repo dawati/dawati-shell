@@ -42,7 +42,7 @@
 #define TRAY_BUTTON_HEIGHT 64
 #define CLOCK_WIDTH        106
 
-#define TOOLBAR_CUT_OUT 0
+#define TOOLBAR_CUT_OUT 1
 
 G_BEGIN_DECLS
 
@@ -66,13 +66,13 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarPrivate MnbToolbarPrivate;
 
 typedef struct {
-  MxBoxLayout parent;
+  ClutterGroup parent;
 
   MnbToolbarPrivate *priv;
 } MnbToolbar;
 
 typedef struct {
-  MxBoxLayoutClass parent_class;
+  ClutterGroupClass parent_class;
 
   void (*show_completed) (MnbToolbar *toolbar);
   void (*hide_begin)     (MnbToolbar *toolbar);
@@ -96,8 +96,6 @@ void mnb_toolbar_load_panel   (MnbToolbar *toolbar, const gchar *panel_name);
 
 const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
 
-gboolean mnb_toolbar_in_transition (MnbToolbar *toolbar);
-
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
@@ -111,11 +109,25 @@ gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
 void mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason);
 void mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason);
 
+
+gboolean mnb_toolbar_is_visible (MnbToolbar *toolbar);
+
+gboolean mnb_toolbar_in_show_transition (MnbToolbar *toolbar);
+
+gboolean mnb_toolbar_in_transition (MnbToolbar *toolbar);
+
 void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
                                 MnbToolbarCallback callback,
                                 gpointer           data);
 
 gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw);
+
+/* Specific to ToolbarShadow */
+
+CoglHandle mnb_toolbar_get_selector_texture (MnbToolbar *toolbar);
+
+void mnb_toolbar_get_selector_allocation_box (MnbToolbar      *toolbar,
+                                              ClutterActorBox *box);
 
 G_END_DECLS
 

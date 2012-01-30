@@ -90,6 +90,7 @@ typedef struct ActorPrivate  ActorPrivate;
  */
 struct _DawatiNetbookPluginPrivate
 {
+  ClutterActor          *statusbar;
   ClutterActor          *toolbar;
   ClutterActor          *switcher_overlay;
   MetaWindow            *last_focused;
