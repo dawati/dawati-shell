@@ -566,8 +566,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (self), true);
 
   priv->table = mx_table_new ();
-  mx_table_set_column_spacing (MX_TABLE (priv->table), 8);
-  mx_table_set_row_spacing (MX_TABLE (priv->table), 8);
+  mx_table_set_row_spacing (MX_TABLE (priv->table), 4);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->table, -1,
                                            "x-fill", true,
                                            NULL);
@@ -592,14 +591,12 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE);
   mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->icon, 0, 0,
-                                      "row-span", 2,
-                                      "column-span", 1,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", false,
-                                      "x-fill", false,
+                                      "x-align", MX_ALIGN_MIDDLE,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
                                       "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", false,
-                                      "y-fill", false,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
                                       NULL);
 
   /*
