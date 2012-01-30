@@ -24,7 +24,6 @@ PengeAppsPane
 
 *.PengeEventsPaneHeader, *.PengeTasksPaneHeader
 {
-  border-image: url('content-panel-header-grey.png') 4 4 4;
   padding: 6;
 }
 
