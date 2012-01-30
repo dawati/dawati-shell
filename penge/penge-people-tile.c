@@ -220,10 +220,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
   ClutterActor *body, *tmp_text;
   ClutterActor *label;
   const gchar *content, *thumbnail;
-  gchar *date;
   GError *error = NULL;
-  ClutterActor *avatar = NULL;
-  ClutterActor *avatar_bin;
   const gchar *author_icon;
 
   if (priv->item != item)
@@ -264,37 +261,12 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     body = mx_frame_new ();
     inner_table = mx_table_new ();
 
-    mx_table_set_column_spacing (MX_TABLE (inner_table), 6);
     mx_stylable_set_style_class (MX_STYLABLE (body),
                                  "PengePeopleTileContentBackground");
     mx_bin_set_child (MX_BIN (body), inner_table);
     mx_bin_set_fill (MX_BIN (body), TRUE, TRUE);
-    author_icon = sw_item_get_value (item, "authoricon");
     mx_stylable_set_style_class (MX_STYLABLE (inner_table),
                                  "PengePeopleTileInnerTable");
-    if (author_icon)
-    {
-      avatar = clutter_texture_new_from_file (author_icon, NULL);
-    } else {
-      avatar = clutter_texture_new_from_file (DEFAULT_AVATAR_PATH, NULL);
-    }
-
-    avatar_bin = mx_frame_new ();
-    mx_bin_set_child (MX_BIN (avatar_bin), avatar);
-    mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
-    mx_stylable_set_style_class (MX_STYLABLE (avatar_bin),
-                                 "PengePeopleTileAvatarBackground");
-    mx_table_add_actor_with_properties (MX_TABLE (inner_table),
-                                        avatar_bin,
-                                        0, 0,
-                                        "x-expand", FALSE,
-                                        "y-expand", TRUE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", MX_ALIGN_MIDDLE,
-                                        "y-align", MX_ALIGN_START,
-                                        NULL);
-    clutter_actor_set_size (avatar, 48, 48);
 
     label = penge_clickable_label_new (content);
     g_signal_connect (label,
