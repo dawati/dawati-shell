@@ -495,7 +495,6 @@ data/theme/devices/icons/Makefile
 data/theme/music/Makefile
 data/theme/myzone/Makefile
 data/theme/networks/Makefile
-data/theme/networks/icons/Makefile
 data/theme/people/Makefile
 data/theme/power-icon/Makefile
 data/theme/status/Makefile
