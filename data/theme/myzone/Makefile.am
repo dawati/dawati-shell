@@ -53,8 +53,7 @@ dist_theme_DATA = \
 	tile-dismiss-icon-hover.png \
 	tile-dismiss-icon-normal.png \
 	cat.png \
-	avatar-bg.png \
-	avatar_frame.png \
+	avatar-mask.png \
 	avatar_icon.png \
 	card_frame.png \
 	card_frame_hover.png \

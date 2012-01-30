@@ -236,10 +236,9 @@ PengeWelcomeTile
   -mx-content-image: url('dismiss_button_hover.png');
 }
 
-*.PengePeopleTileAvatarBackground
+*.PengeInterestingTileMessageIconOverlay
 {
-  border-image: url("avatar_frame.png") 4 4 4 4;
-  padding: 2 2 2 2;
+  border-image: url("avatar-mask.png");
 }
 
 MxLabel.PengeZeroCountLabel

@@ -31,11 +31,13 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) ((PengeInterestingTile *)o)->priv
 
+#define DETAILS_ICON_ACTOR_NAME "icon"
+
 struct _PengeInterestingTilePrivate {
   ClutterActor *inner_table;
 
   ClutterActor *body;
-  ClutterActor *icon;
+  ClutterActor *icon_container;
   ClutterActor *primary_text;
   ClutterActor *secondary_text;
   ClutterActor *details_overlay;
@@ -78,6 +80,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
   PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
   GError *error = NULL;
   const gchar *path;
+  ClutterActor *icon = NULL;
 
   switch (property_id) {
     case PROP_BODY:
@@ -103,8 +106,12 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       break;
     case PROP_ICON_PATH:
       path = g_value_get_string (value);
+      icon = clutter_container_find_child_by_name (
+          CLUTTER_CONTAINER (priv->icon_container), DETAILS_ICON_ACTOR_NAME);
+      /* TODO remove the assert when ok */
+      g_assert (CLUTTER_IS_TEXTURE (icon));
 
-      if (path && !clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon), 
+      if (path && !clutter_texture_set_from_file (CLUTTER_TEXTURE (icon), 
                                           path,
                                           &error))
       {
@@ -115,7 +122,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 
       if (path)
       {
-        clutter_actor_show (priv->icon);
+        clutter_actor_show (priv->icon_container);
         clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->primary_text,
                                      "column", 1,
@@ -125,7 +132,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
                                      "column", 1,
                                      NULL);
       } else {
-        clutter_actor_hide (priv->icon);
+        clutter_actor_hide (priv->icon_container);
         clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->primary_text,
                                      "column", 0,
@@ -317,7 +324,9 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 {
   PengeInterestingTilePrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
-  ClutterActor *icon;
+  /* used as temporary actor for button's icon and for tile's icon */
+  ClutterActor *icon = NULL;
+  ClutterActor *icon_overlay = NULL;
 
   self->priv = priv;
 
@@ -352,9 +361,21 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                     (GCallback)_label_notify_allocation_cb,
                     self);
 
-  priv->icon = clutter_texture_new ();
-  clutter_actor_set_size (priv->icon, 28, 28);
-  clutter_actor_hide (priv->icon);
+  priv->icon_container = mx_stack_new ();
+
+  icon = clutter_texture_new ();
+  clutter_actor_set_name (icon, DETAILS_ICON_ACTOR_NAME);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->icon_container), icon);
+  clutter_actor_set_size (icon, 28, 28);
+
+  icon_overlay = mx_frame_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->icon_container),
+      icon_overlay);
+  clutter_actor_set_size (icon_overlay, 28, 28);
+  mx_stylable_set_style_class (MX_STYLABLE (icon_overlay),
+                               "PengeInterestingTileMessageIconOverlay");
+  clutter_actor_hide (priv->icon_container);
+  icon = NULL;
 
   /* This gets added to ourself table after our body because of ordering */
   priv->details_overlay = mx_table_new ();
@@ -400,11 +421,11 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                NULL);
 
   mx_table_add_actor (MX_TABLE (priv->details_overlay),
-                      priv->icon,
+                      priv->icon_container,
                       0,
                       0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
-                               priv->icon,
+                               priv->icon_container,
                                "row-span", 2,
                                "y-expand", FALSE,
                                "x-expand", FALSE,
@@ -441,7 +462,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 
-  clutter_actor_hide (priv->icon);
+  clutter_actor_hide (priv->icon_container);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->primary_text,
                                "column", 0,
