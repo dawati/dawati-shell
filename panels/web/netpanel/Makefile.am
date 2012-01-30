@@ -39,10 +39,10 @@ desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 EXTRA_DIST = \
 	dawati-panel-internet.desktop.in.in \
 	$(service_in_files) \
-	$(autostart_DATA) \
 	$(NULL)
 
 DISTCLEANFILES = \
+	$(autostart_DATA) \
 	com.dawati.UX.Shell.Panels.internet.service \
 	$(NULL)
 
