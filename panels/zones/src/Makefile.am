@@ -2,6 +2,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PANEL_ZONES_CFLAGS) \
+	-DDAWATI_STYLE_DIR=\"$(DAWATI_STYLE_DIR)\"
 	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-zones
@@ -12,14 +13,6 @@ dawati_panel_zones_LDADD = \
 	$(NULL)
 
 dawati_panel_zones_SOURCES = \
-	penge-magic-texture.c \
-	penge-magic-texture.h \
-	sw-overview.c \
-	sw-overview.h \
-	sw-window.c \
-	sw-window.h \
-	sw-zone.c \
-	sw-zone.h \
 	main.c \
 	$(NULL)
 

@@ -1,0 +1,38 @@
+.panel {
+  padding: 42 59 44 49;
+}
+
+.switcherTile {
+  border-image: url("app-tile.png") 15 13 15 13;
+  padding: 6;
+}
+
+.appTitle {
+  color: #364350;
+  padding: 0 15 0 5;
+}
+
+.appSubTitle {
+  color: #677784;
+  padding: 0 15 5 5;
+}
+
+.appBackground {
+  border-image: url("texture.png");
+  padding: 23 30;
+}
+
+.appShadow {
+  border-image: url("app-shadow.png") 15 11 19 11;
+  padding: 8 10 16 10;
+}
+
+.appCloseButton {
+    -mx-content-image: url("closebutton-normal.png");
+}
+.appCloseButton:hover {
+    -mx-content-image: url("closebutton-hover.png");
+}
+.appCloseButton:active {
+    -mx-content-image: url("closebutton-pressed.png");
+}

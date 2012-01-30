@@ -7,8 +7,6 @@
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE
 #include <libwnck/libwnck.h>
-#include "sw-overview.h"
-#include "sw-zone.h"
 
 #include <clutter/x11/clutter-x11.h>
 #include <clutter-gtk/clutter-gtk.h>
@@ -16,8 +14,6 @@
 
 #include <dawati-panel/mpl-panel-clutter.h>
 #include <dawati-panel/mpl-panel-common.h>
-
-#include "penge-magic-texture.h"
 
 #include <glib/gi18n.h>
 #include <locale.h>
@@ -31,6 +27,7 @@ typedef struct
   ClutterActor   *stage;
   ClutterActor   *overview;
   ClutterActor   *toplevel;
+  ClutterActor   *grid;
   gint            width;
   gint            height;
   gboolean        connected;
@@ -41,7 +38,6 @@ typedef struct
 typedef struct
 {
   WnckWindow *wnck_window;
-  SwWindow *sw_window;
 } WindowNotify;
 
 
@@ -62,341 +58,19 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
+    "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
 
-
-/* background loading */
-#define BG_KEY_DIR "/desktop/gnome/background"
-#define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
-
-
-static void
-background_changed_callback (WnckScreen    *screen,
-                             ZonePanelData *data)
-{
-  gulong     root_pixmap_id;
-  CoglHandle texture;
-
-  root_pixmap_id = wnck_screen_get_background_pixmap (data->screen);
-
-  texture = cogl_texture_pixmap_x11_new (root_pixmap_id, FALSE);
-
-
-  if (data->background)
-    {
-      clutter_actor_destroy (data->background);
-      data->background = NULL;
-    }
-
-  if (texture != COGL_INVALID_HANDLE)
-    {
-      data->background = clutter_texture_new ();
-      clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (data->background), texture);
-
-      clutter_texture_set_repeat (CLUTTER_TEXTURE (data->background), TRUE, TRUE);
-
-      clutter_actor_set_size (data->background,
-                              wnck_screen_get_width (data->screen),
-                              wnck_screen_get_height (data->screen));
-      clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->background);
-      clutter_actor_set_opacity (data->background, 0);
-    }
-  else
-    g_warning ("Failed to retrieve background pixmap");
-}
-
-static void
-desktop_background_init (ZonePanelData *data)
-{
-  g_signal_connect (data->screen, "background-changed",
-                    G_CALLBACK (background_changed_callback),
-                    data);
-
-  background_changed_callback (data->screen, data);
-}
-
-
-static void
-active_window_changed (WnckScreen    *screen,
-                       WnckWindow    *prev,
-                       ZonePanelData *data)
-{
-  WnckWindow *win = wnck_screen_get_active_window (screen);
-
-  if (!data->overview)
-    return;
-
-  if (!win)
-    return;
-
-  sw_overview_set_focused_window (SW_OVERVIEW (data->overview),
-                                  wnck_window_get_xid (win));
-}
-
-static void
-active_workspace_changed (WnckScreen    *screen,
-                          WnckWorkspace *prev,
-                          ZonePanelData *data)
-{
-  WnckWorkspace *ws = wnck_screen_get_active_workspace (screen);
-
-  if (!data->overview)
-    return;
-
-  if (!ws)
-    {
-      g_warning ("Active workspace changed, but no active workspace set!");
-      return;
-    }
-
-  sw_overview_set_focused_zone (SW_OVERVIEW (data->overview),
-                                wnck_workspace_get_number (ws));
-}
-
-static void
-workspace_added_for_window (WnckScreen *screen,
-                            WnckWorkspace *ws,
-                            WnckWindow *win)
-{
-  wnck_window_move_to_workspace (win, ws);
-
-  g_debug ("Workspace %d added for \"%s\"",
-           wnck_workspace_get_number (ws) + 1, wnck_window_get_name (win));
-
-  g_signal_handlers_disconnect_by_func (screen, workspace_added_for_window, win);
-}
-
-static void
-window_workspace_changed (SwWindow   *window,
-                          gint        new_workspace,
-                          WnckWindow *win)
-{
-  WnckWorkspace *ws;
-  WnckScreen *screen;
-
-  screen = wnck_window_get_screen (win);
-
-  ws = wnck_screen_get_workspace (screen, new_workspace -1);
-
-  g_debug ("\"%s\" moved to workspace %d",
-           wnck_window_get_name (win), new_workspace);
-
-  if (!ws)
-    {
-      g_debug ("Changing workspace count to %d...", new_workspace);
-      g_signal_connect (screen, "workspace-created",
-                        G_CALLBACK (workspace_added_for_window), win);
-
-      wnck_screen_change_workspace_count (screen, new_workspace);
-    }
-  else
-    wnck_window_move_to_workspace (win, ws);
-}
-
-
-static void window_clicked_cb (SwWindow *window, WnckWindow *win);
-
-static gboolean
-activate_window (WindowNotify *notify)
-{
-  window_clicked_cb (notify->sw_window, notify->wnck_window);
-
-  /* notify data automatically freed when the timeout is removed */
-  return FALSE;
-}
-
-static void
-remove_window_close_timer (gpointer *data)
-{
-  g_source_remove (GPOINTER_TO_INT (data));
-}
-
-static void
-window_closed_cb (SwWindow   *window,
-                  WnckWindow *win)
-{
-  WindowNotify *notify;
-  guint tag;
-
-  wnck_window_close (win, clutter_x11_get_current_event_time ());
-
-  /* if this window hasn't closed in 150ms, activate it */
-
-  notify = g_new (WindowNotify, 1);
-  notify->sw_window = window;
-  notify->wnck_window = win;
-  tag = g_timeout_add_full (G_PRIORITY_DEFAULT, 150,
-                            (GSourceFunc) activate_window, notify,
-                            g_free);
-
-  g_signal_connect_swapped (window, "destroy",
-                            G_CALLBACK (remove_window_close_timer),
-                            GINT_TO_POINTER (tag));
-}
-
-static void
-switch_to (WnckWindow *win)
-{
-  WnckWorkspace *ws;
-
-  ws = wnck_window_get_workspace (win);
-
-  /* activate the window */
-  wnck_window_activate (win, clutter_x11_get_current_event_time ());
-
-  /* move to the workspace */
-  wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
-}
-
-static gboolean
-activate_workspace_finish (WnckWorkspace *ws)
-{
-  wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
-
-  return FALSE;
-}
-
 static void
 activate_workspace (ZonePanelData *data,
-                    gint           zone)
+                    WnckWorkspace *ws)
 {
-  WnckWorkspace *ws;
-
   if (client)
     mpl_panel_client_hide (client);
 
-  ws = wnck_screen_get_workspace (data->screen, zone);
-
-  /* wait for the panel to hide */
-  g_timeout_add (250, (GSourceFunc) activate_workspace_finish, ws);
-}
-
-
-static void
-hide_end (MplPanelClient *client,
-          WnckWindow *window)
-{
-  switch_to (window);
-
-  g_signal_handlers_disconnect_by_func (client, hide_end, window);
-}
-
-static void
-window_clicked_cb (SwWindow   *window,
-                   WnckWindow *win)
-{
-
-  /* close panel */
-  if (client)
-    {
-      /* delayed switch */
-      mpl_panel_client_hide (client);
-
-      g_signal_connect (client, "hide-end",
-                        G_CALLBACK (hide_end), win);
-
-      return;
-    }
-
-  switch_to (win);
-}
-
-static void
-window_opened (WnckScreen    *screen,
-               WnckWindow    *window,
-               ZonePanelData *data)
-{
-  SwWindow *win = (SwWindow*) sw_window_new ();
-  WnckWorkspace *ws;
-  gulong xid;
-  ClutterActor *thumbnail;
-  ClutterActor *thumbnail_background;
-  ClutterActor *icon;
-
-  update_toolbar_icon (screen, NULL, data);
-
-  if (!data->overview)
-    return;
-
-  if (wnck_window_is_skip_pager (window))
-    return;
-
-  if (wnck_window_is_skip_tasklist (window))
-    return;
-
-  ws = wnck_window_get_workspace (window);
-
-  if (!ws)
-  {
-    g_debug ("Could not get workspace for window (%s)",
-             wnck_window_get_name (window));
-    return;
-  }
-
-  xid = wnck_window_get_xid (window);
-  sw_window_set_xid (win, xid);
-
-  if (data->background)
-    {
-      thumbnail_background = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
-                                           "cogl-texture",
-                                           clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (data->background)),
-                                           NULL);
-
-      sw_window_set_background (win, thumbnail_background);
-    }
-  else
-    g_debug ("No background found");
-
-  thumbnail = clutter_glx_texture_pixmap_new_with_window (xid);
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (thumbnail),
-                                            TRUE);
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
-
-  sw_window_set_thumbnail (win, thumbnail);
-  sw_window_set_title (win, wnck_window_get_name (window));
-
-  icon = gtk_clutter_texture_new ();
-  gtk_clutter_texture_set_from_pixbuf (GTK_CLUTTER_TEXTURE (icon),
-                                       wnck_window_get_icon (window),
-                                       NULL);
-  sw_window_set_icon (win, (ClutterTexture *)icon);
-
-  sw_overview_add_window (SW_OVERVIEW (data->overview), win,
-                          wnck_workspace_get_number (ws));
-
-  g_signal_connect (win, "workspace-changed",
-                    G_CALLBACK (window_workspace_changed), window);
-  g_signal_connect (win, "close",
-                    G_CALLBACK (window_closed_cb), window);
-  g_signal_connect (win, "clicked",
-                    G_CALLBACK (window_clicked_cb), window);
-}
-
-static void
-window_closed (WnckScreen    *screen,
-               WnckWindow    *window,
-               ZonePanelData *data)
-{
-  if (data->overview)
-    sw_overview_remove_window (SW_OVERVIEW (data->overview),
-                               wnck_window_get_xid (window));
-
-  update_toolbar_icon (screen, NULL, data);
-}
-
-static void
-zone_activated (SwOverview    *overview,
-                SwZone        *zone,
-                ZonePanelData *data)
-{
-  gint index;
-
-  index = sw_zone_get_number (zone) - 1;
-
-  activate_workspace (data, index);
+  wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
 }
 
 static void
@@ -465,58 +139,190 @@ update_toolbar_icon (WnckScreen    *screen,
     }
 }
 
+static gboolean
+app_tile_release_event (ClutterActor *actor,
+                        ClutterEvent *event,
+                        ZonePanelData *data)
+{
+  WnckWindow *window;
+
+  window = g_object_get_data (G_OBJECT (actor), "wnck-window");
+
+  activate_workspace (data, wnck_window_get_workspace (window));
+
+  return FALSE;
+}
+
+static void
+close_workspace_btn_clicked (MxButton      *button,
+                             WnckWorkspace *workspace)
+{
+  WnckScreen *screen;
+  GList *windows;
+  ClutterActor *table;
+
+  screen = wnck_workspace_get_screen (workspace);
+
+  windows = wnck_screen_get_windows (screen);
+
+  while (windows)
+    {
+      if (wnck_window_get_workspace (windows->data) == workspace)
+        {
+          wnck_window_close (windows->data,
+                             clutter_x11_get_current_event_time ());
+        }
+
+      windows = g_list_next (windows);
+    }
+
+  table = clutter_actor_get_parent (CLUTTER_ACTOR (button));
+  g_assert (MX_IS_TABLE (table));
+  clutter_actor_destroy (CLUTTER_ACTOR (table));
+}
+
+static ClutterActor *
+sw_create_app_tile (ZonePanelData   *data,
+                    WnckWindow      *window,
+                    WnckApplication *application)
+{
+  ClutterActor *tile, *frame, *label, *icon, *button, *thumbnail, *shadow;
+
+  /* tile */
+  tile = mx_table_new ();
+  g_object_set_data (G_OBJECT (tile), "wnck-window", window);
+  clutter_actor_set_reactive (tile, TRUE);
+  mx_stylable_set_style_class (MX_STYLABLE (tile), "switcherTile");
+  clutter_actor_set_size (tile, 266, 212);
+  g_signal_connect (tile, "button-release-event",
+                    G_CALLBACK (app_tile_release_event), data);
+
+  /* icon */
+  icon = gtk_clutter_texture_new ();
+  gtk_clutter_texture_set_from_pixbuf (GTK_CLUTTER_TEXTURE (icon),
+                                       wnck_window_get_icon (window),
+                                       NULL);
+  mx_table_add_actor (MX_TABLE (tile), icon, 0, 0);
+  mx_table_child_set_y_expand (MX_TABLE (tile), icon, FALSE);
+  mx_table_child_set_x_expand (MX_TABLE (tile), icon, FALSE);
+  mx_table_child_set_y_fill (MX_TABLE (tile), icon, FALSE);
+  mx_table_child_set_row_span (MX_TABLE (tile), icon, 2);
+  clutter_actor_set_size (icon, 32, 32);
+
+  /* title */
+  label = mx_label_new_with_text (wnck_application_get_name (application));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "appTitle");
+  mx_table_add_actor (MX_TABLE (tile), label, 0, 1);
+  mx_table_child_set_y_expand (MX_TABLE (tile), label, FALSE);
+
+  /* subtitle */
+  label = mx_label_new_with_text (wnck_window_get_name (window));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "appSubTitle");
+  mx_table_add_actor (MX_TABLE (tile), label, 1, 1);
+  mx_table_child_set_y_expand (MX_TABLE (tile), label, FALSE);
+
+  /* close button */
+  button = mx_button_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (button), "appCloseButton");
+  mx_table_add_actor (MX_TABLE (tile), button, 0, 2);
+  mx_table_child_set_y_fill (MX_TABLE (tile), button, FALSE);
+  mx_table_child_set_x_fill (MX_TABLE (tile), button, FALSE);
+  mx_table_child_set_y_expand (MX_TABLE (tile), button, FALSE);
+  mx_table_child_set_x_expand (MX_TABLE (tile), button, FALSE);
+  clutter_actor_set_size (button, 22, 21);
+  g_signal_connect (button, "clicked", G_CALLBACK (close_workspace_btn_clicked),
+                            wnck_window_get_workspace (window));
+
+  /* frame */
+  frame = mx_frame_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (frame), "appBackground");
+  mx_table_add_actor (MX_TABLE (tile), frame, 2, 0);
+  mx_table_child_set_column_span (MX_TABLE (tile), frame, 3);
+  mx_table_child_set_x_expand (MX_TABLE (tile), frame, FALSE);
+
+  /* shadow */
+  shadow = mx_frame_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (shadow), "appShadow");
+  mx_bin_set_child (MX_BIN (frame), shadow);
+  mx_bin_set_fill (MX_BIN (frame), FALSE, FALSE);
+
+  /* application thumbnail */
+  thumbnail = clutter_glx_texture_pixmap_new_with_window (wnck_window_get_xid (window));
+  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (thumbnail),
+                                            TRUE);
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
+  mx_bin_set_child (MX_BIN (shadow), thumbnail);
+
+  return tile;
+}
+
 static void
 setup (ZonePanelData *data)
 {
-  GList  *windows, *l;
-  ClutterActor *box_layout, *title, *overview;
+  ClutterScript *script;
+  GError *error = NULL;
+  GList *workspaces, *l, *windows, *list;
 
-  box_layout = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box_layout),
-                                 MX_ORIENTATION_VERTICAL);
-  clutter_actor_set_name (box_layout, "zones-panel-toplevel");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (box_layout), 6);
+  /* load custom style */
+  mx_style_load_from_file (mx_style_get_default (),
+                           DAWATI_STYLE_DIR "/switcher/switcher.css", &error);
 
-  data->toplevel = box_layout;
+  if (error)
+    {
+      g_critical ("Could not load Switcher styling: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  /* load user interface */
+  script = clutter_script_new ();
+  clutter_script_load_from_file (script, PKGDATADIR "/switcher.json", &error);
+  if (error)
+    {
+      g_critical ("Could not load user interface: %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  data->toplevel = (ClutterActor*) clutter_script_get_object (script,
+                                                              "toplevel");
   clutter_actor_set_size (data->toplevel, data->width, data->height);
 
-
-  title = mx_label_new_with_text (_("Zones"));
-  clutter_actor_set_name (title, "zones-title-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (box_layout), title);
-
+  data->grid = (ClutterActor*) clutter_script_get_object (script, "grid");
 
   wnck_screen_force_update (data->screen);
 
+  workspaces = wnck_screen_get_workspaces (data->screen);
   windows = wnck_screen_get_windows_stacked (data->screen);
-
-  /* create the overview */
-  overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
-  g_signal_connect (overview, "zone-activated", G_CALLBACK (zone_activated),
-                    data);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box_layout),
-                                           overview, -1,
-                                           "expand", TRUE,
-                                           NULL);
-  data->overview = overview;
-
-  /* add existing windows */
-  for (l = g_list_last (windows); l; l = g_list_previous (l))
+  for (l = workspaces; l; l = g_list_next (l))
     {
-      WnckWorkspace *workspace;
-      WnckWindow *win = l->data;
+      WnckWindow *window = NULL;
+      WnckWorkspace *workspace = l->data;
+      WnckApplication *application;
+      ClutterActor *tile;
 
-      workspace = wnck_window_get_workspace (win);
+      /* find the appropriate window */
+      for (list = windows; list; list = g_list_next (list))
+        {
+          if (wnck_window_is_skip_pager (list->data)
+              || wnck_window_is_skip_tasklist (list->data))
+            continue;
 
-      if (!workspace)
+          if (wnck_window_get_workspace (list->data) == workspace)
+            window = list->data;
+        }
+
+      /* skip workspaces with no windows */
+      if (!window)
         continue;
 
-      window_opened (data->screen, win, data);
+      application = wnck_window_get_application (window);
+
+      tile = sw_create_app_tile (data, window, application);
+
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (data->grid), tile);
     }
-
-  /* ensure the current workspace is marked */
-  active_workspace_changed (data->screen, NULL, data);
-
 }
 
 static void
@@ -533,29 +339,6 @@ hide (ZonePanelData *data)
   clutter_actor_destroy (data->toplevel);
   data->toplevel = NULL;
   data->overview = NULL;
-}
-
-static gboolean
-key_press (ClutterActor  *actor,
-           ClutterEvent  *event,
-           ZonePanelData *data)
-{
-  if (event->key.keyval >= '1' && event->key.keyval <= '8')
-    {
-      gint index = event->key.keyval - '1';
-
-      activate_workspace (data, index);
-
-      return TRUE;
-    }
-
-  if (event->key.keyval != 32)
-    return FALSE;
-
-  hide (data);
-  show (data);
-
-  return TRUE;
 }
 
 int
@@ -596,19 +379,6 @@ main (int argc, char **argv)
   data->screen = wnck_screen_get_default ();
   wnck_screen_force_update (data->screen);
 
-  /* connect screen signal handlers */
-  g_signal_connect (data->screen, "active-window-changed",
-                    G_CALLBACK (active_window_changed), data);
-
-  g_signal_connect (data->screen, "active-workspace-changed",
-                    G_CALLBACK (active_workspace_changed), data);
-
-  g_signal_connect (data->screen, "window-closed",
-                    G_CALLBACK (window_closed), data);
-
-  g_signal_connect (data->screen, "window-opened",
-                    G_CALLBACK (window_opened), data);
-
   g_signal_connect (data->screen, "workspace-created",
                     G_CALLBACK (update_toolbar_icon), data);
 
@@ -631,8 +401,6 @@ main (int argc, char **argv)
 
       data->stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
-      desktop_background_init (data);
-
       g_signal_connect (client,
                         "set-size",
                         (GCallback)_client_set_size_cb,
@@ -651,24 +419,18 @@ main (int argc, char **argv)
       clutter_actor_realize (data->stage);
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (data->stage));
 
-      desktop_background_init (data);
-
-      data->width = 1016;
-      data->height = 500;
+      data->width = 1024;
+      data->height = 600;
 
       setup (data);
 
       mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
-      clutter_actor_set_size (data->stage, 1016, 500);
+      clutter_actor_set_size (data->stage, data->width, data->height);
       clutter_actor_show_all (data->stage);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (data->stage),
                                    (ClutterActor *) data->toplevel);
     }
-
-  clutter_actor_grab_key_focus (data->stage);
-  g_signal_connect (data->stage, "key-release-event", G_CALLBACK (key_press),
-                    data);
 
   /* enable key focus support */
   mx_focus_manager_get_for_stage (CLUTTER_STAGE (data->stage));
