@@ -51,8 +51,6 @@ panels/datetime/src/mnp-shell.c
 panels/datetime/src/system-timezone.c
 panels/datetime/src/com.dawati.UX.Shell.Panels.datetime.service.in
 panels/datetime/src/date-time.schemas.in
-panels/datetime/src/dawati-alarm-notify.c
-panels/datetime/src/mnp-alarm-instance.c
 
 
 panels/devices/data/dawati-panel-devices.desktop.in.in
