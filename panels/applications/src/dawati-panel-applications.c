@@ -190,10 +190,10 @@ main (int     argc,
     DATADIR "/mutter-dawati/mx.cache");
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (), MX_CACHE);
-#if 0
+
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/panel.css", NULL);
-#endif
+
 
   if (_standalone)
     {
@@ -214,7 +214,7 @@ main (int     argc,
         }
       else
         {
-          clutter_actor_set_size (stage, 1008, 600);
+          clutter_actor_set_size (stage, 1024, 600);
         }
 
       launcher = mnb_launcher_new ();

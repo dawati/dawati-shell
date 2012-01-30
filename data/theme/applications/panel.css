@@ -1,12 +1,6 @@
-
 MnbLauncher {
-  padding: 5;
-}
-
-#panel-label {
-  color: #2a3c4a;
-  font-size: 22px;
-  padding: 6 6 6 15;
+  padding: 0 0 5 0;
+  background-color: #ecede6;
 }
 
 #fav-pane-content {
@@ -15,15 +9,11 @@ MnbLauncher {
 
 #apps-pane-content {
   padding: 3 0 3 3;
+  background-color: #ecede6;
 }
 
 #apps-grid {
-  padding: 0 0 0 20;
-}
-
-.tile-label {
-  font-size: 14px;
-  color: #7e7e7e;
+  padding: 15 0 0 2;
 }
 
 /*
