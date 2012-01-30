@@ -24,9 +24,10 @@ MxLabel.titleBar {
   padding: 11;
 }
 
-.sectionHeader {
+MxLabel.sectionHeader {
   border-image: url("section-header-bg.png") 2;
   font-size: 14;
+  padding: 8 0 8 16;
 }
 
 .searchBox, .searchBox:focus {
