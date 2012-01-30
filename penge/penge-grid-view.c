@@ -475,7 +475,7 @@ penge_grid_view_init (PengeGridView *self)
 
   self->priv = priv;
 
-  priv->header_label = mx_label_new_with_text ("Myzone");
+  priv->header_label = mx_label_new_with_text ("Home");
   clutter_actor_set_name (priv->header_label, "title");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->header_label,
@@ -487,7 +487,7 @@ penge_grid_view_init (PengeGridView *self)
 
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
-  clutter_actor_set_width (priv->calendar_pane, 280);
+  clutter_actor_set_width (priv->calendar_pane, 300);
 
 
   mx_table_add_actor (MX_TABLE (self),
@@ -510,19 +510,7 @@ penge_grid_view_init (PengeGridView *self)
                       priv->favourite_apps_pane,
                       3,
                       0);
-  priv->div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
 
-  if (!priv->div_tex)
-  {
-    g_warning (G_STRLOC ": Error loading vertical divider: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    mx_table_add_actor (MX_TABLE (self),
-                        priv->div_tex,
-                        1,
-                        1);
-  }
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
@@ -530,7 +518,7 @@ penge_grid_view_init (PengeGridView *self)
   mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 2);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
-  mx_table_set_column_spacing (MX_TABLE (self), 6);
+  mx_table_set_column_spacing (MX_TABLE (self), 19);
 
   /* 
    * Create a background and parent it to the grid. We paint and allocate this
