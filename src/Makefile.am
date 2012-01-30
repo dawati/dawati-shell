@@ -23,8 +23,10 @@ source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/dawati-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-spinner.h			\
 		$(srcdir)/mnb-input-manager.h		\
+		$(srcdir)/mnb-statusbar.h               \
 		$(srcdir)/mnb-toolbar.h                 \
 		$(srcdir)/mnb-toolbar-applet.h          \
+		$(srcdir)/mnb-toolbar-background.h      \
 		$(srcdir)/mnb-toolbar-button.h          \
 		$(srcdir)/mnb-toolbar-clock.h           \
 		$(srcdir)/mnb-toolbar-icon.h            \
@@ -40,8 +42,10 @@ source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mnb-spinner.c			\
 		$(srcdir)/marshal.c                   	\
 		$(srcdir)/mnb-input-manager.c		\
+		$(srcdir)/mnb-statusbar.c               \
 		$(srcdir)/mnb-toolbar.c                 \
 		$(srcdir)/mnb-toolbar-applet.c          \
+		$(srcdir)/mnb-toolbar-background.c      \
 		$(srcdir)/mnb-toolbar-button.c          \
 		$(srcdir)/mnb-toolbar-icon.c            \
 		$(srcdir)/mnb-toolbar-clock.c           \

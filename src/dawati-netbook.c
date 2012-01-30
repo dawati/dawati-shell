@@ -28,6 +28,7 @@
 
 #include "dawati-netbook.h"
 #include "alttab/mnb-alttab-overlay.h"
+#include "mnb-statusbar.h"
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/ntf-overlay.h"
@@ -258,7 +259,7 @@ dawati_netbook_overlay_key_cb (MetaDisplay *display, MetaPlugin *plugin)
       return;
     }
 
-  if (!CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
+  if (!mnb_toolbar_is_visible (MNB_TOOLBAR (priv->toolbar)))
     {
       /*
        * Set the dont_autohide flag on the toolbar; this stops the panel
@@ -827,7 +828,6 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
   ClutterActor *overlay;
-  ClutterActor *toolbar;
   ClutterActor *switcher_overlay;
   ClutterActor *message_overlay;
   gint          screen_width = 0, screen_height = 0;
@@ -902,7 +902,9 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
   /*
    * This also creates the launcher.
    */
-  toolbar = priv->toolbar = CLUTTER_ACTOR (mnb_toolbar_new (plugin));
+  priv->toolbar = mnb_toolbar_new (plugin);
+
+  priv->statusbar = mnb_statusbar_new (plugin, MNB_TOOLBAR (priv->toolbar));
 
   switcher_overlay = priv->switcher_overlay =
     CLUTTER_ACTOR (mnb_alttab_overlay_new ());
@@ -928,7 +930,8 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
    *  - toolbar hint is below the toolbar (i.e., not visible if panel showing.
    */
   clutter_container_add (CLUTTER_CONTAINER (overlay),
-                         toolbar,
+                         priv->statusbar,
+                         priv->toolbar,
                          switcher_overlay,
                          NULL);
 

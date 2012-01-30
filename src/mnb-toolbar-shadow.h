@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /*
  * Copyright (c) 2012 Intel Corp.
  *
@@ -25,6 +27,7 @@
 #include <glib-object.h>
 
 #include <mx/mx.h>
+#include "mnb-toolbar.h"
 
 G_BEGIN_DECLS
 
@@ -68,7 +71,8 @@ struct _MnbToolbarShadowClass
 
 GType mnb_toolbar_shadow_get_type (void) G_GNUC_CONST;
 
-ClutterActor *mnb_toolbar_shadow_new (ClutterTexture *texture,
+ClutterActor *mnb_toolbar_shadow_new (MnbToolbar     *toolbar,
+                                      ClutterTexture *texture,
                                       gfloat          top,
                                       gfloat          right,
                                       gfloat          bottom,

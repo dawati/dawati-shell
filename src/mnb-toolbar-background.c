@@ -21,24 +21,20 @@
  * 02111-1307, USA.
  */
 
-#include "mnb-toolbar-shadow.h"
-#include "mnb-toolbar.h"
+#include "mnb-toolbar-background.h"
 
-G_DEFINE_TYPE (MnbToolbarShadow, mnb_toolbar_shadow, MX_TYPE_TEXTURE_FRAME)
+G_DEFINE_TYPE (MnbToolbarBackground, mnb_toolbar_background, MX_TYPE_BOX_LAYOUT)
 
-/* Now that's badly hardcoded... */
-#define SHADOW_CUT_OUT_OFFSET (-35)
-
-#define TOOLBAR_SHADOW_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR_SHADOW, MnbToolbarShadowPrivate))
+#define TOOLBAR_BACKGROUND_PRIVATE(o) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR_BACKGROUND, MnbToolbarBackgroundPrivate))
 
 enum
 {
   PROP_0,
-  PROP_TOOLBAR,
+  PROP_TOOLBAR
 };
 
-struct _MnbToolbarShadowPrivate
+struct _MnbToolbarBackgroundPrivate
 {
   MnbToolbar     *toolbar;
   ClutterTexture *parent_texture;
@@ -50,11 +46,13 @@ struct _MnbToolbarShadowPrivate
 };
 
 static void
-mnb_toolbar_shadow_paint (ClutterActor *self)
+mnb_toolbar_background_paint_background (MxWidget           *self,
+                                         ClutterActor       *background,
+                                         const ClutterColor *color)
 {
-  MnbToolbarShadowPrivate *priv = MNB_TOOLBAR_SHADOW (self)->priv;
-  CoglHandle cogl_texture = COGL_INVALID_HANDLE;
-  CoglHandle cogl_material = COGL_INVALID_HANDLE;
+  MnbToolbarBackgroundPrivate *priv = TOOLBAR_BACKGROUND_PRIVATE (self);
+  ClutterActor *actor = (ClutterActor *) self;
+  CoglHandle cogl_texture, cogl_material;
   ClutterActorBox box = { 0, };
   gfloat width, height;
   gfloat tex_width, tex_height;
@@ -64,15 +62,38 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
   CoglHandle selector_texture;
   GError *error = NULL;
 
+  /* Copied from MxWidget:
+   *
+   * Default implementation just draws the background
+   * colour and the image on top
+   */
+  if (color && color->alpha != 0)
+    {
+      ClutterColor bg_color = *color;
+
+      bg_color.alpha = clutter_actor_get_paint_opacity (actor)
+                       * bg_color.alpha
+                       / 255;
+
+      clutter_actor_get_allocation_box (actor, &box);
+
+      width = box.x2 - box.x1;
+      height = box.y2 - box.y1;
+
+      cogl_set_source_color4ub (bg_color.red,
+                                bg_color.green,
+                                bg_color.blue,
+                                bg_color.alpha);
+      cogl_rectangle (0, 0, width, height);
+    }
+
+  /*
+   * Copied from MxTextureFrame
+   */
+
   /* no need to paint stuff if we don't have a texture */
   if (G_UNLIKELY (priv->parent_texture == NULL))
     return;
-
-  /* parent texture may have been hidden, so need to make sure it gets
-   * realized
-   */
-  if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_texture))
-    clutter_actor_realize (CLUTTER_ACTOR (priv->parent_texture));
 
   cogl_texture = clutter_texture_get_cogl_texture (priv->parent_texture);
   if (cogl_texture == COGL_INVALID_HANDLE)
@@ -84,12 +105,11 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
   tex_width  = cogl_texture_get_width (cogl_texture);
   tex_height = cogl_texture_get_height (cogl_texture);
 
-  clutter_actor_get_allocation_box (self, &box);
+  clutter_actor_get_allocation_box (actor, &box);
   width = box.x2 - box.x1;
   height = box.y2 - box.y1;
 
-
-  opacity = clutter_actor_get_paint_opacity (self);
+  opacity = clutter_actor_get_paint_opacity (actor);
 
   /* Paint using the parent texture's material. It should already have
      the cogl texture set as the first layer */
@@ -99,6 +119,7 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
 
 #if TOOLBAR_CUT_OUT
   selector_texture = mnb_toolbar_get_selector_texture (priv->toolbar);
+
   cogl_material_set_layer (cogl_material, 1, selector_texture);
   cogl_material_set_layer_wrap_mode (cogl_material, 1,
                                      COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
@@ -130,10 +151,9 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
       spot_width = box.x2 - box.x1;
       spot_height = box.y2 - box.y1;
       coords[4] = -(box.x1 / width) * (width / spot_width);
-      coords[5] = -(box.y1 + SHADOW_CUT_OUT_OFFSET / height) * (height / spot_height);
+      coords[5] = -(box.y1 / height) * (height / spot_height);
       coords[6] = width / spot_width - (box.x1 / width) * (width / spot_width);
-      coords[7] = height / spot_height -
-        (box.y1 + SHADOW_CUT_OUT_OFFSET / height) * (height / spot_height);
+      coords[7] = height / spot_height - (box.y1 / height) * (height / spot_height);
       cogl_rectangle_with_multitexture_coords (0, 0, width, height, coords, 8);
 #else
       cogl_rectangle (0, 0, width, height);
@@ -153,7 +173,6 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
   ey = height - priv->bottom;
   if (ey < priv->top)
     ey = priv->top;
-
 
   {
     GLfloat rectangles[] =
@@ -218,12 +237,12 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
 }
 
 static void
-mnb_toolbar_shadow_get_property (GObject    *object,
-                                 guint       property_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
+mnb_toolbar_background_get_property (GObject    *object,
+                                     guint       property_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
-  MnbToolbarShadowPrivate *priv = MNB_TOOLBAR_SHADOW (object)->priv;
+  MnbToolbarBackgroundPrivate *priv = MNB_TOOLBAR_BACKGROUND (object)->priv;
 
   switch (property_id)
     {
@@ -237,12 +256,12 @@ mnb_toolbar_shadow_get_property (GObject    *object,
 }
 
 static void
-mnb_toolbar_shadow_set_property (GObject      *object,
-                                 guint         property_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
+mnb_toolbar_background_set_property (GObject      *object,
+                                     guint         property_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
-  MnbToolbarShadowPrivate *priv = MNB_TOOLBAR_SHADOW (object)->priv;
+  MnbToolbarBackgroundPrivate *priv = MNB_TOOLBAR_BACKGROUND (object)->priv;
 
   switch (property_id)
     {
@@ -256,31 +275,31 @@ mnb_toolbar_shadow_set_property (GObject      *object,
 }
 
 static void
-mnb_toolbar_shadow_dispose (GObject *object)
+mnb_toolbar_background_dispose (GObject *object)
 {
-  G_OBJECT_CLASS (mnb_toolbar_shadow_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mnb_toolbar_background_parent_class)->dispose (object);
 }
 
 static void
-mnb_toolbar_shadow_finalize (GObject *object)
+mnb_toolbar_background_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (mnb_toolbar_shadow_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mnb_toolbar_background_parent_class)->finalize (object);
 }
 
 static void
-mnb_toolbar_shadow_class_init (MnbToolbarShadowClass *klass)
+mnb_toolbar_background_class_init (MnbToolbarBackgroundClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  MxWidgetClass *widget_class = MX_WIDGET_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MnbToolbarShadowPrivate));
+  g_type_class_add_private (klass, sizeof (MnbToolbarBackgroundPrivate));
 
-  object_class->get_property = mnb_toolbar_shadow_get_property;
-  object_class->set_property = mnb_toolbar_shadow_set_property;
-  object_class->dispose = mnb_toolbar_shadow_dispose;
-  object_class->finalize = mnb_toolbar_shadow_finalize;
+  object_class->get_property = mnb_toolbar_background_get_property;
+  object_class->set_property = mnb_toolbar_background_set_property;
+  object_class->dispose = mnb_toolbar_background_dispose;
+  object_class->finalize = mnb_toolbar_background_finalize;
 
-  actor_class->paint = mnb_toolbar_shadow_paint;
+  widget_class->paint_background = mnb_toolbar_background_paint_background;
 
   g_object_class_install_property (object_class,
                                    PROP_TOOLBAR,
@@ -293,12 +312,16 @@ mnb_toolbar_shadow_class_init (MnbToolbarShadowClass *klass)
 }
 
 static void
-mnb_toolbar_property_changed (MnbToolbarShadow *self,
-                              GParamSpec       *param,
-                              gpointer          data)
+mnb_toolbar_background_border_changed (MnbToolbarBackground *self,
+                                       GParamSpec           *param,
+                                       gpointer              data)
 {
-  MxTextureFrame *texture = MX_TEXTURE_FRAME (self);
-  MnbToolbarShadowPrivate *priv = self->priv;
+  MxTextureFrame *texture;
+  MnbToolbarBackgroundPrivate *priv = self->priv;
+
+  texture = (MxTextureFrame *) mx_widget_get_border_image (MX_WIDGET (self));
+  if (!texture)
+    return;
 
   priv->parent_texture =
     mx_texture_frame_get_parent_texture (texture);
@@ -310,31 +333,19 @@ mnb_toolbar_property_changed (MnbToolbarShadow *self,
 }
 
 static void
-mnb_toolbar_shadow_init (MnbToolbarShadow *self)
+mnb_toolbar_background_init (MnbToolbarBackground *self)
 {
-  self->priv = TOOLBAR_SHADOW_PRIVATE (self);
+  self->priv = TOOLBAR_BACKGROUND_PRIVATE (self);
 
   g_signal_connect (self, "notify",
-                    G_CALLBACK (mnb_toolbar_property_changed),
+                    G_CALLBACK (mnb_toolbar_background_border_changed),
                     NULL);
 }
 
 ClutterActor *
-mnb_toolbar_shadow_new (MnbToolbar     *toolbar,
-                        ClutterTexture *texture,
-                        gfloat          top,
-                        gfloat          right,
-                        gfloat          bottom,
-                        gfloat          left)
+mnb_toolbar_background_new (MnbToolbar *toolbar)
 {
-  g_return_val_if_fail (texture == NULL || CLUTTER_IS_TEXTURE (texture), NULL);
-
-  return g_object_new (MNB_TYPE_TOOLBAR_SHADOW,
+  return g_object_new (MNB_TYPE_TOOLBAR_BACKGROUND,
                        "toolbar", toolbar,
-                       "parent-texture", texture,
-                       "top", top,
-                       "right", right,
-                       "bottom", bottom,
-                       "left", left,
                        NULL);
 }

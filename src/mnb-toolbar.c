@@ -49,13 +49,15 @@
 #include "dawati-netbook.h"
 
 #include "mnb-toolbar.h"
-#include "mnb-panel-oop.h"
-#include "mnb-toolbar-button.h"
 #include "mnb-toolbar-applet.h"
-#include "mnb-toolbar-icon.h"
+#include "mnb-toolbar-background.h"
+#include "mnb-toolbar-button.h"
 #include "mnb-toolbar-clock.h"
+#include "mnb-toolbar-icon.h"
 #include "mnb-toolbar-shadow.h"
+#include "mnb-panel-oop.h"
 #include "mnb-spinner.h"
+#include "mnb-statusbar.h"
 
 /* For systray windows stuff */
 #include <gdk/gdkx.h>
@@ -86,9 +88,11 @@
 #define TRAY_WIDTH (3 * TRAY_BUTTON_WIDTH + CLOCK_WIDTH + 4 * TRAY_PADDING - TRAY_BUTTON_INTERNAL_PADDING / 2)
 #define TRAY_PADDING   6
 
+#define TOOLBAR_SELECTOR_ANIMATION_DELAY (300)
+
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_ADJUSTMENT      2
-#define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
+#define TOOLBAR_HIDE_TIMEOUT           (1500)
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
 #define TOOLBAR_AUTOSTART_DELAY 15
 #define TOOLBAR_AUTOSTART_ATTEMPTS 10
@@ -118,10 +122,12 @@
  * that it does not roll above the edge of the screen during the toolbar hide
  * animation.
  */
-#define TOOLBAR_SHADOW_EXTRA  20
+#define TOOLBAR_SHADOW_EXTRA  47
 #define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
 
-G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, MX_TYPE_BOX_LAYOUT)
+#define TOOLBAR_CUT_OUT_SHIFT (20.0)
+
+G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, CLUTTER_TYPE_GROUP)
 
 #define MNB_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
@@ -131,9 +137,9 @@ typedef struct _MnbToolbarPanel MnbToolbarPanel;
 static void mnb_toolbar_constructed (GObject *self);
 static void mnb_toolbar_real_hide (ClutterActor *actor);
 static void mnb_toolbar_real_show (ClutterActor *actor);
-static gboolean mnb_toolbar_stage_captured_cb (ClutterActor *stage,
-                                               ClutterEvent *event,
-                                               gpointer      data);
+static gboolean mnb_toolbar_event_cb (MnbToolbar *toolbar,
+                                      ClutterEvent *event,
+                                      gpointer      data);
 static gboolean mnb_toolbar_stage_input_cb (ClutterActor *stage,
                                             ClutterEvent *event,
                                             gpointer      data);
@@ -154,7 +160,6 @@ static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
 static void mnb_toolbar_workarea_changed_cb (MetaScreen *screen,
                                              MnbToolbar *toolbar);
-static void mnb_toolbar_style_changed_cb (MnbToolbar *self);
 
 
 enum {
@@ -222,13 +227,11 @@ struct _MnbToolbarPrivate
 {
   MetaPlugin *plugin;
 
-  MxButtonGroup *button_group;
+  ClutterActor *hbox_main;    /* Contains the following 2 h-boxes */
   ClutterActor *hbox_buttons; /* This is where all the contents are placed */
   ClutterActor *hbox_applets; /* This is where all the contents are placed */
 
-  MxBorderImage  *mx_border_image;
-  ClutterTexture *border_image;
-  CoglHandle selector_image;
+  CoglHandle selector_texture;
   ClutterActor *light_spot;
   ClutterActorBox next_selector_pos;
 
@@ -263,6 +266,7 @@ struct _MnbToolbarPrivate
   gboolean disabled          : 1;
   gboolean in_show_animation : 1; /* Animation tracking */
   gboolean in_hide_animation : 1;
+  gboolean is_visible        : 1;
   gboolean waiting_for_panel_show : 1; /* Set between button click and panel
                                         * show */
   gboolean waiting_for_panel_hide : 1;
@@ -284,7 +288,7 @@ struct _MnbToolbarPrivate
                                    * stack.
                                    */
 
-  guint trigger_timeout_id;
+  guint hide_timeout_id;
 
   DBusGConnection *dbus_conn;
   DBusGProxy      *dbus_proxy;
@@ -398,9 +402,6 @@ mnb_toolbar_finalize (GObject *object)
   MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
   GSList            *l;
 
-  if (priv->mx_border_image)
-    g_boxed_free (MX_TYPE_BORDER_IMAGE, priv->mx_border_image);
-
   l = priv->pending_panels;
   while (l)
     {
@@ -440,6 +441,7 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
     }
 
   priv->in_show_animation = FALSE;
+  priv->is_visible = TRUE;
 
   if (!priv->waiting_for_panel_show)
     priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
@@ -498,7 +500,7 @@ mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
                             lowlight);
 }
 
-/*
+/*i
  * Returns TRUE if currently focused window is system-modal.
  */
 static gboolean
@@ -520,6 +522,48 @@ mnb_toolbar_system_modal_state (MnbToolbar *toolbar)
   return FALSE;
 }
 
+static void
+mnb_toolbar_wipe_input (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (priv->input_region)
+    {
+      mnb_input_manager_remove_region_without_update (priv->input_region);
+      priv->input_region = NULL;
+    }
+}
+
+static void
+mnb_toolbar_setup_input (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (priv->input_region)
+    mnb_toolbar_wipe_input (toolbar);
+
+  priv->input_region =
+    mnb_input_manager_push_region (0, 0,
+                                   priv->old_screen_width,
+                                   TOOLBAR_HEIGHT + 10,
+                                   FALSE, MNB_INPUT_LAYER_PANEL);
+}
+
+static void
+mnb_toolbar_update_input (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (priv->input_region)
+    mnb_input_manager_remove_region_without_update (priv->input_region);
+
+  priv->input_region =
+    mnb_input_manager_push_region (0, 0,
+                                   priv->old_screen_width,
+                                   TOOLBAR_HEIGHT + 10,
+                                   FALSE, MNB_INPUT_LAYER_PANEL);
+}
+
 void
 mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
 {
@@ -539,6 +583,8 @@ mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
   priv->reason_for_show = reason;
 
   clutter_actor_show (actor);
+
+  mnb_toolbar_setup_input (MNB_TOOLBAR (actor));
 
   /* set initial width and height */
   clutter_actor_set_y (actor, -(clutter_actor_get_height (actor)));
@@ -595,14 +641,14 @@ mnb_toolbar_real_show (ClutterActor *actor)
    */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
 
-  if (priv->input_region)
-    mnb_input_manager_remove_region_without_update (priv->input_region);
+  /* if (priv->input_region) */
+  /*   mnb_input_manager_remove_region_without_update (priv->input_region); */
 
-  priv->input_region =
-    mnb_input_manager_push_region (0, 0,
-                                   priv->old_screen_width,
-                                   TOOLBAR_HEIGHT + 10,
-                                   FALSE, MNB_INPUT_LAYER_PANEL);
+  /* priv->input_region = */
+  /*   mnb_input_manager_push_region (0, 0, */
+  /*                                  priv->old_screen_width, */
+  /*                                  TOOLBAR_HEIGHT + 10, */
+  /*                                  FALSE, MNB_INPUT_LAYER_PANEL); */
 
   dawati_netbook_stash_window_focus (priv->plugin, CurrentTime);
 }
@@ -644,12 +690,13 @@ mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
   priv->dont_autohide = FALSE;
   priv->panel_input_only = FALSE;
   priv->reason_for_hide = _MNB_SHOW_HIDE_UNSET;
+  priv->is_visible = FALSE;
 
   dawati_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
 
-  clutter_actor_hide (actor);
+  /* clutter_actor_hide (actor); */
 
   g_object_unref (actor);
 }
@@ -698,6 +745,18 @@ mnb_toolbar_check_for_windows (MnbToolbar *toolbar)
   return FALSE;
 }
 
+gboolean
+mnb_toolbar_is_visible (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv;
+
+  g_return_val_if_fail (MNB_IS_TOOLBAR (toolbar), FALSE);
+
+  priv = toolbar->priv;
+
+  return priv->is_visible;
+}
+
 void
 mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
 {
@@ -729,11 +788,11 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
         return;
     }
 
-  if ((panel = mnb_toolbar_get_active_panel (toolbar)))
-    {
-      mnb_panel_hide_with_toolbar (panel, reason);
-      return;
-    }
+  /* if ((panel = mnb_toolbar_get_active_panel (toolbar))) */
+  /*   { */
+  /*     mnb_panel_hide_with_toolbar (panel, reason); */
+  /*     return; */
+  /*   } */
 
   priv->reason_for_hide = reason;
 
@@ -751,11 +810,12 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
 
   g_signal_emit (actor, toolbar_signals[HIDE_BEGIN], 0);
 
-  if (priv->input_region)
-    {
-      mnb_input_manager_remove_region (priv->input_region);
-      priv->input_region = NULL;
-    }
+  mnb_toolbar_wipe_input (toolbar);
+  /* if (priv->input_region) */
+  /*   { */
+  /*     mnb_input_manager_remove_region (priv->input_region); */
+  /*     priv->input_region = NULL; */
+  /*   } */
 
   priv->in_hide_animation = TRUE;
 
@@ -821,9 +881,9 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
       if (hide_toolbar && CLUTTER_ACTOR_IS_MAPPED (self))
         mnb_toolbar_hide (self, MNB_SHOW_HIDE_BY_DBUS);
     }
-  else if (hide_toolbar)
-    mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_DBUS);
-  else
+  else/*  if (hide_toolbar) */
+  /*   mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_DBUS); */
+  /* else */
     mnb_panel_hide (panel);
 
   return TRUE;
@@ -888,197 +948,10 @@ mnb_toolbar_get_preferred_height (ClutterActor *self,
 }
 
 static void
-mnb_toolbar_paint_background (MxWidget           *self,
-                              ClutterActor       *background,
-                              const ClutterColor *color)
-{
-  MnbToolbarPrivate *priv = MNB_TOOLBAR_GET_PRIVATE (self);
-  ClutterActor *actor = (ClutterActor *) self;
-  CoglHandle cogl_texture, cogl_material;
-  ClutterActorBox box = { 0, };
-  MxBorderImage *bimage;
-  gfloat width, height;
-  gfloat tex_width, tex_height;
-  gfloat ex, ey;
-  gfloat tx1, ty1, tx2, ty2;
-  guint8 opacity;
-  GError *error = NULL;
-
-  /* Copied from MxWidget:
-   *
-   * Default implementation just draws the background
-   * colour and the image on top
-   */
-  if (color && color->alpha != 0)
-    {
-      ClutterColor bg_color = *color;
-
-      bg_color.alpha = clutter_actor_get_paint_opacity (actor)
-                       * bg_color.alpha
-                       / 255;
-
-      clutter_actor_get_allocation_box (actor, &box);
-
-      width = box.x2 - box.x1;
-      height = box.y2 - box.y1;
-
-      cogl_set_source_color4ub (bg_color.red,
-                                bg_color.green,
-                                bg_color.blue,
-                                bg_color.alpha);
-      cogl_rectangle (0, 0, width, height);
-    }
-
-  /*
-   * Copied from MxTextureFrame
-   */
-  cogl_texture = clutter_texture_get_cogl_texture (priv->border_image);
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    return;
-  cogl_material = clutter_texture_get_cogl_material (priv->border_image);
-  if (cogl_material == COGL_INVALID_HANDLE)
-    return;
-
-  tex_width  = cogl_texture_get_width (cogl_texture);
-  tex_height = cogl_texture_get_height (cogl_texture);
-
-  clutter_actor_get_allocation_box (actor, &box);
-  width = box.x2 - box.x1;
-  height = box.y2 - box.y1;
-
-  opacity = clutter_actor_get_paint_opacity (actor);
-
-  /* Paint using the parent texture's material. It should already have
-     the cogl texture set as the first layer */
-  /* NB: for correct blending we need set a preumultiplied color here: */
-  cogl_material_set_color4ub (cogl_material,
-                              opacity, opacity, opacity, opacity);
-
-  bimage = priv->mx_border_image;
-
-#if TOOLBAR_CUT_OUT
-  cogl_material_set_layer (cogl_material, 1, priv->selector_image);
-  cogl_material_set_layer_wrap_mode (cogl_material, 1,
-                                     COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
-
-  if (!cogl_material_set_layer_combine (cogl_material, 1,
-                                        "RGBA = MODULATE(PREVIOUS,TEXTURE)",
-                                        &error))
-    {
-      g_warning (G_STRLOC ": Error setting layer combine blend string: %s",
-                 error->message);
-      g_error_free (error);
-    }
-#endif
-
-  cogl_set_source (cogl_material);
-
-  /* simple stretch */
-  if (bimage->left == 0 && bimage->right == 0 && bimage->top == 0
-      && bimage->bottom == 0)
-    {
-#if TOOLBAR_CUT_OUT
-      float spot_width, spot_height;
-      float coords[8] = {
-        0, 0, 1, 1,
-        0, 0, 0, 0
-      };
-
-      clutter_actor_get_allocation_box (priv->light_spot, &box);
-      spot_width = box.x2 - box.x1;
-      spot_height = box.y2 - box.y1;
-      coords[4] = -(box.x1 / width) * (width / spot_width);
-      coords[5] = -(box.y1 / height) * (height / spot_height);
-      coords[6] = width / spot_width - (box.x1 / width) * (width / spot_width);
-      coords[7] = height / spot_height - (box.y1 / height) * (height / spot_height)/* height / spot_height */;
-      cogl_rectangle_with_multitexture_coords(0, 0, width, height, coords, 8);
-#else
-      cogl_rectangle (0, 0, width, height);
-#endif /* TOOLBAR_CUT_OUT */
-      return;
-    }
-
-  tx1 = bimage->left / tex_width;
-  tx2 = (tex_width - bimage->right) / tex_width;
-  ty1 = bimage->top / tex_height;
-  ty2 = (tex_height - bimage->bottom) / tex_height;
-
-  ex = width - bimage->right;
-  if (ex < bimage->left)
-    ex = bimage->left;
-
-  ey = height - bimage->bottom;
-  if (ey < bimage->top)
-    ey = bimage->top;
-
-  {
-    GLfloat rectangles[] =
-    {
-      /* top left corner */
-      0, 0,
-      bimage->left, bimage->top,
-      0.0, 0.0,
-      tx1, ty1,
-
-      /* top middle */
-      bimage->left, 0,
-      MAX (bimage->left, ex), bimage->top,
-      tx1, 0.0,
-      tx2, ty1,
-
-      /* top right */
-      ex, 0,
-      MAX (ex + bimage->right, width), bimage->top,
-      tx2, 0.0,
-      1.0, ty1,
-
-      /* mid left */
-      0, bimage->top,
-      bimage->left,  ey,
-      0.0, ty1,
-      tx1, ty2,
-
-      /* center */
-      bimage->left, bimage->top,
-      ex, ey,
-      tx1, ty1,
-      tx2, ty2,
-
-      /* mid right */
-      ex, bimage->top,
-      MAX (ex + bimage->right, width), ey,
-      tx2, ty1,
-      1.0, ty2,
-
-      /* bottom left */
-      0, ey,
-      bimage->left, MAX (ey + bimage->bottom, height),
-      0.0, ty2,
-      tx1, 1.0,
-
-      /* bottom center */
-      bimage->left, ey,
-      ex, MAX (ey + bimage->bottom, height),
-      tx1, ty2,
-      tx2, 1.0,
-
-      /* bottom right */
-      ex, ey,
-      MAX (ex + bimage->right, width), MAX (ey + bimage->bottom, height),
-      tx2, ty2,
-      1.0, 1.0
-    };
-
-    cogl_rectangles_with_texture_coords (rectangles, 9);
-  }
-}
-
-static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *clutter_class = CLUTTER_ACTOR_CLASS (klass);
-  MxWidgetClass *widget_class = MX_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbToolbarPrivate));
 
@@ -1091,12 +964,9 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   clutter_class->show = mnb_toolbar_real_show;
   clutter_class->hide = mnb_toolbar_real_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
-  /* clutter_class->paint = mnb_toolbar_paint; */
   clutter_class->button_press_event = mnb_toolbar_button_press_event;
   clutter_class->get_preferred_width = mnb_toolbar_get_preferred_width;
   clutter_class->get_preferred_height = mnb_toolbar_get_preferred_height;
-
-  widget_class->paint_background = mnb_toolbar_paint_background;
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_mnb_toolbar_dbus_object_info);
@@ -1325,8 +1195,8 @@ mnb_toolbar_hide_selector (MnbToolbar *self)
   MnbToolbarPrivate *priv = self->priv;
 
   clutter_actor_animate (priv->light_spot,
-                         CLUTTER_LINEAR, 300,
-                         "y", 10.0,
+                         CLUTTER_LINEAR, TOOLBAR_SELECTOR_ANIMATION_DELAY,
+                         "y", TOOLBAR_CUT_OUT_SHIFT,
                          NULL);
 #endif /* TOOLBAR_CUT_OUT */
 }
@@ -1340,7 +1210,7 @@ mnb_toolbar_show_selector (MnbToolbar *self)
   clutter_actor_set_x (priv->light_spot,
                        priv->next_selector_pos.x1);
   clutter_actor_animate (priv->light_spot,
-                         CLUTTER_LINEAR, 300,
+                         CLUTTER_LINEAR, TOOLBAR_SELECTOR_ANIMATION_DELAY,
                          "y", 0.0,
                          NULL);
 #endif /* TOOLBAR_CUT_OUT */
@@ -1360,16 +1230,29 @@ mnb_toolbar_move_selector (MnbToolbar *self)
   MnbToolbarPrivate *priv = self->priv;
   ClutterAnimation  *animation;
 
-  animation = clutter_actor_animate (priv->light_spot,
-                                     CLUTTER_LINEAR, 300,
-                                     "y", 10.0,
-                                     NULL);
+  animation =
+    clutter_actor_animate (priv->light_spot,
+                           CLUTTER_LINEAR, TOOLBAR_SELECTOR_ANIMATION_DELAY,
+                           "y", 10.0,
+                           NULL);
 
   g_signal_connect_after (animation,
                           "completed",
                           G_CALLBACK (mnb_toolbar_selector_animation_completed_cb),
                           self);
 #endif /* TOOLBAR_CUT_OUT */
+}
+
+static void
+mnb_toolbar_lightspot_moved_cb (ClutterActor           *actor,
+                                ClutterActorBox        *box,
+                                ClutterAllocationFlags  flags,
+                                MnbToolbar             *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  clutter_actor_queue_redraw (priv->shadow);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (toolbar));
 }
 
 /*
@@ -1429,8 +1312,17 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
 
   /* Update position of selected button */
   if (checked)
-    clutter_actor_get_allocation_box (CLUTTER_ACTOR (button),
-                                      &priv->next_selector_pos);
+    {
+      ClutterActor *parent_box =
+        clutter_actor_get_parent (CLUTTER_ACTOR (button));
+      ClutterActorBox parent_alloc;
+
+      clutter_actor_get_allocation_box (parent_box, &parent_alloc);
+      clutter_actor_get_allocation_box (CLUTTER_ACTOR (button),
+                                        &priv->next_selector_pos);
+      priv->next_selector_pos.x1 += parent_alloc.x1;
+      priv->next_selector_pos.y1 += parent_alloc.y1;
+    }
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -1631,7 +1523,7 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
   if (CLUTTER_IS_ACTOR (panel))
     {
       clutter_actor_raise_top (priv->lowlight);
-      clutter_actor_raise_top (priv->shadow);
+      /* clutter_actor_raise_top (priv->shadow); */
     }
   else if (MNB_IS_PANEL_OOP (panel))
     {
@@ -1643,7 +1535,7 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel_stub))
         clutter_actor_raise (priv->panel_stub, actor);
 
-      clutter_actor_lower (priv->shadow, actor);
+      /* clutter_actor_lower (priv->shadow, actor); */
 
       /*
        * If the panel is not in a modal state, we lower the lowlight just below
@@ -1652,9 +1544,9 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
        * If the panel is in modal state, we raise the lowlight above the panel
        * actor itself.
        */
-      if (!mnb_panel_is_modal (panel))
-        clutter_actor_lower (priv->lowlight, priv->shadow);
-      else
+      if (/* ! */mnb_panel_is_modal (panel))
+      /*   clutter_actor_lower (priv->lowlight, priv->shadow); */
+      /* else */
         clutter_actor_raise (priv->lowlight, actor);
     }
 }
@@ -1895,7 +1787,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
 
   if (tp->button)
     mnb_panel_set_button (panel, MX_BUTTON (tp->button));
-  mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
+  mnb_panel_set_position (panel, 0, STATUSBAR_HEIGHT);
 }
 #endif
 
@@ -2096,14 +1988,14 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
     mnb_input_manager_remove_region_without_update (region);
 
   if (priv->panel_input_only)
-    region = mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
+    region = mnb_input_manager_push_region ((gint)x, STATUSBAR_HEIGHT + (gint)y,
                                             (guint)w, (guint)h,
                                             FALSE, MNB_INPUT_LAYER_PANEL);
   else
-    region = mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
+    region = mnb_input_manager_push_region ((gint)x, STATUSBAR_HEIGHT + (gint)y,
                                             (guint)w,
                                             priv->old_screen_height -
-                                            (TOOLBAR_HEIGHT+(gint)y),
+                                            (STATUSBAR_HEIGHT + (gint)y),
                                             FALSE, MNB_INPUT_LAYER_PANEL);
 
   mnb_panel_set_input_region (panel, region);
@@ -2448,7 +2340,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
     {
       button = tp->button = mnb_toolbar_clock_new ();
-      toolbar->priv->have_clock = TRUE;
+      priv->have_clock = TRUE;
 
       if (priv->dummy_clock)
         {
@@ -2465,7 +2357,6 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
       button = tp->button = mx_button_new ();
       mx_stylable_set_style_class (MX_STYLABLE (button),
                                    "ToolbarButton");
-      g_print ("%s\n", tp->tooltip);
       mx_button_set_label (MX_BUTTON (button), tp->tooltip);
       mx_button_set_icon_name (MX_BUTTON (button), "player_play");
       mx_button_set_icon_position (MX_BUTTON (button), MX_POSITION_LEFT);
@@ -2636,39 +2527,6 @@ mnb_toolbar_init (MnbToolbar *self)
 
   if (flags & MNB_OPTION_DISABLE_PANEL_RESTART)
     priv->no_autoloading = TRUE;
-
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (mnb_toolbar_style_changed_cb), NULL);
-}
-
-static void
-mnb_toolbar_style_changed_cb (MnbToolbar *self)
-{
-  MnbToolbarPrivate *priv         = self->priv;
-  MxBorderImage     *border_image = NULL;
-
-  mx_stylable_get (MX_STYLABLE (self),
-                   "border-image", &border_image,
-                   NULL);
-
-  if (mx_border_image_equal (priv->mx_border_image, border_image))
-    {
-      MxTextureCache *texture_cache = mx_texture_cache_get_default ();
-
-      if (priv->mx_border_image)
-        g_boxed_free (MX_TYPE_BORDER_IMAGE, priv->mx_border_image);
-      if (priv->border_image)
-        priv->border_image = NULL;
-
-      priv->mx_border_image = border_image;
-      priv->border_image = mx_texture_cache_get_texture (texture_cache,
-                                                         border_image->uri);
-    }
-  else
-    {
-      if (border_image)
-        g_boxed_free (MX_TYPE_BORDER_IMAGE, border_image);
-    }
 }
 
 static DBusGConnection *
@@ -2741,7 +2599,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
   panel = mnb_panel_oop_new (name,
                              0,
-                             TOOLBAR_HEIGHT,
+                             STATUSBAR_HEIGHT,
                              priv->old_screen_width,
                              priv->old_screen_height);
 
@@ -3002,8 +2860,8 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
        * do not hide the panel either, the user must explicitely switch to a
        * different panel).
        */
-      if (mnb_toolbar_check_for_windows (toolbar))
-        mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_MOUSE);
+      /* if (mnb_toolbar_check_for_windows (toolbar)) */
+      /*   mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_MOUSE); */
 
       return TRUE;
     }
@@ -3011,27 +2869,27 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
   return FALSE;
 }
 
-static void
-mnb_toolbar_set_struts (MnbToolbar *toolbar)
-{
-  MnbToolbarPrivate *priv         = toolbar->priv;
-  MetaPlugin        *plugin       = priv->plugin;
-  gboolean           netbook_mode = dawati_netbook_use_netbook_mode (plugin);
+/* static void */
+/* mnb_toolbar_set_struts (MnbToolbar *toolbar) */
+/* { */
+/*   MnbToolbarPrivate *priv         = toolbar->priv; */
+/*   MetaPlugin        *plugin       = priv->plugin; */
+/*   gboolean           netbook_mode = dawati_netbook_use_netbook_mode (plugin); */
 
-  /*
-   * When not in netbook mode, we need to reserve space for the toolbar.
-   */
-  if (!netbook_mode && !priv->struts_set)
-    {
-      dawati_netbook_set_struts (plugin, -1, -1, TOOLBAR_HEIGHT, -1);
-      priv->struts_set = TRUE;
-    }
-  else if (netbook_mode && priv->struts_set)
-    {
-      dawati_netbook_set_struts (plugin, -1, -1, 0, -1);
-      priv->struts_set = FALSE;
-    }
-}
+/*   /\* */
+/*    * When not in netbook mode, we need to reserve space for the toolbar. */
+/*    *\/ */
+/*   if (!netbook_mode && !priv->struts_set) */
+/*     { */
+/*       dawati_netbook_set_struts (plugin, -1, -1, TOOLBAR_HEIGHT, -1); */
+/*       priv->struts_set = TRUE; */
+/*     } */
+/*   else if (netbook_mode && priv->struts_set) */
+/*     { */
+/*       dawati_netbook_set_struts (plugin, -1, -1, 0, -1); */
+/*       priv->struts_set = FALSE; */
+/*     } */
+/* } */
 
 static void
 mnb_toolbar_constructed (GObject *self)
@@ -3040,7 +2898,6 @@ mnb_toolbar_constructed (GObject *self)
   MetaPlugin        *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *lowlight, *panel_stub;
-  ClutterActor      *shadow;
   ClutterTexture    *sh_texture;
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
@@ -3070,6 +2927,12 @@ mnb_toolbar_constructed (GObject *self)
                                    &priv->old_screen_height);
 
   clutter_actor_set_reactive (actor, TRUE);
+
+  priv->hbox_main = mnb_toolbar_background_new (MNB_TOOLBAR (self));
+  clutter_actor_set_name (priv->hbox_main, "toolbar-main-box");
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_main),
+                                 MX_ORIENTATION_HORIZONTAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->hbox_main);
 
   priv->hbox_buttons = mx_box_layout_new ();
   clutter_actor_set_name (priv->hbox_buttons, "toolbar-left-box");
@@ -3107,15 +2970,7 @@ mnb_toolbar_constructed (GObject *self)
 
   g_debug ("Consructing, netbook_mode %d", netbook_mode);
 
-  if (!netbook_mode)
-    {
-      clutter_actor_set_x (actor, -BIG_SCREEN_PAD);
-      clutter_actor_set_size (actor,
-                              screen_width + 2 * BIG_SCREEN_PAD,
-                              TOOLBAR_HEIGHT);
-    }
-  else
-    clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
+  clutter_actor_set_size (priv->hbox_main, screen_width, TOOLBAR_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
 
@@ -3138,7 +2993,7 @@ mnb_toolbar_constructed (GObject *self)
 
     clutter_actor_set_size (panel_stub,
                             screen_width, screen_height / 3);
-    clutter_actor_set_position (panel_stub, 0, TOOLBAR_HEIGHT);
+    clutter_actor_set_position (panel_stub, 0, STATUSBAR_HEIGHT);
     clutter_actor_set_name (panel_stub, "panel-stub");
     clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
     clutter_actor_hide (panel_stub);
@@ -3154,26 +3009,27 @@ mnb_toolbar_constructed (GObject *self)
                                              "/toolbar/toolbar-shadow.png");
   if (sh_texture)
     {
-      shadow = mnb_toolbar_shadow_new (sh_texture,
-                                       0, /* top */
-                                       0, /* right */
-                                       0, /* bottom */
-                                       0  /* left */);
-      clutter_actor_set_size (shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
-      clutter_actor_set_y (shadow, TOOLBAR_HEIGHT);
-      clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), shadow);
-      clutter_actor_hide (shadow);
-      priv->shadow = shadow;
+      priv->shadow = mnb_toolbar_shadow_new (MNB_TOOLBAR (self),
+                                             sh_texture,
+                                             0, /* top */
+                                             0, /* right */
+                                             0, /* bottom */
+                                             0  /* left */);
+      clutter_actor_set_size (priv->shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
+      clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
+      clutter_actor_lower (priv->shadow, priv->hbox_main);
+      clutter_actor_set_y (priv->shadow, TOOLBAR_HEIGHT - 10);
+      clutter_actor_hide (priv->shadow);
     }
 
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (priv->hbox_main),
                                            priv->hbox_buttons,
                                            0,
                                            "expand", TRUE,
                                            "x-fill", FALSE,
                                            "x-align", MX_ALIGN_START,
                                            NULL);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (priv->hbox_main),
                                            priv->hbox_applets,
                                            1,
                                            "expand", FALSE,
@@ -3188,19 +3044,17 @@ mnb_toolbar_constructed (GObject *self)
    * In netbook mode, we need hook to the captured signal to show/hide the
    * toolbar as required.
    */
-  if (netbook_mode)
-    priv->trigger_cb_id =
-      g_signal_connect (meta_plugin_get_stage (META_PLUGIN (plugin)),
-                        "captured-event",
-                        G_CALLBACK (mnb_toolbar_stage_captured_cb),
-                        self);
+
+  g_signal_connect (self, "event",
+                    G_CALLBACK (mnb_toolbar_event_cb),
+                    NULL);
 
   g_signal_connect (meta_plugin_get_stage (plugin),
                     "button-press-event",
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
 
-  mnb_toolbar_set_struts (MNB_TOOLBAR (self));
+  /* mnb_toolbar_set_struts (MNB_TOOLBAR (self)); */
 
   /*
    * Hook into "show" signal on stage, to set up input regions.
@@ -3219,7 +3073,7 @@ mnb_toolbar_constructed (GObject *self)
 
 
 #if TOOLBAR_CUT_OUT
-  priv->selector_image =
+  priv->selector_texture =
     cogl_texture_new_from_file (THEMEDIR "/toolbar/toolbar-selection.png",
                                 COGL_TEXTURE_NO_SLICING, COGL_PIXEL_FORMAT_ANY,
                                 NULL);
@@ -3230,14 +3084,17 @@ mnb_toolbar_constructed (GObject *self)
   low_clr.alpha = 0x0;
   priv->light_spot = clutter_rectangle_new_with_color (&low_clr);
   clutter_actor_set_size (priv->light_spot,
-                          cogl_texture_get_width (priv->selector_image),
-                          cogl_texture_get_height (priv->selector_image));
-  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), priv->light_spot);
-  clutter_actor_show (priv->light_spot);
-  clutter_actor_lower_bottom (priv->light_spot);
+                          cogl_texture_get_width (priv->selector_texture),
+                          cogl_texture_get_height (priv->selector_texture));
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->light_spot);
   clutter_actor_set_position (priv->light_spot,
                               -clutter_actor_get_width (priv->light_spot),
                               0);
+  clutter_actor_show (priv->light_spot);
+
+  g_signal_connect (priv->light_spot, "allocation-changed",
+                    G_CALLBACK (mnb_toolbar_lightspot_moved_cb),
+                    self);
 #endif /* TOOLBAR_CUT_OUT */
 }
 
@@ -3404,6 +3261,15 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
   return NULL;
 }
 
+/* Are we animating in */
+gboolean
+mnb_toolbar_in_show_transition (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  return priv->in_show_animation;
+}
+
 /* Are we animating in or out */
 gboolean
 mnb_toolbar_in_transition (MnbToolbar *toolbar)
@@ -3434,16 +3300,16 @@ mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont)
  */
 
 /*
- * The timeout callback that shows the panel if the pointer stayed long enough
- * in the trigger region.
+ * The timeout callback that hide the toolbar if the pointer has left
+ * the toolbar.
  */
 static gboolean
-mnb_toolbar_trigger_timeout_cb (gpointer data)
+mnb_toolbar_hide_timeout_cb (gpointer data)
 {
   MnbToolbar *toolbar = MNB_TOOLBAR (data);
 
-  mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
-  toolbar->priv->trigger_timeout_id = 0;
+  mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
+  toolbar->priv->hide_timeout_id = 0;
 
   return FALSE;
 }
@@ -3508,148 +3374,32 @@ mnb_toolbar_panels_showing (MnbToolbar *toolbar)
  * panel as required.
  */
 static gboolean
-mnb_toolbar_stage_captured_cb (ClutterActor *stage,
-                               ClutterEvent *event,
-                               gpointer      data)
+mnb_toolbar_event_cb (MnbToolbar *toolbar,
+                      ClutterEvent *event,
+                      gpointer      data)
 {
-  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
   MnbToolbarPrivate *priv    = toolbar->priv;
   gboolean           show_toolbar;
 
-  /*
-   * Shortcircuit what we can:
-   *
-   * a) toolbar is disabled (e.g., in lowlight),
-   * b) the event is something other than enter/leave
-   * c) we got an enter event on something other than stage,
-   * d) we got a leave event bug are showing panels, or waiting for panel to
-   *    show
-   * e) we are already animating.
-   *
-   * Split into multiple statments for readability.
-   */
-
-  if (priv->disabled)
+  if (event->type == CLUTTER_ENTER)
     {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-
-  if (!(event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
-    {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-
-  if ((event->type == CLUTTER_ENTER) &&
-      (event->crossing.x > priv->old_screen_width - CLOSE_BUTTON_GUARD_WIDTH))
-    {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-
-  if ((event->type == CLUTTER_ENTER) && (event->crossing.source != stage))
-    {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-
-  if ((event->type == CLUTTER_ENTER) &&
-      event->crossing.y > TOOLBAR_TRIGGER_THRESHOLD+TOOLBAR_TRIGGER_ADJUSTMENT)
-    {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-
-  if ((event->type == CLUTTER_LEAVE) &&
-      (priv->waiting_for_panel_show ||
-       priv->dont_autohide ||
-       mnb_toolbar_panels_showing (toolbar) ||
-       !mnb_toolbar_check_for_windows (toolbar)))
-    {
-      /* g_debug (G_STRLOC " leaving early (waiting %d, dont_autohide %d)", */
-      /*          priv->waiting_for_panel, priv->dont_autohide); */
-      return FALSE;
-    }
-
-#if 0
-  if (mnb_toolbar_in_transition (toolbar))
-    {
-      /* g_debug (G_STRLOC " leaving early"); */
-      return FALSE;
-    }
-#endif
-
-  /*
-   * This is when we want to show the toolbar:
-   *
-   *  a) we got an enter event on stage,
-   *
-   *    OR
-   *
-   *  b) we got a leave event on stage at the very top of the screen (when the
-   *     pointer is at the position that coresponds to the top of the window,
-   *     it is considered to have left the window; when the user slides pointer
-   *     to the top, we get an enter event immediately followed by a leave
-   *     event).
-   *
-   *  In all cases, only if the toolbar is not already visible.
-   */
-  show_toolbar  = (event->type == CLUTTER_ENTER);
-  show_toolbar |= ((event->type == CLUTTER_LEAVE) && (event->crossing.y == 0));
-  show_toolbar &= !CLUTTER_ACTOR_IS_MAPPED (toolbar);
-
-  if (show_toolbar)
-    {
-      /*
-       * If any fullscreen apps are present, then bail out.
-       */
-      if (dawati_netbook_fullscreen_apps_present (priv->plugin))
-            return FALSE;
-
-      /*
-       * Only do this once; if the timeout is already installed, we wait
-       * (see bug 3949)
-       */
-      if (!priv->trigger_timeout_id)
+      if (priv->hide_timeout_id)
         {
-          /*
-           * Increase sensitivity -- increasing size of the trigger zone while
-           * the timeout reduces the effect of a shaking hand.
-           */
-          mnb_toolbar_trigger_region_set_height (toolbar,
-                                                 TOOLBAR_TRIGGER_ADJUSTMENT);
-
-          priv->trigger_timeout_id =
-            g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
-                           mnb_toolbar_trigger_timeout_cb, toolbar);
+          g_source_remove (priv->hide_timeout_id);
+          priv->hide_timeout_id = 0;
         }
     }
   else if (event->type == CLUTTER_LEAVE)
     {
-      /*
-       * The most reliable way of detecting that the pointer is leaving the
-       * stage is from the related actor -- no related == pointer gone
-       * elsewhere.
-       */
-      if (event->crossing.related != NULL)
-        return FALSE;
+      if (priv->hide_timeout_id)
+        {
+          g_source_remove (priv->hide_timeout_id);
+          priv->hide_timeout_id = 0;
+        }
 
-      if (priv->trigger_timeout_id)
-        {
-          /*
-           * Pointer left us before the required timeout triggered; clean up.
-           */
-          mnb_toolbar_trigger_region_set_height (toolbar, 0);
-          g_source_remove (priv->trigger_timeout_id);
-          priv->trigger_timeout_id = 0;
-        }
-      else if (CLUTTER_ACTOR_IS_MAPPED (toolbar) &&
-               !priv->waiting_for_panel_hide)
-        {
-          mnb_toolbar_trigger_region_set_height (toolbar, 0);
-          mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
-        }
+      priv->hide_timeout_id =
+        g_timeout_add (TOOLBAR_HIDE_TIMEOUT,
+                       mnb_toolbar_hide_timeout_cb, toolbar);
     }
 
   return FALSE;
@@ -3723,11 +3473,11 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
    */
   if (netbook_mode && !priv->trigger_cb_id)
     {
-      priv->trigger_cb_id =
-        g_signal_connect (meta_plugin_get_stage (priv->plugin),
-                          "captured-event",
-                          G_CALLBACK (mnb_toolbar_stage_captured_cb),
-                          toolbar);
+      /* priv->trigger_cb_id = */
+      /*   g_signal_connect (meta_plugin_get_stage (priv->plugin), */
+      /*                     "captured-event", */
+      /*                     G_CALLBACK (mnb_toolbar_stage_captured_cb), */
+      /*                     toolbar); */
     }
   else if (!netbook_mode && priv->trigger_cb_id)
     {
@@ -3740,7 +3490,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
    * NB: This might trigger another change to the workspace area, but that
    *     one will become a no-op.
    */
-  mnb_toolbar_set_struts (toolbar);
+  /* mnb_toolbar_set_struts (toolbar); */
 
   /*
    * First, handle only stuff that depends only on width changes.
@@ -3779,6 +3529,8 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
       gconf_client_notify (ppriv->gconf_client, KEY_ORDER);
     }
 
+  clutter_actor_set_width (priv->hbox_main, screen_width);
+  clutter_actor_set_width (priv->shadow, screen_width);
   clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
 
   for (l = priv->panels; l; l = l->next)
@@ -3795,21 +3547,23 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
      */
     mnb_panel_set_size (tp->panel,
                         screen_width,
-                        screen_height - TOOLBAR_HEIGHT);
+                        screen_height - STATUSBAR_HEIGHT);
   }
 
   if (priv->input_region)
-    {
-      mnb_input_manager_remove_region_without_update (priv->input_region);
+    mnb_toolbar_update_input (toolbar);
+  /* if (priv->input_region) */
+  /*   { */
+  /*     mnb_input_manager_remove_region_without_update (priv->input_region); */
 
-      priv->input_region =
-        mnb_input_manager_push_region (0, 0,
-                                       screen_width,
-                                       TOOLBAR_HEIGHT + 10,
-                                       FALSE, MNB_INPUT_LAYER_PANEL);
-    }
+  /*     priv->input_region = */
+  /*       mnb_input_manager_push_region (0, 0, */
+  /*                                      screen_width, */
+  /*                                      TOOLBAR_HEIGHT + 10, */
+  /*                                      FALSE, MNB_INPUT_LAYER_PANEL); */
+  /*   } */
 
-  mnb_toolbar_trigger_region_set_height (toolbar, 0);
+  /* mnb_toolbar_trigger_region_set_height (toolbar, 0); */
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
@@ -3884,7 +3638,7 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   /*
    * Set up the stage input region
    */
-  mnb_toolbar_trigger_region_set_height (toolbar, 0);
+  /* mnb_toolbar_trigger_region_set_height (toolbar, 0); */
 
   /*
    * Make sure we are getting enter and leave events for stage (set up both
@@ -4527,4 +4281,22 @@ mnb_toolbar_setup_gconf (MnbToolbar *toolbar)
                            &error);
 
   mnb_toolbar_load_gconf_settings (toolbar);
+}
+
+CoglHandle
+mnb_toolbar_get_selector_texture (MnbToolbar *toolbar)
+{
+  g_return_val_if_fail (MNB_IS_TOOLBAR (toolbar), COGL_INVALID_HANDLE);
+
+  return toolbar->priv->selector_texture;
+}
+
+void
+mnb_toolbar_get_selector_allocation_box (MnbToolbar      *toolbar,
+                                         ClutterActorBox *box)
+{
+  g_return_if_fail (MNB_IS_TOOLBAR (toolbar));
+  g_return_if_fail (box != NULL);
+
+  clutter_actor_get_allocation_box (toolbar->priv->light_spot, box);
 }
