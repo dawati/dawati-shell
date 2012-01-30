@@ -219,18 +219,18 @@ PengeWelcomeTile
 *.PengeInterestingTileRemoveButton:hover,
 *.PengeInterestingTileRemoveButton:active
 {
-  border-image:none;
+  border-image: none;
   padding:0;
 }
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('dismiss_button.png');
+  -mx-content-image: url('button-close.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('dismiss_button_hover.png');
+  -mx-content-image: url('button-close-hover.png');
 }
 
 *.PengeInterestingTileMessageIconOverlay
