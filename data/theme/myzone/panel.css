@@ -13,12 +13,14 @@ PengeGridView
 
 PengeCalendarPane
 {
+  border-image: url('../common/content-pane-background.png') 5 5 5 5;
   padding: 3;
 }
 
 PengeAppsPane
 {
   padding: 4;
+  border-image: url('../common/content-pane-background.png') 5 5 5 5;
 }
 
 *.PengeEventsPaneHeader, *.PengeTasksPaneHeader
