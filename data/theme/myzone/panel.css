@@ -7,7 +7,8 @@ MxLabel#title
 
 PengeGridView
 {
-  padding: 5;
+  border-image: url('myzone-default-background.png') 5 5 5 5;
+  padding: 20px 15px;
 }
 
 PengeCalendarPane
