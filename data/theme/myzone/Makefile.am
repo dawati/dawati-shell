@@ -50,7 +50,7 @@ dist_theme_DATA = \
 	calendar-icon-29.png \
 	calendar-icon-30.png \
 	calendar-icon-31.png \
-	cat.png \
+	myzone-default-background.png \
 	avatar-mask.png \
 	avatar_icon.png \
 	card_frame.png \
