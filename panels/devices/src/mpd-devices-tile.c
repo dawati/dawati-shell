@@ -610,7 +610,6 @@ mpd_devices_tile_init (MpdDevicesTile *self)
                                        TRUE);
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
                                  MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->vbox), 16);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
 
   tile = mpd_default_device_tile_new ();

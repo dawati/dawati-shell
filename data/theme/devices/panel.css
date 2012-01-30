@@ -16,7 +16,7 @@ MpdComputerTile > MxFrame {
 }
 
 MpdDefaultDeviceTile, MpdStorageDeviceTile {
-  padding: 12 12 0 0;
+  padding: 12 0 0 0;
 }
 
 MxLabel.message {
