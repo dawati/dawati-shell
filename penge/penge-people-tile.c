@@ -277,7 +277,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
     mx_table_add_actor_with_properties (MX_TABLE (inner_table),
                                         label,
-                                        0, 1,
+                                        0, 0,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
