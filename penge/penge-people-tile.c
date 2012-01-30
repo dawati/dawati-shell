@@ -322,25 +322,19 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 
   penge_people_tile_set_text (tile);
 
-  if (!avatar)
-  {
-    author_icon = sw_item_get_value (item, "authoricon");
-
-    if (author_icon)
+  /* @tile's details overlay will show the author's avatar when present and
+   * meaningful for the tile's type */
+  author_icon = sw_item_get_value (item, "authoricon");
+  if (author_icon)
     {
       g_object_set (tile,
-                    "icon-path", author_icon,
-                    NULL);
+          "icon-path", author_icon,
+          NULL);
     } else {
-      g_object_set (tile,
-                    "icon-path", DEFAULT_AVATAR_PATH,
-                    NULL);
+        g_object_set (tile,
+            "icon-path", DEFAULT_AVATAR_PATH,
+            NULL);
     }
-  } else {
-    g_object_set (tile,
-                  "icon-path", NULL,
-                  NULL);
-  }
 }
 
 void
