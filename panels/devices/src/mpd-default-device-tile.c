@@ -81,11 +81,9 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
   hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox),
-                             MPD_STORAGE_DEVICE_TILE_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
-  icon = clutter_texture_new_from_file (PKGICONDIR "/device-usb.png",
+  icon = clutter_texture_new_from_file (PKGICONDIR "/icon-device-usbstick.png",
                                         &error);
   if (error)
   {

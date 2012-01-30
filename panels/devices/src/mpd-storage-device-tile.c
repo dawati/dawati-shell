@@ -310,7 +310,7 @@ _constructor (GType                  type,
                                    &error);
   } else {
     clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                   PKGICONDIR "/device-usb.png",
+                                   PKGICONDIR "/icon-device-usbstick.png",
                                    &error);
   }
   if (error)
