@@ -3093,7 +3093,7 @@ mnb_toolbar_constructed (GObject *self)
    */
   sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
                                              THEMEDIR
-                                             "/panel/toolbar-shadow.png");
+                                             "/toolbar/toolbar-shadow.png");
   if (sh_texture)
     {
       shadow = mnb_toolbar_shadow_new (sh_texture,
