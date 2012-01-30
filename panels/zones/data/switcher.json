@@ -1,0 +1,27 @@
+[
+  {
+    "type": "MxBoxLayout",
+    "orientation": "vertical",
+    "id": "toplevel",
+    "children": [
+      {
+        "type": "MxLabel",
+        "text": "Application Switcher",
+        "style-class": "titleBar"
+      },
+      {
+        "type": "MxScrollView",
+        "children": [
+          {
+            "type": "MxGrid",
+            "id": "grid",
+            "style-class": "panel",
+            "row-spacing": 29,
+            "column-spacing": 45,
+            "child::expand": true
+          }
+        ]
+      }
+    ]
+  }
+]

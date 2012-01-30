@@ -9,6 +9,9 @@ desktopfiles_DATA = $(desktopfiles_files)
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktopfiles_files)
 
+jsondir = $(PANEL_ZONES_DATADIR)
+dist_json_DATA = switcher.json
+
 EXTRA_DIST = dawati-panel-zones.desktop.in.in
 CLEANFILES = \
 	$(desktopfiles_files) \
