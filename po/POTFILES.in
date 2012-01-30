@@ -1,19 +1,25 @@
+
+
 # List of source files containing translatable strings.
 capplet/data/dawati-toolbar-properties.desktop.in
+capplet/data/system-tray-properties.desktop.in
 capplet/src/dawati-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
 capplet/src/mtp-jar.c
 capplet/src/mtp-clock.c
 capplet/src/mtp-cc-panel.c
-capplet/data/system-tray-properties.desktop.in
 capplet/src/syst-cc-panel.c
 
 callouts/3g/ggg-country-dialog.c
+callouts/3g/ggg-iso.c
 callouts/3g/ggg-manual-dialog.c
+callouts/3g/ggg-mobile-info.c
 callouts/3g/ggg-plan-dialog.c
 callouts/3g/ggg-provider-dialog.c
-callouts/3g/ggg-service-dialog.c
+callouts/3g/ggg-sim.c
+callouts/3g/ggg-sim-dialog.c
+callouts/3g/main.c
 callouts/openconnect/main.c
 
 carrick/carrick-applet.c
@@ -33,7 +39,6 @@ panels/applications/src/dawati-panel-applications.c
 panels/applications/src/mnb-launcher-button.c
 panels/applications/data/dawati-panel-applications.desktop.in.in
 
-panels/datetime/src/dawati-panel-date-time.c
 panels/datetime/data/dawati-panel-datetime.desktop.in.in
 panels/datetime/src/mnp-clock-area.c
 panels/datetime/src/mnp-utils.c
@@ -46,6 +51,9 @@ panels/datetime/src/mnp-shell.c
 panels/datetime/src/system-timezone.c
 panels/datetime/src/com.dawati.UX.Shell.Panels.datetime.service.in
 panels/datetime/src/date-time.schemas.in
+panels/datetime/src/dawati-alarm-notify.c
+panels/datetime/src/mnp-alarm-instance.c
+
 
 panels/devices/data/dawati-panel-devices.desktop.in.in
 panels/devices/data/dawati-panel-devices.schemas.in
@@ -64,6 +72,9 @@ panels/devices/src/mpd-shell.c
 panels/devices/src/mpd-storage-device-tile.c
 panels/devices/src/mpd-volume-tile.c
 
+panels/music/dawati-panel-music.desktop.in.in
+panels/music/main.js
+
 panels/myzone/data/dawati-panel-myzone.desktop.in.in
 panels/myzone/data/dawati-panel-myzone.schemas.in
 panels/myzone/data/myzone.desktop.in.in
@@ -73,6 +84,7 @@ panels/myzone/capplet/myzone-cc-panel.c
 panels/myzone/src/dawati-panel-myzone.c
 
 panels/networks/data/carrick.desktop.in.in
+panels/networks/data/carrick-standalone.desktop.in.in
 panels/networks/src/carrick.c
 
 panels/people/anerley/anerley/anerley-tile.c
@@ -81,6 +93,7 @@ panels/people/anerley/anerley/anerley-presence-chooser.c
 panels/people/src/dawati-panel-people.c
 panels/people/src/mnb-people-panel.c
 panels/people/data/dawati-panel-people.desktop.in.in
+
 
 panels/power-icon/data/dawati-power-icon.desktop.in.in
 panels/power-icon/src/dawati-power-icon.c
@@ -100,13 +113,10 @@ panels/web/common/mwb-separator.cc
 panels/web/common/mwb-utils.cc
 panels/web/netpanel/dawati-netbook-netpanel.cc
 panels/web/netpanel/dawati-panel-web.cc
-panels/web/netpanel/mnb-netpanel-scrollview.cc
 panels/web/netpanel/dawati-panel-internet.desktop.in.in
 
 panels/zones/data/dawati-panel-zones.desktop.in.in
 panels/zones/src/main.c
-panels/zones/src/sw-overview.c
-panels/zones/src/sw-zone.c
 
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
