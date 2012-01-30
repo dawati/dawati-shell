@@ -799,7 +799,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     (GCallback)_recent_manager_changed_cb,
                     self);
 
-  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 4);
+  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
 
   priv->gconf_client = gconf_client_get_default ();
 
