@@ -135,7 +135,7 @@ PengePeopleTile *.PengePeopleTileContentLabel
 
 PengePeopleTile *.PengePeopleTileContentBackground
 {
-  border-image: url('quotebackground.png') 45 51 46 52;
+  border-image: url('content-bg.png') 45 51 46 52;
   padding: 8;
 }
 
