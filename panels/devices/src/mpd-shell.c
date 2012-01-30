@@ -127,10 +127,12 @@ mpd_shell_init (MpdShell *self)
                     G_CALLBACK (_width_notify_cb), NULL);
 
   label = mx_label_new_with_text (_("Devices and quick settings"));
-  clutter_actor_set_name (label, "title");
+  mx_stylable_set_style_class (MX_STYLABLE (label), "titleBar");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   hbox = mx_box_layout_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (hbox), "contentPane");
+
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_PANE_COLUMN_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);

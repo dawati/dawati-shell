@@ -149,8 +149,8 @@ mpd_folder_tile_init (MpdFolderTile *self)
   unsigned int           i;
 
   layout = clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL);
-  clutter_flow_layout_set_column_spacing (CLUTTER_FLOW_LAYOUT (layout), 2.0);
-  clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout), 2.0);
+  clutter_flow_layout_set_column_spacing (CLUTTER_FLOW_LAYOUT (layout), 11.0);
+  clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout), 11.0);
 
   box = clutter_box_new (layout);
   mx_bin_set_child (MX_BIN (self), box);
@@ -168,6 +168,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                            "icon-path", icon_path,
                            NULL);
     clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
+    mx_stylable_set_style_class (MX_STYLABLE (button), "contentTile");
     g_signal_connect (button, "clicked",
                       G_CALLBACK (_button_clicked_cb), self);
     clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
@@ -184,6 +185,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                          "icon-path", PKGICONDIR "/folder-trash.png",
                          NULL);
   clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
+  mx_stylable_set_style_class (MX_STYLABLE (button), "contentTile");
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_button_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), button);

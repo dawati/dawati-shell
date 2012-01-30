@@ -71,6 +71,7 @@ mpd_fs_pane_init (MpdFsPane *self)
   self->priv = FS_PANEL_PRIVATE (self);
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 21);
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_PANE_WIDTH);
 
   tile = mpd_disk_tile_new ();

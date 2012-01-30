@@ -1,29 +1,4 @@
 
-/* MplContentPane */
-
-MplContentPane {
-  /* border-image: url('../common/content-pane-background.png') 5; */
-  background-color: orange;
-  padding: 3 15 3 15;
-}
-
-MplContentPane > .header {
-  border-image: url('content-pane-header.png') 2;
-  padding: 3 10 3 15;
-}
-
-MplContentPane > MxBoxLayout > .title {
-  color: #2a3c4a;
-  font-size: 16px;
-}
-
-
-/* Theme goes here  */
-
-MxLabel {
-  color: #606261;
-}
-
 MpdFolderButton {
   border-image: none;
 }
@@ -32,44 +7,12 @@ MpdFolderButton:hover {
   border-image: url('directory-highlight.png') 3;
 }
 
-MpdShell {
-  padding: 5 15 5 15;
-}
-
-#title {
-  color: #2a3c4a;
-  font-size: 16px;
-  padding: 6 6 6 0;
-}
-
-MpdComputerPane, MpdDevicesPane {
-  border-image: url('../common/content-pane-background.png') 5;
-  padding: 3;
-}
-
 MpdComputerTile > MxLabel {
   padding: 10 0 10 0;
 }
 
-#computer-section-header {
-  border-image: url('content-pane-header.png') 2;
-  padding: 6 10 6 15;
-}
-
-#computer-section-title {
-  color: #2a3c4a;
-  font-size: 14px;
-}
-
-#device-section-header {
-  border-image: url('content-pane-header.png') 2;
-  color: #2a3c4a;
-  font-size: 14px;
-  padding: 10 10 10 15;
-}
-
-MpdBatteryTile, MpdBrightnessTile, MpdDiskTile, MpdVolumeTile {
-  padding: 10 10 10 18;
+MpdComputerTile > MxFrame {
+  padding:  0 0 0 20;
 }
 
 MpdDefaultDeviceTile, MpdStorageDeviceTile {
@@ -97,9 +40,11 @@ MxIcon#brightness-off {
 MxIcon#volume-on {
   border-image: none;
   -mx-content-image: url('icon-slider-volume-on.png');
+  padding: 0;
 }
 
 MxIcon#volume-off {
   border-image: none;
   -mx-content-image: url('icon-slider-volume-off.png');
+  padding: 0;
 }

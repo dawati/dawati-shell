@@ -131,7 +131,11 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "brightness-off");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           icon,
+                                           -1,
+                                           "y-fill", FALSE,
+                                           NULL);
 
   priv->slider = (MxSlider *) mx_slider_new ();
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
@@ -144,7 +148,11 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "brightness-on");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           icon,
+                                           -1,
+                                           "y-fill", FALSE,
+                                           NULL);
 
   /* Hook the logic */
   priv->display = mpd_display_device_new ();
