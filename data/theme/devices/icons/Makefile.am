@@ -7,13 +7,13 @@ dist_icons_DATA = \
 	battery-icon-100.png \
 	battery-icon-missing.png \
 	battery-icon-plugged.png \
-	device-usb.png \
 	folder-documents.png \
 	folder-downloads.png \
 	folder-music.png \
 	folder-pictures.png \
 	folder-trash.png \
 	folder-videos.png \
+	icon-device-usbstick.png \
 	$(NULL)
 
 battery_icon_pluggeddir = $(iconsdir)/battery-icon-plugged
