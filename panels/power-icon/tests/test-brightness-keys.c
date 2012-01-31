@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 #include <clutter-gtk/clutter-gtk.h>
-#include <gdk/gdkx.h>
+#include <gdk/gdk.h>
 #include <X11/XF86keysym.h>
 #include "mpd-global-key.h"
 
@@ -50,7 +50,7 @@ main (int     argc,
   gtk_clutter_init (&argc, &argv);
 
   /* Brightness keys. */
-  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessUp);
+  key_code = XKeysymToKeycode (gdk_display_get_default(), XF86XK_MonBrightnessUp);
   if (key_code)
   {
     brightness_up_key = mpd_global_key_new (key_code);
@@ -61,7 +61,7 @@ main (int     argc,
     g_warning ("Failed to query XF86XK_MonBrightnessUp key code.");
   }
 
-  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessDown);
+  key_code = XKeysymToKeycode (gdk_display_get_default(), XF86XK_MonBrightnessDown);
   if (key_code)
   {
     brightness_down_key = mpd_global_key_new (key_code);
