@@ -98,8 +98,7 @@ static void
 mpd_devices_pane_init (MpdDevicesPane *self)
 {
   MpdDevicesPanePrivate *priv = GET_PRIVATE (self);
-  ClutterActor  *label;
-  ClutterActor  *tile;
+  ClutterActor  *label, *tile, *stack, *filigree;
 
   mx_stylable_set_style_class (MX_STYLABLE (self), "contentPanel");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -109,16 +108,30 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
   mx_stylable_set_style_class (MX_STYLABLE (label), "sectionHeader");
 
+  stack = mx_stack_new ();
+
   tile = mpd_devices_tile_new ();
   priv->devices_tile = MPD_DEVICES_TILE (tile);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
   g_signal_connect (tile, "request-show",
                     G_CALLBACK (_tile_request_show_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
-                               "expand", true,
-                               NULL);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stack), tile);
+
+  filigree = clutter_texture_new_from_file (PKGICONDIR "/plug-in-device.png",
+                                            NULL);
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (filigree), TRUE);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stack), filigree);
+  mx_stack_child_set_x_fill (MX_STACK (stack), filigree, FALSE);
+  mx_stack_child_set_y_fill (MX_STACK (stack), filigree, FALSE);
+
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           stack,
+                                           -1,
+                                           "expand", TRUE,
+                                           NULL);
 }
 
 ClutterActor *

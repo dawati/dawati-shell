@@ -14,6 +14,7 @@ dist_icons_DATA = \
 	folder-trash.png \
 	folder-videos.png \
 	icon-device-usbstick.png \
+	plug-in-device.png \
 	$(NULL)
 
 battery_icon_pluggeddir = $(iconsdir)/battery-icon-plugged
