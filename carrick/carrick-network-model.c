@@ -131,6 +131,14 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_BOOLEAN, /* immutable */
                                  G_TYPE_BOOLEAN, /* login_required */
                                  G_TYPE_STRING, /* ethernet mac address */
+                                 G_TYPE_STRING, /* proxy method */
+                                 G_TYPE_STRING, /* proxy url */
+                                 G_TYPE_STRV, /* proxy servers */
+                                 G_TYPE_STRV, /* proxy excludes */
+                                 G_TYPE_STRING, /* configured proxy method */
+                                 G_TYPE_STRING, /* configured proxy url */
+                                 G_TYPE_STRV, /* configured proxy servers */
+                                 G_TYPE_STRV, /* configured proxy excludes */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -329,6 +337,13 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 
   const gchar        **nameservers, **config_nameservers, **securities;
   const char          *mac_address;
+
+  const gchar         *proxy_method, *proxy_url;
+  const gchar        **proxy_servers, **config_proxy_servers;
+
+  const gchar         *config_proxy_method, *config_proxy_url;
+  const gchar        **proxy_excludes, **config_proxy_excludes;
+
   GtkTreeIter          iter;
 
   if (error)
@@ -422,6 +437,26 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (dict)
         mac_address = get_string (dict, "Address");
 
+      proxy_method = proxy_url = NULL;
+      dict = get_boxed (properties, "Proxy");
+      if (dict)
+        {
+          proxy_method = get_string (dict, "Method");
+          proxy_url = get_string (dict, "URL");
+          proxy_servers = get_boxed (dict, "Servers");
+          proxy_excludes = get_boxed (dict, "Excludes");
+        }
+
+      config_proxy_method = config_proxy_url = NULL;
+      dict = get_boxed (properties, "Proxy.Configuration");
+      if (dict)
+        {
+          config_proxy_method = get_string (dict, "Method");
+          config_proxy_url = get_string (dict, "URL");
+          config_proxy_servers = get_boxed (dict, "Servers");
+          config_proxy_excludes = get_boxed (dict, "Excludes");
+        }
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -457,6 +492,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_IMMUTABLE, immutable,
                               CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
                               CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
+                              CARRICK_COLUMN_PROXY_METHOD, proxy_method,
+                              CARRICK_COLUMN_PROXY_URL, proxy_url,
+                              CARRICK_COLUMN_PROXY_SERVERS, proxy_servers,
+                              CARRICK_COLUMN_PROXY_EXCLUDES, proxy_excludes,
+                              CARRICK_COLUMN_PROXY_CONFIGURED_METHOD, config_proxy_method,
+                              CARRICK_COLUMN_PROXY_CONFIGURED_URL, config_proxy_url,
+                              CARRICK_COLUMN_PROXY_CONFIGURED_SERVERS, config_proxy_servers,
+                              CARRICK_COLUMN_PROXY_CONFIGURED_EXCLUDES, config_proxy_excludes,
                               -1);
         }
       else
@@ -494,6 +537,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_IMMUTABLE, immutable,
              CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
              CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
+             CARRICK_COLUMN_PROXY_METHOD, proxy_method,
+             CARRICK_COLUMN_PROXY_URL, proxy_url,
+             CARRICK_COLUMN_PROXY_SERVERS, proxy_servers,
+             CARRICK_COLUMN_PROXY_EXCLUDES, proxy_excludes,
+             CARRICK_COLUMN_PROXY_CONFIGURED_METHOD, config_proxy_method,
+             CARRICK_COLUMN_PROXY_CONFIGURED_URL, config_proxy_url,
+             CARRICK_COLUMN_PROXY_CONFIGURED_SERVERS, config_proxy_servers,
+             CARRICK_COLUMN_PROXY_CONFIGURED_EXCLUDES, config_proxy_excludes,
              -1);
         }
     }
@@ -697,6 +748,48 @@ network_model_service_changed_cb (DBusGProxy  *service,
           mac_address = get_string (dict, "Address");
           gtk_list_store_set (store, &iter,
                               CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
+                              -1);
+        }
+    }
+  else if (g_str_equal (property, "Proxy"))
+    {
+      dict = g_value_get_boxed (value);
+      if (dict)
+        {
+          const char  *proxy_method, *proxy_url;
+          const char **servers, **excludes;
+
+          proxy_method = get_string (dict, "Method");
+          proxy_url = get_string (dict, "URL");
+          servers = get_boxed (dict, "Servers");
+          excludes = get_boxed (dict, "Excludes");
+
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_PROXY_METHOD, proxy_method,
+                              CARRICK_COLUMN_PROXY_URL, proxy_url,
+                              CARRICK_COLUMN_PROXY_SERVERS, servers,
+                              CARRICK_COLUMN_PROXY_EXCLUDES, excludes,
+                              -1);
+        }
+    }
+  else if (g_str_equal (property, "Proxy.Configuration"))
+    {
+      dict = g_value_get_boxed (value);
+      if (dict)
+        {
+          const char  *proxy_method, *proxy_url;
+          const char **servers, **excludes;
+
+          proxy_method = get_string (dict, "Method");
+          proxy_url = get_string (dict, "URL");
+          servers = get_boxed (dict, "Servers");
+          excludes = get_boxed (dict, "Excludes");
+
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_PROXY_METHOD, proxy_method,
+                              CARRICK_COLUMN_PROXY_URL, proxy_url,
+                              CARRICK_COLUMN_PROXY_SERVERS, servers,
+                              CARRICK_COLUMN_PROXY_EXCLUDES, excludes,
                               -1);
         }
     }

@@ -106,7 +106,18 @@ struct _CarrickServiceItemPrivate
   GtkWidget *dns_text_view;
   GtkWidget *mac_address_title_label;
   GtkWidget *mac_address_label;
+
+  GtkWidget *proxy_none_radio;
+  GtkWidget *proxy_auto_radio;
+  GtkWidget *proxy_url_radio;
+  GtkWidget *proxy_url_entry;
+  GtkWidget *proxy_manual_radio;
+  GtkWidget *proxy_manual_entry;
+  GtkWidget *proxy_manual_text_view;
+  GtkWidget *proxy_bypass_text_view;
+
   GtkWidget *apply_button;
+
   gboolean form_modified;
 
   CarrickIconFactory *icon_factory;
@@ -154,6 +165,11 @@ struct _CarrickServiceItemPrivate
   gboolean immutable;
   gboolean login_required;
   gchar *mac_address;
+
+  gchar *proxy_method, *proxy_url;
+  gchar **proxy_servers, **proxy_excludes;
+  gchar *config_proxy_method, *config_proxy_url;
+  gchar **config_proxy_servers, **config_proxy_excludes;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -341,6 +357,8 @@ _populate_variables (CarrickServiceItem *self)
       char *ipv6_method, *ipv6_address, *ipv6_gateway;
       uint ipv6_prefix_length;
       char **nameservers;
+      char *proxy_method, *proxy_url;
+      char **proxy_servers, **proxy_excludes;
       char *state;
       char *type;
 
@@ -358,6 +376,11 @@ _populate_variables (CarrickServiceItem *self)
       g_free (priv->ipv6_gateway);
       g_strfreev (priv->nameservers);
       g_free (priv->mac_address);
+
+      g_free (priv->proxy_method);
+      g_free (priv->proxy_url);
+      g_strfreev (priv->proxy_servers);
+      g_strfreev (priv->proxy_excludes);
 
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
@@ -392,6 +415,14 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_IMMUTABLE, &priv->immutable,
                           CARRICK_COLUMN_LOGIN_REQUIRED, &priv->login_required,
                           CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, &priv->mac_address,
+                          CARRICK_COLUMN_PROXY_METHOD, &proxy_method,
+                          CARRICK_COLUMN_PROXY_URL, &proxy_url,
+                          CARRICK_COLUMN_PROXY_SERVERS, &proxy_servers,
+                          CARRICK_COLUMN_PROXY_EXCLUDES, &proxy_excludes,
+                          CARRICK_COLUMN_PROXY_CONFIGURED_METHOD, &priv->proxy_method,
+                          CARRICK_COLUMN_PROXY_CONFIGURED_URL, &priv->proxy_url,
+                          CARRICK_COLUMN_PROXY_CONFIGURED_SERVERS, &priv->proxy_servers,
+                          CARRICK_COLUMN_PROXY_CONFIGURED_EXCLUDES, &priv->proxy_excludes,
                           -1);
 
       carrick_service_item_set_type (self, type);
@@ -441,6 +472,29 @@ _populate_variables (CarrickServiceItem *self)
         {
           g_strfreev (priv->nameservers);
           priv->nameservers = nameservers;
+        }
+
+      if (priv->proxy_method)
+        g_free (proxy_method);
+      else
+        priv->proxy_method = proxy_method;
+      if (priv->proxy_url)
+        g_free (proxy_url);
+      else
+        priv->proxy_url = proxy_url;
+      if (priv->proxy_servers && g_strv_length (priv->proxy_servers) > 0)
+        g_strfreev (proxy_servers);
+      else
+        {
+          g_strfreev (priv->proxy_servers);
+          priv->proxy_servers = proxy_servers;
+        }
+      if (priv->proxy_servers && g_strv_length (priv->proxy_servers) > 0)
+        g_strfreev (proxy_servers);
+      else
+        {
+          g_strfreev (priv->proxy_servers);
+          priv->proxy_servers = proxy_servers;
         }
 
       /* TODO: it would make sense to expand this to cover lot of other 
@@ -606,6 +660,58 @@ _set_form_state (CarrickServiceItem *self)
        gtk_widget_hide (priv->mac_address_label);
        gtk_widget_hide (priv->mac_address_title_label);
      }
+
+  if (g_strcmp0 (priv->proxy_method, "direct") == 0)
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->proxy_none_radio),
+                                    TRUE);
+    }
+  else if (g_strcmp0 (priv->proxy_method, "manual") == 0)
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->proxy_manual_radio),
+                                    TRUE);
+    }
+  else if (g_strcmp0 (priv->proxy_method, "auto") == 0)
+    {
+      if (priv->proxy_url && strlen (priv->proxy_url) > 0)
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->proxy_url_radio),
+                                      TRUE);
+      else
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->proxy_auto_radio),
+                                      TRUE);
+    }
+  else if (priv->proxy_method)
+    {
+      g_warning ("Unknown proxy method '%s'", priv->proxy_method);
+    }
+
+  gtk_entry_set_text (GTK_ENTRY (priv->proxy_url_entry),
+                      priv->proxy_url ? priv->proxy_url : "");
+
+  if (priv->proxy_servers)
+    {
+      char *servers;
+      servers = g_strjoinv (", ", priv->proxy_servers);
+      gtk_entry_set_text (GTK_ENTRY (priv->proxy_manual_entry), servers);
+      g_free (servers);
+    }
+  else
+    {
+      gtk_entry_set_text (GTK_ENTRY (priv->proxy_manual_entry), "");
+    }
+
+  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->proxy_bypass_text_view));
+  if (priv->proxy_excludes)
+    {
+      char *proxy_excludes;
+      proxy_excludes = g_strjoinv ("\n", priv->proxy_excludes);
+      gtk_text_buffer_set_text (buf, proxy_excludes, -1);
+      g_free (proxy_excludes);
+    }
+  else
+    {
+      gtk_text_buffer_set_text (buf, "", -1);
+    }
 
   /* need to initialize this after setting the widgets, as their signal
    * handlers set form_modified to TRUE */
@@ -1969,6 +2075,14 @@ carrick_service_item_dispose (GObject *object)
   g_free (priv->mac_address);
   priv->mac_address = NULL;
 
+  g_free (priv->proxy_method);
+  priv->proxy_method = NULL;
+  g_free (priv->proxy_url);
+  priv->proxy_url = NULL;
+  g_strfreev (priv->proxy_servers);
+  priv->proxy_servers = NULL;
+  g_strfreev (priv->proxy_excludes);
+  priv->proxy_excludes = NULL;
 
   if (priv->ofono) {
     g_signal_handlers_disconnect_by_func (priv->ofono,
@@ -2236,7 +2350,7 @@ validate_static_ipv6_entries (CarrickServiceItem *item)
 }
 
 static char**
-get_nameserver_strv (GtkTextView *dns_text_view)
+get_ip_addr_strv (GtkTextView *dns_text_view)
 {
   GtkTextBuffer *buf;
   GtkTextIter start, end;
@@ -2261,7 +2375,7 @@ validate_dns_text_view (CarrickServiceItem *item)
 
   priv = item->priv;
 
-  dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
+  dnsv = get_ip_addr_strv (GTK_TEXT_VIEW (priv->dns_text_view));
 
   for (iter = dnsv; *iter; iter++)
     {
@@ -2290,9 +2404,9 @@ validate_dns_text_view (CarrickServiceItem *item)
 }
 
 static void
-static_ip_entry_notify_text (GtkEntry   *entry,
-                             GParamSpec *pspec,
-                             gpointer    user_data)
+entry_notify_text (GtkEntry   *entry,
+                   GParamSpec *pspec,
+                   gpointer    user_data)
 {
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
 
@@ -2300,11 +2414,34 @@ static_ip_entry_notify_text (GtkEntry   *entry,
 }
 
 static void
-dns_buffer_changed_cb (GtkTextBuffer *textbuffer,
-                       gpointer       user_data)
+text_view_buffer_changed_cb (GtkTextBuffer *textbuffer,
+                             gpointer       user_data)
 {
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
 
+  _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
+}
+
+static void
+proxy_radio_toggled_cb (GtkWidget *radio,
+                        gpointer user_data)
+{
+  CarrickServiceItem *item;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  item = CARRICK_SERVICE_ITEM (user_data);
+
+  if (radio == item->priv->proxy_url_radio) {
+    gtk_widget_show (item->priv->proxy_url_entry);
+    gtk_widget_hide (item->priv->proxy_manual_entry);
+  } else if (radio == item->priv->proxy_manual_radio) {
+    gtk_widget_hide (item->priv->proxy_url_entry);
+    gtk_widget_show (item->priv->proxy_manual_entry);
+  } else {
+    gtk_widget_hide (item->priv->proxy_url_entry);
+    gtk_widget_hide (item->priv->proxy_manual_entry);
+  }
+  
   _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
 
@@ -2314,8 +2451,10 @@ apply_button_clicked_cb (GtkButton *button,
 {
   CarrickServiceItem *item;
   CarrickServiceItemPrivate *priv;
-  GValue *value;
-  char **dnsv;
+  GValue *value, *proxy_method_value, *proxy_url_value, *proxies_value, *excludes_value;
+  GHashTable *dict;
+  char **strv, **proxiesv, **excludesv;
+  const char *proxy_url;
   int method;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
@@ -2330,18 +2469,17 @@ apply_button_clicked_cb (GtkButton *button,
   method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo));
   if (method != METHOD_FIXED)
     {
-      GHashTable *ipv4;
 
       /* save ipv4 settings */
 
-      ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
+      dict = g_hash_table_new (g_str_hash, g_str_equal);
       if (method == METHOD_MANUAL)
         {
           char *address, *netmask, *gateway;
 
           if (!validate_static_ipv4_entries (item))
             {
-               g_hash_table_destroy (ipv4);
+               g_hash_table_destroy (dict);
                return;
             }
 
@@ -2349,19 +2487,19 @@ apply_button_clicked_cb (GtkButton *button,
           netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
           gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
 
-          g_hash_table_insert (ipv4, "Method", "manual");
-          g_hash_table_insert (ipv4, "Address", address);
-          g_hash_table_insert (ipv4, "Netmask", netmask);
-          g_hash_table_insert (ipv4, "Gateway", gateway);
+          g_hash_table_insert (dict, "Method", "manual");
+          g_hash_table_insert (dict, "Address", address);
+          g_hash_table_insert (dict, "Netmask", netmask);
+          g_hash_table_insert (dict, "Gateway", gateway);
         }
       else
         {
-          g_hash_table_insert (ipv4, "Method", "dhcp");
+          g_hash_table_insert (dict, "Method", "dhcp");
         }
 
       value = g_new0 (GValue, 1);
       g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
-      g_value_set_boxed (value, ipv4);
+      g_value_set_boxed (value, dict);
 
       net_connman_Service_set_property_async (priv->proxy,
                                               "IPv4.Configuration",
@@ -2369,13 +2507,12 @@ apply_button_clicked_cb (GtkButton *button,
                                               set_configuration_cb,
                                               "IPv4.Configuration");
       g_free (value);
-      g_hash_table_destroy (ipv4);
+      g_hash_table_destroy (dict);
     }
 
   method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->ipv6_method_combo));
   if (method != IPV6_METHOD_FIXED)
     {
-      GHashTable *dict;
       char *address, *gateway, *prefix;
       GValue val = {0};
 
@@ -2430,14 +2567,11 @@ apply_button_clicked_cb (GtkButton *button,
       g_hash_table_destroy (dict);
     }
 
-  /* start updating form again based on connman updates */
-  _set_form_modified (item, FALSE);
-
   /* save dns settings */
   value = g_new0 (GValue, 1);
   g_value_init (value, G_TYPE_STRV);
-  dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
-  g_value_set_boxed (value, dnsv);
+  strv = get_ip_addr_strv (GTK_TEXT_VIEW (priv->dns_text_view));
+  g_value_set_boxed (value, strv);
 
   net_connman_Service_set_property_async (priv->proxy,
                                           "Nameservers.Configuration",
@@ -2446,7 +2580,78 @@ apply_button_clicked_cb (GtkButton *button,
                                           user_data);
 
   g_free (value);
-  g_strfreev (dnsv);
+  g_strfreev (strv);
+
+
+  /* save proxy settings */
+
+  dict = g_hash_table_new (g_str_hash, g_str_equal);
+
+  proxy_method_value = g_new0 (GValue, 1);
+  g_value_init (proxy_method_value, G_TYPE_STRING);
+
+  proxy_url_value = g_new0 (GValue, 1);
+  g_value_init (proxy_url_value, G_TYPE_STRING);
+  proxy_url = gtk_entry_get_text (GTK_ENTRY (priv->proxy_url_entry));
+  g_value_set_string (proxy_url_value, proxy_url);
+
+  excludes_value = g_new0 (GValue, 1);
+  g_value_init (excludes_value, G_TYPE_STRV);
+  excludesv = get_ip_addr_strv (GTK_TEXT_VIEW (priv->proxy_bypass_text_view));
+  g_value_set_boxed (excludes_value, excludesv);
+
+  proxies_value = g_new0 (GValue, 1);
+  g_value_init (proxies_value, G_TYPE_STRV);
+  proxiesv = g_strsplit_set (gtk_entry_get_text (GTK_ENTRY (priv->proxy_manual_entry)),
+                             " ,;\n", -1);
+  g_value_set_boxed (proxies_value, proxiesv);
+
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->proxy_manual_radio)))
+    {
+      g_value_set_static_string (proxy_method_value, "manual");
+      g_hash_table_insert (dict, "Servers", proxies_value);
+      g_hash_table_insert (dict, "Excludes", excludes_value);
+    }
+  else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->proxy_url_radio)))
+    {
+      g_value_set_static_string (proxy_method_value, "auto");
+      g_hash_table_insert (dict, "URL", proxy_url_value);
+    }
+  else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->proxy_auto_radio)))
+    {
+      g_value_set_static_string (proxy_method_value, "auto");
+    }
+  else
+    {
+      g_value_set_static_string (proxy_method_value, "direct");
+    }
+
+  g_hash_table_insert (dict, "Method", proxy_method_value);
+
+
+  value = g_new0 (GValue, 1);
+  g_value_init (value, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE));
+  g_value_set_boxed (value, dict);
+
+  net_connman_Service_set_property_async (priv->proxy,
+                                          "Proxy.Configuration",
+                                          value,
+                                          set_configuration_cb,
+                                          "Proxy.Configuration");
+
+
+  g_free (proxy_url_value);
+  g_free (proxy_method_value);
+  g_free (excludes_value);
+  g_strfreev (excludesv);
+  g_free (proxies_value);
+  g_strfreev (proxiesv);
+  g_free (value);
+  g_hash_table_destroy (dict);
+
+  /* start updating form again based on connman updates */
+  _set_form_modified (item, FALSE);
 
   _unexpand_advanced_settings (item);
 }
@@ -2611,9 +2816,12 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *modem_button;
   GtkWidget                 *table;
   GtkWidget                 *align;
+  GtkWidget                 *sep;
+  GtkWidget                 *label;
   GtkWidget                 *scrolled_window;
   GtkWidget                 *content_area;
   char                      *security_sample;
+  guint                      row = 0;
 
   priv = self->priv = SERVICE_ITEM_PRIVATE (self);
 
@@ -2874,12 +3082,12 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   /* static IP UI */
 
-  priv->advanced_box = gtk_vbox_new (FALSE, 0);
+  priv->advanced_box = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (priv->advanced_box);
   gtk_container_add (GTK_CONTAINER (priv->expando), priv->advanced_box);
 
   align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 20, 20);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 6, 6);
   gtk_widget_show (align);
   gtk_box_pack_start (GTK_BOX (priv->advanced_box), align,
                       FALSE, FALSE, 0);
@@ -2890,19 +3098,29 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_container_add (GTK_CONTAINER (align), table);
 
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), _("<b>TCP/IP</b>"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_widget_show (label);
+  gtk_table_attach (GTK_TABLE (table), label,
+                    0, 3, row, row + 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  row++;
+
   /* TRANSLATORS: labels in advanced settings (next to combobox
    * for DHCP/Static IP and down from there) */
-  add_label_to_table (GTK_TABLE (table), 0, _("Connect to IPv4:"));
-  add_label_to_table (GTK_TABLE (table), 1, _("IP address:"));
-  add_label_to_table (GTK_TABLE (table), 2, _("Subnet mask:"));
-  add_label_to_table (GTK_TABLE (table), 3, _("Router:"));
-  add_label_to_table (GTK_TABLE (table), 4, _("Connect to IPv6:"));
-  add_label_to_table (GTK_TABLE (table), 5, _("IP address:"));
-  add_label_to_table (GTK_TABLE (table), 6, _("Router:"));
-  add_label_to_table (GTK_TABLE (table), 7, _("Prefix length:"));
-  add_label_to_table (GTK_TABLE (table), 8, _("DNS:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Connect to IPv4:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("IP address:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Subnet mask:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Router:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Connect to IPv6:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("IP address:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Router:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("Prefix length:"));
+  add_label_to_table (GTK_TABLE (table), row++, _("DNS:"));
   priv->mac_address_title_label =
-    add_label_to_table (GTK_TABLE (table), 9, _("Your MAC address:"));
+    add_label_to_table (GTK_TABLE (table), row++, _("Your MAC address:"));
   gtk_widget_hide (priv->mac_address_title_label);
 
   priv->method_combo = gtk_combo_box_text_new ();
@@ -2914,23 +3132,25 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->method_combo),
                              METHOD_MANUAL, _("Static IP"));
 
+  row = 1;
   gtk_widget_show (priv->method_combo);
   gtk_table_attach (GTK_TABLE (table), priv->method_combo,
-                    1, 2, 0, 1,
+                    1, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   g_signal_connect (priv->method_combo, "changed",
                     G_CALLBACK (method_combo_changed_cb), self);
+  row++;
 
-  priv->address_entry = add_entry_to_table (GTK_TABLE (table), 1);
+  priv->address_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->address_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
-  priv->netmask_entry = add_entry_to_table (GTK_TABLE (table), 2);
+                    G_CALLBACK (entry_notify_text), self);
+  priv->netmask_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->netmask_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
-  priv->gateway_entry = add_entry_to_table (GTK_TABLE (table), 3);
+                    G_CALLBACK (entry_notify_text), self);
+  priv->gateway_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->gateway_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
+                    G_CALLBACK (entry_notify_text), self);
 
 
   priv->ipv6_method_combo = gtk_combo_box_text_new ();
@@ -2947,21 +3167,23 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   gtk_widget_show (priv->ipv6_method_combo);
   gtk_table_attach (GTK_TABLE (table), priv->ipv6_method_combo,
-                    1, 2, 4, 5,
+                    1, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
+  row++;
   g_signal_connect (priv->ipv6_method_combo, "changed",
                     G_CALLBACK (ipv6_method_combo_changed_cb), self);
 
-  priv->ipv6_address_entry = add_entry_to_table (GTK_TABLE (table), 5);
+
+  priv->ipv6_address_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->ipv6_address_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
-  priv->ipv6_prefix_length_entry = add_entry_to_table (GTK_TABLE (table), 6);
+                    G_CALLBACK (entry_notify_text), self);
+  priv->ipv6_prefix_length_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->ipv6_prefix_length_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
-  priv->ipv6_gateway_entry = add_entry_to_table (GTK_TABLE (table), 7);
+                    G_CALLBACK (entry_notify_text), self);
+  priv->ipv6_gateway_entry = add_entry_to_table (GTK_TABLE (table), row++);
   g_signal_connect (priv->ipv6_gateway_entry, "notify::text",
-                    G_CALLBACK (static_ip_entry_notify_text), self);
+                    G_CALLBACK (entry_notify_text), self);
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
@@ -2971,9 +3193,10 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
                                        GTK_SHADOW_IN);
   gtk_table_attach (GTK_TABLE (table), scrolled_window,
-                    1, 2, 8, 9,
+                    1, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
+  row++;
 
   priv->dns_text_view = gtk_text_view_new ();
   gtk_widget_show (priv->dns_text_view);
@@ -2984,7 +3207,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_container_add (GTK_CONTAINER (scrolled_window), priv->dns_text_view);
   g_signal_connect (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view)),
                     "changed",
-                    G_CALLBACK (dns_buffer_changed_cb),
+                    G_CALLBACK (text_view_buffer_changed_cb),
                     self);
 
   priv->mac_address_label = gtk_label_new ("");
@@ -2992,17 +3215,150 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_misc_set_alignment (GTK_MISC (priv->mac_address_label), 0.0, 0.0);
   gtk_misc_set_padding (GTK_MISC (priv->mac_address_label), 0, 5);
   gtk_table_attach (GTK_TABLE (table), priv->mac_address_label,
-                    1, 2, 9, 10,
+                    1, 2, row, row + 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  row++;
+
+  /* IP settings done */
+  sep = gtk_vseparator_new ();
+
+  gtk_widget_show (sep);
+  gtk_box_pack_start (GTK_BOX (priv->advanced_box), sep,
+                      FALSE, FALSE, 0);
+
+  /* now, Proxy settings */
+
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 6, 6);
+  gtk_widget_show (align);
+  gtk_box_pack_start (GTK_BOX (priv->advanced_box), align,
+                      TRUE, TRUE, 0);
+
+  table = gtk_table_new (7, 2, FALSE);
+  gtk_widget_show (table);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 30);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_container_add (GTK_CONTAINER (align), table);
+
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), _("<b>Proxies</b>"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_widget_show (label);
+  gtk_table_attach (GTK_TABLE (table), label,
+                    0, 3, 0, 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
-  align = gtk_alignment_new (1.0, 0.0, 0.0, 0.0);
-  gtk_widget_show (align);
-  gtk_table_attach (GTK_TABLE (table), align,
-                    1, 2, 10, 11,
+  priv->proxy_none_radio = gtk_radio_button_new_with_label (NULL, _("No proxy"));
+  gtk_widget_show (priv->proxy_none_radio);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_none_radio,
+                    0, 3, 1, 2,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
-  /* TRANSLATORS: label for apply button in static ip settings */
+  g_signal_connect (priv->proxy_none_radio, "toggled",
+                    G_CALLBACK (proxy_radio_toggled_cb), self);
+
+  priv->proxy_auto_radio = gtk_radio_button_new_with_label_from_widget
+      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
+       _("Auto-detect proxy settings for this network"));
+  gtk_widget_show (priv->proxy_auto_radio);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_auto_radio,
+                    0, 3, 2, 3,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->proxy_auto_radio, "toggled",
+                    G_CALLBACK (proxy_radio_toggled_cb), self);
+
+  priv->proxy_url_radio = gtk_radio_button_new_with_label_from_widget
+      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
+       _("Automatic proxy configuration URL:"));
+  gtk_widget_show (priv->proxy_url_radio);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_url_radio,
+                    0, 3, 3, 4,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->proxy_url_radio, "toggled",
+                    G_CALLBACK (proxy_radio_toggled_cb), self);
+
+  priv->proxy_url_entry = gtk_entry_new ();
+  gtk_entry_set_max_length (GTK_ENTRY (priv->proxy_url_entry), 15);
+  gtk_widget_set_size_request (priv->proxy_url_entry, 100, -1);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_url_entry,
+                    0, 3, 4, 5,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->proxy_url_entry, "notify::text",
+                    G_CALLBACK (entry_notify_text), self);
+
+
+  priv->proxy_manual_radio = gtk_radio_button_new_with_label_from_widget
+      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
+       _("Manual proxy configuration:"));  
+  gtk_widget_show (priv->proxy_manual_radio);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_radio,
+                    0, 3, 5, 6,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->proxy_manual_radio, "toggled",
+                    G_CALLBACK (proxy_radio_toggled_cb), self);
+
+  priv->proxy_manual_entry = gtk_entry_new ();
+  gtk_entry_set_max_length (GTK_ENTRY (priv->proxy_manual_entry), 15);
+  gtk_widget_set_size_request (priv->proxy_manual_entry, 100, -1);
+  gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_entry,
+                    0, 3, 6, 7,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->proxy_manual_entry, "notify::text",
+                    G_CALLBACK (entry_notify_text), self);
+
+
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 12, 0, 0, 0);
+  gtk_widget_show (align);
+  gtk_table_attach (GTK_TABLE (table), align,
+                    0, 3, 7, 8,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
+  label = gtk_label_new (_("Bypass proxy settings for these Hosts & Domains:"));
+  gtk_widget_show (label);
+  gtk_container_add (GTK_CONTAINER (align), label);
+
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolled_window);
+  gtk_widget_set_size_request (scrolled_window, 230, 39);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
+                                       GTK_SHADOW_IN);
+  gtk_table_attach (GTK_TABLE (table), scrolled_window,
+                    0, 3, 8, 9,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
+  priv->proxy_bypass_text_view = gtk_text_view_new ();
+  gtk_widget_show (priv->proxy_bypass_text_view);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (priv->proxy_bypass_text_view),
+                               GTK_WRAP_WORD_CHAR);
+  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (priv->proxy_bypass_text_view),
+                                 FALSE);
+  gtk_container_add (GTK_CONTAINER (scrolled_window), priv->proxy_bypass_text_view);
+  g_signal_connect (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->proxy_bypass_text_view)),
+                    "changed",
+                    G_CALLBACK (text_view_buffer_changed_cb),
+                    self);
+
+  align = gtk_alignment_new (1.0, 1.0, 0.0, 0.0);
+
+  gtk_widget_show (align);
+  gtk_table_attach (GTK_TABLE (table), align,
+                    2, 3, 10, 11,
+                    GTK_FILL | GTK_SHRINK, GTK_EXPAND,
+                    0, 0);
+
+  /* TRANSLATORS: label for apply button in static ip & proxy settings */
   priv->apply_button = gtk_button_new_with_label (_("Apply"));
   gtk_widget_show (priv->apply_button);
   gtk_widget_set_size_request (priv->apply_button, CARRICK_MIN_BUTTON_WIDTH, -1);
