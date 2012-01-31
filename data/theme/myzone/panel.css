@@ -145,6 +145,12 @@ PengePeopleTile *.PengePeopleTileContentBackground
   padding: 8;
 }
 
+PengePeopleTile *.PengePeopleTileContentBackgroundWithHeader
+{
+  border-image: url('content-bg.png') 25 51 26 52;
+  padding: 8;
+}
+
 PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
   font-size: 14px;
