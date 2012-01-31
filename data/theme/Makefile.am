@@ -34,6 +34,7 @@ dist_theme_panel_DATA = \
 	toolbar/icon-music.png \
 	toolbar/icon-myzone-highlight.png \
 	toolbar/icon-myzone.png \
+	toolbar/icon-myzone-tiny.png \
 	toolbar/icon-network-highlight.png \
 	toolbar/icon-network.png \
 	toolbar/toolbar-bg.png \
