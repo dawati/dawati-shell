@@ -245,6 +245,7 @@ AS_DAWATI_ARG_WITH_PANELS
 # Applications
 AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                gio-unix-2.0
+                               gthread-2.0
                                gconf-2.0
                                $GTK_DEPS
                                $MX_DEPS
@@ -255,6 +256,7 @@ AS_DAWATI_PANEL(bluetooth, [])
 
 # Date & time
 AS_DAWATI_PANEL(datetime, [glib-2.0
+                           gthread-2.0
                            gconf-2.0
                            libxml-2.0
                            $CLUTTER_DEPS
@@ -267,6 +269,7 @@ AS_DAWATI_PANEL(datetime, [glib-2.0
 
 # Devices
 AS_DAWATI_PANEL(devices, [glib-2.0
+                          gthread-2.0
                           gobject-2.0
                           upower-glib
                           gconf-2.0
@@ -280,7 +283,8 @@ AS_DAWATI_PANEL(devices, [glib-2.0
 AS_DAWATI_PANEL(music, [])
 
 # Myzone
-AS_DAWATI_PANEL(myzone, [gconf-2.0
+AS_DAWATI_PANEL(myzone, [gthread-2.0
+                         gconf-2.0
                          $GDK_DEPS])
 
 # Networks
@@ -291,12 +295,15 @@ AS_DAWATI_PANEL(networks, [gconf-2.0
                            rest-0.7])
 
 if test x$dawati_use_networks_panel = xyes; then
-   PKG_CHECK_MODULES(CARRICK, [gconf-2.0
+   PKG_CHECK_MODULES(CARRICK, [gthread-2.0
+                               gconf-2.0
                                dbus-glib-1
                                $GTK_DEPS
                                $MX_DEPS
                                libnotify])
-   PKG_CHECK_MODULES(CALLOUTS, [gconf-2.0
+   PKG_CHECK_MODULES(CALLOUTS, [gthread-2.0
+                                gconf-2.0
+                                dbus-glib-1
                                 $GTK_DEPS
                                 rest-0.7])
 
@@ -336,6 +343,7 @@ AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 # People
 AS_DAWATI_PANEL(people, [gio-2.0
                          gio-unix-2.0
+                         gthread-2.0
                          telepathy-glib >= 0.9.0
                          folks >= 0.6.6
                          folks-telepathy >= 0.6.6
@@ -346,6 +354,7 @@ AS_DAWATI_PANEL(people, [gio-2.0
 
 # Power
 AS_DAWATI_PANEL(power-icon, [gconf-2.0
+                             gthread-2.0
                              $GDK_DEPS
                              $CLUTTER_DEPS
                              $CLUTTER_GTK_DEPS
@@ -355,6 +364,7 @@ AS_DAWATI_PANEL(power-icon, [gconf-2.0
 
 # Status
 AS_DAWATI_PANEL(status, [dbus-glib-1
+                         gthread-2.0
                          $CLUTTER_DEPS
                          $CLUTTER_GTK_DEPS
                          $MX_DEPS
@@ -365,12 +375,14 @@ AS_DAWATI_PANEL(status, [dbus-glib-1
 
 # Web
 AS_DAWATI_PANEL(web, [sqlite3
+                      gthread-2.0
                       $GTK_DEPS
                       $CLUTTER_DEPS
                       $MX_DEPS])
 
 # Zones
-AS_DAWATI_PANEL(zones, [$GTK_DEPS
+AS_DAWATI_PANEL(zones, [gthread-2.0
+                        $GTK_DEPS
                         $CLUTTER_GTK_DEPS
                         $MX_DEPS
                         libwnck-3.0])
@@ -383,6 +395,7 @@ AS_DAWATI_PANEL(zones, [$GTK_DEPS
 if test x$dawati_use_myzone_panel = xyes || test x$dawati_use_datetime_panel = xyes; then
    PKG_CHECK_MODULES(PENGE, [gio-2.0
                              gio-unix-2.0
+                             gthread-2.0
                              gconf-2.0
                              libjana-ecal
                              libsocialweb-client
@@ -391,6 +404,7 @@ if test x$dawati_use_myzone_panel = xyes || test x$dawati_use_datetime_panel = x
                              $MX_DEPS])
 
    PKG_CHECK_MODULES(MAILME, [glib-2.0
+                              gthread-2.0
                               gobject-2.0
                               gio-2.0
                               dbus-glib-1
