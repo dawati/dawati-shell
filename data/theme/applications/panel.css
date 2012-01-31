@@ -12,8 +12,8 @@ MnbLauncher {
   background-color: #ecede6;
 }
 
-#apps-grid {
-  padding: 15 0 0 2;
+.panel {
+  padding: 15 0 0 5;
 }
 
 /*

@@ -1004,7 +1004,7 @@ _constructor (GType                  gtype,
   ClutterActor  *columns;
   ClutterActor  *pane;
   ClutterActor  *label;
-  ClutterActor  *fav_scroll;
+  ClutterActor  *cat_scroll;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
@@ -1016,7 +1016,7 @@ _constructor (GType                  gtype,
 
   columns = mx_box_layout_new ();
   mx_stylable_set_style_class (MX_STYLABLE (columns), "panel");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 47.0);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 37.0);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), columns);
   clutter_container_child_set (CLUTTER_CONTAINER (self), columns,
                                "expand", TRUE,
@@ -1059,20 +1059,20 @@ _constructor (GType                  gtype,
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
                                mnb_launcher_category_button_new (self, "fav"));
 
-  fav_scroll = mx_scroll_view_new ();
-  clutter_actor_set_name (fav_scroll, "fav-pane-content");
-  g_object_set (fav_scroll, "clip-to-allocation", TRUE, NULL);
-  mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (fav_scroll),
+  cat_scroll = mx_scroll_view_new ();
+  clutter_actor_set_name (cat_scroll, "fav-pane-content");
+  g_object_set (cat_scroll, "clip-to-allocation", TRUE, NULL);
+  mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (cat_scroll),
                                     MX_SCROLL_POLICY_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), fav_scroll);
-  clutter_container_child_set (CLUTTER_CONTAINER (pane), fav_scroll,
+  clutter_container_add_actor (CLUTTER_CONTAINER (pane), cat_scroll);
+  clutter_container_child_set (CLUTTER_CONTAINER (pane), cat_scroll,
                                "expand", TRUE,
-                               "x-fill", TRUE,
+                              "x-fill", TRUE,
                                "y-fill", TRUE,
                                NULL);
 
   /* add cateogires boxes here */
-  clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll),
+  clutter_container_add_actor (CLUTTER_CONTAINER (cat_scroll),
                                priv->category_section);
 
 
