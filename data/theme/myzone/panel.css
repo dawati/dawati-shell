@@ -230,13 +230,19 @@ PengeWelcomeTile
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('button-close.png');
+  -mx-content-image: url('../../style/switcher/closebutton-normal.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('button-close-hover.png');
+  -mx-content-image: url('../../style/switcher/closebutton-hover.png');
 }
+
+*.PengeInterestingTileRemoveButton:active *.PengeInterestingTileIcon
+{
+  -mx-content-image: url('../../style/switcher/closebutton-pressed.png');
+}
+
 
 *.PengeInterestingTileMessageIconOverlay
 {
