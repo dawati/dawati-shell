@@ -26,6 +26,7 @@
 #include <glib-object.h>
 #include <anerley/anerley-item.h>
 #include <telepathy-glib/telepathy-glib.h>
+#include <folks/folks.h>
 
 G_BEGIN_DECLS
 
@@ -59,12 +60,9 @@ typedef struct {
 
 GType anerley_tp_item_get_type (void);
 
-AnerleyTpItem *anerley_tp_item_new (TpAccount      *account,
-                                    TpContact      *contact);
-void anerley_tp_item_set_avatar_path (AnerleyTpItem *item,
-                                      const gchar   *avatar_path);
+AnerleyTpItem *anerley_tp_item_new (FolksIndividual   *contact);
 void anerley_tp_item_associate_channel (AnerleyTpItem *item,
-                                        TpChannel     *channel);
+                                        TpTextChannel *channel);
 
 G_END_DECLS
 

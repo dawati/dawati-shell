@@ -17,11 +17,6 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-simple-grid-view.h \
 			anerley-feed-model.h \
 			anerley-tile-view.h \
-			anerley-aggregate-feed.h \
-			anerley-aggregate-tp-feed.h \
-			anerley-econtact-item.h \
-			anerley-ebook-feed.h \
-			anerley-tp-observer.h \
 			anerley-tp-monitor-feed.h \
 			anerley-presence-chooser.h \
 			anerley-compact-tile.h \
@@ -36,11 +31,6 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-simple-grid-view.c \
 			anerley-feed-model.c \
 			anerley-tile-view.c \
-			anerley-aggregate-feed.c \
-			anerley-aggregate-tp-feed.c \
-			anerley-econtact-item.c \
-			anerley-ebook-feed.c \
-			anerley-tp-observer.c \
 			anerley-tp-monitor-feed.c \
 			anerley-presence-chooser.c \
 			anerley-tp-user-avatar.c \

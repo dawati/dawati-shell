@@ -24,7 +24,6 @@
 
 #include <glib.h>
 #include <dbus/dbus-glib.h>
-#include <anerley/anerley-aggregate-tp-feed.h>
 #include <anerley/anerley-tp-monitor-feed.h>
 #include <anerley/anerley-item.c>
 
@@ -65,44 +64,33 @@ _items_removed (AnerleyFeed *monitor,
     }
 }
 
-static void
-_account_manager_ready_cb (GObject      *source_object,
-                           GAsyncResult *result,
-                           gpointer      userdata)
-
-{
-  AnerleyFeed *aggregate;
-  AnerleyFeed *monitor;
-
-  aggregate = anerley_aggregate_tp_feed_new ();
-  monitor = anerley_tp_monitor_feed_new (ANERLEY_AGGREGATE_TP_FEED (aggregate),
-                                         "AnerleyTest");
-  g_signal_connect (monitor, "items-added",
-      G_CALLBACK (_items_added), NULL);
-  g_signal_connect (monitor, "items-removed",
-      G_CALLBACK (_items_removed), NULL);
-}
-
 int
 main (int    argc,
       char **argv)
 {
   GMainLoop *main_loop;
-  TpAccountManager *account_manager;
+  FolksIndividualAggregator *aggregator;
+  AnerleyFeed *monitor;
 
   g_type_init ();
 
   main_loop = g_main_loop_new (NULL, FALSE);
 
-  account_manager = tp_account_manager_dup ();
+  aggregator = folks_individual_aggregator_new ();
+  monitor = anerley_tp_monitor_feed_new (aggregator, "AnerleyTest");
+  g_signal_connect (monitor, "items-added",
+                    G_CALLBACK (_items_added),
+                    NULL);
+  g_signal_connect (monitor, "items-removed",
+                    G_CALLBACK (_items_removed),
+                    NULL);
 
-  tp_proxy_prepare_async (TP_PROXY (account_manager),
-                          NULL,
-                          _account_manager_ready_cb,
-                          NULL);
+  folks_individual_aggregator_prepare (aggregator, NULL, NULL);
+
   g_main_loop_run (main_loop);
 
-  g_object_unref (account_manager);
+  g_object_unref (aggregator);
+  g_object_unref (monitor);
 
   return 0;
 }

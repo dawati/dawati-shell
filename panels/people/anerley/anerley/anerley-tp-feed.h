@@ -25,6 +25,7 @@
 
 #include <telepathy-glib/account.h>
 #include <glib-object.h>
+#include <folks/folks.h>
 
 #include <anerley/anerley-item.h>
 
@@ -57,13 +58,9 @@ typedef struct {
 
 GType anerley_tp_feed_get_type (void);
 
-AnerleyTpFeed *anerley_tp_feed_new (TpAccount *account);
+AnerleyTpFeed *anerley_tp_feed_new (FolksIndividualAggregator *aggregator);
 AnerleyItem *anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
                                               const gchar   *uid);
-
-gboolean anerley_tp_feed_get_online (AnerleyTpFeed *feed);
-gboolean anerley_tp_feed_get_enabled (AnerleyTpFeed *feed);
-TpAccount *anerley_tp_feed_peek_account (AnerleyTpFeed *feed);
 G_END_DECLS
 
 #endif /* _ANERLEY_TP_FEED */
