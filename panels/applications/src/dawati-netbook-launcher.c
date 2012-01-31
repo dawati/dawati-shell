@@ -1029,7 +1029,9 @@ _constructor (GType                  gtype,
    */
   priv->category_group = mx_button_group_new ();
 
-  pane = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
+  pane = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (pane),
+                                 MX_ORIENTATION_VERTICAL);
   clutter_actor_set_width (pane, FAV_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (pane), 10);
