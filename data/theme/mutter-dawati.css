@@ -84,7 +84,7 @@ MnbToolbarBackground#toolbar-main-box {
   padding: 0 0 0 0;
 }
 
-/* add the left padding for the panels by moving the panel container */
+/* the panel container */
 MxBoxLayout#toolbar-left-box {
   padding: 0 0 0 15;
   -mx-spacing: 45;
@@ -129,10 +129,10 @@ MnbToolbarClock:hover, MnbToolbarClock:active, MnbToolbarClock:checked {
   font-size: 22px;
 }
 
-/* add the right padding for the panels by moving the clock and utility items container */
+/* the clock and utility items container */
 MxBoxLayout#toolbar-right-box {
   padding: 0 15 0 0;
-  -mx-spacing: 45;
+  -mx-spacing: 10;
 }
 
 MnbToolbarApplet {
