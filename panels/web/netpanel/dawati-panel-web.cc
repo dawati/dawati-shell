@@ -133,7 +133,7 @@ main (int    argc,
 
     mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER(client));
 
-    mpl_panel_client_set_height_request (client, 600);
+    mpl_panel_client_set_size_request (client, 1024, 580);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = DAWATI_NETBOOK_NETPANEL (dawati_netbook_netpanel_new ());

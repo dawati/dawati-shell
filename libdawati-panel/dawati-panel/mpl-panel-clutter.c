@@ -403,17 +403,18 @@ mpl_panel_clutter_get_stage (MplPanelClutter *panel)
 }
 
 static void
-mpl_panel_clutter_actor_height_notify_cb (GObject    *gobject,
-                                          GParamSpec *pspec,
-                                          gpointer    data)
+mpl_panel_clutter_actor_allocation_notify_cb (GObject    *gobject,
+                                              GParamSpec *pspec,
+                                              gpointer    data)
 {
   ClutterActor   *actor = CLUTTER_ACTOR (gobject);
   MplPanelClient *panel = MPL_PANEL_CLIENT (data);
-  guint           height;
+  gint            width, height;
 
-  height = (guint) clutter_actor_get_height (actor);
+  width = (gint) clutter_actor_get_width (actor);
+  height = (gint) clutter_actor_get_height (actor);
 
-  mpl_panel_client_set_height_request (panel, height);
+  mpl_panel_client_set_size_request (panel, width, height);
 }
 
 /**
@@ -444,13 +445,14 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
 
   if (actor)
     {
-      guint height;
+      gint width, height;
 
       /*
        * Match the current height of the actor
        */
-      height = (guint) clutter_actor_get_height (actor);
-      mpl_panel_client_set_height_request (MPL_PANEL_CLIENT (panel), height);
+      width = (gint) clutter_actor_get_width (actor);
+      height = (gint) clutter_actor_get_height (actor);
+      mpl_panel_client_set_size_request (MPL_PANEL_CLIENT (panel), width, height);
 
       /*
        * Now watch for changes in height.
@@ -458,8 +460,8 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
       priv->tracked_actor = actor;
 
       priv->height_notify_cb =
-        g_signal_connect (actor, "notify::height",
-                          G_CALLBACK (mpl_panel_clutter_actor_height_notify_cb),
+        g_signal_connect (actor, "notify::allocation",
+                          G_CALLBACK (mpl_panel_clutter_actor_allocation_notify_cb),
                           panel);
     }
 }

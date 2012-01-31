@@ -110,10 +110,12 @@ struct _MplPanelClientPrivate
 
   gint             x;
   gint             y;
-  guint            width;
-  guint            max_height;
-  guint            requested_height;
-  guint            real_height;
+  gint             max_width;
+  gint             max_height;
+  gint             real_width;
+  gint             real_height;
+  gint             requested_width;
+  gint             requested_height;
 
   gboolean         constructed       : 1; /*poor man's constr return value*/
   gboolean         toolbar_service   : 1;
@@ -259,12 +261,14 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                            gchar          **tooltip,
                            gchar          **stylesheet,
                            gchar          **button_style,
-                           guint           *alloc_width,
-                           guint           *alloc_height,
+                           gint            *alloc_width,
+                           gint            *alloc_height,
                            GError         **error)
 {
   MplPanelClientPrivate *priv = self->priv;
-  guint real_height = height;
+
+  priv->real_width = priv->requested_width > 0 ? priv->requested_width : width;
+  priv->real_height = priv->requested_height > 0 ? priv->requested_height : height;
 
   g_debug ("dbus init: %d,%d;%dx%d", x, y, width, height);
 
@@ -277,11 +281,11 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
     {
       priv->x          = x;
       priv->y          = y;
+      priv->max_width  = width;
       priv->max_height = height;
-      priv->width      = width;
 
       if (priv->requested_height > 0 && priv->requested_height < height)
-        real_height = priv->requested_height;
+        priv->real_height = priv->requested_height;
       else if (priv->requested_height)
         {
           g_debug ("Panel requested height %d which is greater than maximum "
@@ -289,10 +293,17 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
                    priv->requested_height, height);
         }
 
-      priv->real_height = real_height;
+      if (priv->requested_width > 0 && priv->requested_width < width)
+        priv->real_width = priv->requested_width;
+      else if (priv->requested_width)
+        {
+          g_debug ("Panel requested width %d which is greater than maximum "
+                   "allowable width %d",
+                   priv->requested_width, width);
+        }
 
-      *alloc_width  = width;
-      *alloc_height = real_height;
+      *alloc_width  = priv->real_width;
+      *alloc_height = priv->real_height;
 
       /*
        * Make sure that the window is hidden (the window can be left mapped, if
@@ -300,7 +311,8 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
        */
       mpl_panel_client_hide (self);
 
-      g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
+      g_signal_emit (self, signals[SET_SIZE], 0,
+                     priv->real_width, priv->real_height);
       g_signal_emit (self, signals[SET_POSITION], 0, x, y);
 
       /*
@@ -332,27 +344,28 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
  */
 static gboolean
 mnb_panel_dbus_set_size (MplPanelClient  *self,
-                         guint            width,
-                         guint            height,
+                         gint             width,
+                         gint             height,
                          GError         **error)
 {
   MplPanelClientPrivate *priv = self->priv;
-  guint real_height = height;
-  guint old_width = priv->width;
-  guint old_height = priv->real_height;
+  gint old_width = priv->real_width;
+  gint old_height = priv->real_height;
 
   if (height > 0)
     priv->max_height = height;
 
   if (width > 0)
-    priv->width = width;
+    priv->max_width = width;
 
   g_debug ("%s called: width %d (%d), height %d (%d)",
-           __FUNCTION__, width, priv->width, height, priv->max_height);
+           __FUNCTION__,
+           width, priv->real_width,
+           height, priv->real_height);
 
 
   if (priv->requested_height > 0 && priv->requested_height < height)
-    real_height = priv->requested_height;
+    priv->real_height = priv->requested_height;
   else if (priv->requested_height)
     {
       g_debug ("Panel requested height %d is greater than maximum "
@@ -360,10 +373,18 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
                priv->requested_height, height);
     }
 
-  priv->real_height = real_height;
+  if (priv->requested_width > 0 && priv->requested_width < width)
+    priv->real_width = priv->requested_width;
+  else if (priv->requested_width)
+    {
+      g_debug ("Panel requested width %d is greater than maximum "
+               "allowable width %d",
+               priv->requested_width, width);
+    }
 
-  if (old_width != priv->width || old_height != real_height)
-    g_signal_emit (self, signals[SET_SIZE], 0, priv->width, real_height);
+  if (old_width != priv->real_width || old_height != priv->real_height)
+    g_signal_emit (self, signals[SET_SIZE], 0,
+                   priv->real_width, priv->real_height);
 
   return TRUE;
 }
@@ -1424,23 +1445,29 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
 }
 
 /**
- * mpl_panel_client_set_height_request:
+ * mpl_panel_client_set_size_request:
  * @panel: #MplPanelClient
+ * @width: width request
  * @height: height request
  *
- * Sets the height request for given panel; this is the size the panel
- * wishes to be. This is a request only, i.e., the panel can be smaller if the
- * request cannot be honored due to screen size, etc.
+ * Sets the size request for given panel; this is the size the panel
+ * wishes to be. This is a request only, i.e., the panel can be
+ * smaller if the request cannot be honored due to screen size, etc.
  */
 void
-mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
+mpl_panel_client_set_size_request (MplPanelClient *panel, gint width, gint height)
 {
   MplPanelClientPrivate *priv;
+  gint old_width, old_height;
 
   g_return_if_fail (MPL_IS_PANEL_CLIENT (panel));
 
   priv = panel->priv;
 
+  old_width = priv->real_width;
+  old_height = priv->real_height;
+
+  priv->requested_width = width;
   priv->requested_height = height;
 
   /*
@@ -1453,13 +1480,28 @@ mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
     {
       if (height <= priv->max_height)
         {
-          g_signal_emit (panel, signals[SET_SIZE], 0, priv->width, height);
+          priv->real_width = height;
         }
       else
         g_warning ("Panel requested height %d which is grater than maximum "
                    "allowable height %d",
                    height, priv->max_height);
     }
+
+  if (priv->max_width > 0)
+    {
+      if (width <= priv->max_width)
+        {
+          priv->real_width = width;
+        }
+      else
+        g_warning ("Panel requested height %d which is grater than maximum "
+                   "allowable width %d",
+                   width, priv->max_width);
+    }
+
+  if ((priv->real_width != old_width) || (priv->real_height != old_height))
+    g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
 }
 
 /**
@@ -1467,16 +1509,23 @@ mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
  * @panel: #MplPanelClient
  *
  * Returns the height request previously set with
- * mpl_panel_client_set_height_request().
+ * mpl_panel_client_set_size_request().
  *
  * Return value: requested height in pixels.
  */
-guint
-mpl_panel_client_get_height_request (MplPanelClient *panel)
+void
+mpl_panel_client_get_size_request (MplPanelClient *panel, gint *width, gint *height)
 {
-  g_return_val_if_fail (MPL_IS_PANEL_CLIENT (panel), 0);
+  MplPanelClientPrivate *priv;
 
-  return panel->priv->requested_height;
+  g_return_if_fail (MPL_IS_PANEL_CLIENT (panel));
+
+  priv = panel->priv;
+
+  if (width)
+    *width = priv->requested_width;
+  if (height)
+    *height = priv->requested_height;
 }
 
 /**

@@ -122,6 +122,8 @@ void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 
 gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw);
 
+ClutterActor *mnb_toolbar_get_lowlight (MnbToolbar *toolbar);
+
 /* Specific to ToolbarShadow */
 
 CoglHandle mnb_toolbar_get_selector_texture (MnbToolbar *toolbar);

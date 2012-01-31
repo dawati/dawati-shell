@@ -623,6 +623,7 @@ style.load_from_file(Path.get_panel_css_path('music'));
 
 let panel = new DawatiPanel.MplPanelGtk({ name: 'music',
                                           tooltip: 'Music' });
+panel.set_size_request(1024, 580);
 
 let mwindow = panel.get_window();
 

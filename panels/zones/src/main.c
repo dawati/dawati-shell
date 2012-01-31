@@ -397,7 +397,7 @@ main (int argc, char **argv)
 
       mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
-      mpl_panel_client_set_height_request (client, 600);
+      mpl_panel_client_set_size_request (client, 1024, 580);
 
       data->stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 

@@ -113,9 +113,9 @@ main (int    argc,
                                     "datetime-button",
                                     TRUE);
 
-    mpl_panel_clutter_setup_events_with_gtk (client);
+    mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
-    mpl_panel_client_set_height_request (client, 530);
+    mpl_panel_client_set_size_request (client, -1, 530);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_shell_new ();

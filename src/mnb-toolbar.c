@@ -317,7 +317,8 @@ mnb_toolbar_get_default_panel_list (void)
                                     "dawati-panel-music",
                                     "dawati-panel-devices",
                                     "carrick",
-                                    "dawati-panel-datetime"};
+                                    "dawati-panel-datetime",
+                                    "dawati-power-icon" };
   gint i;
   GSList *order = NULL;
 
@@ -459,6 +460,17 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
     }
 
 }
+
+ClutterActor *
+mnb_toolbar_get_lowlight (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  g_return_val_if_fail (MNB_IS_TOOLBAR (toolbar), NULL);
+
+  return priv->lowlight;
+}
+
 
 static void
 mnb_toolbar_show_lowlight (MnbToolbar *toolbar)
@@ -618,8 +630,7 @@ mnb_toolbar_real_show (ClutterActor *actor)
       return;
     }
 
-  if (dawati_netbook_use_netbook_mode (priv->plugin))
-    mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
+  mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
 
   /*
    * Show all of the buttons -- see comments in _hide_completed_cb() on why we
@@ -1495,10 +1506,7 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
   MnbToolbarPrivate *priv = toolbar->priv;
 
   if (CLUTTER_IS_ACTOR (panel))
-    {
-      clutter_actor_raise_top (priv->lowlight);
-      /* clutter_actor_raise_top (priv->shadow); */
-    }
+    clutter_actor_raise (panel, priv->lowlight);
   else if (MNB_IS_PANEL_OOP (panel))
     {
       MnbPanelOop  *opanel = (MnbPanelOop*) panel;
@@ -1506,22 +1514,10 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 
       actor = (ClutterActor*) mnb_panel_oop_get_mutter_window (opanel);
 
+      clutter_actor_raise (actor, priv->lowlight);
+
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel_stub))
         clutter_actor_raise (priv->panel_stub, actor);
-
-      /* clutter_actor_lower (priv->shadow, actor); */
-
-      /*
-       * If the panel is not in a modal state, we lower the lowlight just below
-       * the panel shadow.
-       *
-       * If the panel is in modal state, we raise the lowlight above the panel
-       * actor itself.
-       */
-      if (/* ! */mnb_panel_is_modal (panel))
-      /*   clutter_actor_lower (priv->lowlight, priv->shadow); */
-      /* else */
-        clutter_actor_raise (priv->lowlight, actor);
     }
 }
 
@@ -1589,8 +1585,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   mnb_spinner_stop ((MnbSpinner*)priv->spinner);
   priv->stubbed_panel = NULL;
 
-  if (!dawati_netbook_use_netbook_mode (priv->plugin))
-    mnb_toolbar_show_lowlight (toolbar);
+  mnb_toolbar_show_lowlight (toolbar);
 
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
@@ -1606,7 +1601,6 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
   dawati_netbook_stash_window_focus (plugin, CurrentTime);
 
   if (!priv->waiting_for_panel_show &&
-      !dawati_netbook_use_netbook_mode (priv->plugin) &&
       (!(active = mnb_toolbar_get_active_panel (toolbar)) ||
        active == panel))
     {
@@ -2156,9 +2150,6 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       gint x, y, clock_index;
       gint width = screen_width;
 
-      if (!dawati_netbook_use_netbook_mode (plugin))
-        width += 2 * BIG_SCREEN_PAD;
-
       clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
 
       y = BUTTON_Y;
@@ -2212,9 +2203,6 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
           gfloat spacing = BUTTON_SPACING_INITIAL + BUTTON_SPACING / 2
             - BUTTON_INTERNAL_PADDING / 2 +
             ((BUTTON_WIDTH + BUTTON_SPACING) * index);
-
-          if (!dawati_netbook_use_netbook_mode (plugin))
-            spacing += BIG_SCREEN_BUTTON_SHIFT;
 
           if (!clutter_actor_get_parent (button))
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
@@ -2867,7 +2855,6 @@ mnb_toolbar_constructed (GObject *self)
   DBusGConnection   *conn;
   MetaScreen        *screen = meta_plugin_get_screen (plugin);
   ClutterActor      *wgroup = meta_get_window_group_for_screen (screen);
-  gboolean           netbook_mode = dawati_netbook_use_netbook_mode (plugin);
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -2930,8 +2917,6 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_height = screen_height;
 
   priv->max_panels = MAX_PANELS (screen_width);
-
-  g_debug ("Consructing, netbook_mode %d", netbook_mode);
 
   clutter_actor_set_size (priv->hbox_main, screen_width, TOOLBAR_HEIGHT);
 
@@ -3471,16 +3456,6 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
        * First of all, sort out the size of the Toolbar assets to match the
        * new screen.
        */
-      if (!netbook_mode)
-        {
-          g_debug ("Moving Toolbar to %d for bigger screen", BIG_SCREEN_PAD);
-
-          width += BIG_SCREEN_PAD * 2;
-          clutter_actor_set_x ((ClutterActor*)toolbar, -BIG_SCREEN_PAD);
-        }
-      else
-        clutter_actor_set_x ((ClutterActor*) toolbar, 0);
-
       clutter_actor_set_width ((ClutterActor*)toolbar, width);
       clutter_actor_set_width (priv->shadow, screen_width);
 

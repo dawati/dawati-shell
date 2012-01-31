@@ -116,9 +116,12 @@ GType mpl_panel_client_get_type (void);
 
 void  mpl_panel_client_unload               (MplPanelClient *panel);
 
-void  mpl_panel_client_set_height_request   (MplPanelClient *panel,
-                                             guint           height);
-guint mpl_panel_client_get_height_request   (MplPanelClient *panel);
+void  mpl_panel_client_set_size_request   (MplPanelClient *panel,
+                                           gint            width,
+                                           gint            height);
+void  mpl_panel_client_get_size_request   (MplPanelClient *panel,
+                                           gint           *width,
+                                           gint           *height);
 
 void  mpl_panel_client_show                 (MplPanelClient *panel);
 void  mpl_panel_client_hide                 (MplPanelClient *panel);
