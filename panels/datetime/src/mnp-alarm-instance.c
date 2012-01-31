@@ -24,6 +24,7 @@
 #include<libnotify/notify.h>
 #include <gconf/gconf-client.h>
 #include <canberra.h>
+#include <gdk/gdk.h>
 
 G_DEFINE_TYPE (MnpAlarmInstance, mnp_alarm_instance, G_TYPE_OBJECT)
 
@@ -291,7 +292,11 @@ show_notification(MnpAlarmInstance *alarm)
   }
 
   string = g_strdup_printf(_("Alarm at %d:%.2d %s"), item->hour, item->minute, item->am_pm ? _("am") : _("pm"));  
-  notify = notify_notification_new(_("Dawati Alarm Notify"), string,NULL,NULL);
+#ifdef HAVE_NOTIFY_0_7
+  notify = notify_notification_new(_("Dawati Alarm Notify"), string, NULL);
+#else
+  notify = notify_notification_new(_("Dawati Alarm Notify"), string, NULL, NULL);
+#endif
   notify_notification_set_timeout(notify,10000);
   notify_notification_set_category(notify,_("AlarmNotifications"));
 
