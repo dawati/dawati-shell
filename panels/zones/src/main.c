@@ -18,7 +18,7 @@
 #include <glib/gi18n.h>
 #include <locale.h>
 
-#define ZONES_PANEL_TOOLTIP _("zones")
+#define ZONES_PANEL_TOOLTIP _("switcher")
 
 static MplPanelClient *client = NULL;
 
