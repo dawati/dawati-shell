@@ -49,13 +49,22 @@ MnbStatusbar {
   padding: 0 0 0 0;
 }
 
+/* theme the status bar button */
+
 MnbStatusbar MxButton, MnbStatusbar MxButton:hover, MnbStatusbar MxButton:active, MnbStatusbar MxButton:checked {
   color: #ffffff;
   font-size: 12px;
   background-color: #00000;
   border-image: url("toolbar/toolbar-button-normal.png");
-  padding: 0 0 0 0;
+  padding: 0 0 0 5;
 }
+
+/* theme the icon within the status bar button */
+
+MnbStatusbar MxButton MxIcon {
+  -mx-content-image: url("toolbar/icon-myzone-tiny.png");
+}
+
 
 /* Toolbar */
 
