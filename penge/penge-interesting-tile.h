@@ -54,6 +54,14 @@ typedef struct {
   MxButtonClass parent_class;
 } PengeInterestingTileClass;
 
+typedef enum PengeInterestingTileSocialNetwork {
+    SOCIAL_NETWORK_UNKNOWN,
+    SOCIAL_NETWORK_FACEBOOK,
+    SOCIAL_NETWORK_TWITTER,
+    SOCIAL_NETWORK_LAST,
+} PengeInterestingTileSocialNetwork;
+
+
 GType penge_interesting_tile_get_type (void);
 
 G_END_DECLS

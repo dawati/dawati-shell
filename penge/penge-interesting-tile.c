@@ -31,15 +31,19 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) ((PengeInterestingTile *)o)->priv
 
+#define SOCIAL_NETWORK_FACEBOOK_LOGO_PATH THEMEDIR "/content-header-facebook.png"
+#define SOCIAL_NETWORK_TWITTER_LOGO_PATH THEMEDIR "/content-header-twitter.png"
 #define DETAILS_ICON_ACTOR_NAME "icon"
 
 struct _PengeInterestingTilePrivate {
   ClutterActor *inner_table;
 
+  ClutterActor *header;
   ClutterActor *body;
   ClutterActor *icon_container;
   ClutterActor *primary_text;
   ClutterActor *secondary_text;
+  PengeInterestingTileSocialNetwork social_network;
   ClutterActor *details_overlay;
   ClutterActor *remove_button;
 
@@ -50,6 +54,7 @@ enum
 {
   PROP_0,
   PROP_BODY,
+  PROP_SOCIAL_NETWORK,
   PROP_ICON_PATH,
   PROP_PRIMARY_TEXT,
   PROP_SECONDARY_TEXT,
@@ -80,7 +85,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
   PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
   GError *error = NULL;
   const gchar *path;
-  ClutterActor *icon = NULL;
+  ClutterActor *icon = NULL, *logo = NULL;
 
   switch (property_id) {
     case PROP_BODY:
@@ -97,13 +102,51 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 
       mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                           priv->body,
-                                          0, 0,
+                                          1, 0,
                                           "y-align", MX_ALIGN_START,
                                           "x-align", MX_ALIGN_START,
                                           "y-fill", TRUE,
                                           "y-expand", TRUE,
                                           NULL);
       break;
+
+    case PROP_SOCIAL_NETWORK:
+      priv->social_network = g_value_get_uint (value);
+      g_warning ("social net prop set to %d", priv->social_network);
+
+      clutter_actor_hide (priv->header);
+
+      logo = clutter_container_find_child_by_name (CLUTTER_CONTAINER (priv->header), "logo");
+      if (logo != NULL)
+        {
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->header), logo);
+          logo = NULL;
+        }
+
+      switch (priv->social_network)
+        {
+          case SOCIAL_NETWORK_FACEBOOK:
+            logo = clutter_texture_new_from_file (SOCIAL_NETWORK_FACEBOOK_LOGO_PATH, NULL);
+            clutter_actor_set_name (logo, "logo");
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
+            clutter_actor_show (priv->header);
+            break;
+
+          case SOCIAL_NETWORK_TWITTER:
+            g_warning ("TWITTER set!");
+            logo = clutter_texture_new_from_file (SOCIAL_NETWORK_TWITTER_LOGO_PATH, NULL);
+            clutter_actor_set_name (logo, "logo");
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
+            clutter_actor_show (priv->header);
+            break;
+
+          case SOCIAL_NETWORK_UNKNOWN:
+          default:
+            /* keep the actor hidden */
+            break;
+        }
+      break;
+
     case PROP_ICON_PATH:
       path = g_value_get_string (value);
       icon = clutter_container_find_child_by_name (
@@ -239,6 +282,17 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
                                NULL,
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_ICON_PATH, pspec);
+
+  /* FIXME we are using uint for simplicity here, use enum instead, here and
+   * in get_property! */
+  pspec = g_param_spec_uint ("social-network",
+                               "Social Network",
+                               "The Social Network origin of the tile",
+                               0, SOCIAL_NETWORK_LAST,
+                               SOCIAL_NETWORK_UNKNOWN,
+                               G_PARAM_WRITABLE);
+  g_object_class_install_property (object_class, PROP_SOCIAL_NETWORK, pspec);
+
 
   pspec = g_param_spec_string ("primary-text",
                                "Primary text",
@@ -377,6 +431,21 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_actor_hide (priv->icon_container);
   icon = NULL;
 
+
+  priv->header = mx_frame_new ();
+  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                      priv->header,
+                      0,
+                      0,
+                      "x-expand", TRUE,
+                      "y-expand", TRUE,
+                      "x-fill", TRUE,
+                      "y-fill", TRUE,
+                      "x-align", MX_ALIGN_START,
+                      "y-align", MX_ALIGN_START,
+                      NULL);
+  clutter_actor_hide (priv->header);
+
   /* This gets added to ourself table after our body because of ordering */
   priv->details_overlay = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_overlay),
@@ -384,7 +453,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->details_overlay,
-                      1,
+                      2,
                       0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),

@@ -11,6 +11,8 @@ dist_theme_DATA = \
 	linus.png \
 	no-content-tile-bg.png \
 	no-content-tile-glow-bg.png \
+	content-header-facebook.png \
+	content-header-twitter.png \
 	content-bg.png \
 	single-div-line.png \
 	tile-bg.png \

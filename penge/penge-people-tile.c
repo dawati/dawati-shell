@@ -256,13 +256,24 @@ penge_people_tile_set_item (PengePeopleTile *tile,
       g_clear_error (&error);
     }
   } else if (sw_item_has_key (item, "content")) {
+    PengeInterestingTileSocialNetwork social_network = SOCIAL_NETWORK_UNKNOWN;
     ClutterActor *inner_table;
     content = sw_item_get_value (item, "content");
     body = mx_frame_new ();
     inner_table = mx_table_new ();
 
-    mx_stylable_set_style_class (MX_STYLABLE (body),
-                                 "PengePeopleTileContentBackground");
+    if (!g_strcmp0 (priv->item->service, "twitter"))
+        social_network = SOCIAL_NETWORK_TWITTER;
+    else if (!g_strcmp0 (priv->item->service, "facebook"))
+        social_network = SOCIAL_NETWORK_FACEBOOK;
+
+
+    if (social_network != SOCIAL_NETWORK_UNKNOWN)
+      mx_stylable_set_style_class (MX_STYLABLE (body),
+                                   "PengePeopleTileContentBackgroundWithHeader");
+    else
+      mx_stylable_set_style_class (MX_STYLABLE (body),
+                                   "PengePeopleTileContentBackground");
     mx_bin_set_child (MX_BIN (body), inner_table);
     mx_bin_set_fill (MX_BIN (body), TRUE, TRUE);
     mx_stylable_set_style_class (MX_STYLABLE (inner_table),
@@ -294,8 +305,10 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                 PANGO_ELLIPSIZE_END);
     clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                      PANGO_ALIGN_LEFT);
+    
     g_object_set (tile,
                   "body", body,
+                  "social-network", social_network,
                   NULL);
   } else {
     if (g_str_equal (item->service, "lastfm"))

@@ -346,6 +346,7 @@ _update_layout (PengeGridView *grid_view)
 
     clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
   } else {
+    /* !vertical_apps */
     if (priv->show_calendar_pane)
     {
       clutter_actor_show (priv->calendar_pane);
