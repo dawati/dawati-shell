@@ -128,6 +128,7 @@ penge/penge-email-pane.c
 
 src/dawati-netbook.c
 src/mnb-toolbar.c
+src/mnb-statusbar.c
 src/mnb-toolbar-clock.c
 src/notifications/ntf-notification.c
 src/notifications/ntf-tray.c
