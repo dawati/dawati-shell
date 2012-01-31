@@ -110,6 +110,16 @@ mpd_devices_pane_init (MpdDevicesPane *self)
 
   stack = mx_stack_new ();
 
+  /* filigree */
+  filigree = clutter_texture_new_from_file (PKGICONDIR "/plug-in-device.png",
+                                            NULL);
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (filigree), TRUE);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stack), filigree);
+  mx_stack_child_set_x_fill (MX_STACK (stack), filigree, FALSE);
+  mx_stack_child_set_y_fill (MX_STACK (stack), filigree, FALSE);
+
+  /* devices */
   tile = mpd_devices_tile_new ();
   priv->devices_tile = MPD_DEVICES_TILE (tile);
   g_signal_connect (tile, "request-hide",
@@ -118,14 +128,6 @@ mpd_devices_pane_init (MpdDevicesPane *self)
                     G_CALLBACK (_tile_request_show_cb), self);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stack), tile);
-
-  filigree = clutter_texture_new_from_file (PKGICONDIR "/plug-in-device.png",
-                                            NULL);
-  clutter_texture_set_sync_size (CLUTTER_TEXTURE (filigree), TRUE);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (stack), filigree);
-  mx_stack_child_set_x_fill (MX_STACK (stack), filigree, FALSE);
-  mx_stack_child_set_y_fill (MX_STACK (stack), filigree, FALSE);
 
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
                                            stack,
