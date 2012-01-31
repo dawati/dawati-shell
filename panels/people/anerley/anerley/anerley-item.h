@@ -24,6 +24,7 @@
 #define _ANERLEY_ITEM
 
 #include <glib-object.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -51,11 +52,11 @@ typedef struct {
 typedef struct {
   GObjectClass parent_class;
   void (*display_name_changed) (AnerleyItem *item);
-  void (*avatar_path_changed) (AnerleyItem *item);
+  void (*avatar_changed) (AnerleyItem *item);
   void (*presence_changed) (AnerleyItem *item);
   void (*unread_messages_changed) (AnerleyItem *item, guint unread);
   const gchar * (*get_display_name) (AnerleyItem *item);
-  const gchar * (*get_avatar_path) (AnerleyItem *item);
+  GLoadableIcon * (*get_avatar) (AnerleyItem *item);
   const gchar * (*get_presence_status) (AnerleyItem *item);
   const gchar * (*get_presence_message) (AnerleyItem *item);
   const gchar * (*get_sortable_name) (AnerleyItem *item);
@@ -66,15 +67,16 @@ typedef struct {
 GType anerley_item_get_type (void);
 
 const gchar *anerley_item_get_display_name (AnerleyItem *item);
-const gchar *anerley_item_get_avatar_path (AnerleyItem *item);
+GLoadableIcon *anerley_item_get_avatar (AnerleyItem *item);
 const gchar *anerley_item_get_presence_status (AnerleyItem *item);
 const gchar *anerley_item_get_presence_message (AnerleyItem *item);
 const gchar *anerley_item_get_sortable_name (AnerleyItem *item);
+guint anerley_item_get_unread_messages_count (AnerleyItem *item);
 
 void anerley_item_emit_display_name_changed (AnerleyItem *item);
-void anerley_item_emit_avatar_path_changed (AnerleyItem *item);
+void anerley_item_emit_avatar_changed (AnerleyItem *item);
 void anerley_item_emit_presence_changed (AnerleyItem *item);
-void anerley_item_emit_unread_messages_changed (AnerleyItem *item, guint unread);
+void anerley_item_emit_unread_messages_changed (AnerleyItem *item);
 
 void anerley_item_activate (AnerleyItem *item);
 

@@ -27,7 +27,7 @@ G_DEFINE_TYPE (AnerleyItem, anerley_item, G_TYPE_OBJECT)
 enum
 {
   DISPLAY_NAME_CHANGED,
-  AVATAR_PATH_CHANGED,
+  AVATAR_CHANGED,
   PRESENCE_CHANGED,
   UNREAD_MESSAGES_CHANGED,
   LAST_SIGNAL
@@ -49,11 +49,11 @@ anerley_item_class_init (AnerleyItemClass *klass)
                   G_TYPE_NONE,
                   0);
 
-  signals[AVATAR_PATH_CHANGED] =
-    g_signal_new ("avatar-path-changed",
+  signals[AVATAR_CHANGED] =
+    g_signal_new ("avatar-changed",
                   ANERLEY_TYPE_ITEM,
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (AnerleyItemClass, avatar_path_changed),
+                  G_STRUCT_OFFSET (AnerleyItemClass, avatar_changed),
                   NULL,
                   NULL,
                   g_cclosure_marshal_VOID__VOID,
@@ -92,10 +92,10 @@ anerley_item_get_display_name (AnerleyItem *item)
   return ANERLEY_ITEM_GET_CLASS (item)->get_display_name (item);
 }
 
-const gchar *
-anerley_item_get_avatar_path (AnerleyItem *item)
+GLoadableIcon *
+anerley_item_get_avatar (AnerleyItem *item)
 {
-  return ANERLEY_ITEM_GET_CLASS (item)->get_avatar_path (item);
+  return ANERLEY_ITEM_GET_CLASS (item)->get_avatar (item);
 }
 
 const gchar *
@@ -129,9 +129,9 @@ anerley_item_emit_display_name_changed (AnerleyItem *item)
 }
 
 void
-anerley_item_emit_avatar_path_changed (AnerleyItem *item)
+anerley_item_emit_avatar_changed (AnerleyItem *item)
 {
-  g_signal_emit (item, signals[AVATAR_PATH_CHANGED], 0);
+  g_signal_emit (item, signals[AVATAR_CHANGED], 0);
 }
 
 void
@@ -141,10 +141,10 @@ anerley_item_emit_presence_changed (AnerleyItem *item)
 }
 
 void
-anerley_item_emit_unread_messages_changed (AnerleyItem *item,
-                                           guint        unread)
+anerley_item_emit_unread_messages_changed (AnerleyItem *item)
 {
-  g_signal_emit (item, signals[UNREAD_MESSAGES_CHANGED], 0, unread);
+  g_signal_emit (item, signals[UNREAD_MESSAGES_CHANGED], 0,
+                 anerley_item_get_unread_messages_count (item));
 }
 
 void

@@ -23,7 +23,9 @@
 #define _ANERLEY_TP_MONITOR_FEED
 
 #include <glib-object.h>
-#include <anerley/anerley-aggregate-tp-feed.h>
+#include <folks/folks.h>
+
+#include <anerley/anerley-feed.h>
 
 G_BEGIN_DECLS
 
@@ -54,8 +56,8 @@ typedef struct {
 
 GType anerley_tp_monitor_feed_get_type (void);
 
-AnerleyFeed *anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *feed,
-                                          const gchar            *client_name);
+AnerleyFeed *anerley_tp_monitor_feed_new (FolksIndividualAggregator *aggregator,
+                                          const gchar *client_name);
 
 G_END_DECLS
 
