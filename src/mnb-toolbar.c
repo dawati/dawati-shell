@@ -529,7 +529,7 @@ mnb_toolbar_wipe_input (MnbToolbar *toolbar)
 
   if (priv->input_region)
     {
-      mnb_input_manager_remove_region_without_update (priv->input_region);
+      mnb_input_manager_remove_region (priv->input_region);
       priv->input_region = NULL;
     }
 }
@@ -640,15 +640,6 @@ mnb_toolbar_real_show (ClutterActor *actor)
    * Call the parent show(); this must be done before we do anything else.
    */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
-
-  /* if (priv->input_region) */
-  /*   mnb_input_manager_remove_region_without_update (priv->input_region); */
-
-  /* priv->input_region = */
-  /*   mnb_input_manager_push_region (0, 0, */
-  /*                                  priv->old_screen_width, */
-  /*                                  TOOLBAR_HEIGHT + 10, */
-  /*                                  FALSE, MNB_INPUT_LAYER_PANEL); */
 
   dawati_netbook_stash_window_focus (priv->plugin, CurrentTime);
 }
@@ -767,12 +758,6 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
   GList             *l;
   MnbPanel          *panel;
 
-  /*
-   * Don't allow the toolbar to hide when not in netbook mode.
-   */
-  if (!dawati_netbook_use_netbook_mode (priv->plugin))
-    return;
-
   if (priv->in_hide_animation)
     return;
 
@@ -787,12 +772,6 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
 
         return;
     }
-
-  /* if ((panel = mnb_toolbar_get_active_panel (toolbar))) */
-  /*   { */
-  /*     mnb_panel_hide_with_toolbar (panel, reason); */
-  /*     return; */
-  /*   } */
 
   priv->reason_for_hide = reason;
 
@@ -811,11 +790,6 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
   g_signal_emit (actor, toolbar_signals[HIDE_BEGIN], 0);
 
   mnb_toolbar_wipe_input (toolbar);
-  /* if (priv->input_region) */
-  /*   { */
-  /*     mnb_input_manager_remove_region (priv->input_region); */
-  /*     priv->input_region = NULL; */
-  /*   } */
 
   priv->in_hide_animation = TRUE;
 
@@ -2242,17 +2216,6 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
           if (!dawati_netbook_use_netbook_mode (plugin))
             spacing += BIG_SCREEN_BUTTON_SHIFT;
 
-          /* clutter_actor_set_position (CLUTTER_ACTOR (button), spacing, */
-          /*                             BUTTON_Y); */
-          /* clutter_actor_set_height (CLUTTER_ACTOR (button), */
-          /*                           clutter_actor_get_height (CLUTTER_ACTOR (toolbar))); */
-
-          /* mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button), */
-          /*                                       0, */
-          /*                                       -(TOOLBAR_HEIGHT-BUTTON_HEIGHT), */
-          /*                                       BUTTON_WIDTH, */
-          /*                                       TOOLBAR_HEIGHT); */
-
           if (!clutter_actor_get_parent (button))
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
                                          button);
@@ -3533,37 +3496,25 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   clutter_actor_set_width (priv->shadow, screen_width);
   clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
 
-  for (l = priv->panels; l; l = l->next)
-  {
-    MnbToolbarPanel *tp = l->data;
+  /* for (l = priv->panels; l; l = l->next) */
+  /* { */
+  /*   MnbToolbarPanel *tp = l->data; */
 
-    if (!tp || !tp->panel)
-      continue;
+  /*   if (!tp || !tp->panel) */
+  /*     continue; */
 
-    /*
-     * The panel size is the overall size of the panel actor; the height of the
-     * actor includes the shadow, so we need to add the extra bit by which the
-     * shadow protrudes below the actor.
-     */
-    mnb_panel_set_size (tp->panel,
-                        screen_width,
-                        screen_height - STATUSBAR_HEIGHT);
-  }
+  /*   /\* */
+  /*    * The panel size is the overall size of the panel actor; the height of the */
+  /*    * actor includes the shadow, so we need to add the extra bit by which the */
+  /*    * shadow protrudes below the actor. */
+  /*    *\/ */
+  /*   mnb_panel_set_size (tp->panel, */
+  /*                       screen_width, */
+  /*                       screen_height - STATUSBAR_HEIGHT); */
+  /* } */
 
   if (priv->input_region)
     mnb_toolbar_update_input (toolbar);
-  /* if (priv->input_region) */
-  /*   { */
-  /*     mnb_input_manager_remove_region_without_update (priv->input_region); */
-
-  /*     priv->input_region = */
-  /*       mnb_input_manager_push_region (0, 0, */
-  /*                                      screen_width, */
-  /*                                      TOOLBAR_HEIGHT + 10, */
-  /*                                      FALSE, MNB_INPUT_LAYER_PANEL); */
-  /*   } */
-
-  /* mnb_toolbar_trigger_region_set_height (toolbar, 0); */
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
