@@ -103,7 +103,7 @@ change_button_style_cb (gpointer data)
     mpl_panel_client_request_button_style (panel, "state1");
 
 #if 1
-  mpl_panel_client_set_height_request (panel, height);
+  mpl_panel_client_set_size_request (panel, 1024, height);
 #endif
   return TRUE;
 }

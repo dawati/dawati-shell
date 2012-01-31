@@ -159,7 +159,7 @@ setup_panel (DawatiStatusPanel *status_panel)
   mpl_panel_clutter_setup_events_with_gtk ((MplPanelClutter *)panel);
 
   status = make_status (status_panel);
-  mpl_panel_client_set_height_request (panel, 600);
+  mpl_panel_client_set_size_request (panel, 1024, 580);
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 

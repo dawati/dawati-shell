@@ -5,15 +5,15 @@
     <method name="InitPanel">
       <arg name="x" type="i" direction="in"/>
       <arg name="y" type="i" direction="in"/>
-      <arg name="max_window_width" type="u" direction="in"/>
-      <arg name="max_window_height" type="u" direction="in"/>
+      <arg name="max_window_width" type="i" direction="in"/>
+      <arg name="max_window_height" type="i" direction="in"/>
       <arg name="panel_name" type="s" direction="out"/>
       <arg name="xid" type="u" direction="out"/>
       <arg name="tooltip" type="s" direction="out"/>
       <arg name="stylesheet" type="s" direction="out"/>
       <arg name="button_style" type="s" direction="out"/>
-      <arg name="window_width" type="u" direction="out"/>
-      <arg name="window_height" type="u" direction="out"/>
+      <arg name="window_width" type="i" direction="out"/>
+      <arg name="window_height" type="i" direction="out"/>
     </method>
 
     <method name="Unload"/>
@@ -24,8 +24,8 @@
     </method>
 
     <method name="SetSize">
-      <arg name="max_window_width" type="u" direction="in"/>
-      <arg name="max_window_height" type="u" direction="in"/>
+      <arg name="max_window_width" type="i" direction="in"/>
+      <arg name="max_window_height" type="i" direction="in"/>
     </method>
 
     <method name="Show"/>
@@ -51,8 +51,8 @@
     </signal>
 
     <signal name="SetSize">
-      <arg name="max_window_width" type="u"/>
-      <arg name="max_window_height" type="u"/>
+      <arg name="requested_window_width" type="i"/>
+      <arg name="requested_window_height" type="i"/>
     </signal>
 
     <signal name="RequestFocus"/>

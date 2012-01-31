@@ -79,6 +79,7 @@ static void mnb_input_manager_apply_stack (void);
 
 struct MnbInputRegion
 {
+  XRectangle    rect;
   XserverRegion region;
   gboolean      inverse;
   MnbInputLayer layer;
@@ -169,19 +170,18 @@ mnb_input_manager_push_region (gint          x,
 {
   MnbInputRegion *mir  = g_slice_alloc (sizeof (MnbInputRegion));
   Display        *xdpy;
-  XRectangle      rect;
 
   g_assert (mgr_singleton && layer >= 0 && layer <= MNB_INPUT_LAYER_TOP);
 
   xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
 
-  rect.x       = x;
-  rect.y       = y;
-  rect.width   = width;
-  rect.height  = height;
+  mir->rect.x       = x;
+  mir->rect.y       = y;
+  mir->rect.width   = width;
+  mir->rect.height  = height;
 
   mir->inverse = inverse;
-  mir->region  = XFixesCreateRegion (xdpy, &rect, 1);
+  mir->region  = XFixesCreateRegion (xdpy, &mir->rect, 1);
   mir->layer   = layer;
 
   mgr_singleton->layers[layer] =
@@ -284,7 +284,6 @@ actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
 {
   ClutterActorBox  box;
   MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
-  XserverRegion    rgn;
   XRectangle       rect;
   Display         *xdpy;
 
@@ -294,8 +293,6 @@ actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
     return;
 
   xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
-
-  rgn = mir->region;
 
   clutter_actor_get_allocation_box (actor, &box);
 
@@ -314,7 +311,6 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
 {
   ClutterGeometry  geom;
   MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
-  XserverRegion    rgn;
   XRectangle       rect;
   Display         *xdpy;
   gint             screen_width, screen_height;
@@ -342,8 +338,6 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
     }
 
   xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
-
-  rgn = mir->region;
 
   clutter_actor_get_geometry (actor, &geom);
 
@@ -393,10 +387,7 @@ actor_show_cb (ClutterActor *actor, MnbInputLayer layer)
     }
   else
     {
-      XserverRegion rgn;
       XRectangle    rect;
-
-      rgn = mir->region;
 
       rect.x      = box.x1;
       rect.y      = box.y1;
@@ -450,10 +441,7 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
     }
   else
     {
-      XserverRegion rgn;
       XRectangle    rect;
-
-      rgn = mir->region;
 
       rect.x      = 0;
       rect.y      = geom.y + geom.height;

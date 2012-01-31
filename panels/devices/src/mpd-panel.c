@@ -111,8 +111,9 @@ mpd_panel_class_init (MpdPanelClass *klass)
 static void
 mpd_panel_init (MpdPanel *self)
 {
-  mpl_panel_client_set_height_request (MPL_PANEL_CLIENT (self),
-                                       MPD_SHELL_HEIGHT);
+  mpl_panel_client_set_size_request (MPL_PANEL_CLIENT (self),
+                                     MPD_SHELL_WIDTH,
+                                     MPD_SHELL_HEIGHT);
 }
 
 MplPanelClient *

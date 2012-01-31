@@ -244,7 +244,7 @@ main (int     argc,
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
       mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (panel));
 
-      mpl_panel_client_set_height_request (panel, 600);
+      mpl_panel_client_set_size_request (panel, -1, 600);
 
       launcher = mnb_launcher_new ();
       g_signal_connect (launcher, "launcher-activated",
