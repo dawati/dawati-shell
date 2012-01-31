@@ -24,7 +24,6 @@
 #include <anerley/anerley-item.h>
 #include <anerley/anerley-simple-grid-view.h>
 #include <anerley/anerley-tile.h>
-#include <anerley/anerley-aggregate-tp-feed.h>
 #include <anerley/anerley-feed-model.h>
 #include <anerley/anerley-tile-view.h>
 
@@ -49,7 +48,8 @@ int
 main (int    argc,
       char **argv)
 {
-  AnerleyFeed *feed;
+  FolksIndividualAggregator *aggregator;
+  AnerleyTpFeed *feed;
   ClutterActor *stage;
   ClutterActor *scroll_view;
   ClutterActor *icon_view;
@@ -82,8 +82,9 @@ main (int    argc,
 
   g_free (path);
 
-  feed = anerley_aggregate_tp_feed_new ();
-  model = anerley_feed_model_new (feed);
+  aggregator = folks_individual_aggregator_new ();
+  feed = anerley_tp_feed_new (aggregator);
+  model = anerley_feed_model_new ((AnerleyFeed *) feed);
   stage = clutter_stage_get_default ();
   icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
 
@@ -121,7 +122,13 @@ main (int    argc,
                                         NULL);
 
   clutter_actor_set_size (CLUTTER_ACTOR (table), 640, 480);
+
+  folks_individual_aggregator_prepare (aggregator, NULL, NULL);
+
   clutter_main ();
+
+  g_object_unref (aggregator);
+  g_object_unref (feed);
 
   return 0;
 }
