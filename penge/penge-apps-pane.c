@@ -31,9 +31,14 @@ G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) ((PengeAppsPane *)o)->priv
 
+#define TILE_COLUMN_SPACING 15
+#define TILE_ROW_SPACING 10
+#define TILE_STACKED_SIZE 64
+
 struct _PengeAppsPanePrivate {
   MplAppBookmarkManager *manager;
 
+  /* actually URIs to MxStack containing an actor with clutter name "tile */
   GHashTable *uris_to_actors;
   gboolean vertical;
 };
@@ -138,6 +143,9 @@ penge_apps_pane_init (PengeAppsPane *self)
                                                 g_free,
                                                 NULL);
 
+  mx_table_set_column_spacing (MX_TABLE (self), TILE_COLUMN_SPACING);
+  mx_table_set_row_spacing (MX_TABLE (self), TILE_ROW_SPACING);
+
   penge_apps_pane_update (self);
 }
 
@@ -211,32 +219,48 @@ penge_apps_pane_update (PengeAppsPane *pane)
                                      NULL);
       }
     } else {
+      ClutterActor *overlay, *stack;
+
+      stack = mx_stack_new ();
+
       actor = g_object_new (PENGE_TYPE_APP_TILE,
                             "bookmark",
                             uri,
                             NULL);
+      clutter_actor_set_name (actor, "tile");
+
+      overlay = mx_frame_new ();
+      mx_stylable_set_style_class (MX_STYLABLE (overlay), "PengeAppTileOverlay");
+
+      clutter_container_add (CLUTTER_CONTAINER (stack), actor, overlay, NULL);
+      /* actor's sizes have been set in PengeAppTile */
+      clutter_actor_set_size (overlay,
+          clutter_actor_get_width (actor),
+          clutter_actor_get_height (actor));
+      clutter_actor_set_size (stack, TILE_STACKED_SIZE, TILE_STACKED_SIZE);
+
       if (!priv->vertical)
       {
         mx_table_add_actor (MX_TABLE (pane),
-                            actor,
+                            stack,
                             count / ROW_SIZE,
                             count % ROW_SIZE);
       } else {
         mx_table_add_actor (MX_TABLE (pane),
-                            actor,
+                            stack,
                             count / 1,
                             count % 1);
       }
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "x-expand", TRUE,
-                                   "y-expand", TRUE,
+                                   stack,
+                                   "x-expand", FALSE,
+                                   "y-expand", FALSE,
                                    "x-fill", FALSE,
                                    "y-fill", FALSE,
                                    NULL);
       g_hash_table_insert (priv->uris_to_actors,
                            g_strdup (uri),
-                           actor);
+                           stack);
     }
 
     /* Found, so don't remove */

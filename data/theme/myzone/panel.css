@@ -19,8 +19,8 @@ PengeCalendarPane
 
 PengeAppsPane
 {
+  padding: 6 0 15;
 /*
-  padding: 4;
   border-image: url('../common/content-pane-background.png') 5 5 5 5;
 */
 }
@@ -65,18 +65,19 @@ PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
 
 PengeAppTile
 {
-  background-color: #fff0;
-  padding: 6;
-  border-image: none;
+  border-image: url('../../style/shared/content-tile-bg.png') 8 9;
 }
 
 PengeAppTile:hover,
 PengeAppTile:active
 {
-  border-image: url('content-panel-background-highlight.png') 5;
-  padding: 6;
+  border-image: url('../../style/shared/content-tile-bg.png') 8 9;
 }
 
+PengeAppsPane *.PengeAppTileOverlay
+{
+  border-image: url('../../style/shared/application-mask.png');
+}
 
 PengeRecentFileTile, PengePeopleTile
 {
