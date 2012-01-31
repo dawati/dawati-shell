@@ -28,6 +28,7 @@
 #include "anerley-tile-view.h"
 
 #include <glib/gi18n-lib.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_DEFINE_TYPE (AnerleyTile, anerley_tile, MX_TYPE_WIDGET)
 
@@ -90,29 +91,48 @@ _get_default_avatar_texture (void)
 }
 
 static void
-_item_avatar_path_changed_cb (AnerleyItem *item,
-                              gpointer     userdata)
+_item_avatar_changed_cb (AnerleyItem *item,
+                         gpointer     userdata)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
-  GError *error = NULL;
-  const gchar *avatar_path = NULL;
+  GLoadableIcon *avatar;
+  GInputStream *input;
+  GdkPixbufLoader *loader;
+  GdkPixbuf *pixbuf;
+  guchar buffer[512];
+  gssize count;
 
-  avatar_path = anerley_item_get_avatar_path (priv->item);
+  avatar = anerley_item_get_avatar (priv->item);
 
-  if (!avatar_path)
+  if (!avatar)
   {
     clutter_texture_set_cogl_texture ((ClutterTexture *)priv->avatar,
                                       _get_default_avatar_texture());
-  } else{
-    if (!clutter_texture_set_from_file ((ClutterTexture *)priv->avatar,
-                                        avatar_path,
-                                        &error))
-    {
-      g_warning (G_STRLOC ": Error opening avatar image: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
+    return;
   }
+
+  /* FIXME: Do it async */
+  input = g_loadable_icon_load (avatar, 48, NULL, NULL, NULL);
+  loader = gdk_pixbuf_loader_new ();
+  while ((count = g_input_stream_read (input, buffer, sizeof (buffer), NULL, NULL)) > 0)
+  {
+    gdk_pixbuf_loader_write (loader, buffer, count, NULL);
+  }
+  gdk_pixbuf_loader_close (loader, NULL);
+
+  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+  clutter_texture_set_from_rgb_data ((ClutterTexture *)priv->avatar,
+                                     gdk_pixbuf_get_pixels (pixbuf),
+                                     gdk_pixbuf_get_has_alpha (pixbuf),
+                                     gdk_pixbuf_get_width (pixbuf),
+                                     gdk_pixbuf_get_height (pixbuf),
+                                     gdk_pixbuf_get_rowstride (pixbuf),
+                                     gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3,
+                                     CLUTTER_TEXTURE_NONE,
+                                     NULL);
+
+  g_object_unref (loader);
+  g_object_unref (input);
 }
 
 static void
@@ -218,7 +238,7 @@ anerley_tile_update_item (AnerleyTile *tile,
                                           _item_display_name_changed_cb,
                                           tile);
     g_signal_handlers_disconnect_by_func (priv->item,
-                                          _item_avatar_path_changed_cb,
+                                          _item_avatar_changed_cb,
                                           tile);
     g_signal_handlers_disconnect_by_func (priv->item,
                                           _item_presence_changed_cb,
@@ -235,8 +255,8 @@ anerley_tile_update_item (AnerleyTile *tile,
                       (GCallback)_item_display_name_changed_cb,
                       tile);
     g_signal_connect (priv->item,
-                      "avatar-path-changed",
-                      (GCallback)_item_avatar_path_changed_cb,
+                      "avatar-changed",
+                      (GCallback)_item_avatar_changed_cb,
                       tile);
     g_signal_connect (priv->item,
                       "presence-changed",
@@ -246,7 +266,7 @@ anerley_tile_update_item (AnerleyTile *tile,
     if (CLUTTER_ACTOR_IS_MAPPED (tile))
     {
       anerley_item_emit_display_name_changed (item);
-      anerley_item_emit_avatar_path_changed (item);
+      anerley_item_emit_avatar_changed (item);
       anerley_item_emit_presence_changed (item);
     }
   }
@@ -317,7 +337,7 @@ anerley_tile_map (ClutterActor *actor)
   if (priv->item)
   {
     anerley_item_emit_display_name_changed (priv->item);
-    anerley_item_emit_avatar_path_changed (priv->item);
+    anerley_item_emit_avatar_changed (priv->item);
     anerley_item_emit_presence_changed (priv->item);
   }
 

@@ -25,8 +25,8 @@
 #include <anerley/anerley-item.h>
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-tp-feed.h>
-#include <anerley/anerley-tp-observer.h>
 #include <telepathy-glib/channel.h>
+#include <folks/folks-telepathy.h>
 
 G_DEFINE_TYPE_WITH_CODE (AnerleyTpMonitorFeed,
                          anerley_tp_monitor_feed,
@@ -40,16 +40,17 @@ G_DEFINE_TYPE_WITH_CODE (AnerleyTpMonitorFeed,
 typedef struct _AnerleyTpMonitorFeedPrivate AnerleyTpMonitorFeedPrivate;
 
 struct _AnerleyTpMonitorFeedPrivate {
-  AnerleyAggregateTpFeed *aggregate_feed;
-  AnerleyTpObserver *observer;
-  GHashTable *channels_to_items;
+  FolksIndividualAggregator *aggregator;
   gchar *client_name;
+
+  TpBaseClient *observer;
+  GHashTable *channels_to_items;
 };
 
 enum
 {
   PROP_0,
-  PROP_AGREGGATE_FEED,
+  PROP_AGGREGGATOR,
   PROP_CLIENT_NAME
 };
 
@@ -60,6 +61,9 @@ anerley_tp_monitor_feed_get_property (GObject *object, guint property_id,
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
+    case PROP_AGGREGGATOR:
+      g_value_set_object (value, priv->aggregator);
+      break;
     case PROP_CLIENT_NAME:
       g_value_set_string (value, priv->client_name);
       break;
@@ -75,8 +79,8 @@ anerley_tp_monitor_feed_set_property (GObject *object, guint property_id,
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
 
   switch (property_id) {
-    case PROP_AGREGGATE_FEED:
-      priv->aggregate_feed = g_value_dup_object (value);
+    case PROP_AGGREGGATOR:
+      priv->aggregator = g_value_dup_object (value);
       break;
     case PROP_CLIENT_NAME:
       priv->client_name = g_value_dup_string (value);
@@ -91,17 +95,9 @@ anerley_tp_monitor_feed_dispose (GObject *object)
 {
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
 
-  if (priv->aggregate_feed)
-  {
-    g_object_unref (priv->aggregate_feed);
-    priv->aggregate_feed = NULL;
-  }
-
-  if (priv->observer)
-  {
-    g_object_unref (priv->observer);
-    priv->observer = NULL;
-  }
+  g_clear_object (&priv->aggregator);
+  g_clear_object (&priv->observer);
+  tp_clear_pointer (&priv->channels_to_items, g_hash_table_unref);
 
   G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->dispose (object);
 }
@@ -112,156 +108,150 @@ anerley_tp_monitor_feed_finalize (GObject *object)
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->client_name);
+
   G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->finalize (object);
 }
 
 static void
-_channel_closed_cb (TpChannel *channel,
-                    gpointer   userdata,
-                    GObject   *weak_object)
+_channel_invalidated_cb (TpChannel *channel,
+    guint domain,
+    gint code,
+    gchar *message,
+    AnerleyTpMonitorFeed *self)
 {
-  AnerleyTpMonitorFeed *feed = ANERLEY_TP_MONITIOR_FEED (weak_object);
-  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (feed);
+  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (self);
   GList *items = NULL;
   AnerleyItem *item;
 
-  g_debug (G_STRLOC ": Channel with identifier %s closed",
-           tp_channel_get_identifier (channel));
+  g_debug (G_STRLOC ": Channel with identifier %s invalidated: %s",
+           tp_channel_get_identifier (channel), message);
 
   item = g_hash_table_lookup (priv->channels_to_items, channel);
-  items = g_list_append (items, item);
-  g_signal_emit_by_name (feed,
-                         "items-removed",
-                         items);
-  g_hash_table_remove (priv->channels_to_items,
-                       channel);
 
-  g_object_unref (channel);
+  items = g_list_append (NULL, item);
+  g_signal_emit_by_name (self, "items-removed", items);
+  g_list_free (items);
+
+  g_hash_table_remove (priv->channels_to_items, channel);
 }
 
-typedef struct
+/* Copied from empathy-utils.c, with copyright holder permission */
+FolksIndividual *
+empathy_create_individual_from_tp_contact (TpContact *contact)
 {
+  GeeSet *personas;
+  TpfPersona *persona;
+  FolksIndividual *individual;
+
+  persona = tpf_persona_dup_for_contact (contact);
+  if (persona == NULL)
+    {
+      g_debug ("Failed to get a persona for %s",
+          tp_contact_get_identifier (contact));
+      return NULL;
+    }
+
+  personas = GEE_SET (
+      gee_hash_set_new (FOLKS_TYPE_PERSONA, g_object_ref, g_object_unref,
+      g_direct_hash, g_direct_equal));
+
+  gee_collection_add (GEE_COLLECTION (personas), persona);
+
+  individual = folks_individual_new (personas);
+
+  g_clear_object (&persona);
+  g_clear_object (&personas);
+
+  return individual;
+}
+
+static void
+_observer_new_channel_cb (TpSimpleObserver           *observer,
+                          TpAccount                  *account,
+                          TpConnection               *connection,
+                          GList                      *channels,
+                          TpChannelDispatchOperation *dispatch_operation,
+                          GList                      *requests,
+                          TpObserveChannelsContext   *context,
+                          gpointer                    user_data)
+{
+  AnerleyTpMonitorFeed *self = ANERLEY_TP_MONITIOR_FEED (user_data);
+  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (user_data);
   TpChannel *channel;
-  TpAccount *account;
-} GetContactsClosure;
-
-static void
-_tp_connection_get_contacts_cb (TpConnection      *connection,
-                                guint              n_contacts,
-                                TpContact * const *contacts,
-                                guint              n_failed,
-                                const TpHandle    *failed,
-                                const GError      *error,
-                                gpointer           userdata,
-                                GObject           *weak_object)
-{
-  AnerleyTpMonitorFeed *monitor_feed = ANERLEY_TP_MONITIOR_FEED (weak_object);
-  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (monitor_feed);
-  GetContactsClosure *closure = (GetContactsClosure *)userdata;
-  gint i = 0;
-  TpContact *contact;
   AnerleyTpItem *item;
-  GList *added_items = NULL;
-  TpAccount *account = closure->account;
-  TpChannel *channel = closure->channel;
+  GList *added_items;
+  TpContact *target;
+  FolksIndividual *contact;
 
-  if (error)
+  if (channels == NULL || channels->next != NULL)
   {
-    g_warning (G_STRLOC ": Error getting contacts from handle: %s",
-               error->message);
+    GError e = { TP_ERRORS, TP_ERROR_INVALID_ARGUMENT,
+                 "Expecting one and only one channel" };
+    tp_observe_channels_context_fail (context, &e);
     return;
   }
 
-  /* Only expect 1 */
-  for (i = 0; i < n_contacts; i++)
+  channel = channels->data;
+
+  if (!TP_IS_TEXT_CHANNEL (channel))
   {
-    contact = (TpContact *)contacts[i];
-    item = anerley_tp_item_new (account,
-                                contact);
-    added_items = g_list_append (added_items, item);
-
-    tp_cli_channel_connect_to_closed (channel,
-                                      _channel_closed_cb,
-                                      NULL,
-                                      NULL,
-                                      (GObject *)monitor_feed,
-                                      NULL);
-
-    g_hash_table_insert (priv->channels_to_items,
-                         channel,
-                         g_object_ref (item));
-
-    anerley_tp_item_associate_channel (ANERLEY_TP_ITEM (item), channel);
-  }
-
-  if (added_items)
-    g_signal_emit_by_name (monitor_feed,
-                           "items-added",
-                           added_items);
-
-  g_object_unref (closure->channel);
-  g_object_unref (closure->account);
-  g_free (closure);
-}
-
-static void
-_observer_new_channel_cb (AnerleyTpObserver *observer,
-                          const gchar       *account_name,
-                          TpChannel         *channel,
-                          gpointer           userdata)
-{
-  AnerleyTpMonitorFeed *monitor_feed = ANERLEY_TP_MONITIOR_FEED (userdata);
-  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (userdata);
-  AnerleyFeed *feed;
-  TpHandle contact_handle;
-  TpHandle handles[1] = { 0, };
-  TpContactFeature features[] = {TP_CONTACT_FEATURE_ALIAS,
-                                 TP_CONTACT_FEATURE_AVATAR_TOKEN,
-                                 TP_CONTACT_FEATURE_PRESENCE };
-  TpAccount *account;
-  GetContactsClosure *closure;
-
-  feed = anerley_aggregate_tp_feed_get_feed_by_account_name (priv->aggregate_feed,
-                                                             account_name);
-
-  if (!feed)
-  {
-    g_warning (G_STRLOC ": Given an account name with no known feed: %s",
-               account_name);
+    GError e = { TP_ERRORS, TP_ERROR_INVALID_ARGUMENT,
+                "Expecting a TpTextChannel" };
+    tp_observe_channels_context_fail (context, &e);
     return;
-  } else {
-    g_debug (G_STRLOC ": Got a valid feed for %s account", account_name);
   }
 
-  account = anerley_tp_feed_peek_account (ANERLEY_TP_FEED (feed));
-  contact_handle = tp_channel_get_handle (channel, NULL);
-  handles[0] = contact_handle;
+  if (g_hash_table_lookup (priv->channels_to_items, channel) != NULL)
+  {
+    GError e = { TP_ERRORS, TP_ERROR_INVALID_ARGUMENT,
+                 "We are already observing this channel" };
+    tp_observe_channels_context_fail (context, &e);
+    return;
+  }
 
-  closure = g_new0 (GetContactsClosure, 1);
-  closure->channel = g_object_ref (channel);
-  closure->account = g_object_ref (account);
-  tp_connection_get_contacts_by_handle (tp_channel_borrow_connection (channel),
-                                        1,
-                                        handles,
-                                        3,
-                                        features,
-                                        _tp_connection_get_contacts_cb,
-                                        closure,
-                                        NULL,
-                                        (GObject *)monitor_feed);
+  /* FIXME: Should take the individual from the aggregator */
+  target = tp_channel_get_target_contact (channel);
+  contact = empathy_create_individual_from_tp_contact (target);
+  item = anerley_tp_item_new (contact);
+  g_hash_table_insert (priv->channels_to_items, g_object_ref (channel), item);
+  g_object_unref (contact);
 
+  anerley_tp_item_associate_channel (ANERLEY_TP_ITEM (item),
+                                     TP_TEXT_CHANNEL (channel));
+
+  g_signal_connect (channel, "invalidated",
+                    G_CALLBACK (_channel_invalidated_cb),
+                    self);
+
+  added_items = g_list_append (NULL, item);
+  g_signal_emit_by_name (self, "items-added", added_items);
+  g_list_free (added_items);
+
+  tp_observe_channels_context_accept (context);
 }
 
 static void
 anerley_tp_monitor_feed_constructed (GObject *object)
 {
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
+  TpAccountManager *am;
 
-  priv->observer = anerley_tp_observer_new (priv->client_name);
-  g_signal_connect (priv->observer,
-                    "new-channel",
-                    (GCallback)_observer_new_channel_cb,
-                    object);
+  /* Observe private text channels */
+  am = tp_account_manager_dup ();
+  priv->observer = tp_simple_observer_new_with_am (am,
+                                                   TRUE,
+                                                   priv->client_name,
+                                                   TRUE,
+                                                   _observer_new_channel_cb,
+                                                   object,
+                                                   NULL);
+  tp_base_client_take_observer_filter (priv->observer, tp_asv_new (
+      TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING, TP_IFACE_CHANNEL_TYPE_TEXT,
+      TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_INT, TP_HANDLE_TYPE_CONTACT,
+      NULL));
+  g_object_unref (am);
+
+  tp_base_client_register (priv->observer, NULL);
 
   if (G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->constructed)
     G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->constructed (object);
@@ -281,19 +271,19 @@ anerley_tp_monitor_feed_class_init (AnerleyTpMonitorFeedClass *klass)
   object_class->finalize = anerley_tp_monitor_feed_finalize;
   object_class->constructed = anerley_tp_monitor_feed_constructed;
 
-  pspec = g_param_spec_object ("aggregate-feed",
-                               "Aggregate feed",
-                               "The feed to look items up in",
-                               ANERLEY_TYPE_AGGREGATE_TP_FEED,
-                               G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_AGREGGATE_FEED, pspec);
-
   pspec = g_param_spec_string ("client-name",
                                "Client name",
                                "Name for the Telepathy client",
                                NULL,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_CLIENT_NAME, pspec);
+
+  pspec = g_param_spec_object ("aggregator",
+                               "Folks Aggregator",
+                               "The Folks individual aggregator",
+                               FOLKS_TYPE_INDIVIDUAL_AGGREGATOR,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_AGGREGGATOR, pspec);
 }
 
 static void
@@ -303,18 +293,16 @@ anerley_tp_monitor_feed_init (AnerleyTpMonitorFeed *self)
 
   priv->channels_to_items = g_hash_table_new_full (g_direct_hash,
                                                    g_direct_equal,
-                                                   NULL,
+                                                   g_object_unref,
                                                    g_object_unref);
 }
 
 AnerleyFeed *
-anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *aggregate,
-                             const gchar            *client_name)
+anerley_tp_monitor_feed_new (FolksIndividualAggregator *aggregator,
+    const gchar *client_name)
 {
   return g_object_new (ANERLEY_TYPE_TP_MONITIOR_FEED,
-                       "aggregate-feed", aggregate,
+                       "aggregator", aggregator,
                        "client-name", client_name,
                        NULL);
 }
-
-

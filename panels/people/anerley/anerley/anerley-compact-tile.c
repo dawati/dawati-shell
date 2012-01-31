@@ -464,7 +464,7 @@ anerley_compact_tile_set_item (AnerleyCompactTile *tile,
 
     anerley_item_emit_display_name_changed (item);
     anerley_item_emit_presence_changed (item);
-    anerley_item_emit_unread_messages_changed (item, 0);
+    anerley_item_emit_unread_messages_changed (item);
   }
 }
 
