@@ -162,6 +162,11 @@ MxTable.PengeInterestingTileDetails
   padding: 2;
 }
 
+MxTable.PengeInterestingTileDetails *.PengeInterestingTileMessageIconOverlay
+{
+  border-image: url("avatar-mask.png");
+}
+
 PengePeoplePlaceholderTile *#penge-no-content-main-message
 {
   font-size:15px;
@@ -250,11 +255,6 @@ PengeWelcomeTile
   -mx-content-image: url('../../style/switcher/closebutton-pressed.png');
 }
 
-
-*.PengeInterestingTileMessageIconOverlay
-{
-  border-image: url("avatar-mask.png");
-}
 
 MxLabel.PengeZeroCountLabel
 {
