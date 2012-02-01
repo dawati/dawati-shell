@@ -306,6 +306,7 @@ mnb_statusbar_init (MnbStatusbar *self)
   self->priv = STATUSBAR_PRIVATE (self);
 
   button = mx_button_new ();
+  mx_button_set_icon_name (MX_BUTTON (button), "player_play");
   mx_button_set_label (MX_BUTTON (button), _("Myzone"));
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
                                            button, 0,
