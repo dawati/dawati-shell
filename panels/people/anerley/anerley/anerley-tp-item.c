@@ -173,6 +173,31 @@ anerley_tp_item_get_presence_message (AnerleyItem *item)
   return priv->presence_message;
 }
 
+static gboolean
+anerley_tp_item_is_im (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  FolksPresenceType presence;
+
+  presence = folks_presence_details_get_presence_type (
+      (FolksPresenceDetails *) priv->contact);
+
+  return presence != FOLKS_PRESENCE_TYPE_UNSET;
+}
+
+static gboolean
+anerley_tp_item_is_online (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  FolksPresenceType presence;
+
+  presence = folks_presence_details_get_presence_type (
+      (FolksPresenceDetails *) priv->contact);
+
+  return presence > FOLKS_PRESENCE_TYPE_OFFLINE &&
+         presence < FOLKS_PRESENCE_TYPE_UNKNOWN;
+}
+
 static guint
 anerley_tp_item_get_unread_messages_count (AnerleyItem *item)
 {
@@ -235,6 +260,8 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->get_avatar = anerley_tp_item_get_avatar;
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
+  item_class->is_im = anerley_tp_item_is_im;
+  item_class->is_online = anerley_tp_item_is_online;
   item_class->get_unread_messages_count = anerley_tp_item_get_unread_messages_count;
   item_class->activate = anerley_tp_item_activate;
 
