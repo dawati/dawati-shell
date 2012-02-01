@@ -5,68 +5,57 @@
 MnbToolbarApplet#offline MxIcon {
   -mx-content-image: url("icon-network-offline.png");
 }
-MnbToolbarApplet#offline:hover, MnbToolbarApplet#offline:active,MnbToolbarApplet#offline:checked {
+MnbToolbarApplet#offline:hover MxIcon, MnbToolbarApplet#offline:active MxIcon, MnbToolbarApplet#offline:checked MxIcon {
   -mx-content-image: url("icon-network-offline-highlight.png");
 }
 
-MnbToolbarApplet#connecting {
+MnbToolbarApplet#connecting MxIcon {
   -mx-content-image: url("icon-network-connecting.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#connecting:hover, MnbToolbarApplet#connecting:active,MnbToolbarApplet#connecting:checked {
+MnbToolbarApplet#connecting:hover MxIcon, MnbToolbarApplet#connecting:active MxIcon, MnbToolbarApplet#connecting:checked MxIcon {
   -mx-content-image: url("icon-network-connecting-highlight.png");
-  padding: 0 0 0 0;
 }
 
-MnbToolbarApplet#error {
+MnbToolbarApplet#error MxIcon {
   -mx-content-image: url("icon-network-error.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#error:hover, MnbToolbarApplet#error:active,MnbToolbarApplet#error:checked {
+MnbToolbarApplet#error:hover MxIcon, MnbToolbarApplet#error:active MxIcon, MnbToolbarApplet#error:checked MxIcon {
   -mx-content-image: url("icon-network-error-highlight.png");
-  padding: 0 0 0 0;
 }
 
 
 /*
  * Wired network
  */
-MnbToolbarApplet#active {
+MnbToolbarApplet#active MxIcon {
   -mx-content-image: url("icon-network-active.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#active:hover, MnbToolbarApplet#active:active,MnbToolbarApplet#active:checked {
+MnbToolbarApplet#active:hover MxIcon, MnbToolbarApplet#active:active MxIcon, MnbToolbarApplet#active:checked MxIcon {
   -mx-content-image: url("icon-network-active-highlight.png");
-  padding: 0 0 0 0;
 }
 
 /*
  * WiFi
  */
 
-MnbToolbarApplet#wireless-strong {
+MnbToolbarApplet#wireless-strong MxIcon {
   -mx-content-image: url("icon-network-4.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#wireless-strong:hover, MnbToolbarApplet#wireless-strong:active,MnbToolbarApplet#wireless-strong:checked {
+MnbToolbarApplet#wireless-strong:hover MxIcon, MnbToolbarApplet#wireless-strong:active MxIcon, MnbToolbarApplet#wireless-strong:checked MxIcon {
   -mx-content-image: url("icon-network-highlight-4.png");
-  padding: 0 0 0 0;
 }
 
-MnbToolbarApplet#wireless-good {
+MnbToolbarApplet#wireless-good MxIcon {
   -mx-content-image: url("icon-network-3.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#wireless-good:hover, MnbToolbarApplet#wireless-good:active,MnbToolbarApplet#wireless-good:checked {
+MnbToolbarApplet#wireless-good:hover MxIcon, MnbToolbarApplet#wireless-good:active MxIcon, MnbToolbarApplet#wireless-good:checked MxIcon {
   -mx-content-image: url("icon-network-highlight-3.png");
-  padding: 0 0 0 0;
 }
 
-MnbToolbarApplet#wireless-weak {
+MnbToolbarApplet#wireless-weak MxIcon {
   -mx-content-image: url("icon-network-2.png");
-  padding: 0 0 0 0;
 }
-MnbToolbarApplet#wireless-weak:hover, MnbToolbarApplet#wireless-weak:active,MnbToolbarApplet#wireless-weak:checked {
+MnbToolbarApplet#wireless-weak:hover MxIcon, MnbToolbarApplet#wireless-weak:active MxIcon, MnbToolbarApplet#wireless-weak:checked MxIcon {
   -mx-content-image: url("icon-network-highlight-2.png");
 }
 
@@ -74,17 +63,17 @@ MnbToolbarApplet#wireless-weak:hover, MnbToolbarApplet#wireless-weak:active,MnbT
  * 3G
  */
 
-MnbToolbarApplet#threeg-strong {
+MnbToolbarApplet#threeg-strong MxIcon {
   -mx-content-image: url("icon-network-3g-4.png");
 }
-MnbToolbarApplet#threeg-strong:hover, MnbToolbarApplet#threeg-strong:active,MnbToolbarApplet#threeg-strong:checked {
+MnbToolbarApplet#threeg-strong:hover MxIcon, MnbToolbarApplet#threeg-strong:active MxIcon, MnbToolbarApplet#threeg-strong:checked MxIcon {
   -mx-content-image: url("icon-network-3g-highlight-4.png");
 }
 
-MnbToolbarApplet#threeg-weak {
+MnbToolbarApplet#threeg-weak MxIcon {
   -mx-content-image: url("icon-network-3g-2.png");
 }
-MnbToolbarApplet#threeg-weak:hover, MnbToolbarApplet#threeg-weak:active,MnbToolbarApplet#threeg-weak:checked {
+MnbToolbarApplet#threeg-weak:hover MxIcon, MnbToolbarApplet#threeg-weak:active MxIcon, MnbToolbarApplet#threeg-weak:checked MxIcon {
   -mx-content-image: url("icon-network-3g-highlight-2.png");
 }
 
@@ -92,32 +81,32 @@ MnbToolbarApplet#threeg-weak:hover, MnbToolbarApplet#threeg-weak:active,MnbToolb
  * Bluetooth
  */
 
-MnbToolbarApplet#bluetooth-strong {
+MnbToolbarApplet#bluetooth-strong MxIcon {
   -mx-content-image: url("icon-network-bluetooth-highlight-4.png");
 }
-MnbToolbarApplet#bluetooth-strong:hover, MnbToolbarApplet#bluetooth-strong:active,MnbToolbarApplet#bluetooth-strong:checked {
+MnbToolbarApplet#bluetooth-strong:hover MxIcon, MnbToolbarApplet#bluetooth-strong:active MxIcon, MnbToolbarApplet#bluetooth-strong:checked MxIcon {
   -mx-content-image: url("icon-network-bluetooth-highlight-4.png");
 }
 
-MnbToolbarApplet#bluetooth-weak {
+MnbToolbarApplet#bluetooth-weak MxIcon {
   -mx-content-image: url("icon-network-bluetooth-2.png");
 }
-MnbToolbarApplet#bluetooth-weak:hover, MnbToolbarApplet#bluetooth-weak:active,MnbToolbarApplet#bluetooth-weak:checked {
+MnbToolbarApplet#bluetooth-weak:hover MxIcon, MnbToolbarApplet#bluetooth-weak:active MxIcon, MnbToolbarApplet#bluetooth-weak:checked MxIcon {
   -mx-content-image: url("icon-network-bluetooth-highlight-2.png");
 }
 
 /* WiMAX */
 
-MnbToolbarApplet#wimax-strong {
+MnbToolbarApplet#wimax-strong MxIcon {
   -mx-content-image: url("icon-network-wimax-4.png");
 }
-MnbToolbarApplet#wimax-strong:hover, MnbToolbarApplet#wimax-strong:active,MnbToolbarApplet#wimax-strong:checked {
+MnbToolbarApplet#wimax-strong:hover MxIcon, MnbToolbarApplet#wimax-strong:active MxIcon, MnbToolbarApplet#wimax-strong:checked MxIcon {
   -mx-content-image: url("icon-network-wimax-strong-highlight-4.png");
 }
 
-MnbToolbarApplet#wimax-weak {
+MnbToolbarApplet#wimax-weak MxIcon {
   -mx-content-image: url("icon-network-wimax-2.png");
 }
-MnbToolbarApplet#wimax-weak:hover, MnbToolbarApplet#wimax-weak:active,MnbToolbarApplet#wimax-weak:checked {
+MnbToolbarApplet#wimax-weak:hover MxIcon, MnbToolbarApplet#wimax-weak:active MxIcon, MnbToolbarApplet#wimax-weak:checked MxIcon {
   -mx-content-image: url("icon-network-wimax-highlight-2.png");
 }

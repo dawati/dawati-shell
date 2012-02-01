@@ -135,15 +135,7 @@ MxBoxLayout#toolbar-right-box {
   -mx-spacing: 10;
 }
 
-MnbToolbarApplet {
-  -mx-border-image-transition-duration: 0;
-  background-color: #fff0;
-  border-image: url("toolbar/toolbar-button-normal.png") 12;
-  padding: 0 0 0 0;
-}
-
-MnbToolbarApplet:hover, MnbToolbarApplet:active, MnbToolbarApplet:checked {
-  -mx-border-image-transition-duration: 0;
+MnbToolbarApplet, MnbToolbarApplet#active:hover, MnbToolbarApplet#active:active, MnbToolbarApplet#active:checked {
   border-image: url("toolbar/toolbar-button-normal.png") 12;
   padding: 0 0 0 0;
 }
