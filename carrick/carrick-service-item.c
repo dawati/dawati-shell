@@ -47,6 +47,9 @@
 #include "carrick-util.h"
 #include "carrick-shell.h"
 
+#define CARRICK_ENTRY_WIDTH 160
+#define CARRICK_MIN_LABEL_WIDTH 150
+
 #define CARRICK_DRAG_TARGET "CARRICK_DRAG_TARGET"
 
 static const GtkTargetEntry carrick_targets[] = {
@@ -489,12 +492,12 @@ _populate_variables (CarrickServiceItem *self)
           g_strfreev (priv->proxy_servers);
           priv->proxy_servers = proxy_servers;
         }
-      if (priv->proxy_servers && g_strv_length (priv->proxy_servers) > 0)
-        g_strfreev (proxy_servers);
+      if (priv->proxy_excludes && g_strv_length (priv->proxy_excludes) > 0)
+        g_strfreev (proxy_excludes);
       else
         {
-          g_strfreev (priv->proxy_servers);
-          priv->proxy_servers = proxy_servers;
+          g_strfreev (priv->proxy_excludes);
+          priv->proxy_excludes = proxy_excludes;
         }
 
       /* TODO: it would make sense to expand this to cover lot of other 
@@ -2805,12 +2808,15 @@ add_label_to_table (GtkTable *table, guint row, const char *text)
   GtkWidget *label;
 
   label = gtk_label_new (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
+  gtk_widget_set_size_request (label, CARRICK_MIN_LABEL_WIDTH, -1);
   gtk_widget_show (label);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
   gtk_misc_set_padding (GTK_MISC (label), 0, 5);
   gtk_table_attach (table, label,
                     0, 1, row, row + 1,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
   return label;
@@ -2825,13 +2831,37 @@ add_entry_to_table (GtkTable *table, guint row)
   /* ipv4 mapped ipv6 address could be 45 chars */
   gtk_entry_set_max_length (GTK_ENTRY (entry), 50);
   gtk_widget_show (entry);
-  gtk_widget_set_size_request (entry, 100, -1);
+  gtk_widget_set_size_request (entry, CARRICK_ENTRY_WIDTH, -1);
   gtk_table_attach (table, entry,
                     1, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
   return entry;
+}
+
+static GtkWidget*
+add_proxy_radio_to_table (GtkTable *table, guint row,
+                          GtkWidget *group_widget, const char *text)
+{
+  GtkWidget *radio;
+  GtkWidget *label;
+
+  radio = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (group_widget),
+                                                       text);
+  /* hack to get a wrapping label */
+  label = gtk_bin_get_child (GTK_BIN (radio));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
+  /* set min width so the label can calculate how many rows it needs */
+  gtk_widget_set_size_request (label, CARRICK_MIN_LABEL_WIDTH + CARRICK_ENTRY_WIDTH, -1);
+  
+  gtk_widget_show (radio);
+  gtk_table_attach (table, radio,
+                    0, 2, row, row + 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  return radio;
 }
 
 static void
@@ -2849,6 +2879,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *content_area;
   char                      *security_sample;
   guint                      row = 0;
+  GtkSizeGroup              *group;
 
   priv = self->priv = SERVICE_ITEM_PRIVATE (self);
 
@@ -3108,20 +3139,23 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE, FALSE, 6);
 
   /* static IP UI */
+  group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
   priv->advanced_box = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (priv->advanced_box);
   gtk_container_add (GTK_CONTAINER (priv->expando), priv->advanced_box);
 
-  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 6, 6);
+  align = gtk_alignment_new (0.0, 0.0, 1.0, 1.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 6, 12);
   gtk_widget_show (align);
   gtk_box_pack_start (GTK_BOX (priv->advanced_box), align,
-                      FALSE, FALSE, 0);
+                      TRUE, TRUE, 0);
+
 
   table = gtk_table_new (7, 2, FALSE);
+  gtk_size_group_add_widget (group, table);
   gtk_widget_show (table);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 30);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_container_add (GTK_CONTAINER (align), table);
 
@@ -3130,7 +3164,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
   gtk_widget_show (label);
   gtk_table_attach (GTK_TABLE (table), label,
-                    0, 3, row, row + 1,
+                    0, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   row++;
@@ -3158,6 +3192,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                              METHOD_DHCP, _("DHCP"));
   gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->method_combo),
                              METHOD_MANUAL, _("Static IP"));
+  gtk_widget_set_size_request (priv->method_combo, CARRICK_ENTRY_WIDTH, -1);
 
   row = 1;
   gtk_widget_show (priv->method_combo);
@@ -3191,7 +3226,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                              IPV6_METHOD_AUTO, _("Automatic"));
   gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->ipv6_method_combo),
                              IPV6_METHOD_MANUAL, _("Static IP"));
-
+  gtk_widget_set_size_request (priv->ipv6_method_combo, CARRICK_ENTRY_WIDTH, -1);
   gtk_widget_show (priv->ipv6_method_combo);
   gtk_table_attach (GTK_TABLE (table), priv->ipv6_method_combo,
                     1, 2, row, row + 1,
@@ -3214,7 +3249,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
-  gtk_widget_set_size_request (scrolled_window, 230, 39);
+  gtk_widget_set_size_request (scrolled_window, CARRICK_ENTRY_WIDTH, 39);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
@@ -3256,15 +3291,16 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   /* now, Proxy settings */
 
-  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 6, 6);
+  align = gtk_alignment_new (0.0, 0.0, 1.0, 1.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 12, 6);
   gtk_widget_show (align);
   gtk_box_pack_start (GTK_BOX (priv->advanced_box), align,
                       TRUE, TRUE, 0);
 
   table = gtk_table_new (7, 2, FALSE);
+  gtk_size_group_add_widget (group, table);
   gtk_widget_show (table);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 30);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_container_add (GTK_CONTAINER (align), table);
 
@@ -3273,94 +3309,80 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
   gtk_widget_show (label);
   gtk_table_attach (GTK_TABLE (table), label,
-                    0, 3, 0, 1,
+                    0, 2, 0, 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
-  priv->proxy_none_radio = gtk_radio_button_new_with_label (NULL, _("No proxy"));
-  gtk_widget_show (priv->proxy_none_radio);
-  gtk_table_attach (GTK_TABLE (table), priv->proxy_none_radio,
-                    0, 3, 1, 2,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
-                    0, 0);
+  priv->proxy_none_radio = add_proxy_radio_to_table (
+      GTK_TABLE (table), 1,
+      NULL, _("No proxy"));
   g_signal_connect (priv->proxy_none_radio, "toggled",
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
-  priv->proxy_auto_radio = gtk_radio_button_new_with_label_from_widget
-      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
-       _("Auto-detect proxy settings for this network"));
-  gtk_widget_show (priv->proxy_auto_radio);
-  gtk_table_attach (GTK_TABLE (table), priv->proxy_auto_radio,
-                    0, 3, 2, 3,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
-                    0, 0);
+  priv->proxy_auto_radio = add_proxy_radio_to_table (
+      GTK_TABLE (table), 2,
+      priv->proxy_none_radio, _("Auto-detect proxy settings for this network"));
   g_signal_connect (priv->proxy_auto_radio, "toggled",
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
-  priv->proxy_url_radio = gtk_radio_button_new_with_label_from_widget
-      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
-       _("Automatic proxy configuration URL:"));
-  gtk_widget_show (priv->proxy_url_radio);
-  gtk_table_attach (GTK_TABLE (table), priv->proxy_url_radio,
-                    0, 3, 3, 4,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
-                    0, 0);
+  priv->proxy_url_radio = add_proxy_radio_to_table (
+      GTK_TABLE (table), 3,
+      priv->proxy_none_radio, _("Automatic proxy configuration URL:"));
   g_signal_connect (priv->proxy_url_radio, "toggled",
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
   priv->proxy_url_entry = gtk_entry_new ();
   gtk_entry_set_max_length (GTK_ENTRY (priv->proxy_url_entry), 15);
-  gtk_widget_set_size_request (priv->proxy_url_entry, 100, -1);
+  gtk_widget_set_size_request (priv->proxy_url_entry, CARRICK_ENTRY_WIDTH, -1);
   gtk_table_attach (GTK_TABLE (table), priv->proxy_url_entry,
-                    0, 3, 4, 5,
+                    0, 2, 4, 5,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   g_signal_connect (priv->proxy_url_entry, "notify::text",
                     G_CALLBACK (entry_notify_text), self);
 
-
-  priv->proxy_manual_radio = gtk_radio_button_new_with_label_from_widget
-      (GTK_RADIO_BUTTON (priv->proxy_none_radio),
-       _("Manual proxy configuration:"));  
-  gtk_widget_show (priv->proxy_manual_radio);
-  gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_radio,
-                    0, 3, 5, 6,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
-                    0, 0);
+  priv->proxy_manual_radio = add_proxy_radio_to_table (
+      GTK_TABLE (table), 5,
+      priv->proxy_none_radio, _("Manual proxy configuration:"));  
   g_signal_connect (priv->proxy_manual_radio, "toggled",
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
   priv->proxy_manual_entry = gtk_entry_new ();
-  gtk_widget_set_size_request (priv->proxy_manual_entry, 100, -1);
+  gtk_widget_set_size_request (priv->proxy_manual_entry, CARRICK_ENTRY_WIDTH, -1);
   gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_entry,
-                    0, 3, 6, 7,
+                    0, 2, 6, 7,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   g_signal_connect (priv->proxy_manual_entry, "notify::text",
                     G_CALLBACK (entry_notify_text), self);
 
 
-  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  align = gtk_alignment_new (0.0, 0.0, 1.0, 1.0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (align), 12, 0, 0, 0);
   gtk_widget_show (align);
   gtk_table_attach (GTK_TABLE (table), align,
-                    0, 3, 7, 8,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 2, 7, 8,
+                    GTK_FILL | GTK_EXPAND, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
   label = gtk_label_new (_("Bypass proxy settings for these Hosts & Domains:"));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
+  /* set min width so the label can calculate how many rows it needs */
+  gtk_widget_set_size_request (label, CARRICK_MIN_LABEL_WIDTH + CARRICK_ENTRY_WIDTH + 20, -1);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
   gtk_widget_show (label);
   gtk_container_add (GTK_CONTAINER (align), label);
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
-  gtk_widget_set_size_request (scrolled_window, 230, 39);
+  gtk_widget_set_size_request (scrolled_window, CARRICK_ENTRY_WIDTH, 39);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
                                        GTK_SHADOW_IN);
   gtk_table_attach (GTK_TABLE (table), scrolled_window,
-                    0, 3, 8, 9,
+                    0, 2, 8, 9,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
@@ -3380,8 +3402,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   gtk_widget_show (align);
   gtk_table_attach (GTK_TABLE (table), align,
-                    2, 3, 10, 11,
-                    GTK_FILL | GTK_SHRINK, GTK_EXPAND,
+                    1, 2, 10, 11,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_EXPAND,
                     0, 0);
 
   /* TRANSLATORS: label for apply button in static ip & proxy settings */
@@ -3391,6 +3413,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   g_signal_connect (priv->apply_button, "clicked",
                     G_CALLBACK (apply_button_clicked_cb), self);
   gtk_container_add (GTK_CONTAINER (align), priv->apply_button);
+
+  g_object_unref (group);
 }
 
 GtkWidget*
