@@ -1,3 +1,5 @@
+imports.gi.versions.Mx = '2.0';
+
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -405,7 +407,7 @@ MprisProxy.prototype = {
                                 null);
     }
 }
-DBus.proxifyPrototype(MprisProxy.prototype, MprisIface);
+DBus.proxifyPrototype(MprisProxy.prototype, mprisIface);
 
 
 //
