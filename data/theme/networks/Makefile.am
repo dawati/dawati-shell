@@ -1,9 +1,7 @@
-
 themedir = $(PANEL_NETWORKS_THEMEDIR)
 theme_DATA = network-applet.css
 
-iconsdir = $(PANEL_NETWORKS_DATADIR)
-
+iconsdir = $(PANEL_NETWORKS_THEMEDIR)
 icons_DATA = \
 	icon-network-0.png \
 	icon-network-1.png \
@@ -40,8 +38,8 @@ icons_DATA = \
 	$(NULL)
 
 EXTRA_DIST = \
-		network-applet.css.in \
-		$(icons_DATA)
+	$(theme_DATA) \
+	$(icons_DATA)
 
 DISTCLEANFILES = network-applet.css
 
