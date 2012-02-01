@@ -23,6 +23,7 @@
 #include "anerley-feed-model.h"
 
 #include <anerley/anerley-item.h>
+#include <telepathy-glib/telepathy-glib.h>
 
 #include <string.h>
 
@@ -36,6 +37,7 @@ typedef struct _AnerleyFeedModelPrivate AnerleyFeedModelPrivate;
 struct _AnerleyFeedModelPrivate {
   AnerleyFeed *feed;
   gchar *filter_text;
+  gboolean show_offline;
 };
 
 enum
@@ -190,6 +192,39 @@ _model_sort_func (ClutterModel *model,
   return g_utf8_collate (str_a, str_b);
 }
 
+static gboolean
+_model_filter_cb (ClutterModel     *model,
+                  ClutterModelIter *iter,
+                  gpointer          userdata)
+{
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
+  AnerleyItem *item = NULL;
+  gboolean ret = FALSE;
+
+  clutter_model_iter_get (iter, 0, &item, -1);
+
+  if (G_UNLIKELY (item == NULL))
+    return FALSE;
+
+  if (!anerley_item_is_im (item))
+    goto out;
+
+  if (!priv->show_offline && !anerley_item_is_online (item))
+    goto out;
+
+  if (priv->filter_text != NULL &&
+      strcasestr (anerley_item_get_display_name (item),
+                  priv->filter_text) == NULL)
+    goto out;
+
+  ret = TRUE;
+
+out:
+  g_object_unref (item);
+
+  return ret;
+}
+
 static void
 anerley_feed_model_init (AnerleyFeedModel *self)
 {
@@ -198,6 +233,10 @@ anerley_feed_model_init (AnerleyFeedModel *self)
   clutter_model_set_types (CLUTTER_MODEL (self),
                            1,
                            types);
+  clutter_model_set_filter (CLUTTER_MODEL (self),
+                            _model_filter_cb,
+                            NULL,
+                            NULL);
 }
 
 ClutterModel *
@@ -207,6 +246,22 @@ anerley_feed_model_new (AnerleyFeed *feed)
                        "feed",
                        feed,
                        NULL);
+}
+
+static void
+refilter_all (AnerleyFeedModel *model)
+{
+  g_signal_emit_by_name (model, "filter-changed");
+}
+
+static void
+refilter_item (AnerleyFeedModel *model,
+               AnerleyItem      *item)
+{
+  /* We can't find unvisible rows, so its not possible to simply emit
+   * row-changed for that item... so let's just refilter everything...
+   * Thanks clutter, thanks! */
+  refilter_all (model);
 }
 
 static void
@@ -231,6 +286,13 @@ _feed_items_added_cb (AnerleyFeed *feed,
   {
     item = (AnerleyItem *)l->data;
 
+    tp_g_signal_connect_object (item, "presence-changed",
+                                G_CALLBACK (refilter_item),
+                                model, G_CONNECT_SWAPPED);
+    tp_g_signal_connect_object (item, "display-name-changed",
+                                G_CALLBACK (refilter_item),
+                                model, G_CONNECT_SWAPPED);
+
     clutter_model_append (CLUTTER_MODEL (model),
                           0,
                           item,
@@ -246,39 +308,12 @@ _feed_items_added_cb (AnerleyFeed *feed,
   g_signal_emit (model, signals[BULK_CHANGE_END], 0);
 }
 
-static gboolean
-_model_filter_cb (ClutterModel     *model,
-                  ClutterModelIter *iter,
-                  gpointer          userdata)
-{
-  const gchar *filter_text = (const gchar *)userdata;
-  AnerleyItem *item = NULL;
-
-  clutter_model_iter_get (iter, 0, &item, -1);
-
-  if (G_LIKELY (item))
-  {
-    if (strcasestr (anerley_item_get_display_name (item),
-                    filter_text))
-    {
-      g_object_unref (item);
-      return TRUE;
-    } else {
-      g_object_unref (item);
-      return FALSE;;
-    }
-  }
-
-  return FALSE;
-}
-
 static void
 _feed_items_removed_cb (AnerleyFeed *feed,
                         GList       *items,
                         gpointer     userdata)
 {
   AnerleyFeedModel *model = (AnerleyFeedModel *)userdata;
-  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
   GList *l;
   AnerleyItem *item_to_remove, *item;
   ClutterModelIter *iter;
@@ -300,6 +335,9 @@ _feed_items_removed_cb (AnerleyFeed *feed,
     item_to_remove = (AnerleyItem *)l->data;
 
     iter = clutter_model_get_first_iter ((ClutterModel *)model);
+    if (iter == NULL)
+      break;
+
     while (!clutter_model_iter_is_last (iter))
     {
       clutter_model_iter_get (iter,
@@ -309,6 +347,7 @@ _feed_items_removed_cb (AnerleyFeed *feed,
 
       if (item == item_to_remove)
       {
+        g_signal_handlers_disconnect_by_func (item, refilter_item, feed);
         clutter_model_remove ((ClutterModel *)model,
                               clutter_model_iter_get_row (iter));
         break;
@@ -320,13 +359,10 @@ _feed_items_removed_cb (AnerleyFeed *feed,
     g_object_unref (iter);
   }
 
-  if (priv->filter_text)
-  {
-    clutter_model_set_filter ((ClutterModel *)model,
-                              _model_filter_cb,
-                              priv->filter_text,
-                              NULL);
-  }
+  clutter_model_set_filter ((ClutterModel *)model,
+                            _model_filter_cb,
+                            NULL,
+                            NULL);
 
   g_signal_emit (model, signals[BULK_CHANGE_END], 0);
 }
@@ -364,45 +400,30 @@ anerley_feed_model_update_feed (AnerleyFeedModel *model,
 }
 
 void
-anerley_feed_model_set_filter_text (AnerleyFeedModel *model, 
+anerley_feed_model_set_filter_text (AnerleyFeedModel *model,
                                     const gchar      *filter_text)
 {
   AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
-  gchar *old_filter_text = NULL;
 
-  if (filter_text && priv->filter_text)
-  {
-    if (g_str_equal (filter_text, priv->filter_text))
-    {
-      return;
-    }
-  }
-
-  if (priv->filter_text == filter_text)
+  if (!tp_strdiff (filter_text, priv->filter_text))
     return;
 
-  if (priv->filter_text)
-  {
-    old_filter_text = priv->filter_text;
-    priv->filter_text = NULL;
-  }
-
+  g_free (priv->filter_text);
   priv->filter_text = g_strdup (filter_text);
 
-  if (priv->filter_text)
-  {
-    clutter_model_set_filter ((ClutterModel *)model,
-                              _model_filter_cb,
-                              priv->filter_text,
-                              NULL);
-  } else {
-    clutter_model_set_filter ((ClutterModel *)model,
-                              NULL,
-                              NULL,
-                              NULL);
-  }
-
-  g_free (old_filter_text);
+  refilter_all (model);
 }
 
+void
+anerley_feed_model_set_show_offline (AnerleyFeedModel *model,
+                                     gboolean          show_offline)
+{
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
 
+  if (priv->show_offline == show_offline)
+    return;
+
+  priv->show_offline = show_offline;
+
+  refilter_all (model);
+}

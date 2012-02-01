@@ -59,6 +59,8 @@ typedef struct {
   GLoadableIcon * (*get_avatar) (AnerleyItem *item);
   const gchar * (*get_presence_status) (AnerleyItem *item);
   const gchar * (*get_presence_message) (AnerleyItem *item);
+  gboolean (*is_im) (AnerleyItem *item);
+  gboolean (*is_online) (AnerleyItem *item);
   const gchar * (*get_sortable_name) (AnerleyItem *item);
   guint (*get_unread_messages_count) (AnerleyItem *item);
   void (*activate) (AnerleyItem *item);
@@ -70,6 +72,8 @@ const gchar *anerley_item_get_display_name (AnerleyItem *item);
 GLoadableIcon *anerley_item_get_avatar (AnerleyItem *item);
 const gchar *anerley_item_get_presence_status (AnerleyItem *item);
 const gchar *anerley_item_get_presence_message (AnerleyItem *item);
+gboolean anerley_item_is_im (AnerleyItem *item);
+gboolean anerley_item_is_online (AnerleyItem *item);
 const gchar *anerley_item_get_sortable_name (AnerleyItem *item);
 guint anerley_item_get_unread_messages_count (AnerleyItem *item);
 
