@@ -167,7 +167,7 @@ EXTRA_DIST= $(private_h)
 
 if HAVE_INTROSPECTION
 DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir: libdawati-panel.la
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_INCLUDES = Gdk-3.0 GdkX11-3.0 Gtk-3.0 Clutter-1.0 Mx-1.0
+DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_INCLUDES = Gdk-3.0 GdkX11-3.0 Gtk-3.0 Clutter-1.0 Mx-2.0
 DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_CFLAGS = $(libdawati_panel_la_CPPFLAGS) -I $(top_srcdir)/libdawati-panel -I $(srcdir) --accept-unprefixed --warn-all
 DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_LIBS = libdawati-panel.la
 DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_FILES = $(source_c) $(source_h)
