@@ -84,6 +84,7 @@ struct _MnbPeoplePanelPrivate {
   ClutterActor *sort_by_chooser;
   ClutterActor *new_chooser;
   ClutterActor *search_entry;
+  ClutterActor *banner_box;
 };
 
 static void _online_notify_cb (gboolean online,
@@ -712,12 +713,26 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   mx_table_set_row_spacing (MX_TABLE (self), 6);
 
   /* Populate top level table */
+  priv->banner_box = mx_table_new ();
+  clutter_actor_set_name (priv->banner_box, "people-panel-banner-box");
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      CLUTTER_ACTOR (priv->banner_box),
+                                      0, 0,
+                                      "column-span", 2,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_START,
+                                      NULL);
+
   priv->header_box = mx_table_new ();
   clutter_actor_set_name (priv->header_box, "people-panel-header-box");
   mx_table_set_column_spacing (MX_TABLE (priv->header_box), 20);
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       CLUTTER_ACTOR (priv->header_box),
-                                      0, 0,
+                                      1, 0,
                                       "column-span", 2,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
@@ -732,7 +747,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (priv->side_table, "people-panel-side-box");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       CLUTTER_ACTOR (priv->side_table),
-                                      1, 0,
+                                      2, 0,
                                       "x-expand", FALSE,
                                       "y-expand", TRUE,
                                       "x-fill", TRUE,
@@ -743,7 +758,19 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (priv->content_table, "people-panel-content-box");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       CLUTTER_ACTOR (priv->content_table),
-                                      1, 1,
+                                      2, 1,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
+
+  /* Populate banner */
+  label = mx_label_new_with_text (_("IM"));
+  clutter_actor_set_name (label, "people-panel-banner-label");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->banner_box),
+                                      CLUTTER_ACTOR (label),
+                                      0, 0,
                                       "x-expand", TRUE,
                                       "y-expand", TRUE,
                                       "x-fill", TRUE,
