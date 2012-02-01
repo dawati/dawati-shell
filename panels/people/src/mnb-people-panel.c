@@ -663,6 +663,41 @@ _update_online_state (MnbPeoplePanel *panel,
 }
 
 static void
+am_prepared_cb (GObject *object,
+                GAsyncResult *result,
+                gpointer user_data)
+{
+  MnbPeoplePanel *self= user_data;
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  GList *accounts;
+  GError *error = NULL;
+
+  if (!tp_proxy_prepare_finish (object, result, &error))
+  {
+    g_warning ("Error preparing the TpAccountManager: %s", error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  g_signal_connect (priv->am,
+                    "account-validity-changed",
+                    (GCallback)_account_validity_changed_cb,
+                    self);
+
+  accounts = tp_account_manager_get_valid_accounts (priv->am);
+  while (accounts != NULL)
+  {
+    tp_g_signal_connect_object (accounts->data, "status-changed",
+                                G_CALLBACK (_account_status_changed_cb),
+                                self, 0);
+    accounts = g_list_delete_link (accounts, accounts);
+  }
+
+  _update_placeholder_state (self);
+  _update_presence_chooser_state (self);
+}
+
+static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
@@ -670,7 +705,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   ClutterActor *scroll_view, *bin, *tmp_text;
   AnerleyFeed *active_feed;
   ClutterActor *settings_launcher;
-  GList *accounts;
 
   mx_table_set_column_spacing (MX_TABLE (self), 6);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
@@ -967,22 +1001,10 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   /* Placeholder changes based on onlineness or not */
   _update_placeholder_state (self);
 
-  g_signal_connect (priv->am,
-                    "account-validity-changed",
-                    (GCallback)_account_validity_changed_cb,
-                    self);
-
-  accounts = tp_account_manager_get_valid_accounts (priv->am);
-  while (accounts != NULL)
-  {
-    tp_g_signal_connect_object (accounts->data, "status-changed",
-                                G_CALLBACK (_account_status_changed_cb),
-                                self, 0);
-    accounts = g_list_delete_link (accounts, accounts);
-  }
-
   sw_online_add_notify (_online_notify_cb, self);
   _update_online_state (self, sw_is_online ());
+
+  tp_proxy_prepare_async (priv->am, NULL, am_prepared_cb, self);
 }
 
 ClutterActor *
