@@ -2159,19 +2159,14 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       if (clock_index >= 0 && index >= clock_index)
         x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
 
-      /* if (tp->type != MNB_TOOLBAR_PANEL_CLOCK) */
-      /*   { */
-      /*     mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button), */
-      /*                                           0, -y, */
-      /*                                           TRAY_BUTTON_WIDTH, */
-      /*                                           TOOLBAR_HEIGHT); */
-      /*   } */
-
       clutter_actor_set_position (CLUTTER_ACTOR (button), (gfloat)x, (gfloat)y);
 
       if (!clutter_actor_get_parent (button))
         clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_applets),
                                      button);
+
+      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_applets),
+                                     button, NULL);
     }
 }
 
@@ -2207,6 +2202,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
           if (!clutter_actor_get_parent (button))
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
                                          button);
+
+          clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_buttons),
+                                         button, NULL);
         }
     }
   else
