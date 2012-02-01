@@ -52,6 +52,9 @@ struct _MnbStatusbarPrivate
   guint trigger_threshold;
 
   gboolean in_trigger_zone;
+
+  guint timeout_id;
+  ClutterActor *datetime;
 };
 
 static void
@@ -194,6 +197,93 @@ mnb_statusbar_myzone_clicked_cb (MxButton     *button,
 }
 
 static void
+mnb_statusbar_update_datetime (MnbStatusbar *self)
+{
+  MnbStatusbarPrivate *priv = self->priv;
+  GDateTime *datetime = g_date_time_new_now_local ();
+  gchar *time_str;
+  GConfClient *client = gconf_client_get_default ();
+  gboolean c24h = gconf_client_get_bool (client, MNB_24H_KEY, NULL);
+
+  if (c24h)
+    {
+
+      /* translators: translate this to a suitable 24 hourt time
+       * format for your locale showing only hours and minutes. For
+       * available format specifiers see
+       * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+       */
+      time_str = g_date_time_format (datetime, _("%A %B %e, %Y - %H:%M"));
+    }
+  else
+    {
+      /* translators: translate this to a suitable default time format for
+       * your locale showing only hours and minutes. For available format
+       * specifiers see
+       * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+       */
+      time_str = g_date_time_format (datetime, _("%A %B %e, %Y - %l:%M %P"));
+    }
+
+  mx_button_set_label (MX_BUTTON (priv->datetime), time_str);
+
+  g_date_time_unref (datetime);
+  g_free (time_str);
+}
+
+static gboolean
+mnb_statusbar_timeout_cb (MnbStatusbar *self)
+{
+  mnb_statusbar_update_datetime (self);
+
+  return TRUE;
+}
+
+static gboolean
+mnb_statusbar_initial_timeout_cb (MnbStatusbar *self)
+{
+  MnbStatusbarPrivate *priv = self->priv;
+
+  priv->timeout_id = g_timeout_add_seconds (60,
+                                            (GSourceFunc) mnb_statusbar_timeout_cb,
+                                            self);
+  mnb_statusbar_update_datetime (self);
+
+  return FALSE;
+}
+
+static void
+mnb_statusbar_allocate (ClutterActor           *actor,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
+{
+  MnbStatusbarPrivate *priv = MNB_STATUSBAR (actor)->priv;
+  ClutterActorBox child_box;
+  gfloat cwidth;
+
+  clutter_actor_get_preferred_width (priv->datetime, -1, NULL, &cwidth);
+
+  child_box.x1 = (box->x2 - box->x1) / 2 - cwidth / 2;
+  child_box.y1 = box->y1;
+  child_box.x2 = child_box.x1 + cwidth;
+  child_box.y2 = box->y2;
+
+  clutter_actor_allocate (priv->datetime, &child_box, flags);
+
+  CLUTTER_ACTOR_CLASS (mnb_statusbar_parent_class)->allocate (actor, box, flags);
+}
+
+static void
+mnb_statusbar_paint (ClutterActor *actor)
+{
+  MnbStatusbarPrivate *priv = MNB_STATUSBAR (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_statusbar_parent_class)->paint (actor);
+
+  clutter_actor_paint (CLUTTER_ACTOR (priv->datetime));
+}
+
+static void
 mnb_statusbar_get_property (GObject    *object,
                             guint       property_id,
                             GValue     *value,
@@ -242,6 +332,26 @@ mnb_statusbar_set_property (GObject      *object,
 static void
 mnb_statusbar_dispose (GObject *object)
 {
+  MnbStatusbarPrivate *priv = MNB_STATUSBAR (object)->priv;
+
+  if (priv->timeout_id)
+    {
+      g_source_remove (priv->timeout_id);
+      priv->timeout_id = 0;
+    }
+
+  if (priv->trigger_timeout_id)
+    {
+      g_source_remove (priv->trigger_timeout_id);
+      priv->trigger_timeout_id = 0;
+    }
+
+  if (priv->datetime)
+    {
+      clutter_actor_destroy (priv->datetime);
+      priv->datetime = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_statusbar_parent_class)->dispose (object);
 }
 
@@ -270,6 +380,7 @@ static void
 mnb_statusbar_class_init (MnbStatusbarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbStatusbarPrivate));
 
@@ -278,6 +389,9 @@ mnb_statusbar_class_init (MnbStatusbarClass *klass)
   object_class->set_property = mnb_statusbar_set_property;
   object_class->dispose = mnb_statusbar_dispose;
   object_class->finalize = mnb_statusbar_finalize;
+
+  actor_class->allocate = mnb_statusbar_allocate;
+  actor_class->paint = mnb_statusbar_paint;
 
   g_object_class_install_property (object_class,
                                    PROP_MUTTER_PLUGIN,
@@ -301,11 +415,14 @@ mnb_statusbar_class_init (MnbStatusbarClass *klass)
 static void
 mnb_statusbar_init (MnbStatusbar *self)
 {
+  MnbStatusbarPrivate *priv;
   ClutterActor *button;
+  GDateTime *datetime;
 
-  self->priv = STATUSBAR_PRIVATE (self);
+  priv = self->priv = STATUSBAR_PRIVATE (self);
 
   button = mx_button_new ();
+  clutter_actor_set_name (button, "statusbar-myzone-button");
   mx_button_set_icon_name (MX_BUTTON (button), "player_play");
   mx_button_set_label (MX_BUTTON (button), _("Myzone"));
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
@@ -323,6 +440,18 @@ mnb_statusbar_init (MnbStatusbar *self)
                     "event",
                     G_CALLBACK (mnb_statusbar_event_cb),
                     NULL);
+
+  priv->datetime = mx_button_new ();
+  clutter_actor_set_name (priv->datetime, "statusbar-date-button");
+  clutter_actor_set_parent (priv->datetime, CLUTTER_ACTOR (self));
+
+  mnb_statusbar_update_datetime (self);
+
+  datetime = g_date_time_new_now_local ();
+  g_timeout_add_seconds (60 - g_date_time_get_second (datetime),
+                         (GSourceFunc) mnb_statusbar_initial_timeout_cb,
+                         self);
+  g_date_time_unref (datetime);
 }
 
 ClutterActor *
