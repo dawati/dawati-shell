@@ -76,7 +76,8 @@ AM_GLIB_GNU_GETTEXT
 # Dependencies
 GDK_DEPS="gdk-x11-3.0"
 GTK_DEPS="gtk+-3.0"
-MX_DEPS="mx-1.0 >= 1.4.0"
+CLUTTER_DEPS="clutter-1.0 >= 1.8"
+MX_DEPS="mx-2.0"
 CLUTTER_GTK_DEPS="clutter-gtk-1.0"
 MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
 
@@ -203,9 +204,9 @@ AM_CONDITIONAL([BUILD_GTK_DOC], [test "$enable_gtk_doc" = "yes" || test ! -f "au
 GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
 # prefixes for fixing gtk-doc references
-CLUTTER_PREFIX="`$PKG_CONFIG --variable=prefix clutter-1.0`"
+CLUTTER_PREFIX="`$PKG_CONFIG --variable=prefix $CLUTTER_DEPS`"
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
-MX_PREFIX="`$PKG_CONFIG --variable=prefix mx-1.0`"
+MX_PREFIX="`$PKG_CONFIG --variable=prefix $MX_DEPS`"
 AC_SUBST(CLUTTER_PREFIX)
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(MX_PREFIX)
