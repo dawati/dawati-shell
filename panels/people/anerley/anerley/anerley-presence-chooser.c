@@ -93,68 +93,6 @@ anerley_presence_chooser_get_icon (TpConnectionPresenceType presence)
 }
 
 static void
-_account_manager_ready (TpAccountManager *am,
-                        GAsyncResult     *res,
-                        gpointer          user_data)
-{
-  GError *error = NULL;
-
-  if (!tp_proxy_prepare_finish (TP_PROXY (am), res, &error))
-  {
-    g_warning (G_STRLOC ": Error preparing account manager: %s",
-               error->message);
-    g_error_free (error);
-    return;
-  }
-}
-
-static void
-_combo_index_changed (AnerleyPresenceChooser *self,
-                      GParamSpec             *pspec,
-                      gpointer                user_data);
-
-static void
-_account_manager_presence_changed (TpAccountManager         *am,
-                                   TpConnectionPresenceType  presence,
-                                   const gchar              *status,
-                                   const gchar              *message,
-                                   AnerleyPresenceChooser   *self)
-{
-  AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
-  MxComboBox *combo = MX_COMBO_BOX (self);
-
-  g_debug (G_STRLOC ": presence-changed: %u, %s, %s",
-           presence,
-           status,
-           message);
-
-  /* only change the presence if it changes */
-  if (priv->presence == presence)
-    return;
-
-  priv->presence = presence;
-
-  g_signal_handlers_block_by_func (combo, _combo_index_changed, NULL);
-  switch (presence)
-  {
-    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
-      mx_combo_box_set_index (combo, 0);
-      break;
-    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
-      mx_combo_box_set_index (combo, 1);
-      break;
-    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
-    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
-      mx_combo_box_set_index (combo, 2);
-      break;
-    default:
-      mx_combo_box_set_index (combo, 3);
-      break;
-  }
-  g_signal_handlers_unblock_by_func (combo, _combo_index_changed, NULL);
-}
-
-static void
 _combo_index_changed (AnerleyPresenceChooser *self,
                       GParamSpec             *pspec,
                       gpointer                user_data)
@@ -183,6 +121,78 @@ _combo_index_changed (AnerleyPresenceChooser *self,
                                                   entry->presence,
                                                   presences[entry->presence].status,
                                                   default_message);
+}
+
+static void
+update_combox_index (AnerleyPresenceChooser *self)
+{
+  AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
+  MxComboBox *combo = MX_COMBO_BOX (self);
+
+  g_signal_handlers_block_by_func (combo, _combo_index_changed, NULL);
+  switch (priv->presence)
+  {
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+      mx_combo_box_set_index (combo, 0);
+      break;
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+      mx_combo_box_set_index (combo, 1);
+      break;
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+      mx_combo_box_set_index (combo, 2);
+      break;
+    default:
+      mx_combo_box_set_index (combo, 3);
+      break;
+  }
+  g_signal_handlers_unblock_by_func (combo, _combo_index_changed, NULL);
+}
+
+static void
+_account_manager_presence_changed (TpAccountManager         *am,
+                                   TpConnectionPresenceType  presence,
+                                   const gchar              *status,
+                                   const gchar              *message,
+                                   AnerleyPresenceChooser   *self)
+{
+  AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
+
+  g_debug (G_STRLOC ": presence-changed: %u, %s, %s",
+           presence,
+           status,
+           message);
+
+  /* only change the presence if it changes */
+  if (priv->presence == presence)
+    return;
+
+  priv->presence = presence;
+
+  update_combox_index (self);
+}
+
+static void
+_account_manager_ready (TpAccountManager *am,
+                        GAsyncResult     *res,
+                        gpointer          user_data)
+{
+  AnerleyPresenceChooser *self = user_data;
+  AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+
+  if (!tp_proxy_prepare_finish (TP_PROXY (am), res, &error))
+  {
+    g_warning (G_STRLOC ": Error preparing account manager: %s",
+               error->message);
+    g_error_free (error);
+    return;
+  }
+
+  priv->presence = tp_account_manager_get_most_available_presence (priv->am,
+                                                                   NULL,
+                                                                   NULL);
+  update_combox_index (self);
 }
 
 static void
