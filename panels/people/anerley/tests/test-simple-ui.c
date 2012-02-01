@@ -39,9 +39,19 @@ _entry_text_changed_cb (ClutterText  *text,
 {
   const gchar *str;
   str = clutter_text_get_text (text);
-  g_debug ("foo: %s", str);
+  g_debug ("filter text: %s", str);
 
   anerley_feed_model_set_filter_text ((AnerleyFeedModel *)model, str);
+}
+
+static void
+_show_offline_changed_cb (MxToggle *toggle,
+                          GParamSpec    *pspec,
+                          ClutterModel  *model)
+{
+  g_debug ("show offline: %s", mx_toggle_get_active (toggle) ? "yes" : "no");
+  anerley_feed_model_set_show_offline ((AnerleyFeedModel *)model,
+                                       mx_toggle_get_active (toggle));
 }
 
 int
@@ -59,6 +69,7 @@ main (int    argc,
   GError *error = NULL;
   ClutterActor *table, *entry;
   ClutterActor *tmp;
+  ClutterActor *toggle;
 
 
   g_thread_init (NULL);
@@ -100,6 +111,21 @@ main (int    argc,
                                       CLUTTER_ACTOR (entry),
                                       0,
                                       0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      NULL);
+
+  toggle = mx_toggle_new ();
+  g_signal_connect (toggle,
+                    "notify::active",
+                    G_CALLBACK (_show_offline_changed_cb),
+                    model);
+
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                                      CLUTTER_ACTOR (toggle),
+                                      0,
+                                      1,
                                       "x-fill", TRUE,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,

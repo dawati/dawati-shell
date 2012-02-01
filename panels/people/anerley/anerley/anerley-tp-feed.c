@@ -111,53 +111,6 @@ _make_item_from_contact (AnerleyTpFeed *feed,
   return item;
 }
 
-static gboolean
-contact_is_visible (FolksIndividual *contact)
-{
-  FolksPresenceType presence_type;
-
-  presence_type = folks_presence_details_get_presence_type (
-      (FolksPresenceDetails *) contact);
-
-  return presence_type > FOLKS_PRESENCE_TYPE_OFFLINE &&
-         presence_type < FOLKS_PRESENCE_TYPE_UNKNOWN;
-}
-
-static void
-_contact_notify_presence_type_cb (FolksIndividual *contact,
-                                  GParamSpec      *pspec,
-                                  AnerleyTpFeed   *self)
-{
-  AnerleyTpFeedPrivate *priv = GET_PRIVATE (self);
-  const gchar *id;
-  AnerleyTpItem *item;
-  GList *items;
-
-  id = folks_individual_get_id (contact);
-  item = g_hash_table_lookup (priv->ids_to_items, id);
-  if (contact_is_visible (contact))
-  {
-    if (item == NULL)
-    {
-      item = _make_item_from_contact (self, contact);
-      items = g_list_prepend (NULL, item);
-      g_signal_emit_by_name (self, "items-added", items);
-      g_list_free (items);
-    }
-  }
-  else
-  {
-    if (item != NULL)
-    {
-      items = g_list_prepend (NULL, item);
-      g_signal_emit_by_name (self, "items-removed", items);
-      g_list_free (items);
-
-      g_hash_table_remove (priv->ids_to_items, id);
-    }
-  }
-}
-
 /* Modified code from empathy, with copyright holder permission */
 static void
 aggregator_individuals_changed_cb (FolksIndividualAggregator *aggregator,
@@ -219,14 +172,6 @@ aggregator_individuals_changed_cb (FolksIndividualAggregator *aggregator,
       g_object_unref (ind);
       continue;
     }
-
-    /* We want only online contacts, so monitor its presence */
-    tp_g_signal_connect_object (ind, "notify::presence-type",
-                                G_CALLBACK (_contact_notify_presence_type_cb),
-                                self, 0);
-
-    if (!contact_is_visible (ind))
-      continue;
 
     item = _make_item_from_contact (self, ind);
     added_set = g_list_prepend (added_set, g_object_ref (item));

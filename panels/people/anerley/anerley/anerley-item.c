@@ -110,6 +110,18 @@ anerley_item_get_presence_message (AnerleyItem *item)
   return ANERLEY_ITEM_GET_CLASS (item)->get_presence_message (item);
 }
 
+gboolean
+anerley_item_is_im (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->is_im (item);
+}
+
+gboolean
+anerley_item_is_online (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->is_online (item);
+}
+
 const gchar *
 anerley_item_get_sortable_name (AnerleyItem *item)
 {
