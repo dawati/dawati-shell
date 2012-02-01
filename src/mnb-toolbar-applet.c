@@ -52,40 +52,6 @@ mnb_toolbar_applet_dispose (GObject *object)
 }
 
 static void
-mnb_toolbar_applet_get_preferred_width (ClutterActor *self,
-                                        gfloat        for_height,
-                                        gfloat       *min_width_p,
-                                        gfloat       *natural_width_p)
-{
-  gfloat width;
-
-  width = TRAY_BUTTON_WIDTH + TRAY_BUTTON_INTERNAL_PADDING;
-
-  if (min_width_p)
-    *min_width_p = width;
-
-  if (natural_width_p)
-    *natural_width_p = width;
-}
-
-static void
-mnb_toolbar_applet_get_preferred_height (ClutterActor *self,
-                                        gfloat        for_width,
-                                        gfloat       *min_height_p,
-                                        gfloat       *natural_height_p)
-{
-  gfloat height;
-
-  height = TRAY_BUTTON_HEIGHT;
-
-  if (min_height_p)
-    *min_height_p = height;
-
-  if (natural_height_p)
-    *natural_height_p = height;
-}
-
-static void
 mnb_toolbar_applet_class_init (MnbToolbarAppletClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
@@ -93,9 +59,7 @@ mnb_toolbar_applet_class_init (MnbToolbarAppletClass *klass)
 
   g_type_class_add_private (klass, sizeof (MnbToolbarAppletPrivate));
 
-  object_class->dispose             = mnb_toolbar_applet_dispose;
-  actor_class->get_preferred_width  = mnb_toolbar_applet_get_preferred_width;
-  actor_class->get_preferred_height = mnb_toolbar_applet_get_preferred_height;
+  object_class->dispose = mnb_toolbar_applet_dispose;
 }
 
 static void
@@ -107,6 +71,8 @@ mnb_toolbar_applet_init (MnbToolbarApplet *self)
 ClutterActor*
 mnb_toolbar_applet_new (void)
 {
-  return g_object_new (MNB_TYPE_TOOLBAR_APPLET, NULL);
+  return g_object_new (MNB_TYPE_TOOLBAR_APPLET,
+                       "icon-name", "player_play",
+                       NULL);
 }
 
