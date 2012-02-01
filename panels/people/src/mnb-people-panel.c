@@ -63,24 +63,31 @@ struct _MnbPeoplePanelPrivate {
   guint filter_timeout_id;
   AnerleyFeedModel *model;
   AnerleyFeedModel *active_model;
-  ClutterActor *tex;
-  ClutterActor *entry;
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
   MplPanelClient *panel_client;
-  ClutterActor *tile_view;
-  ClutterActor *active_list_view;
-  ClutterActor *content_table;
+
+  ClutterActor *banner_box;
+
+  ClutterActor *header_box;
+  ClutterActor *avatar;
+  ClutterActor *presence_message;
+  ClutterActor *tool_box;
+  ClutterActor *presence_chooser;
+  ClutterActor *sort_by_chooser;
+  ClutterActor *new_chooser;
+  ClutterActor *search_entry;
+
   ClutterActor *side_table;
+  ClutterActor *active_list_view;
   ClutterActor *active_content_table;
+
+  ClutterActor *content_table;
+  ClutterActor *main_scroll_view;
+  ClutterActor *tile_view;
   ClutterActor *everybody_offline_tile;
   ClutterActor *offline_banner;
-  ClutterActor *header_box;
   ClutterActor *no_people_tile;
-  ClutterActor *presence_chooser;
-  ClutterActor *me_table;
-  ClutterActor *main_scroll_view;
-  ClutterActor *avatar;
 };
 
 static void _online_notify_cb (gboolean online,
@@ -391,85 +398,6 @@ _make_offline_banner (MnbPeoplePanel *pane,
 }
 
 static void
-_messenger_launcher_button_clicked_cb (MxButton *button,
-                                       gpointer  userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-  GAppInfo *app_info;
-  GError *error = NULL;
-
-  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
-
-  if (!g_app_info_launch (app_info,
-                          NULL,
-                          NULL,
-                          &error))
-  {
-    g_warning (G_STRLOC ": Error starting empathy: %s", error->message);
-    g_clear_error (&error);
-  } else {
-    if (priv->panel_client)
-      mpl_panel_client_hide (priv->panel_client);
-  }
-
-  g_object_unref (app_info);
-}
-
-static ClutterActor *
-_make_messenger_launcher_tile (MnbPeoplePanel *panel)
-{
-  ClutterActor *table;
-  ClutterActor *icon_tex;
-  ClutterActor *button;
-  GAppInfo *app_info;
-  gchar *button_str;
-  ClutterActor *bin;
-
-  bin = mx_frame_new ();
-  clutter_actor_set_name (bin, "people-panel-messenger-launcher-tile");
-  table = mx_table_new ();
-  mx_bin_set_child (MX_BIN (bin), table);
-  mx_table_set_column_spacing (MX_TABLE (table), 16);
-  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
-
-  icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "netbook-empathy",
-                           NULL);
-
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      icon_tex,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-  button_str = g_strdup_printf (_("Open %s"),
-                                g_app_info_get_name (app_info));
-
-  button = mx_button_new_with_label (button_str);
-  g_free (button_str);
-  g_signal_connect (button,
-                    "clicked",
-                    (GCallback)_messenger_launcher_button_clicked_cb,
-                    panel);
-
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      button,
-                                      0, 1,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-  g_object_unref (app_info);
-
-  return bin;
-}
-
-static void
 _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
                                   gpointer          userdata)
 {
@@ -560,7 +488,6 @@ _update_placeholder_state (MnbPeoplePanel *self)
 
     /* Ensure content stuff is visible */
     clutter_actor_show (priv->main_scroll_view);
-    clutter_actor_show (priv->me_table);
 
     if (accounts_available > 0 && accounts_online == 0)
     {
@@ -579,17 +506,14 @@ _update_placeholder_state (MnbPeoplePanel *self)
         clutter_actor_set_name (priv->content_table,
                                 "no-people-panel-content-box");
         clutter_actor_show (priv->no_people_tile);
-        clutter_actor_hide (priv->me_table);
         clutter_actor_hide (priv->everybody_offline_tile);
         clutter_actor_hide (priv->offline_banner);
       } else {
-        clutter_actor_show (priv->me_table);
         clutter_actor_show (priv->offline_banner);
         clutter_actor_hide (priv->no_people_tile);
         clutter_actor_hide (priv->everybody_offline_tile);
       }
     } else {
-      clutter_actor_show (priv->me_table);
       clutter_actor_show (priv->everybody_offline_tile);
       clutter_actor_hide (priv->no_people_tile);
       clutter_actor_hide (priv->offline_banner);
@@ -663,24 +587,151 @@ _update_online_state (MnbPeoplePanel *panel,
 }
 
 static void
+_update_presence_message (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  gchar *message;
+
+  tp_account_manager_get_most_available_presence (priv->am, NULL, &message);
+  mx_label_set_text (MX_LABEL (priv->presence_message), message);
+  g_free (message);
+}
+
+static void
+am_prepared_cb (GObject *object,
+                GAsyncResult *result,
+                gpointer user_data)
+{
+  MnbPeoplePanel *self= user_data;
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  GList *accounts;
+  GError *error = NULL;
+
+  if (!tp_proxy_prepare_finish (object, result, &error))
+  {
+    g_warning ("Error preparing the TpAccountManager: %s", error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  g_signal_connect (priv->am,
+                    "account-validity-changed",
+                    (GCallback)_account_validity_changed_cb,
+                    self);
+  g_signal_connect_swapped (priv->am,
+                    "most-available-presence-changed",
+                    (GCallback)_update_presence_message,
+                    self);
+
+  accounts = tp_account_manager_get_valid_accounts (priv->am);
+  while (accounts != NULL)
+  {
+    tp_g_signal_connect_object (accounts->data, "status-changed",
+                                G_CALLBACK (_account_status_changed_cb),
+                                self, 0);
+    accounts = g_list_delete_link (accounts, accounts);
+  }
+
+  _update_placeholder_state (self);
+  _update_presence_chooser_state (self);
+  _update_presence_message (self);
+}
+
+static void
+sort_by_index_changed_cb (MxComboBox     *combo,
+                          GParamSpec     *pspec,
+                          MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  gint index = mx_combo_box_get_index (combo);
+
+  if (index == 4)
+    anerley_feed_model_set_show_offline (priv->model, FALSE);
+  else if (index == 5)
+    anerley_feed_model_set_show_offline (priv->model, TRUE);
+}
+
+static void
+create_sort_by_chooser (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->sort_by_chooser = mx_combo_box_new ();
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Sort by:"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Top contacts"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Name"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Show:"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Only online"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- All contacts"));
+
+  mx_combo_box_set_active_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Sort by"));
+
+  g_signal_connect (priv->sort_by_chooser,
+                    "notify::index",
+                    G_CALLBACK (sort_by_index_changed_cb),
+                    self);
+}
+
+static void
+create_new_chooser (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->new_chooser = mx_combo_box_new ();
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->new_chooser), _("New contact"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->new_chooser), _("New group chat"));
+
+  mx_combo_box_set_active_text (MX_COMBO_BOX (priv->new_chooser), _("New"));
+}
+
+static void
+search_entry_text_changed_cb (MxEntry        *entry,
+                              GParamSpec     *pspec,
+                              MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  const gchar *text = mx_entry_get_text (entry);
+
+  if (text != NULL && text[0] == '\0')
+    text = NULL;
+
+  anerley_feed_model_set_filter_text (priv->model, text);
+}
+
+static void
+create_search_entry (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->search_entry = mx_entry_new ();
+  mx_entry_set_hint_text (MX_ENTRY (priv->search_entry), _("Search"));
+
+  /* FIXME: wtf we can't set from icon name??
+   * mx_entry_set_secondary_icon_from_file (priv->search_entry, "");
+   */
+
+  g_signal_connect (priv->search_entry,
+                    "notify::text",
+                    G_CALLBACK (search_entry_text_changed_cb),
+                    self);
+}
+
+static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   ClutterActor *label;
   ClutterActor *scroll_view, *bin, *tmp_text;
   AnerleyFeed *active_feed;
-  ClutterActor *settings_launcher;
-  GList *accounts;
 
   mx_table_set_column_spacing (MX_TABLE (self), 6);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
 
   /* Populate top level table */
-  priv->header_box = mx_table_new ();
-  clutter_actor_set_name (priv->header_box, "people-panel-header-box");
-  mx_table_set_column_spacing (MX_TABLE (priv->header_box), 20);
+  priv->banner_box = mx_table_new ();
+  clutter_actor_set_name (priv->banner_box, "people-panel-banner-box");
   mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      CLUTTER_ACTOR (priv->header_box),
+                                      CLUTTER_ACTOR (priv->banner_box),
                                       0, 0,
                                       "column-span", 2,
                                       "x-expand", TRUE,
@@ -691,15 +742,19 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-align", MX_ALIGN_START,
                                       NULL);
 
-  priv->content_table = mx_table_new ();
-  clutter_actor_set_name (priv->content_table, "people-panel-content-box");
+  priv->header_box = mx_table_new ();
+  clutter_actor_set_name (priv->header_box, "people-panel-header-box");
+  mx_table_set_column_spacing (MX_TABLE (priv->header_box), 20);
   mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      CLUTTER_ACTOR (priv->content_table),
+                                      CLUTTER_ACTOR (priv->header_box),
                                       1, 0,
+                                      "column-span", 2,
                                       "x-expand", TRUE,
-                                      "y-expand", TRUE,
+                                      "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", TRUE,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_START,
                                       NULL);
 
   priv->side_table = mx_table_new ();
@@ -707,54 +762,37 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (priv->side_table, "people-panel-side-box");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       CLUTTER_ACTOR (priv->side_table),
-                                      1, 1,
+                                      2, 0,
                                       "x-expand", FALSE,
                                       "y-expand", TRUE,
                                       "x-fill", TRUE,
                                       "y-fill", TRUE,
                                       NULL);
 
+  priv->content_table = mx_table_new ();
+  clutter_actor_set_name (priv->content_table, "people-panel-content-box");
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      CLUTTER_ACTOR (priv->content_table),
+                                      2, 1,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
 
-  /* Populate header */
-  label = mx_label_new_with_text (_("People"));
-  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+  /* Populate banner */
+  label = mx_label_new_with_text (_("IM"));
+  clutter_actor_set_name (label, "people-panel-banner-label");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->banner_box),
                                       CLUTTER_ACTOR (label),
                                       0, 0,
-                                      "x-expand", FALSE,
-                                      "y-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      NULL);
-  clutter_actor_set_name (label, "people-panel-header-label");
-
-  /* Main body table */
-
-  bin = mx_frame_new ();
-  clutter_actor_set_name (bin, "people-panel-content-header");
-  label = mx_label_new_with_text (_("Me and my people"));
-  clutter_actor_set_name (label, "people-panel-content-header-label");
-  mx_bin_set_child (MX_BIN (bin), label);
-  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->content_table),
-                                      CLUTTER_ACTOR (bin),
-                                      0, 0,
                                       "x-expand", TRUE,
-                                      "y-expand", FALSE,
+                                      "y-expand", TRUE,
                                       "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", TRUE,
                                       NULL);
 
-  /* Me table containing avatar, name and presence chooser */
-  priv->me_table = mx_table_new ();
-
-  mx_table_set_column_spacing (MX_TABLE (priv->me_table), 16);
-  mx_table_set_row_spacing (MX_TABLE (priv->me_table), 8);
-
-  clutter_actor_set_name (priv->me_table, "people-panel-me-box");
+  /* Populate header */
 
   priv->avatar = anerley_tp_user_avatar_new ();
   bin = mx_frame_new ();
@@ -762,10 +800,10 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   mx_bin_set_child (MX_BIN (bin), priv->avatar);
   clutter_actor_set_size (priv->avatar, 48, 48);
   mx_bin_set_fill (MX_BIN (bin), TRUE, TRUE);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->me_table),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       bin,
                                       0, 0,
-                                      "row-span", 2,
+                                      "row-span", 3,
                                       "x-expand", FALSE,
                                       "y-expand", TRUE,
                                       "x-fill", FALSE,
@@ -773,45 +811,65 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       NULL);
   label = mx_label_new_with_text (_("Me"));
   clutter_actor_set_name (label, "people-panel-me-label");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->me_table),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       label,
                                       0, 1,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       NULL);
-  priv->presence_chooser = anerley_presence_chooser_new ();
-  mx_table_add_actor_with_properties (MX_TABLE (priv->me_table),
-                                      priv->presence_chooser,
+  priv->presence_message = mx_label_new ();
+  clutter_actor_set_name (priv->presence_message, "people-panel-presence-message-label");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->presence_message,
                                       1, 1,
                                       "x-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
+                                      "y-expand", FALSE,
                                       NULL);
-
-  settings_launcher = _make_settings_launcher (self);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->me_table),
-                                      settings_launcher,
-                                      0, 2,
-                                      "x-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_END,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      "row-span", 2,
-                                      NULL);
-
-  mx_table_add_actor_with_properties (MX_TABLE (priv->content_table),
-                                      CLUTTER_ACTOR (priv->me_table),
-                                      1, 0,
+  priv->tool_box = mx_table_new ();
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->tool_box,
+                                      2, 1,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
+                                      NULL);
+
+  priv->presence_chooser = anerley_presence_chooser_new ();
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tool_box),
+                                      priv->presence_chooser,
+                                      0, 0,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  create_sort_by_chooser (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tool_box),
+                                      priv->sort_by_chooser,
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  create_new_chooser (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tool_box),
+                                      priv->new_chooser,
+                                      0, 2,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  create_search_entry (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tool_box),
+                                      priv->search_entry,
+                                      0, 3,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
                                       "x-fill", TRUE,
                                       "y-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-align", MX_ALIGN_MIDDLE,
                                       NULL);
+  /* Main body table */
 
   priv->am = tp_account_manager_dup ();
   priv->aggregator = folks_individual_aggregator_new ();
@@ -826,7 +884,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   mx_table_add_actor (MX_TABLE (priv->content_table),
                       priv->main_scroll_view,
-                      2,
+                      0,
                       0);
 
   /* No people && no accounts enabled */
@@ -873,32 +931,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       NULL);
 
   /* Side table */
-  label = mx_label_new_with_text (_("My conversations"));
-  clutter_actor_set_name (label, "people-panel-side-box-header-label");
-  bin = mx_frame_new ();
-  clutter_actor_set_name (bin, "people-panel-side-box-header");
-  mx_bin_set_child (MX_BIN (bin), label);
-  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->side_table),
-                                      CLUTTER_ACTOR (bin),
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->side_table),
-                                      _make_messenger_launcher_tile (self),
-                                      1, 0,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-
   active_feed = anerley_tp_monitor_feed_new (priv->aggregator,
                                              "DawatiPanelPeople");
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
@@ -937,11 +969,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->side_table),
                                       priv->active_content_table,
-                                      2, 0,
+                                      0, 0,
                                       "x-expand", TRUE,
                                       NULL);
-
-
 
   g_signal_connect (priv->tile_view,
                     "item-activated",
@@ -967,22 +997,10 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   /* Placeholder changes based on onlineness or not */
   _update_placeholder_state (self);
 
-  g_signal_connect (priv->am,
-                    "account-validity-changed",
-                    (GCallback)_account_validity_changed_cb,
-                    self);
-
-  accounts = tp_account_manager_get_valid_accounts (priv->am);
-  while (accounts != NULL)
-  {
-    tp_g_signal_connect_object (accounts->data, "status-changed",
-                                G_CALLBACK (_account_status_changed_cb),
-                                self, 0);
-    accounts = g_list_delete_link (accounts, accounts);
-  }
-
   sw_online_add_notify (_online_notify_cb, self);
   _update_online_state (self, sw_is_online ());
+
+  tp_proxy_prepare_async (priv->am, NULL, am_prepared_cb, self);
 }
 
 ClutterActor *

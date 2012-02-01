@@ -3,6 +3,18 @@ MnbPeoplePanel
   padding: 5;
 }
 
+*#people-panel-banner-box
+{
+  background-color: blue;
+}
+
+*#people-panel-banner-label
+{
+  color: white;
+  font-size: 22px;
+  padding: 10px 10px 10px 10px;
+}
+
 *#people-no-people-message-title,
 *#people-panel-header-label
 {
