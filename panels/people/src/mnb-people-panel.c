@@ -81,6 +81,9 @@ struct _MnbPeoplePanelPrivate {
   ClutterActor *me_table;
   ClutterActor *main_scroll_view;
   ClutterActor *avatar;
+  ClutterActor *sort_by_chooser;
+  ClutterActor *new_chooser;
+  ClutterActor *search_entry;
 };
 
 static void _online_notify_cb (gboolean online,
@@ -619,6 +622,85 @@ am_prepared_cb (GObject *object,
 }
 
 static void
+sort_by_index_changed_cb (MxComboBox     *combo,
+                          GParamSpec     *pspec,
+                          MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  gint index = mx_combo_box_get_index (combo);
+
+  if (index == 4)
+    anerley_feed_model_set_show_offline (priv->model, FALSE);
+  else if (index == 5)
+    anerley_feed_model_set_show_offline (priv->model, TRUE);
+}
+
+static void
+create_sort_by_chooser (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->sort_by_chooser = mx_combo_box_new ();
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Sort by:"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Top contacts"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Name"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Show:"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Only online"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- All contacts"));
+
+  mx_combo_box_set_active_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Sort by"));
+
+  g_signal_connect (priv->sort_by_chooser,
+                    "notify::index",
+                    G_CALLBACK (sort_by_index_changed_cb),
+                    self);
+}
+
+static void
+create_new_chooser (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->new_chooser = mx_combo_box_new ();
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->new_chooser), _("New contact"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->new_chooser), _("New group chat"));
+
+  mx_combo_box_set_active_text (MX_COMBO_BOX (priv->new_chooser), _("New"));
+}
+
+static void
+search_entry_text_changed_cb (MxEntry        *entry,
+                              GParamSpec     *pspec,
+                              MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  const gchar *text = mx_entry_get_text (entry);
+
+  if (text != NULL && text[0] == '\0')
+    text = NULL;
+
+  anerley_feed_model_set_filter_text (priv->model, text);
+}
+
+static void
+create_search_entry (MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+
+  priv->search_entry = mx_entry_new ();
+  mx_entry_set_hint_text (MX_ENTRY (priv->search_entry), _("Search"));
+
+  /* FIXME: wtf we can't set from icon name??
+   * mx_entry_set_secondary_icon_from_file (priv->search_entry, "");
+   */
+
+  g_signal_connect (priv->search_entry,
+                    "notify::text",
+                    G_CALLBACK (search_entry_text_changed_cb),
+                    self);
+}
+
+static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
@@ -718,7 +800,33 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "x-fill", FALSE,
                                       "y-fill", FALSE,
                                       NULL);
-
+  create_sort_by_chooser (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->sort_by_chooser,
+                                      0, 3,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  create_new_chooser (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->new_chooser,
+                                      0, 4,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  create_search_entry (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->search_entry,
+                                      0, 5,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      NULL);
   /* Main body table */
 
   priv->am = tp_account_manager_dup ();
