@@ -2446,145 +2446,15 @@ proxy_radio_toggled_cb (GtkWidget *radio,
 }
 
 static void
-apply_button_clicked_cb (GtkButton *button,
-                         gpointer   user_data)
+carrick_service_item_save_proxy_settings (CarrickServiceItem *item)
 {
-  CarrickServiceItem *item;
   CarrickServiceItemPrivate *priv;
   GValue *value, *proxy_method_value, *proxy_url_value, *proxies_value, *excludes_value;
   GHashTable *dict;
-  char **strv, **proxiesv, **excludesv;
+  char **proxiesv, **excludesv;
   const char *proxy_url;
-  int method;
 
-  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-  item = CARRICK_SERVICE_ITEM (user_data);
   priv = item->priv;
-
-  carrick_service_item_set_active (item, TRUE);
-
-  if (!validate_dns_text_view (item))
-    return;
-
-  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo));
-  if (method != METHOD_FIXED)
-    {
-
-      /* save ipv4 settings */
-
-      dict = g_hash_table_new (g_str_hash, g_str_equal);
-      if (method == METHOD_MANUAL)
-        {
-          char *address, *netmask, *gateway;
-
-          if (!validate_static_ipv4_entries (item))
-            {
-               g_hash_table_destroy (dict);
-               return;
-            }
-
-          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
-          netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
-          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
-
-          g_hash_table_insert (dict, "Method", "manual");
-          g_hash_table_insert (dict, "Address", address);
-          g_hash_table_insert (dict, "Netmask", netmask);
-          g_hash_table_insert (dict, "Gateway", gateway);
-        }
-      else
-        {
-          g_hash_table_insert (dict, "Method", "dhcp");
-        }
-
-      value = g_new0 (GValue, 1);
-      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
-      g_value_set_boxed (value, dict);
-
-      net_connman_Service_set_property_async (priv->proxy,
-                                              "IPv4.Configuration",
-                                              value,
-                                              set_configuration_cb,
-                                              "IPv4.Configuration");
-      g_free (value);
-      g_hash_table_destroy (dict);
-    }
-
-  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->ipv6_method_combo));
-  if (method != IPV6_METHOD_FIXED)
-    {
-      char *address, *gateway, *prefix;
-      GValue val = {0};
-
-      /* save ipv6 settings */
-
-      dict = g_hash_table_new (g_str_hash, g_str_equal);
-      switch (method)
-      {
-        case IPV6_METHOD_MANUAL:
-          if (!validate_static_ipv6_entries (item))
-            {
-               g_hash_table_destroy (dict);
-               return;
-            }
-
-          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
-          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
-          prefix = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
-
-          g_hash_table_insert (dict, "Method", "manual");
-          g_hash_table_insert (dict, "Address", address);
-          g_hash_table_insert (dict, "Gateway", gateway);
-          if (strlen (prefix) > 0)
-            {
-              g_value_init (&val, G_TYPE_UCHAR);
-              g_value_set_uchar (value, (unsigned char)strtoul (prefix, NULL, 10));
-              g_hash_table_insert (dict, "PrefixLength", &value);
-            }
-          break;
-
-        case IPV6_METHOD_AUTO:
-          g_hash_table_insert (dict, "Method", "auto");
-          break;
-        case IPV6_METHOD_OFF:
-          g_hash_table_insert (dict, "Method", "off");
-          break;
-        case IPV6_METHOD_FIXED:
-          ; /* can't happen */
-      }
-
-      value = g_new0 (GValue, 1);
-      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
-      g_value_set_boxed (value, dict);
-
-      net_connman_Service_set_property_async (priv->proxy,
-                                              "IPv6.Configuration",
-                                              value,
-                                              set_configuration_cb,
-                                              "IPv6.Configuration");
-
-      g_free (value);
-      g_hash_table_destroy (dict);
-    }
-
-  /* save dns settings */
-  value = g_new0 (GValue, 1);
-  g_value_init (value, G_TYPE_STRV);
-  strv = get_ip_addr_strv (GTK_TEXT_VIEW (priv->dns_text_view));
-  g_value_set_boxed (value, strv);
-
-  net_connman_Service_set_property_async (priv->proxy,
-                                          "Nameservers.Configuration",
-                                          value,
-                                          set_nameservers_configuration_cb,
-                                          user_data);
-
-  g_free (value);
-  g_strfreev (strv);
-
-
-  /* save proxy settings */
-
   dict = g_hash_table_new (g_str_hash, g_str_equal);
 
   proxy_method_value = g_new0 (GValue, 1);
@@ -2649,6 +2519,162 @@ apply_button_clicked_cb (GtkButton *button,
   g_strfreev (proxiesv);
   g_free (value);
   g_hash_table_destroy (dict);
+}
+
+
+static void
+carrick_service_item_save_ip_settings (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  GValue *value;
+  GHashTable *dict;
+  int method;
+
+  priv = item->priv;
+  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo));
+
+  if (method != METHOD_FIXED)
+    {
+      /* save ipv4 settings */
+
+      dict = g_hash_table_new (g_str_hash, g_str_equal);
+      if (method == METHOD_MANUAL)
+        {
+          char *address, *netmask, *gateway;
+
+          if (!validate_static_ipv4_entries (item))
+            {
+               g_hash_table_destroy (dict);
+               return;
+            }
+
+          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
+          netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
+          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+
+          g_hash_table_insert (dict, "Method", "manual");
+          g_hash_table_insert (dict, "Address", address);
+          g_hash_table_insert (dict, "Netmask", netmask);
+          g_hash_table_insert (dict, "Gateway", gateway);
+        }
+      else
+        {
+          g_hash_table_insert (dict, "Method", "dhcp");
+        }
+
+      value = g_new0 (GValue, 1);
+      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
+      g_value_set_boxed (value, dict);
+
+      net_connman_Service_set_property_async (priv->proxy,
+                                              "IPv4.Configuration",
+                                              value,
+                                              set_configuration_cb,
+                                              "IPv4.Configuration");
+      g_free (value);
+      g_hash_table_destroy (dict);
+    }
+
+  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->ipv6_method_combo));
+  if (method != IPV6_METHOD_FIXED)
+    {
+      char *address, *gateway, *prefix;
+      GValue val = {0};
+
+      /* save ipv6 settings */
+
+      dict = g_hash_table_new (g_str_hash, g_str_equal);
+      switch (method)
+      {
+        case IPV6_METHOD_MANUAL:
+          if (!validate_static_ipv6_entries (item))
+            {
+               g_hash_table_destroy (dict);
+               return;
+            }
+
+          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->ipv6_address_entry));
+          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->ipv6_gateway_entry));
+          prefix = (char*)gtk_entry_get_text (GTK_ENTRY (priv->ipv6_prefix_length_entry));
+
+          g_hash_table_insert (dict, "Method", "manual");
+          g_hash_table_insert (dict, "Address", address);
+          g_hash_table_insert (dict, "Gateway", gateway);
+          if (strlen (prefix) > 0)
+            {
+              g_value_init (&val, G_TYPE_UCHAR);
+              g_value_set_uchar (value, (unsigned char)strtoul (prefix, NULL, 10));
+              g_hash_table_insert (dict, "PrefixLength", &value);
+            }
+          break;
+
+        case IPV6_METHOD_AUTO:
+          g_hash_table_insert (dict, "Method", "auto");
+          break;
+        case IPV6_METHOD_OFF:
+          g_hash_table_insert (dict, "Method", "off");
+          break;
+        case IPV6_METHOD_FIXED:
+          ; /* can't happen */
+      }
+
+      value = g_new0 (GValue, 1);
+      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
+      g_value_set_boxed (value, dict);
+
+      net_connman_Service_set_property_async (priv->proxy,
+                                              "IPv6.Configuration",
+                                              value,
+                                              set_configuration_cb,
+                                              "IPv6.Configuration");
+
+      g_free (value);
+      g_hash_table_destroy (dict);
+    }
+}
+
+
+static void
+carrick_service_item_save_dns_settings (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  GValue *value;
+  char **strv;
+
+  priv = item->priv;
+  value = g_new0 (GValue, 1);
+
+  g_value_init (value, G_TYPE_STRV);
+  strv = get_ip_addr_strv (GTK_TEXT_VIEW (priv->dns_text_view));
+  g_value_set_boxed (value, strv);
+
+  net_connman_Service_set_property_async (priv->proxy,
+                                          "Nameservers.Configuration",
+                                          value,
+                                          set_nameservers_configuration_cb,
+                                          item);
+
+  g_free (value);
+  g_strfreev (strv);
+}
+
+static void
+apply_button_clicked_cb (GtkButton *button,
+                         gpointer   user_data)
+{
+  CarrickServiceItem *item;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  item = CARRICK_SERVICE_ITEM (user_data);
+
+  carrick_service_item_set_active (item, TRUE);
+
+  if (!validate_dns_text_view (item))
+    return;
+
+  carrick_service_item_save_ip_settings (item);
+  carrick_service_item_save_dns_settings (item);
+  carrick_service_item_save_proxy_settings (item);
 
   /* start updating form again based on connman updates */
   _set_form_modified (item, FALSE);
