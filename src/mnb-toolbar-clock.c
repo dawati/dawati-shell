@@ -27,9 +27,6 @@
 #include "mnb-toolbar-clock.h"
 #include "mnb-toolbar.h"
 
-#define MNB_24H_KEY_DIR "/apps/date-time-panel"
-#define MNB_24H_KEY MNB_24H_KEY_DIR "/24_h_clock"
-
 G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MX_TYPE_BUTTON)
 
 

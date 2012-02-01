@@ -54,9 +54,12 @@ MnbStatusbar {
 MnbStatusbar MxButton, MnbStatusbar MxButton:hover, MnbStatusbar MxButton:active, MnbStatusbar MxButton:checked {
   color: #ffffff;
   font-size: 12px;
-  background-color: #00000;
   border-image: url("toolbar/toolbar-button-normal.png");
   padding: 0 0 0 5;
+}
+
+MxButton#statusbar-myzone-button MxBoxLayout, MxButton:hover#statusbar-myzone-button MxBoxLayout, MxButton:active#statusbar-myzone-button MxBoxLayout, MxButton:checked#statusbar-myzone-button {
+  -mx-spacing: 10;
 }
 
 /* theme the icon within the status bar button */
@@ -135,7 +138,7 @@ MxBoxLayout#toolbar-right-box {
   -mx-spacing: 10;
 }
 
-MnbToolbarApplet, MnbToolbarApplet#active:hover, MnbToolbarApplet#active:active, MnbToolbarApplet#active:checked {
+MnbToolbarApplet, MnbToolbarApplet:hover, MnbToolbarApplet:active, MnbToolbarApplet:checked {
   border-image: url("toolbar/toolbar-button-normal.png") 12;
   padding: 0 0 0 0;
 }
