@@ -2822,7 +2822,8 @@ add_entry_to_table (GtkTable *table, guint row)
   GtkWidget *entry;
 
   entry = gtk_entry_new ();
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 15);
+  /* ipv4 mapped ipv6 address could be 45 chars */
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 50);
   gtk_widget_show (entry);
   gtk_widget_set_size_request (entry, 100, -1);
   gtk_table_attach (table, entry,
@@ -3330,7 +3331,6 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
   priv->proxy_manual_entry = gtk_entry_new ();
-  gtk_entry_set_max_length (GTK_ENTRY (priv->proxy_manual_entry), 15);
   gtk_widget_set_size_request (priv->proxy_manual_entry, 100, -1);
   gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_entry,
                     0, 3, 6, 7,
