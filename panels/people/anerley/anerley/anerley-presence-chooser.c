@@ -110,11 +110,6 @@ _combo_index_changed (AnerleyPresenceChooser *self,
 
   default_message = anerley_presence_chooser_get_default_message (entry->presence);
 
-  g_debug (G_STRLOC ": index changed = %i (%i:%s)",
-           index,
-           entry->presence,
-           default_message);
-
   priv->presence = entry->presence;
 
   tp_account_manager_set_all_requested_presences (priv->am,
@@ -157,11 +152,6 @@ _account_manager_presence_changed (TpAccountManager         *am,
                                    AnerleyPresenceChooser   *self)
 {
   AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
-
-  g_debug (G_STRLOC ": presence-changed: %u, %s, %s",
-           presence,
-           status,
-           message);
 
   /* only change the presence if it changes */
   if (priv->presence == presence)
