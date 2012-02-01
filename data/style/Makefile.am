@@ -5,6 +5,8 @@ dist_sharedstyle_DATA = \
 	shared/application-mask.png \
 	shared/content-panel-bg.png \
 	shared/content-tile-bg.png \
+	shared/content-tile-bg-highlight.png \
+	shared/content-tile-bg-pressed.png \
 	shared/shared.css \
 	shared/search-box.png \
 	shared/section-header-bg.png \
