@@ -344,7 +344,7 @@ AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 AS_DAWATI_PANEL(people, [gio-2.0
                          gio-unix-2.0
                          gthread-2.0
-                         telepathy-glib >= 0.9.0
+                         telepathy-glib >= 0.16.0
                          folks >= 0.6.6
                          folks-telepathy >= 0.6.6
                          libebook-1.2
