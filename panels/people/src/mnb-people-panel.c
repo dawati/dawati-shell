@@ -67,21 +67,13 @@ struct _MnbPeoplePanelPrivate {
   GtkIconTheme *icon_theme;
   MplPanelClient *panel_client;
 
-  ClutterActor *banner_box;
-
-  ClutterActor *header_box;
   ClutterActor *avatar;
   ClutterActor *presence_message;
-  ClutterActor *tool_box;
   ClutterActor *presence_chooser;
   ClutterActor *sort_by_chooser;
   ClutterActor *new_chooser;
   ClutterActor *search_entry;
-
-  ClutterActor *side_table;
   ClutterActor *active_list_view;
-  ClutterActor *active_content_table;
-
   ClutterActor *content_table;
   ClutterActor *main_scroll_view;
   ClutterActor *tile_view;
@@ -900,7 +892,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-fill", TRUE,
                                       NULL);
   priv->content_table = mx_table_new ();
-  clutter_actor_set_name (priv->content_table, "people-panel-content-box");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->content_table), "contentPanel");
   mx_table_add_actor_with_properties (MX_TABLE (right_side),
                                       priv->content_table,
                                       1, 0,
