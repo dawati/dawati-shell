@@ -364,23 +364,25 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
            height, priv->real_height);
 
 
-  if (priv->requested_height > 0 && priv->requested_height < height)
-    priv->real_height = priv->requested_height;
-  else if (priv->requested_height)
+  if (priv->requested_height > 0)
     {
-      g_debug ("Panel requested height %d is greater than maximum "
-               "allowable height %d",
-               priv->requested_height, height);
+      if (priv->requested_height < priv->max_height)
+        priv->real_height = priv->requested_height;
+      else
+        priv->real_height = priv->max_height;
     }
+  else
+    priv->real_height = priv->max_height;
 
-  if (priv->requested_width > 0 && priv->requested_width < width)
-    priv->real_width = priv->requested_width;
-  else if (priv->requested_width)
+  if (priv->requested_width > 0)
     {
-      g_debug ("Panel requested width %d is greater than maximum "
-               "allowable width %d",
-               priv->requested_width, width);
+      if (priv->requested_width < priv->max_width)
+        priv->real_width = priv->requested_width;
+      else
+        priv->real_width = priv->max_width;
     }
+  else
+    priv->real_width = priv->max_width;
 
   if (old_width != priv->real_width || old_height != priv->real_height)
     g_signal_emit (self, signals[SET_SIZE], 0,

@@ -26,6 +26,7 @@
 
 #include "mnb-panel.h"
 #include "mnb-toolbar.h"
+#include "mnb-statusbar.h"
 #include "mnb-enum-types.h"
 
 #define MNB_PANEL_WARN_NOT_IMPLEMENTED(panel,vfunc)               \
@@ -453,7 +454,6 @@ mnb_panel_ensure_size (MnbPanel *panel)
   MetaScreen    *screen;
   MetaWorkspace *workspace;
   MetaPlugin    *plugin = dawati_netbook_get_plugin_singleton ();
-  gboolean       netbook_mode = dawati_netbook_use_netbook_mode (plugin);
 
   screen    = meta_plugin_get_screen (plugin);
   workspace = meta_screen_get_active_workspace (screen);
@@ -462,32 +462,15 @@ mnb_panel_ensure_size (MnbPanel *panel)
     {
       gint  x, y;
       guint w, h;
-      guint max_height, max_width;
 
       meta_workspace_get_work_area_all_monitors (workspace, &r);
 
       mnb_panel_get_position (panel, &x, &y);
       mnb_panel_get_size (panel, &w, &h);
 
-      /*
-       * Maximum height of the panel is the available working height plus the
-       * TOOLBAR_X_PADDING (we only allow part of the shadow matching the width
-       * of the shadow on left and right to be visible).
-       *
-       * When not in netbook mode, the TOOLBAR_HEIGHT is already included in the
-       * available space (because we set a strut for it).
-       */
-      /* FIXME -- devise a way of doing the shadow */
-      max_height = r.height;
-
-      if (netbook_mode)
-        max_height -= TOOLBAR_HEIGHT;
-
-      max_width  = r.width;
-
-      if (max_height != h || r.width != w)
+      if (r.height != h || r.width != w)
         {
-          mnb_panel_set_size (panel, max_width, max_height);
+          mnb_panel_set_size (panel, r.width, r.height);
         }
     }
 }
