@@ -17,6 +17,7 @@ switcherstyledir = $(DAWATI_STYLE_DIR)/switcher
 dist_switcherstyle_DATA = \
 	switcher/app-shadow.png \
 	switcher/app-tile.png \
+	switcher/blank-page-message.png \
 	switcher/closebutton-hover.png \
 	switcher/closebutton-normal.png \
 	switcher/closebutton-pressed.png \

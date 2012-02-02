@@ -33,6 +33,7 @@ typedef struct
   gboolean        connected;
   ClutterActor   *background;
   WnckScreen     *screen;
+  ClutterActor   *placeholder;
 } ZonePanelData;
 
 typedef struct
@@ -155,13 +156,21 @@ app_tile_release_event (ClutterActor *actor,
 
 static void
 close_workspace_btn_clicked (MxButton      *button,
-                             WnckWorkspace *workspace)
+                             ZonePanelData *data)
 {
-  WnckScreen *screen;
+  WnckScreen *screen = data->screen;
+  WnckWindow *window;
+  WnckWorkspace *workspace;
   GList *windows;
   ClutterActor *table;
+  GList *children;
 
-  screen = wnck_workspace_get_screen (workspace);
+  table = clutter_actor_get_parent (CLUTTER_ACTOR (button));
+  g_assert (MX_IS_TABLE (table));
+
+  window = g_object_get_data (G_OBJECT (table), "wnck-window");
+
+  workspace = wnck_window_get_workspace (window);
 
   windows = wnck_screen_get_windows (screen);
 
@@ -176,9 +185,17 @@ close_workspace_btn_clicked (MxButton      *button,
       windows = g_list_next (windows);
     }
 
-  table = clutter_actor_get_parent (CLUTTER_ACTOR (button));
-  g_assert (MX_IS_TABLE (table));
   clutter_actor_destroy (CLUTTER_ACTOR (table));
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (data->grid));
+  if (!children)
+    {
+      /* show the placeholder when no more workspaces are open */
+      clutter_actor_hide (clutter_actor_get_parent (data->grid));
+      clutter_actor_show (data->placeholder);
+    }
+  else
+    g_list_free (children);
 }
 
 static ClutterActor *
@@ -231,7 +248,7 @@ sw_create_app_tile (ZonePanelData   *data,
   mx_table_child_set_x_expand (MX_TABLE (tile), button, FALSE);
   clutter_actor_set_size (button, 22, 21);
   g_signal_connect (button, "clicked", G_CALLBACK (close_workspace_btn_clicked),
-                            wnck_window_get_workspace (window));
+                    data);
 
   /* frame */
   frame = mx_frame_new ();
@@ -262,6 +279,7 @@ setup (ZonePanelData *data)
   ClutterScript *script;
   GError *error = NULL;
   GList *workspaces, *l, *windows, *list;
+  gint count;
 
   /* load custom style */
   mx_style_load_from_file (mx_style_get_default (),
@@ -294,6 +312,8 @@ setup (ZonePanelData *data)
 
   workspaces = wnck_screen_get_workspaces (data->screen);
   windows = wnck_screen_get_windows_stacked (data->screen);
+
+  count = 0;
   for (l = workspaces; l; l = g_list_next (l))
     {
       WnckWindow *window = NULL;
@@ -322,6 +342,32 @@ setup (ZonePanelData *data)
 
 
       clutter_container_add_actor (CLUTTER_CONTAINER (data->grid), tile);
+      count++;
+    }
+
+  if (count == 0)
+    {
+      GError *error = NULL;
+
+      data->placeholder = mx_image_new ();
+      mx_image_set_from_file (MX_IMAGE (data->placeholder),
+                              DAWATI_STYLE_DIR "/switcher/blank-page-message.png",
+                              &error);
+
+      if (error)
+        {
+          g_warning (G_STRLOC ": %s", error->message);
+          g_clear_error (&error);
+          return;
+        }
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (data->toplevel),
+                                   data->placeholder);
+      clutter_container_child_set (CLUTTER_CONTAINER (data->toplevel),
+                                   data->placeholder, "expand", TRUE, NULL);
+
+      clutter_actor_hide (clutter_actor_get_parent (data->grid));
+      clutter_actor_show (data->placeholder);
     }
 }
 
@@ -372,9 +418,6 @@ main (int argc, char **argv)
   g_option_context_free (context);
 
   mpl_panel_clutter_init_with_gtk (&argc, &argv);
-
-  mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/switcher.css", NULL);
 
   data->screen = wnck_screen_get_default ();
   wnck_screen_force_update (data->screen);
