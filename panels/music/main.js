@@ -642,7 +642,7 @@ vbox.add_constraint (new Clutter.BindConstraint({ coordinate: Clutter.BindCoordi
                                                   source: stage }));
 stage.add_actor(vbox);
 
-let label = new Mx.Label({ name: 'title',
+let label = new Mx.Label({ name: 'titleBar',
                            text: _("Music") });
 vbox.add_actor(label, 0);
 
@@ -651,7 +651,7 @@ vbox.add_actor(table, 1);
 vbox.child_set_expand(table, true);
 
 
-let label = new Mx.Label({ name: 'section-title',
+let label = new Mx.Label({ name: 'sectionHeader',
                            text: _("Library") });
 table.add_actor(label, 0, 0);
 table.child_set_x_fill(label, false);
@@ -660,7 +660,7 @@ table.child_set_y_fill(label, false);
 table.child_set_y_expand(label, false);
 table.child_set_x_align(label, Mx.Align.START);
 
-let label = new Mx.Label({ name: 'section-title',
+let label = new Mx.Label({ name: 'sectionHeader',
                            text: _("Now Playing") });
 table.add_actor(label, 0, 1);
 table.child_set_x_fill(label, false);
