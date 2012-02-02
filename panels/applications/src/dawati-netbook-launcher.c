@@ -52,12 +52,13 @@
 #define FAV_PANE_WIDTH  300.0
 #define FILTER_WIDTH    277.0
 
-#define APPS_GRID_COLUMN_GAP   8
-#define APPS_GRID_ROW_GAP      8
+#define APPS_GRID_COLUMN_GAP   20
+#define APPS_GRID_ROW_GAP      27
 
-#define LAUNCHER_BUTTON_WIDTH     118
-#define LAUNCHER_BUTTON_HEIGHT     118
-#define LAUNCHER_BUTTON_ICON_SIZE  64
+#define LAUNCHER_BUTTON_WIDTH     147
+#define LAUNCHER_BUTTON_HEIGHT     148
+#define LAUNCHER_BUTTON_ICON_SIZE  256
+#define LAUNCHER_BUTTON_ICON_TARGET_SIZE 90
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -265,7 +266,8 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
     {
       desktop_file = mnb_launcher_application_get_desktop_file (entry);
 
-      button = mnb_launcher_button_new (icon_name, icon_file, LAUNCHER_BUTTON_ICON_SIZE,
+      button = mnb_launcher_button_new (icon_name, icon_file,
+                                        LAUNCHER_BUTTON_ICON_TARGET_SIZE,
                                         generic_name, category,
                                         description, exec,
                                         desktop_file);
@@ -607,6 +609,7 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
   if (g_strcmp0 (text, "fav") == 0)
     {
       clutter_actor_set_name (box, "fav");
+      mx_stylable_set_style_class (MX_STYLABLE (box), "fav");
       text = _("Favourites");
     }
 
@@ -1070,6 +1073,8 @@ _constructor (GType                  gtype,
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->category_section),
                              15);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->category_section),
+                               "category-section");
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
                                mnb_launcher_category_button_new (self, "all"));
