@@ -14,7 +14,7 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('../common/content-pane-background.png') 5 5 5 5;
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
   padding: 3;
 }
 
@@ -22,7 +22,7 @@ PengeAppsPane
 {
   padding: 6 0 15;
 /*
-  border-image: url('../common/content-pane-background.png') 5 5 5 5;
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
 */
 }
 
@@ -64,15 +64,11 @@ PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
   padding: 6;
 }
 
-PengeAppTile
-{
-  border-image: url('../../style/shared/content-tile-bg.png') 8 9;
-}
-
+PengeAppTile,
 PengeAppTile:hover,
 PengeAppTile:active
 {
-  border-image: url('../../style/shared/content-tile-bg.png') 8 9;
+  border-image: url('../../style/shared/application-icon-mask.png') 8 9;
 }
 
 PengeAppsPane *.PengeAppTileOverlay
@@ -108,7 +104,7 @@ PengePeopleTile:active
 
 PengeCountTile
 {
-  border-image: url('../common/content-pane-background.png') 5;
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
   padding: 6;
 }
 
@@ -232,7 +228,7 @@ PengeWelcomeTile
 
 *#penge-welcome-launcher
 {
-  border-image: url('../common/content-pane-background.png') 5;
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
   padding: 4 4 4 4;
 }
 
