@@ -16,22 +16,28 @@ MnbLauncher {
   padding: 15 0 0 5;
 }
 
+/* Fav category */
+MxBoxLayout.fav {
+  padding: 0 0 16 0;
+  border-image: url("category-divider.png") 0 0 1;
+}
+
+MxBoxLayout.category-section {
+  padding: 17 0 0 0;
+}
+
 /*
  * Launcher button.
  */
 
-MnbLauncherButton {
-  padding: 5 10 5 7;
-}
 
-MnbLauncherButton:hover {
-  border-image: url("launcher-hover.png") 4 6 6 4;
+MnbLauncherButton {
+  padding: 10;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-title {
   color: #3b3b3b;
   font-size: 12px;
-  padding: 4 0 0 0;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-launched {

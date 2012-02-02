@@ -6,7 +6,7 @@ dist_theme_DATA = \
 	panel.css \
 	clear-entry.png \
 	clear-entry-hover.png \
-	content-pane-header.png \
+	category-divider.png \
 	launcher-button-fav-toggle-active.png \
 	launcher-button-fav-toggle-checked.png \
 	launcher-button-fav-toggle-hover.png \
