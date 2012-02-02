@@ -337,6 +337,7 @@ _update_layout (PengeGridView *grid_view)
                                    "x-expand", FALSE,
                                    "y-expand", FALSE,
                                    "y-fill", FALSE,
+                                   "y-align", MX_ALIGN_START,
                                    NULL);
     } else {
       clutter_actor_hide (priv->calendar_pane);
