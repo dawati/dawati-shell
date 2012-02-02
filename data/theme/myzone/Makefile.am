@@ -57,6 +57,7 @@ dist_theme_DATA = \
 	avatar_icon.png \
 	card_frame.png \
 	card_frame_hover.png \
+	appointment-overlay.png \
 	count-frame.png \
 	count-frame-zero.png \
 	frame-header.png \
