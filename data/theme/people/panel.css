@@ -1,118 +1,32 @@
-MnbPeoplePanel
+*#people-panel-me-table
 {
-  padding: 5;
-}
-
-*#people-panel-banner-box
-{
-  background-color: blue;
-}
-
-*#people-panel-banner-label
-{
-  color: white;
-  font-size: 22px;
-  padding: 10px 10px 10px 10px;
-}
-
-*#people-no-people-message-title,
-*#people-panel-header-label
-{
-  color: #2a3c4a;
-  font-size: 22px;
-  font-family: "Open Sans";
-}
-
-*#people-panel-header-label
-{
-  padding: 0 0 0 15;
-}
-
-*#people-panel-content-header-label,
-*#people-panel-side-box-header-label
-{
-  color: #616261ff;
-  font-size: 16px;
-  font-family: "Open Sans";
-}
-
-*#people-panel-active-content-header-label
-{
-  color: #616261ff;
-  font-size: 14px;
-  font-family: "Open Sans";
-}
-
-*#people-panel-content-header,
-*#people-panel-side-box-header
-{
-  border-image: url("content-panel-header-grey.png") 5;
-  padding: 8 8 8 12;
-}
-
-*#people-panel-me-box
-{
-  border-image: url("box-background.png") 5;
-  padding: 6;
-}
-
-*#people-panel-content-box,
-*#people-panel-side-box
-{
-  border-image: url("../common/content-pane-background.png") 5;
-  padding: 3;
-}
-
-*#no-people-panel-content-box
-{
-  border-image: url("background-gradient.png") 5;
-  padding: 2;
+  padding: 0 40 0 0;
 }
 
 *#people-panel-me-avatar-frame
 {
-  border-image: url("avatar_frame.png") 4 4 4 4;
-  padding: 2 2 2 2;
+  border-image: url("avatar-bg.png") 10 10 10 10;
 }
 
 *#people-panel-me-label
 {
-  color: #616261ff;
-  font-size: 16px;
-  font-family: "Open Sans";
+  font-size: 14;
+  padding: 10 0 0 0;
 }
 
-*#people-pane-no-people-tile
+*#people-panel-me-presence-message
 {
-  padding: 28 25 4 4;
+  font-size: 13;
 }
 
-*#people-no-people-message-bin,
-*#people-pane-everybody-offline-bin,
-*#people-pane-you-offline-bin
+*#people-panel-actions-box
 {
-  padding: 8;
+  padding: 45 0 0 0;
 }
 
-*#people-no-people-message-label,
-*#people-pane-everybody-offline-label,
-*#people-pane-you-offline-label
+*#people-panel-content-box
 {
-  font-size:16px;
-  font-family: "Open Sans";
-  color: #616261ff;
-}
-
-*#people-panel-messenger-launcher-tile,
-*#people-panel-settings-launcher-tile,
-*#people-panel-active-content-box
-{
-  padding: 12;
-}
-
-*#people-panel-messenger-launcher-tile
-{
-  border-image: url("box-background.png") 5;
+  padding: 10 10 0 10;
 }
 
 /* Anerley */
