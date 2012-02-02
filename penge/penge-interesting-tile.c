@@ -35,6 +35,9 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 #define SOCIAL_NETWORK_TWITTER_LOGO_PATH THEMEDIR "/content-header-twitter.png"
 #define DETAILS_ICON_ACTOR_NAME "icon"
 
+#define HEADER_HEIGHT 30
+#define HEADER_WIDTH 335
+
 struct _PengeInterestingTilePrivate {
   ClutterActor *inner_table;
 
@@ -44,7 +47,8 @@ struct _PengeInterestingTilePrivate {
   ClutterActor *primary_text;
   ClutterActor *secondary_text;
   PengeInterestingTileSocialNetwork social_network;
-  ClutterActor *details_overlay;
+  ClutterActor *details_margin; /* used to give margin to the overlay */
+  ClutterActor *details_overlay; /* contained in details_margin */
   ClutterActor *remove_button;
 
   guint tooltip_idle_id;
@@ -438,31 +442,40 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                       0,
                       0,
                       "x-expand", TRUE,
-                      "y-expand", TRUE,
+                      "y-expand", FALSE,
                       "x-fill", TRUE,
-                      "y-fill", TRUE,
+                      "y-fill", FALSE,
                       "x-align", MX_ALIGN_START,
                       "y-align", MX_ALIGN_START,
                       NULL);
+  clutter_actor_set_size (priv->header, HEADER_WIDTH, HEADER_HEIGHT);
   clutter_actor_hide (priv->header);
 
   /* This gets added to ourself table after our body because of ordering */
+  priv->details_margin = mx_frame_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->details_margin),
+                               "PengeInterestingTileDetailsMargin");
+
   priv->details_overlay = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_overlay),
                                "PengeInterestingTileDetails");
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->details_margin),
+                               priv->details_overlay);
 
   mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->details_overlay,
+                      priv->details_margin,
                       2,
                       0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->details_overlay,
+                               (ClutterActor *) priv->details_margin,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
                                "y-fill", FALSE,
                                "y-align", MX_ALIGN_END,
                                NULL);
+  mx_bin_set_fill (MX_BIN (priv->details_margin), TRUE, FALSE);
+  mx_bin_set_alignment (MX_BIN (priv->details_margin), MX_ALIGN_START, MX_ALIGN_END);
 
   mx_table_add_actor (MX_TABLE (priv->details_overlay),
                       priv->primary_text,
@@ -471,10 +484,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->primary_text,
-                               "x-expand",
-                               TRUE,
-                               "y-expand",
-                               FALSE,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
                                NULL);
 
   mx_table_add_actor (MX_TABLE (priv->details_overlay),
