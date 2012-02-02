@@ -58,8 +58,8 @@ dist_theme_DATA = \
 	card_frame.png \
 	card_frame_hover.png \
 	appointment-overlay.png \
-	count-frame.png \
-	count-frame-zero.png \
+	message-count-bg-none.png \
+	message-count-bg.png \
 	frame-header.png \
 	content-panel-background-highlight.png \
 	content-panel-header-grey.png \

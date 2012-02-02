@@ -14,8 +14,12 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
   padding: 3;
+}
+
+*.PengeGridViewTopContainer
+{
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
 }
 
 PengeAppsPane
@@ -104,15 +108,15 @@ PengePeopleTile:active
 
 PengeCountTile
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
-  padding: 6;
+  border-image: none;
+  padding: 12;
 }
 
 PengeCountTile:hover,
 PengeCountTile:active
 {
   border-image: url('content-panel-background-highlight.png') 5;
-  padding: 6;
+  padding: 12;
 }
 
 MxLabel.PengeEventTimeLabel
@@ -276,29 +280,33 @@ PengeWelcomeTile
 
 MxLabel.PengeZeroCountLabel
 {
-  font-size: 22px;
-  color: #a7a7a7ff;
-  border-image: url('count-frame-zero.png') 12;
-  padding: 5 6;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  border-image: url('message-count-bg-none.png') 12;
+  padding: 2 4;
 }
 
 MxLabel.PengeCountLabel
 {
-  font-size: 22px;
-  color: #000000ff;
-  border-image: url('count-frame.png') 12;
-  padding: 5 6;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  border-image: url('message-count-bg.png') 12;
+  padding: 2 4;
 }
 
 MxLabel.PengeCountMessageLabel
 {
   font-size: 14px;
+  font-weight: bold;
+  padding: 1 0 0 0;
 }
 
 MxLabel.PengeCountAccountLabel
 {
-  font-size: 11px;
-  color: #7a7a7aff;
+  font-size: 13px;
+  padding: 1 0 0 0;
 }
 
 *#tasks-icon

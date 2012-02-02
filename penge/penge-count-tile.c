@@ -315,8 +315,9 @@ penge_count_tile_init (PengeCountTile *self)
   priv->count_label = mx_label_new ();
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->count_label));
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
+  mx_label_set_x_align (MX_LABEL (priv->count_label), MX_ALIGN_MIDDLE);
+  mx_label_set_y_align (MX_LABEL (priv->count_label), MX_ALIGN_MIDDLE);
 
   g_object_set (G_OBJECT (priv->count_label),
                 "x-align", MX_ALIGN_MIDDLE,
@@ -329,8 +330,9 @@ penge_count_tile_init (PengeCountTile *self)
   mx_table_add_actor_with_properties (MX_TABLE (priv->table),
                                       priv->count_label,
                                       0, 0,
-                                      "row-span", 2,
                                       "x-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
                                       NULL);
 
   priv->message_label = mx_label_new ();
@@ -347,6 +349,9 @@ penge_count_tile_init (PengeCountTile *self)
                                       priv->message_label,
                                       0, 1,
                                       "x-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-align", MX_ALIGN_END,
                                       NULL);
 
   priv->account_label = mx_label_new ();
@@ -361,10 +366,13 @@ penge_count_tile_init (PengeCountTile *self)
   clutter_actor_show (priv->account_label);
   mx_table_add_actor_with_properties (MX_TABLE (priv->table),
                                       priv->account_label,
-                                      1, 1,
+                                      0, 2,
                                       "x-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-align", MX_ALIGN_END,
                                       NULL);
-  mx_table_set_column_spacing (MX_TABLE (priv->table), 12);
+  mx_table_set_column_spacing (MX_TABLE (priv->table), 6);
   clutter_actor_show (priv->table);
 
   mx_bin_set_child (MX_BIN (self), priv->table);
