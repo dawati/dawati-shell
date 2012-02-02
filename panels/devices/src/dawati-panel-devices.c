@@ -33,6 +33,21 @@
 #include "mpd-shell-defines.h"
 #include "config.h"
 
+GtkIconTheme *
+dawati_panel_devices_get_icon_theme (void)
+{
+  static GtkIconTheme *theme = NULL;
+
+  if (G_LIKELY (theme))
+    return theme;
+
+  theme = gtk_icon_theme_new ();
+  gtk_icon_theme_set_custom_theme (theme, "dawati");
+
+  return theme;
+}
+
+
 static void
 _shell_request_hide_cb (MpdShell        *shell,
                         MplPanelClient  *panel)
