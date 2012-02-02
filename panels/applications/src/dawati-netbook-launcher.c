@@ -41,7 +41,6 @@
 #include <dawati-panel/mpl-content-pane.h>
 
 #include "dawati-netbook-launcher.h"
-#include "mnb-filter.h"
 #include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
@@ -454,9 +453,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
 
 static void
-_filter_text_notify_cb (MnbFilter     *filter,
-                        GParamSpec    *pspec,
-                        MnbLauncher   *self)
+_filter_text_notify_cb (MxEntry     *filter,
+                        GParamSpec  *pspec,
+                        MnbLauncher *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
@@ -594,7 +593,6 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
   g_signal_connect (button, "notify::toggled",
                    G_CALLBACK (_category_button_toggled_cb),
                    self);
-  /* connect to notify::toggled */
 
   /* Label */
 
@@ -992,6 +990,14 @@ _bookmakrs_changed_cb (MplAppBookmarkManager *manager,
   priv->bookmarks_list = mpl_app_bookmark_manager_get_bookmarks (manager);
 }
 
+/*
+static void
+_search_entry_clear_clicked_cb (MxEntry *entry, gpointer data)
+{
+  mx_entry_set_text (entry, "");
+}
+*/
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1040,6 +1046,18 @@ _constructor (GType                  gtype,
   /* Filter */
   priv->filter = mx_entry_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->filter), "searchBox");
+
+  /* Currently don't have an asset for this
+  mx_entry_set_secondary_icon_from_file (MX_ENTRY (priv->filter),
+                                         THEMEDIR"/clear-entry.png");
+  mx_entry_set_secondary_icon_tooltip_text (MX_ENTRY (priv->filter),
+                                            _("Clear"));
+  mx_entry_set_icon_highlight_suffix (MX_ENTRY (priv->filter), "-hover");
+
+  g_signal_connect (priv->filter, "secondary-icon-clicked",
+                    G_CALLBACK (_search_entry_clear_clicked_cb), self);
+   */
+
   clutter_actor_set_width (priv->filter, FILTER_WIDTH);
   g_signal_connect (priv->filter, "captured-event",
                     G_CALLBACK (_filter_captured_event_cb), self);
