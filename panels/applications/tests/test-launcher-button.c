@@ -27,7 +27,8 @@ main (int argc, char *argv[])
   MxWidget     *launcher;
   ClutterActor *stage;
 
-  clutter_init (&argc, &argv);
+  if (!clutter_init (&argc, &argv))
+    return EXIT_FAILURE;
 
   mx_style_load_from_file (mx_style_get_default (),
                            "../data/theme/panel.css", NULL);

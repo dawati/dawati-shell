@@ -24,14 +24,13 @@ main (int     argc,
       char  **argv)
 {
   MnbLauncherTree     *tree;
-  MnbLauncherMonitor  *monitor;
   GList               *directories;
 
   gtk_init (&argc, &argv);
 
   tree = mnb_launcher_tree_create ();
   directories = mnb_launcher_tree_list_entries (tree);
-  monitor = mnb_launcher_tree_create_monitor (tree,
+   mnb_launcher_tree_create_monitor (tree,
                                               (MnbLauncherMonitorFunction) launchers_change_cb,
                                               tree);
   mnb_launcher_tree_free_entries (directories);
