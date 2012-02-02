@@ -533,12 +533,16 @@ _update_presence_chooser_state (MnbPeoplePanel *panel)
 }
 
 static void
-_account_status_changed_cb (GObject    *object,
-                           GParamSpec *pspec,
-                           gpointer    userdata)
+_account_status_changed_cb (TpAccount  *account,
+                            guint       old_status,
+                            guint       new_status,
+                            guint       reason,
+                            gchar      *dbus_error_name,
+                            GHashTable *details,
+                            gpointer    user_data)
 {
-  _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
-  _update_presence_chooser_state (MNB_PEOPLE_PANEL (userdata));
+  _update_placeholder_state (MNB_PEOPLE_PANEL (user_data));
+  _update_presence_chooser_state (MNB_PEOPLE_PANEL (user_data));
 }
 
 static void
