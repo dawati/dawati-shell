@@ -16,8 +16,6 @@ dawati_panel_applications_LDADD = \
 dawati_panel_applications_SOURCES = \
 	mnb-expander.c \
 	mnb-expander.h \
-	mnb-filter.c \
-	mnb-filter.h \
 	mnb-launcher-application.c \
 	mnb-launcher-application.h \
 	mnb-launcher-button.c \
