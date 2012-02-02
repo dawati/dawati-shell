@@ -1050,6 +1050,7 @@ _constructor (GType                  gtype,
   /* Filter */
   priv->filter = mx_entry_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->filter), "searchBox");
+  mx_entry_set_hint_text (MX_ENTRY (priv->filter), _("Search"));
 
   /* Currently don't have an asset for this
   mx_entry_set_secondary_icon_from_file (MX_ENTRY (priv->filter),
