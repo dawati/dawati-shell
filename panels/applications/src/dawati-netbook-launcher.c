@@ -52,7 +52,7 @@
 #define FAV_PANE_WIDTH  300.0
 #define FILTER_WIDTH    277.0
 
-#define APPS_GRID_COLUMN_GAP   20
+#define APPS_GRID_COLUMN_GAP   18
 #define APPS_GRID_ROW_GAP      27
 
 #define LAUNCHER_BUTTON_WIDTH     147
@@ -616,6 +616,7 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
 
   label = mx_label_new_with_text (text);
   clutter_actor_set_reactive (label, TRUE);
+  mx_label_set_y_align (MX_LABEL (label), MX_ALIGN_MIDDLE);
   g_signal_connect (label, "button-release-event",
                     G_CALLBACK (_category_button_label_clicked_cb),
                     button);
@@ -1105,24 +1106,15 @@ _constructor (GType                  gtype,
 
   /*
    * Applications
-   * Your Applications
    */
-  pane = mpl_content_pane_new ("");
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (columns), pane,
-                               "expand", TRUE,
-                               "x-fill", TRUE,
-                               "y-fill", TRUE,
-                               NULL);
-
-  /* Apps */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
   clutter_actor_set_name (priv->scrollview, "apps-pane-content");
   g_object_set (priv->scrollview, "clip-to-allocation", TRUE, NULL);
   g_signal_connect (priv->scrollview, "allocation-changed",
                     G_CALLBACK (_scrollview_allocation_changed_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->scrollview);
-  clutter_container_child_set (CLUTTER_CONTAINER (pane), priv->scrollview,
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), priv->scrollview);
+  clutter_container_child_set (CLUTTER_CONTAINER (columns), priv->scrollview,
                                "expand", TRUE,
                                "x-fill", TRUE,
                                "y-fill", TRUE,
