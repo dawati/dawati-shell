@@ -34,6 +34,8 @@ G_DEFINE_TYPE (PengeEventTile, penge_event_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) ((PengeEventTile *)o)->priv
 
+#define CALENDAR_INDICATOR_OVERLAY_MASK THEMEDIR "/appointment-overlay.png"
+
 struct _PengeEventTilePrivate {
   JanaEvent *event;
   JanaTime *time;
@@ -252,6 +254,8 @@ penge_event_tile_init (PengeEventTile *self)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
+  ClutterActor *indicator_container, *indicator_overlay;
+  GError *error = NULL;
 
   self->priv = priv;
 
@@ -259,8 +263,27 @@ penge_event_tile_init (PengeEventTile *self)
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
+  indicator_container = mx_stack_new ();
+  clutter_actor_set_size (indicator_container, 20, 20);
+
   priv->calendar_indicator = clutter_cairo_texture_new (20, 20);
   clutter_actor_set_size (priv->calendar_indicator, 20, 20);
+
+  indicator_overlay = clutter_texture_new_from_file (CALENDAR_INDICATOR_OVERLAY_MASK, &error); 
+  if (error != NULL)
+    {
+      g_critical (G_STRLOC ": Loading calendar colour overlay failed: %s",
+                  error->message);
+      g_clear_error (&error);
+      indicator_overlay = NULL;
+    }
+  else
+    {
+      clutter_actor_set_size (indicator_overlay, 20, 20);
+    }
+
+  clutter_container_add (CLUTTER_CONTAINER (indicator_container),
+      priv->calendar_indicator, indicator_overlay, NULL);
 
   priv->time_label = mx_label_new ();
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
@@ -277,7 +300,7 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Populate the table */
   mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->calendar_indicator,
+                      indicator_container,
                       0,
                       0);
   mx_table_add_actor (MX_TABLE (priv->inner_table),
@@ -290,7 +313,7 @@ penge_event_tile_init (PengeEventTile *self)
                       2);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->calendar_indicator,
+                               indicator_container,
                                "x-expand", FALSE,
                                "x-fill", FALSE,
                                "y-expand", FALSE,
@@ -519,52 +542,23 @@ __roundrect (cairo_t *cr,
   cairo_close_path (cr);
 }
 
+
 static void
 _update_calendar_indicator (PengeEventTile *tile)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
-  ClutterColor color, light_color;
+  ClutterColor color;
   cairo_t *cr;
-  cairo_pattern_t *pat;
 
-  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (priv->calendar_indicator));
   ___clutter_color_from_string (&color, e_source_peek_color_spec (priv->source));
 
-  clutter_color_lighten (&color, &light_color);
+  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (priv->calendar_indicator));
+   __roundrect (cr, 0.5, 0.5, 3, 19);
 
-  __roundrect (cr, 0.5, 0.5, 3, 19);
-
-  pat = cairo_pattern_create_linear (0, 3, 0, 16);
-  cairo_pattern_add_color_stop_rgb (pat,
-                                    0,
-                                    light_color.red/255.0,
-                                    light_color.green/255.0,
-                                    light_color.blue/255.0);
-  cairo_pattern_add_color_stop_rgb (pat,
-                                    1,
-                                    color.red/255.0,
-                                    color.green/255.0,
-                                    color.blue/255.0);
-
-  cairo_set_source (cr, pat);
-  cairo_fill (cr);
-  cairo_pattern_destroy (pat);
-
-  __roundrect (cr, 1.0, 1.0, 3, 18);
-
-  clutter_color_lighten (&light_color, &color);
-
-  cairo_set_line_width (cr, 1.5);
   cairo_set_source_rgb (cr, color.red/255.0, color.green/255.0, color.blue/255.0);
-  cairo_stroke (cr);
+  cairo_fill (cr);
 
-  __roundrect (cr, 0.5, 0.5, 3, 19);
-
-  cairo_set_line_width (cr, 1.0);
-  cairo_set_source_rgb (cr, 0xad/255.0, 0xad/255.0, 0xad/255.0);
-  cairo_stroke (cr);
-
-  cairo_destroy(cr);
+  cairo_destroy (cr);
 }
 
 static void
