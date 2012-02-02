@@ -316,8 +316,8 @@ mnb_toolbar_get_default_panel_list (void)
                                     "dawati-panel-internet",
                                     "dawati-panel-music",
                                     "dawati-panel-devices",
-                                    "carrick",
                                     "dawati-panel-datetime",
+                                    "carrick",
                                     "dawati-power-icon" };
   gint i;
   GSList *order = NULL;
@@ -767,7 +767,6 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
   ClutterAnimation  *animation;
   gfloat             height;
   GList             *l;
-  MnbPanel          *panel;
 
   if (priv->in_hide_animation)
     return;
@@ -1506,7 +1505,7 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
   MnbToolbarPrivate *priv = toolbar->priv;
 
   if (CLUTTER_IS_ACTOR (panel))
-    clutter_actor_raise (panel, priv->lowlight);
+    clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
   else if (MNB_IS_PANEL_OOP (panel))
     {
       MnbPanelOop  *opanel = (MnbPanelOop*) panel;
@@ -1609,87 +1608,6 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
 
   priv->panel_input_only = FALSE;
   mnb_toolbar_set_waiting_for_panel_hide (toolbar, FALSE);
-}
-
-static gint
-mnb_toolbar_get_panel_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-  gint               index;
-
-  if (!tp)
-    return -1;
-
-  for (l = priv->panels, index = 0; l; l = l->next)
-    {
-      MnbToolbarPanel *t = l->data;
-
-      if (t->type == MNB_TOOLBAR_PANEL_APPLET ||
-          t->type == MNB_TOOLBAR_PANEL_CLOCK)
-        continue;
-
-      if (l->data == tp)
-        {
-          return index;
-        }
-
-      ++index;
-    }
-
-  return -1;
-}
-
-static gint
-mnb_toolbar_get_applet_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-  gint               index;
-
-  if (!tp)
-    return -1;
-
-  for (l = priv->panels, index = 0; l; l = l->next)
-    {
-      MnbToolbarPanel *t = l->data;
-
-      if (t->type != MNB_TOOLBAR_PANEL_APPLET &&
-          t->type != MNB_TOOLBAR_PANEL_CLOCK)
-        continue;
-
-      if (l->data == tp)
-        {
-          return index;
-        }
-
-      ++index;
-    }
-
-  return -1;
-}
-
-static gint
-mnb_toolbar_get_clock_position_in_tray (MnbToolbar *toolbar)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-  gint               index;
-
-  for (l = priv->panels, index = 0; l; l = l->next)
-    {
-      MnbToolbarPanel *t = l->data;
-
-      if (t->type == MNB_TOOLBAR_PANEL_NORMAL)
-        continue;
-
-      if (t->type == MNB_TOOLBAR_PANEL_CLOCK)
-        return index;
-
-      ++index;
-    }
-
-  return -1;
 }
 
 #if 0
@@ -2128,62 +2046,15 @@ mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
 }
 
 static void
-mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
-{
-  MnbToolbarPrivate *priv   = toolbar->priv;
-  MetaPlugin        *plugin = priv->plugin;
-  gint               screen_width, screen_height;
-  ClutterActor      *button;
-  gint               index;
-
-  if (!tp || !tp->button)
-    return;
-
-  button = tp->button;
-
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  index = mnb_toolbar_get_applet_index (toolbar, tp);
-
-  if (index < MNB_TOOLBAR_MAX_APPLETS)
-    {
-      gint x, y, clock_index;
-      gint width = screen_width;
-
-      clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
-
-      y = BUTTON_Y;
-      x = width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4 -
-        TRAY_BUTTON_INTERNAL_PADDING / 2;
-
-      if (clock_index >= 0 && index >= clock_index)
-        x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
-
-      clutter_actor_set_position (CLUTTER_ACTOR (button), (gfloat)x, (gfloat)y);
-
-      if (!clutter_actor_get_parent (button))
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_applets),
-                                     button);
-
-      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_applets),
-                                     button, NULL);
-    }
-}
-
-static void
 mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv   = toolbar->priv;
-  MetaPlugin        *plugin = priv->plugin;
-  gint               screen_width, screen_height;
   ClutterActor      *button;
 
   if (!tp || !tp->button)
     return;
 
   button = tp->button;
-
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   /*
    * The button size and positioning depends on whether this is a regular
@@ -2191,24 +2062,23 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
    */
   if (tp->type == MNB_TOOLBAR_PANEL_NORMAL)
     {
-      gint index = mnb_toolbar_get_panel_index (toolbar, tp);
+      if (!clutter_actor_get_parent (button))
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
+                                     button);
 
-      if (index < priv->max_panels)
-        {
-          gfloat spacing = BUTTON_SPACING_INITIAL + BUTTON_SPACING / 2
-            - BUTTON_INTERNAL_PADDING / 2 +
-            ((BUTTON_WIDTH + BUTTON_SPACING) * index);
-
-          if (!clutter_actor_get_parent (button))
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
-                                         button);
-
-          clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_buttons),
+      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_buttons),
                                          button, NULL);
-        }
     }
   else
-    mnb_toolbar_ensure_applet_position (toolbar, tp);
+    {
+      if (!clutter_actor_get_parent (button))
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_applets),
+                                     button);
+
+      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_applets),
+                                     button, NULL);
+
+    }
 }
 
 static void
@@ -2235,41 +2105,9 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   const gchar       *name;
   const gchar       *stylesheet = NULL;
   const gchar       *style_id = NULL;
-  gint               index;
 
   if (!tp)
     return;
-
-  /*
-   * Check that we have space to show this panel.
-   */
-  if (tp->type == MNB_TOOLBAR_PANEL_APPLET ||
-      tp->type == MNB_TOOLBAR_PANEL_CLOCK)
-    {
-      index = mnb_toolbar_get_applet_index (toolbar, tp);
-
-      if (index >= MNB_TOOLBAR_MAX_APPLETS)
-        {
-          g_warning ("Button for applet %s could not be appended "
-                     "(not enough space; applet index %d, max applets %d)",
-                     tp->name, index, MNB_TOOLBAR_MAX_APPLETS);
-
-          return;
-        }
-    }
-  else
-    {
-      index = mnb_toolbar_get_panel_index (toolbar, tp);
-
-      if (index >= toolbar->priv->max_panels)
-        {
-          g_warning ("Button for panel %s could not be appended "
-                     "(not enough space; panel index %d, max panels %d)",
-                     tp->name, index, toolbar->priv->max_panels);
-
-          return;
-        }
-    }
 
   name       = tp->name;
   stylesheet = tp->button_stylesheet;
@@ -3261,59 +3099,6 @@ mnb_toolbar_hide_timeout_cb (gpointer data)
 }
 
 /*
- * Changes the size of the trigger region (we increase the size of the trigger
- * region while wating for the trigger timeout to reduce effects of jitter).
- */
-static void
-mnb_toolbar_trigger_region_set_height (MnbToolbar *toolbar, gint height)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  MetaPlugin        *plugin = priv->plugin;
-  gint               screen_width, screen_height;
-
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  if (priv->trigger_region != NULL)
-    mnb_input_manager_remove_region (priv->trigger_region);
-
-  priv->trigger_region
-    = mnb_input_manager_push_region (0,
-                                     0,
-                                     screen_width,
-                                     TOOLBAR_TRIGGER_THRESHOLD + height,
-                                     FALSE, MNB_INPUT_LAYER_PANEL);
-}
-
-/*
- * Returns TRUE if one of the out of process panels is showing; used to
- * block Toolbar closing on stage leave event.
- *
- * (NB: returns FALSE for panels that are not of MnbPanel type!)
- */
-static gboolean
-mnb_toolbar_panels_showing (MnbToolbar *toolbar)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-
-  if (priv->waiting_for_panel_hide)
-    return FALSE;
-
-  for (l = priv->panels; l; l = l->next)
-    {
-      MnbToolbarPanel *tp    = l->data;
-
-      if (!tp || !tp->panel)
-        continue;
-
-      if (mnb_panel_is_mapped (tp->panel))
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
-/*
  * Callback for ClutterStage::captured-event singal.
  *
  * Processes CLUTTER_ENTER and CLUTTER_LEAVE events and shows/hides the
@@ -3325,7 +3110,6 @@ mnb_toolbar_event_cb (MnbToolbar *toolbar,
                       gpointer      data)
 {
   MnbToolbarPrivate *priv    = toolbar->priv;
-  gboolean           show_toolbar;
 
   if (event->type == CLUTTER_ENTER)
     {
@@ -3390,7 +3174,6 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   MetaScreen        *screen    = meta_plugin_get_screen (priv->plugin);
   MetaWorkspace     *workspace = meta_screen_get_active_workspace (screen);
   gint               screen_width, screen_height;
-  GList             *l;
   gboolean           netbook_mode;
   gint               width = priv->old_screen_width;
 
@@ -3469,23 +3252,6 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   clutter_actor_set_width (priv->shadow, screen_width);
   clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
 
-  /* for (l = priv->panels; l; l = l->next) */
-  /* { */
-  /*   MnbToolbarPanel *tp = l->data; */
-
-  /*   if (!tp || !tp->panel) */
-  /*     continue; */
-
-  /*   /\* */
-  /*    * The panel size is the overall size of the panel actor; the height of the */
-  /*    * actor includes the shadow, so we need to add the extra bit by which the */
-  /*    * shadow protrudes below the actor. */
-  /*    *\/ */
-  /*   mnb_panel_set_size (tp->panel, */
-  /*                       screen_width, */
-  /*                       screen_height - STATUSBAR_HEIGHT); */
-  /* } */
-
   if (priv->input_region)
     mnb_toolbar_update_input (toolbar);
 
@@ -3562,7 +3328,6 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   /*
    * Set up the stage input region
    */
-  /* mnb_toolbar_trigger_region_set_height (toolbar, 0); */
 
   /*
    * Make sure we are getting enter and leave events for stage (set up both
@@ -3728,7 +3493,6 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 gboolean
 mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
   MnbToolbarPanel   *tp   =
     (MnbToolbarPanel *) mnb_toolbar_get_active_panel (toolbar);
 
