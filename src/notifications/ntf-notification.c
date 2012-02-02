@@ -293,6 +293,8 @@ ntf_notification_constructed (GObject *object)
     {
       priv->dismiss_button = mx_button_new ();
       mx_button_set_label (MX_BUTTON (priv->dismiss_button), _("Dismiss"));
+      mx_stylable_set_style_class (MX_STYLABLE (priv->dismiss_button),
+                                   "Primary");
 
       g_signal_connect (priv->dismiss_button, "clicked",
                     G_CALLBACK (ntf_notification_dismiss_cb), self);
@@ -696,6 +698,9 @@ ntf_notification_add_button (NtfNotification *ntf,
   g_return_if_fail (NTF_IS_NOTIFICATION (ntf) && CLUTTER_IS_ACTOR (button));
 
   priv = ntf->priv;
+
+  if (button != priv->dismiss_button)
+    mx_stylable_set_style_class (MX_STYLABLE (priv->dismiss_button), "");
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                CLUTTER_ACTOR (button));

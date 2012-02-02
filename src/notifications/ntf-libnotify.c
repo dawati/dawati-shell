@@ -358,6 +358,8 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
                 }
 
               ntf_notification_add_button (ntf, button, key, keysym);
+              mx_stylable_set_style_class (MX_STYLABLE (button),
+                                           "Primary");
             }
         }
     }
