@@ -29,6 +29,7 @@
 #include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 
+#include "dawati-panel-devices.h"
 #include "mpd-default-device-tile.h"
 #include "mpd-devices-tile.h"
 #include "mpd-gobject.h"
@@ -408,6 +409,7 @@ add_tile_from_mount (MpdDevicesTile *self,
                      GMount         *mount)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  GtkIconTheme  *icon_theme;
   GFile         *file;
   char          *uri;
   GVolume       *volume;
@@ -447,7 +449,9 @@ add_tile_from_mount (MpdDevicesTile *self,
 
   /* Icon */
   icon = g_mount_get_icon (mount);
-  icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+
+  icon_theme = dawati_panel_devices_get_icon_theme ();
+  icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
                                               icon,
                                               MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                                               GTK_ICON_LOOKUP_NO_SVG);
