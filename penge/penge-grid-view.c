@@ -380,7 +380,7 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
                                  "row-span", 3,
-                                 "column", col,
+                                 "column", 1,
                                  "x-expand", TRUE,
                                  "x-fill", TRUE,
                                  "y-expand", TRUE,
@@ -457,7 +457,7 @@ penge_grid_view_init (PengeGridView *self)
                                       0, 0,
                                       "x-expand", FALSE,
                                       "y-expand", FALSE,
-                                      "column-span", 3,
+                                      "column-span", 2,
                                       NULL);
 
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
@@ -489,11 +489,7 @@ penge_grid_view_init (PengeGridView *self)
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
-  /* 4 tiles and 5px spacing */
-  clutter_actor_set_width (priv->everything_pane, (165*4+5*3));
-  /* 3 tiles and 5px spacing */
-  clutter_actor_set_height (priv->everything_pane, (171*3+5*2));
-  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 2);
+  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 1);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   mx_table_set_column_spacing (MX_TABLE (self), 19);
