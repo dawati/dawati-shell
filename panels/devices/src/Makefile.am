@@ -17,6 +17,7 @@ dawati_panel_devices_LDADD = \
 
 dawati_panel_devices_SOURCES = \
 	dawati-panel-devices.c \
+	dawati-panel-devices.h \
 	mpd-battery-device.c \
 	mpd-battery-device.h \
 	mpd-battery-icon.c \
