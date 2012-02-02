@@ -263,7 +263,7 @@ mnb_statusbar_allocate (ClutterActor           *actor,
 
   clutter_actor_get_preferred_width (priv->datetime, -1, NULL, &cwidth);
 
-  child_box.x1 = (box->x2 - box->x1) / 2 - cwidth / 2;
+  child_box.x1 = (gint) ((box->x2 - box->x1) / 2 - cwidth / 2);
   child_box.y1 = box->y1;
   child_box.x2 = child_box.x1 + cwidth;
   child_box.y2 = box->y2;
