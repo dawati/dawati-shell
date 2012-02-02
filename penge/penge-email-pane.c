@@ -188,12 +188,14 @@ _update_count_pane (ClutterActor           *widget,
                         "count", unread_count,
                         NULL);
 
+  g_warning ("COUNT %d", unread_count);
+
   if (unread_count == 0)
-    g_object_set (widget, "message", _("No unread messages"), NULL);
+    g_object_set (widget, "message", _("New messages"), NULL);
   else if (unread_count == 1)
-    g_object_set (widget, "message", _("Unread message"), NULL);
+    g_object_set (widget, "message", _("New message"), NULL);
   else
-    g_object_set (widget, "message", _("Unread messages"), NULL);
+    g_object_set (widget, "message", _("New messages"), NULL);
 }
 
 static void

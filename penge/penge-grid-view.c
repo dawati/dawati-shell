@@ -43,6 +43,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 #define DAWATI_MYZONE_SHOW_EMAIL "/desktop/dawati/myzone/show_email"
 
 struct _PengeGridViewPrivate {
+  ClutterActor *top_container;
   ClutterActor *calendar_pane;
   ClutterActor *email_pane;
   ClutterActor *favourite_apps_pane;
@@ -288,7 +289,6 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_hide (priv->email_pane);
     }
 
-
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
                                  "row-span", 1,
@@ -331,7 +331,7 @@ _update_layout (PengeGridView *grid_view)
     if (priv->show_calendar_pane)
     {
       clutter_actor_show (priv->calendar_pane);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->top_container),
                                    priv->calendar_pane,
                                    "column", col,
                                    "x-expand", FALSE,
@@ -346,17 +346,27 @@ _update_layout (PengeGridView *grid_view)
     if (priv->show_email_pane)
     {
       clutter_actor_show (priv->email_pane);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->top_container),
                                    priv->email_pane,
                                    "column", col,
                                    "x-expand", FALSE,
-                                   "y-expand", TRUE,
+                                   "y-expand", FALSE,
                                    "y-fill", FALSE,
-                                   "y-align", MX_ALIGN_END,
+                                   "y-align", MX_ALIGN_START,
                                    NULL);
     } else {
       clutter_actor_hide (priv->email_pane);
     }
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->top_container,
+                                   "column", col,
+                                   "x-expand", FALSE,
+                                   "y-expand", FALSE,
+                                   "y-fill", FALSE,
+                                   "y-align", MX_ALIGN_START,
+                                   NULL);
+
 
 
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
@@ -374,7 +384,7 @@ _update_layout (PengeGridView *grid_view)
      */
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
-                                 "y-expand", !priv->show_email_pane,
+                                 "y-expand", TRUE,
                                  NULL);
 
     col++;
@@ -461,22 +471,32 @@ penge_grid_view_init (PengeGridView *self)
                                       "column-span", 2,
                                       NULL);
 
+  priv->top_container = mx_table_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->top_container),
+                               "PengeGridViewTopContainer");
+
+
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
   clutter_actor_set_width (priv->calendar_pane, 300);
 
 
-  mx_table_add_actor (MX_TABLE (self),
+  mx_table_add_actor (MX_TABLE (priv->top_container),
                       priv->calendar_pane,
-                      1,
+                      0,
                       0);
 
   priv->email_pane = g_object_new (PENGE_TYPE_EMAIL_PANE,
                                    NULL);
 
-  mx_table_add_actor (MX_TABLE (self),
+  mx_table_add_actor (MX_TABLE (priv->top_container),
                       priv->email_pane,
-                      2,
+                      1,
+                      0);
+
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->top_container,
+                      1,
                       0);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
