@@ -1,0 +1,64 @@
+
+MnbToolbarButton#state-20 {
+  background-image: url("icon-battery-20.png");
+}
+
+MnbToolbarButton#state-20:hover {
+  background-image: url("icon-battery-20-highlight.png");
+}
+
+MnbToolbarButton#state-40 {
+  background-image: url("icon-battery-40.png");
+}
+
+MnbToolbarButton#state-40:hover {
+  background-image: url("icon-battery-40-highlight.png");
+}
+
+MnbToolbarButton#state-60 {
+  background-image: url("icon-battery-60.png");
+}
+
+MnbToolbarButton#state-60:hover {
+  background-image: url("icon-battery-60-highlight.png");
+}
+
+MnbToolbarButton#state-80 {
+  background-image: url("icon-battery-80.png");
+}
+
+MnbToolbarButton#state-80:hover {
+  background-image: url("icon-battery-80-highlight.png");
+}
+
+MnbToolbarButton#state-full {
+  background-image: url("icon-battery-100.png");
+}
+
+MnbToolbarButton#state-full:hover {
+  background-image: url("icon-battery-100-highlight.png");
+}
+
+MnbToolbarButton#state-missing {
+  background-image: url("icon-battery-missing.png");
+}
+
+MnbToolbarButton#state-missing:hover {
+  background-image: url("icon-battery-missing-highlight.png");
+}
+
+MnbToolbarButton#state-empty {
+  background-image: url("icon-battery-empty.png");
+}
+
+MnbToolbarButton#state-empty:hover {
+  background-image: url("icon-battery-empty-highlight.png");
+}
+
+MnbToolbarButton#state-plugged {
+  background-image: url("icon-battery-plugged.png");
+}
+
+MnbToolbarButton#state-plugged:hover {
+  background-image: url("icon-battery-plugged-highlight.png");
+}

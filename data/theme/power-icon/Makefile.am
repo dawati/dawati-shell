@@ -1,6 +1,6 @@
 
 themedir = $(PANEL_POWER_ICON_THEMEDIR)
-nodist_theme_DATA = power-icon.css
+dist_theme_DATA = power-icon.css
 
 icondir = $(PANEL_POWER_ICON_THEMEDIR)
 dist_icon_DATA = \
@@ -20,14 +20,6 @@ dist_icon_DATA = \
 	icon-battery-empty-highlight.png \
 	icon-battery-missing-highlight.png \
 	icon-battery-plugged-highlight.png \
-	$(NULL)
-
-EXTRA_DIST = \
-	power-icon.css.in \
-	$(NULL)
-
-CLEANFILES = \
-	power-icon.css \
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
