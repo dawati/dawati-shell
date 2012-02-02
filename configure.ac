@@ -170,10 +170,10 @@ AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # control center capplet
 AC_ARG_ENABLE([capplet],
-              [AC_HELP_STRING([--disable-capplet],
-                              [Disable control center capplet])],
+              [AC_HELP_STRING([--enable-capplet],
+                              [Enable control center capplet])],
               [],
-              [enable_capplet=yes])
+              [enable_capplet=no])
 
 if test "$enable_capplet" != "no"; then
   PKG_CHECK_MODULES(CAPPLET, [gio-unix-2.0
