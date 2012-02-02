@@ -494,6 +494,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                       "x-align", MX_ALIGN_START,
                                       NULL);
   button = mx_button_new_with_label (_("Open"));
+  mx_stylable_set_style_class (MX_STYLABLE (button), "Primary");
   g_signal_connect (button,
                     "clicked",
                     (GCallback)_events_open_button_clicked_cb,
@@ -537,6 +538,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                       "x-align", MX_ALIGN_START,
                                       NULL);
   button = mx_button_new_with_label (_("Open"));
+  mx_stylable_set_style_class (MX_STYLABLE (button), "Primary");
   g_signal_connect (button,
                     "clicked",
                     (GCallback)_tasks_open_button_clicked_cb,
