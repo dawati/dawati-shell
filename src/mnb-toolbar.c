@@ -1731,21 +1731,25 @@ mnb_toolbar_panel_notify_modal_cb (MnbPanel   *panel,
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
 
-static void
-mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
-                                      const gchar *tooltip,
-                                      MnbToolbar  *toolbar)
-{
-  MnbToolbarPanel *tp;
+/* static void */
+/* mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel, */
+/*                                       const gchar *tooltip, */
+/*                                       MnbToolbar  *toolbar) */
+/* { */
+/*   MnbToolbarPanel *tp; */
 
-  tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel);
+/*   tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel); */
 
-  if (!tp || !tp->button)
-    return;
+/*   if (!tp || !tp->button) */
+/*     return; */
 
-  /* if (tp->button && tp->type != MNB_TOOLBAR_PANEL_CLOCK) */
-  /*   mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip); */
-}
+/*   if (tp->button && (tp->windowless || */
+/*                      tp->type == MNB_TOOLBAR_PANEL_CLOCK)) */
+/*     { */
+/*       mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip); */
+/*       mx_widget_show_tooltip (MX_WIDGET (tp->button)); */
+/*     } */
+/* } */
 
 /*
  * Removes the panel from the pending_panels list
@@ -2136,9 +2140,15 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
         }
     }
   else if (tp->windowless)
-    button = tp->button = mnb_toolbar_icon_new ();
+    {
+      button = tp->button = mnb_toolbar_icon_new ();
+      /* mx_widget_set_tooltip_text (MX_WIDGET (tp->button), */
+      /*                             tp->tooltip); */
+    }
   else if (tp->type == MNB_TOOLBAR_PANEL_APPLET)
-    button = tp->button = mnb_toolbar_applet_new ();
+    {
+      button = tp->button = mnb_toolbar_applet_new ();
+    }
   else
     {
       button = tp->button = mx_button_new ();
@@ -2281,9 +2291,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
                     G_CALLBACK (mnb_toolbar_panel_request_button_state_cb),
                     toolbar);
 
-  g_signal_connect (panel, "request-tooltip",
-                    G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
-                    toolbar);
+  /* g_signal_connect (panel, "request-tooltip", */
+  /*                   G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb), */
+  /*                   toolbar); */
 
   g_signal_connect (panel, "notify::modal",
                     G_CALLBACK (mnb_toolbar_panel_notify_modal_cb),
