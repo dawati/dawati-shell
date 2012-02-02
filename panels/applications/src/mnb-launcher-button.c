@@ -98,60 +98,6 @@ mnb_launcher_button_accept_focus (MxFocusable *focusable,
 }
 
 static void
-fav_button_notify_toggled_cb (MxButton          *button,
-                              GParamSpec        *pspec,
-                              MnbLauncherButton *self)
-{
-  if (mx_button_get_toggled (button))
-    {
-      g_signal_emit (self, _signals[FAV_TOGGLED], 0);
-    }
-  else
-    {
-      if (self->priv->fav_sibling)
-        {
-          /* Remove sibling from fav apps pane. */
-          clutter_actor_destroy (CLUTTER_ACTOR (self->priv->fav_sibling));
-          self->priv->fav_sibling = NULL;
-          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
-        }
-      else if (self->priv->plain_sibling)
-        {
-          /* Remove self from fav apps pane and update sibling. */
-          MnbLauncherButton *plain_sibling = self->priv->plain_sibling;
-
-          if (plain_sibling->priv->fav_sibling)
-            plain_sibling->priv->fav_sibling = NULL;
-
-          g_signal_handlers_block_by_func (plain_sibling->priv->fav_toggle,
-                                           fav_button_notify_toggled_cb,
-                                           plain_sibling);
-          mx_button_set_toggled (MX_BUTTON (plain_sibling->priv->fav_toggle),
-                                                FALSE);
-          g_signal_handlers_unblock_by_func (plain_sibling->priv->fav_toggle,
-                                             fav_button_notify_toggled_cb,
-                                             plain_sibling);
-
-          clutter_actor_destroy (CLUTTER_ACTOR (self));
-          g_signal_emit (plain_sibling, _signals[FAV_TOGGLED], 0);
-        }
-      else
-        {
-          /* This fav doesn't have a "real" counterpart.
-           * Remove from container but keep alive for the signal emission. */
-          ClutterActor *container = clutter_actor_get_parent (CLUTTER_ACTOR (self));
-          g_object_ref (self);
-          clutter_container_remove_actor (CLUTTER_CONTAINER (container),
-                                          CLUTTER_ACTOR (self));
-
-          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
-
-          clutter_actor_destroy (CLUTTER_ACTOR (self));
-        }
-    }
-}
-
-static void
 finalize (GObject *object)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (object);
@@ -358,6 +304,14 @@ static void
 mx_focusable_iface_init (MxFocusableIface *iface)
 {
   iface->accept_focus = mnb_launcher_button_accept_focus;
+}
+
+static void
+fav_button_notify_toggled_cb (MxButton          *button,
+                              GParamSpec        *pspec,
+                              MnbLauncherButton *self)
+{
+  g_signal_emit (self, _signals[FAV_TOGGLED], 0);
 }
 
 static void

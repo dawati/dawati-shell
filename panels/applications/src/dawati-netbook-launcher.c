@@ -174,7 +174,7 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar   *uri = NULL;
   GError  *error = NULL;
-  gboolean fav_category_active;
+  gboolean fav_category_active = FALSE;
   MxButton *active_category;
 
   /* If the favourites category is active make sure we update the visibility
@@ -187,7 +187,6 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   if (active_category &&
      g_strcmp0 (mx_button_get_label (MX_BUTTON (active_category)), "fav") == 0)
     fav_category_active = TRUE;
-
 
   if (mnb_launcher_button_get_favorite (launcher))
     {
@@ -202,7 +201,9 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
   else
     {
       if (fav_category_active)
-        clutter_actor_hide (CLUTTER_ACTOR (launcher));
+        {
+          clutter_actor_hide (CLUTTER_ACTOR (launcher));
+        }
 
       /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
