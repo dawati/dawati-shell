@@ -43,8 +43,8 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 #define DAWATI_MYZONE_MIN_TILE_HEIGHT "/desktop/dawati/myzone/min_tile_height"
 #define DAWATI_MYZONE_RATIO "/desktop/dawati/myzone/ratio"
 
-#define TILE_WIDTH 165
-#define TILE_HEIGHT 171
+#define TILE_WIDTH 164
+#define TILE_HEIGHT 170
 #define REFRESH_TIME (600) /* 10 minutes */
 
 struct _PengeEverythingPanePrivate {

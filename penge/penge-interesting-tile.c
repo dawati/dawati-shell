@@ -448,7 +448,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                       "x-align", MX_ALIGN_START,
                       "y-align", MX_ALIGN_START,
                       NULL);
-  clutter_actor_set_size (priv->header, HEADER_WIDTH, HEADER_HEIGHT);
+  clutter_actor_set_size (priv->header,
+      clutter_actor_get_width (CLUTTER_ACTOR (self)), HEADER_HEIGHT);
   clutter_actor_hide (priv->header);
 
   /* This gets added to ourself table after our body because of ordering */

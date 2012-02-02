@@ -2,7 +2,8 @@ MxLabel.titleBar
 {
   color: #2a3c4a;
   border-image: none;
-  padding: 7 15 10 0;
+  font-size: 16px;
+  padding: 7 0 3;
 }
 
 PengeGridView
