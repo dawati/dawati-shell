@@ -59,7 +59,7 @@ MnbStatusbar MxButton, MnbStatusbar MxButton:hover, MnbStatusbar MxButton:active
 }
 
 MxButton#statusbar-myzone-button MxBoxLayout, MxButton:hover#statusbar-myzone-button MxBoxLayout, MxButton:active#statusbar-myzone-button MxBoxLayout, MxButton:checked#statusbar-myzone-button {
-  -mx-spacing: 5;
+  -mx-spacing: 10;
 }
 
 /* theme the icon within the status bar button */
