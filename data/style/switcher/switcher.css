@@ -1,4 +1,8 @@
-.panel {
+MxScrollView {
+  background-color: #ecede6;
+}
+
+.contentPane {
   padding: 42 59 44 49;
 }
 

@@ -11,14 +11,14 @@
       },
       {
         "type": "MxScrollView",
+        "child::expand": true,
         "children": [
           {
             "type": "MxGrid",
+            "style-class": "contentPane",
             "id": "grid",
-            "style-class": "panel",
             "row-spacing": 29,
-            "column-spacing": 45,
-            "child::expand": true
+            "column-spacing": 45
           }
         ]
       }
