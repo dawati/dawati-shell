@@ -13,3 +13,7 @@ function get_panel_css_path(panel_name) {
 function get_panel_data_dir(panel_name) {
     return BASE_PANEL_DATA_DIR + "/" + panel_name;
 }
+
+function get_panel_shared_css() {
+       return DATA_DIR + "/style/shared/shared.css";
+}

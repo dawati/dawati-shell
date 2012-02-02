@@ -1,3 +1,5 @@
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+
 imports.gi.versions.Mx = '2.0';
 
 const Gtk = imports.gi.Gtk;
@@ -15,27 +17,88 @@ const Tracker = imports.gi.Tracker;
 const DBus = imports.dbus;
 const Mainloop = imports.mainloop;
 const Path = imports.path;
+const Zeitgeist = imports.zeitgeist;
+const Semantic = imports.semantic;
 
 Gettext.textdomain("dawati-shell");
 Gettext.bindtextdomain("dawati-shell", Path.LOCALE_DIR);
 
 const _ = Gettext.gettext;
 
+const MAX_RESULTS = 50;
 
 //
 // Result set: Model a tracker query
 //
 
-function ResultSet(request) {
-    this._init(request);
+function ResultSet(request, sorting) {
+    this._init(request, sorting);
 }
 
 ResultSet.prototype = {
-    _init: function(request) {
+    _init: function(request, sorting) {
         this.store = DawatiPanel.mpl_create_audio_store();
         this.request = request;
+        this.sorting = sorting;
+        this.uris = [];
+        this._init_zeitgeist();
+    },
 
-        this._init_tracker();
+
+    _get_valid_uris_from_events: function (events) {
+        let uris = []
+        for (let i=0; i < events.length; i++) {
+            for (let j=0; j < events[i].subjects.length; j++) {
+                let uri = events[i].subjects[j].uri.replace('file://', '');
+                    uri = uri.replace(/\%20/g, ' ');
+                if (GLib.file_test(uri, GLib.FileTest.EXISTS))
+                    uris.push(uri);
+                if (uris.length == MAX_RESULTS)
+                    break
+            }
+            if (uris.length == MAX_RESULTS)
+                break
+        }
+        return uris;
+    },
+
+    _init_zeitgeist_most_recent_callback: function (events) {
+        this.uris = this._get_valid_uris_from_events(events);
+
+        // TODO: get music with the following uris
+    },
+
+    _init_zeitgeist_most_popular_callback: function (events) {
+        this.uris = this._get_valid_uris_from_events(events);
+
+        //TODO: Do some proper ranking here
+    },
+
+    _init_zeitgeist: function () {
+        if (this.sorting == Zeitgeist.ResultType.MOST_RECENT_SUBJECTS) {
+            let subjTemplate = new Zeitgeist.Subject ('', Semantic.NFO_AUDIO, '', '', '', '', '');
+            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
+            Zeitgeist.findEvents([new Date().getTime() - 86400000*7, Zeitgeist.MAX_TIMESTAMP],
+                                 [eventTemplate],
+                                 Zeitgeist.StorageState.ANY,
+                                 100,
+                                 this.sorting,
+                                 Lang.bind(this, this._init_zeitgeist_most_recent_callback));
+        }
+        else if (this.sorting == Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS) {
+            let subjTemplate = new Zeitgeist.Subject ('', Semantic.NFO_AUDIO, '', '', '', '', '');
+            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
+            Zeitgeist.findEvents([new Date().getTime() - 86400000*30, Zeitgeist.MAX_TIMESTAMP],
+                                 [eventTemplate],
+                                 Zeitgeist.StorageState.ANY,
+                                 100,
+                                 this.sorting,
+                                 Lang.bind(this, this._init_zeitgeist_most_popular_callback));
+        }
+        else
+        {
+            this._init_tracker();
+        }
     },
 
     _init_tracker: function() {
@@ -160,7 +223,7 @@ AudioLibrary.prototype = {
                                         " nmm:albumTitle(nmm:musicAlbum(?u))" +
                                         " where { ?u a nmm:MusicPiece }" +
                                         " ORDER BY DESC(nie:contentAccessed(?u))" +
-                                        " LIMIT 10"));
+                                        " LIMIT 10", Zeitgeist.ResultType.MOST_RECENT_SUBJECTS));
         this.results.push(new ResultSet("select" +
                                         " nie:url(?u)" +
                                         " nie:title(?u)" +
@@ -168,7 +231,7 @@ AudioLibrary.prototype = {
                                         " nmm:albumTitle(nmm:musicAlbum(?u))" +
                                         " where { ?u a nmm:MusicPiece }" +
                                         " ORDER BY ASC(nie:usageCounter(?u))" +
-                                        " LIMIT 50"));
+                                        " LIMIT 50", Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS));
         this.results.push(new ResultSet("select" +
                                         " nie:url(?u)" +
                                         " nie:title(?u)" +
@@ -176,7 +239,7 @@ AudioLibrary.prototype = {
                                         " nmm:albumTitle(nmm:musicAlbum(?u))" +
                                         " where { ?u a nmm:MusicPiece }" +
                                         " ORDER BY ASC(tracker:added(?u))" +
-                                        " LIMIT 50"));
+                                        " LIMIT 50", null));
 
         // GtkIconView setup
         // let icon = new Gtk.CellRendererPixbuf();
@@ -622,6 +685,7 @@ Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
 let style = Mx.Style.get_default();
 style.load_from_file(Path.get_panel_css_path('music'));
+style.load_from_file(Path.get_panel_shared_css());
 
 let panel = new DawatiPanel.MplPanelGtk({ name: 'music',
                                           tooltip: 'Music' });
