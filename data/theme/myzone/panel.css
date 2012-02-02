@@ -1,8 +1,8 @@
-MxLabel#title
+MxLabel.titleBar
 {
   color: #2a3c4a;
+  border-image: none;
   font-size: 16px;
-  padding: 0 0 0 15;
 }
 
 PengeGridView
@@ -79,18 +79,30 @@ PengeAppsPane *.PengeAppTileOverlay
   border-image: url('../../style/shared/application-mask.png');
 }
 
-PengeRecentFileTile, PengePeopleTile
+PengeRecentFileTile
 {
-  border-image: url('../common/content-pane-background.png') 5;
-  padding: 4 4 4 4;
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  padding: 8;
 }
 
-
-PengeRecentFileTile:hover, PengePeopleTile:hover,
-PengeRecentFileTile:active, PengePeopleTile:active
+PengeRecentFileTile:hover,
+PengeRecentFileTile:active
 {
   border-image: url('content-panel-background-highlight.png') 5;
-  padding: 4 4 4 4;
+  padding: 8;
+}
+
+PengePeopleTile
+{
+  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  padding: 0;
+}
+
+PengePeopleTile:hover,
+PengePeopleTile:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 0;
 }
 
 PengeCountTile
@@ -120,6 +132,11 @@ MxLabel.PengeEventSummary
 {
 }
 
+*.PengePeopleTileOuterMargin
+{
+  padding: 8;
+}
+
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
 PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
 {
@@ -139,15 +156,15 @@ PengePeopleTile *.PengePeopleTileContentLabel
   font-size: 14px;
 }
 
-PengePeopleTile *.PengePeopleTileContentBackground
+PengePeopleTile *.PengePeopleTileContentBackgroundWithoutHeader
 {
-  border-image: url('content-bg.png') 45 51 46 52;
+  border-image: url('../../style/shared/content-tile-bg.png') 45 51 46 52;
   padding: 8;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackgroundWithHeader
 {
-  border-image: url('content-bg.png') 25 51 26 52;
+  border-image: url('../../style/shared/content-tile-bg.png') 45 51 46 52;
   padding: 8;
 }
 
@@ -159,7 +176,16 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 
 MxTable.PengeInterestingTileDetails
 {
-  padding: 2;
+}
+
+MxFrame.PengeInterestingTileDetailsMargin
+{
+  padding: 10 8 5;
+}
+
+MxTable.PengeInterestingTileDetails *.PengeInterestingTileMessageIconOverlay
+{
+  border-image: url("avatar-mask.png");
 }
 
 PengePeoplePlaceholderTile *#penge-no-content-main-message
@@ -250,11 +276,6 @@ PengeWelcomeTile
   -mx-content-image: url('../../style/switcher/closebutton-pressed.png');
 }
 
-
-*.PengeInterestingTileMessageIconOverlay
-{
-  border-image: url("avatar-mask.png");
-}
 
 MxLabel.PengeZeroCountLabel
 {

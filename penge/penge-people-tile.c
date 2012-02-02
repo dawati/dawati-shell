@@ -257,27 +257,29 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     }
   } else if (sw_item_has_key (item, "content")) {
     PengeInterestingTileSocialNetwork social_network = SOCIAL_NETWORK_UNKNOWN;
-    ClutterActor *inner_table;
+    ClutterActor *body_margin; /* to set some mergin to body */
+
     content = sw_item_get_value (item, "content");
     body = mx_frame_new ();
-    inner_table = mx_table_new ();
+    body_margin = mx_frame_new ();
 
     if (!g_strcmp0 (priv->item->service, "twitter"))
         social_network = SOCIAL_NETWORK_TWITTER;
     else if (!g_strcmp0 (priv->item->service, "facebook"))
         social_network = SOCIAL_NETWORK_FACEBOOK;
 
-
     if (social_network != SOCIAL_NETWORK_UNKNOWN)
       mx_stylable_set_style_class (MX_STYLABLE (body),
                                    "PengePeopleTileContentBackgroundWithHeader");
     else
       mx_stylable_set_style_class (MX_STYLABLE (body),
-                                   "PengePeopleTileContentBackground");
-    mx_bin_set_child (MX_BIN (body), inner_table);
+                                   "PengePeopleTileContentBackgroundWithoutHeader");
     mx_bin_set_fill (MX_BIN (body), TRUE, TRUE);
-    mx_stylable_set_style_class (MX_STYLABLE (inner_table),
-                                 "PengePeopleTileInnerTable");
+
+    mx_bin_set_child (MX_BIN (body_margin), body);
+    mx_bin_set_fill (MX_BIN (body_margin), TRUE, TRUE);
+    mx_stylable_set_style_class (MX_STYLABLE (body_margin),
+                                 "PengePeopleTileOuterMargin");
 
     label = penge_clickable_label_new (content);
     g_signal_connect (label,
@@ -286,16 +288,8 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                       tile);
 
     mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
-    mx_table_add_actor_with_properties (MX_TABLE (inner_table),
-                                        label,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-fill", FALSE,
-                                        "x-align", MX_ALIGN_START,
-                                        "y-align", MX_ALIGN_START,
-                                        NULL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (body),
+                                        label);
 
     tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
     clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
@@ -307,7 +301,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                      PANGO_ALIGN_LEFT);
     
     g_object_set (tile,
-                  "body", body,
+                  "body", body_margin,
                   "social-network", social_network,
                   NULL);
   } else {
