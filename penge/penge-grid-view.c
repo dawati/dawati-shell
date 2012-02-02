@@ -56,8 +56,6 @@ struct _PengeGridViewPrivate {
   guint show_calendar_notify_id;
   guint show_email_notify_id;
 
-  ClutterActor *div_tex;
-
   gboolean vertical_apps;
   gboolean show_calendar_pane;
   gboolean show_email_pane;
@@ -292,15 +290,6 @@ _update_layout (PengeGridView *grid_view)
 
 
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->div_tex,
-                                 "row-span", 1,
-                                 "column", col,
-                                 "x-expand", FALSE,
-                                 NULL);
-
-    col++;
-
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
                                  "row-span", 1,
                                  "column", col,
@@ -316,17 +305,9 @@ _update_layout (PengeGridView *grid_view)
                                    priv->everything_pane,
                                    "row-span", 2,
                                    NULL);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                   priv->div_tex,
-                                   "row-span", 2,
-                                   NULL);
     } else {
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->everything_pane,
-                                   "row-span", 1,
-                                   NULL);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                   priv->div_tex,
                                    "row-span", 1,
                                    NULL);
     }
@@ -395,13 +376,6 @@ _update_layout (PengeGridView *grid_view)
                                  "y-expand", !priv->show_email_pane,
                                  NULL);
 
-    col++;
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->div_tex,
-                                 "row-span", 3,
-                                 "column", col,
-                                 "x-expand", FALSE,
-                                 NULL);
     col++;
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
