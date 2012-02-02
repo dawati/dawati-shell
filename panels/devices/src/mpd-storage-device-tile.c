@@ -647,6 +647,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 
   /* Open button */
   priv->open = mx_button_new_with_label (_("Open"));
+  mx_stylable_set_style_class (MX_STYLABLE (priv->open), "Primary");
   g_signal_connect (priv->open, "clicked",
                     G_CALLBACK (_open_clicked_cb), self);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
