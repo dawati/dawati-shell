@@ -65,19 +65,20 @@ static void
 dawati_bt_request_update_strings (DawatiBtRequest *request)
 {
   DawatiBtRequestPrivate *priv = GET_PRIVATE (request);
-  const char *name;
+  const char *name = NULL;
   char *msg = NULL;
   const char *no = "";
   const char *yes = "";
 
   switch (priv->request) {
     case DAWATI_BT_REQUEST_TYPE_AUTH:
-      name = g_hash_table_lookup (priv->uuid_strings, priv->request_data);
+      if (priv->request_data)
+        name = g_hash_table_lookup (priv->uuid_strings, priv->request_data);
       if (name)
         msg = g_strdup_printf (_("wants access to %s service."),
                                priv->request_data);
       else
-        msg = g_strdup (_("wants access to a service"));
+        msg = g_strdup (_("wants access to a service."));
       yes = _("Grant this time only");
       no = _("Reject");
       break;
@@ -175,7 +176,6 @@ dawati_bt_request_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
   DawatiBtRequestPrivate *priv = GET_PRIVATE (object);
-
   switch (property_id) {
     case PROP_NAME:
       mx_label_set_text (MX_LABEL (priv->title), g_value_get_string (value));
@@ -186,7 +186,7 @@ dawati_bt_request_set_property (GObject *object, guint property_id,
       break;
     case PROP_REQUEST_TYPE:
       dawati_bt_request_set_request_type (DAWATI_BT_REQUEST (object),
-                                         g_value_get_uint (value));
+                                          g_value_get_uint (value));
       break;
     case PROP_REQUEST_DATA:
       dawati_bt_request_set_request_data (DAWATI_BT_REQUEST (object),
