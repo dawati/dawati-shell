@@ -96,7 +96,7 @@ main (int     argc,
                       G_CALLBACK (stage_width_notify_cb), shell);
     g_signal_connect (shell, "notify::height",
                       G_CALLBACK (shell_height_notify_cb), stage);
-    clutter_actor_set_size (stage, 400, -1);
+    clutter_actor_set_size (stage, 450, -1);
 
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
     

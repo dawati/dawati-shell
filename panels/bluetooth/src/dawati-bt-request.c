@@ -337,9 +337,9 @@ dawati_bt_request_init (DawatiBtRequest *request)
   priv->request_entry = mx_entry_new ();
   mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_entry, -1);
 
-  priv->request_always_btn = mx_button_new_with_label (_("Always grant access"));
+  priv->request_always_btn = mx_button_new ();
   mx_button_set_label (MX_BUTTON (priv->request_always_btn),
-                       _("Always grant access"));
+                       _("Always grant"));
   mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_always_btn, -1);
   g_signal_connect (priv->request_always_btn, "clicked",
                     G_CALLBACK (_always_clicked_cb), request);
