@@ -51,6 +51,7 @@ struct _DawatiBtShellPrivate {
   gulong        kill_handler;
 
   ClutterActor *request_box;
+  ClutterActor *device_panelbox;
   ClutterActor *device_box;
   ClutterActor *info_label;
   ClutterActor *send_button;
@@ -605,7 +606,7 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
   gboolean showinfo;
 
-  showinfo = priv->enabled && g_hash_table_size (priv->devices) == 0;
+  showinfo = g_hash_table_size (priv->devices) == 0;
 
   g_signal_handler_block (priv->kill_toggle, priv->kill_handler);
   mx_toggle_set_active (MX_TOGGLE (priv->kill_toggle), priv->enabled);
@@ -614,8 +615,8 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   /* Now way to know from Connman: 
   mx_widget_set_disabled (MX_WIDGET (priv->kill_toggle), disabled);
   */
-
   g_object_set (priv->info_label, "visible", showinfo, NULL);
+  g_object_set (priv->device_panelbox, "visible", priv->enabled, NULL);
   g_object_set (priv->add_button, "visible", priv->enabled, NULL);
   g_object_set (priv->send_button, "visible", priv->enabled, NULL);
 
@@ -748,7 +749,7 @@ dawati_bt_shell_init_applet (DawatiBtShell *shell)
 static void
 dawati_bt_shell_init (DawatiBtShell *shell)
 {
-  ClutterActor *box, *panelbox, *label, *hbox, *button_box, *settings_button;
+  ClutterActor *box, *label, *hbox, *button_box, *settings_button;
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
 
   priv->devices = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -799,22 +800,22 @@ dawati_bt_shell_init (DawatiBtShell *shell)
 
 
   /* connected devices go here */
-  panelbox = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (panelbox),
+  priv->device_panelbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->device_panelbox),
                                  MX_ORIENTATION_VERTICAL);
-  mx_stylable_set_style_class (MX_STYLABLE (panelbox), "contentPanel");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), panelbox, -1);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->device_panelbox), "contentPanel");
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), priv->device_panelbox, -1);
   
   priv->info_label = mx_label_new_with_text (_("Nothing connected"));
   clutter_actor_hide (priv->info_label);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (panelbox), priv->info_label, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->device_panelbox), priv->info_label, -1);
 
   priv->device_box = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->device_box),
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->device_box),
                                        TRUE);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (panelbox), priv->device_box, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->device_panelbox), priv->device_box, -1);
 
   /* button row */
   hbox = mx_box_layout_new ();
