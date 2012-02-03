@@ -125,12 +125,6 @@ _device_widget_disconnect_cb (DawatiBtDevice *device, DawatiBtShell *shell)
 
   g_object_get (device, "device-path", &path, NULL);
   bluetooth_applet_disconnect_device (priv->applet, path, NULL, NULL);
-
-  ClutterActor* w = g_hash_table_lookup (priv->devices, path);
-  if (w) {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->device_box), w);
-    g_hash_table_remove (priv->devices, path);
-  }
 }
 
 static void
@@ -175,12 +169,6 @@ _request_response_cb (DawatiBtRequest *request,
   default:
     g_warn_if_reached ();
   }
-  ClutterActor *w = g_hash_table_lookup (priv->requests, path);
-  if (w) {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box), w);
-    g_hash_table_remove (priv->requests, path);
-  }
-
 }
 
 static void
