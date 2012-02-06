@@ -49,7 +49,7 @@
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S    2
 
-#define FAV_PANE_WIDTH  300.0
+#define FAV_PANE_WIDTH  302.0
 #define FILTER_WIDTH    277.0
 
 #define APPS_GRID_COLUMN_GAP   18
@@ -1075,7 +1075,7 @@ _constructor (GType                  gtype,
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->category_section),
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->category_section),
-                             15);
+                             8);
   mx_stylable_set_style_class (MX_STYLABLE (priv->category_section),
                                "category-section");
 
