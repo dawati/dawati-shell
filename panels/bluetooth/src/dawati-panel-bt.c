@@ -104,8 +104,8 @@ main (int     argc,
   } else {
     client = mpl_panel_clutter_new ("bluetooth",
                                     _("bluetooth"),
-                                    NULL,
-                                    "bluetooth-off",
+                                    THEMEDIR "/bluetooth-panel.css",
+                                    "state-off",
                                     TRUE);
     shell = dawati_bt_shell_new (client);
     mpl_panel_clutter_set_child (MPL_PANEL_CLUTTER (client), shell);

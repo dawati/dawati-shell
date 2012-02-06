@@ -621,18 +621,19 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   g_object_set (priv->send_button, "visible", priv->enabled, NULL);
 
   if (priv->panel_client) {
-    if (!priv->available)
+    g_object_set (priv->kill_toggle, "disabled", FALSE, NULL);
+    if (!priv->available) {
       mpl_panel_client_request_button_state (priv->panel_client,
                                              MNB_BUTTON_HIDDEN);
-    else {
+    } else {
       mpl_panel_client_request_button_state (priv->panel_client,
                                              MNB_BUTTON_NORMAL);
       if (priv->enabled)
           mpl_panel_client_request_button_style (priv->panel_client,
-                                                 "bluetooth-idle");
+                                                 "state-idle");
       else
           mpl_panel_client_request_button_style (priv->panel_client,
-                                                 "bluetooth-off");
+                                                 "state-off");
     }
   } else {
     g_object_set (priv->kill_toggle, "disabled", !priv->available, NULL);

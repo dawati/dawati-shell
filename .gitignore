@@ -26,7 +26,6 @@
 /config.rpath
 /configure.ac.orig
 /data/mutter-dawati.schemas
-/data/theme/bluetooth/bluetooth-panel.css
 /gtk-doc.make
 /libdawati-panel/*.pc
 /libdawati-panel/dawati-panel/DawatiPanel-*.gir
