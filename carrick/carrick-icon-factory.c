@@ -28,7 +28,7 @@ G_DEFINE_TYPE (CarrickIconFactory, carrick_icon_factory, G_TYPE_OBJECT)
 #define ICON_FACTORY_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), CARRICK_TYPE_ICON_FACTORY, CarrickIconFactoryPrivate))
 
-#define PKG_ICON_DIR PKG_DATA_DIR "/" "icons"
+#define PKG_ICON_DIR PKG_THEME_DIR
 
 static const gchar * icon_names[] = {
   PKG_ICON_DIR "/" "network-active.png",

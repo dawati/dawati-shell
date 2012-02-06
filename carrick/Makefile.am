@@ -49,7 +49,7 @@ libcarrick_la_SOURCES = \
 libcarrick_la_CFLAGS = \
         $(CARRICK_CFLAGS) \
 	-Wall \
-	-DPKG_DATA_DIR=\"$(PANEL_NETWORKS_DATADIR)\" \
+	-DPKG_THEME_DIR=\"$(PANEL_NETWORKS_THEMEDIR)\" \
 	-DLIBEXECDIR=\"$(libexecdir)\" \
 	$(NULL)
 
