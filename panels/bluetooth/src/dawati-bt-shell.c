@@ -372,7 +372,8 @@ _connman_get_properties_cb (GDBusProxy *connman,
 }
 
 static void
-_pincode_request_cb (const char *path,
+_pincode_request_cb (BluetoothApplet *applet,
+                     const char *path,
                      const char *name,
                      const char *long_name,
                      gboolean numeric,
@@ -408,7 +409,8 @@ _pincode_request_cb (const char *path,
 }
 
 static void
-_confirm_request_cb (const char *path,
+_confirm_request_cb (BluetoothApplet *applet,
+                     const char *path,
                      const char *name,
                      const char *long_name,
                      guint pin,
@@ -442,7 +444,8 @@ _confirm_request_cb (const char *path,
 }
 
 static void
-_auth_request_cb (const char *path,
+_auth_request_cb (BluetoothApplet *applet,
+                  const char *path,
                   const char *name,
                   const char *long_name,
                   const char *uuid,
