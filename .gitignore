@@ -79,6 +79,10 @@
 /panels/applications/tests/test-launcher-button
 /panels/applications/tests/test-launcher-monitor
 /panels/applications/tests/test-launcher-tree
+/panels/bluetooth/data/dawati-panel-bluetooth.desktop
+/panels/bluetooth/src/dawati-bt-marshal.c
+/panels/bluetooth/src/dawati-bt-marshal.h
+/panels/bluetooth/src/dawati-panel-bluetooth
 /panels/datetime/data/dawati-panel-datetime.desktop
 /panels/datetime/src/date-time.schemas
 /panels/datetime/src/dawati-panel-datetime
