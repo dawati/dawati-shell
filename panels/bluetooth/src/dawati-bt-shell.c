@@ -170,6 +170,10 @@ _request_response_cb (DawatiBtRequest *request,
   default:
     g_warn_if_reached ();
   }
+
+  clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box),
+                                  CLUTTER_ACTOR (request));
+  g_hash_table_remove (priv->requests, path);
 }
 
 static void
