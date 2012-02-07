@@ -619,7 +619,7 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   mx_toggle_set_active (MX_TOGGLE (priv->kill_toggle), priv->enabled);
   g_signal_handler_unblock (priv->kill_toggle, priv->kill_handler);
 
-  /* Now way to know from Connman: 
+  /* Now way to know from Connman:
   mx_widget_set_disabled (MX_WIDGET (priv->kill_toggle), disabled);
   */
   g_object_set (priv->info_label, "visible", showinfo, NULL);
@@ -768,7 +768,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   priv->notification = notify_notification_new ("", NULL, icon);
   notify_notification_set_timeout (priv->notification,
                                    NOTIFY_EXPIRES_NEVER);
-  /* TRANSLATORS: button in a notification, will open the 
+  /* TRANSLATORS: button in a notification, will open the
    * bluetooth panel */
   notify_notification_add_action (priv->notification,
                                   "show",
@@ -779,18 +779,23 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (shell),
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (shell), TRUE);
-  mx_stylable_set_style_class (MX_STYLABLE (shell), "contentPane");
-
-  /* title row */
-  box = mx_box_layout_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), box, -1);
 
   label = mx_label_new_with_text (_("Bluetooth"));
   mx_stylable_set_style_class (MX_STYLABLE (label), "titleBar");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box), label, -1,
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (shell), label, -1,
                                            "expand", TRUE,
                                            "x-fill", TRUE,
                                            "x-align", MX_ALIGN_START,
+                                           "y-fill", FALSE,
+                                           NULL);
+
+  box = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (shell),
+                                           box,
+                                           -1,
+                                           "expand", TRUE,
+                                           "y-fill", TRUE,
                                            NULL);
 
   priv->kill_toggle = mx_toggle_new ();
@@ -804,7 +809,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->request_box),
                                        TRUE);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), priv->request_box, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->request_box, -1);
 
 
   /* connected devices go here */
@@ -812,8 +817,8 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->device_panelbox),
                                  MX_ORIENTATION_VERTICAL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->device_panelbox), "contentPanel");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), priv->device_panelbox, -1);
-  
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->device_panelbox, -1);
+
   priv->info_label = mx_label_new_with_text (_("Nothing connected"));
   clutter_actor_hide (priv->info_label);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->device_panelbox), priv->info_label, -1);
@@ -827,7 +832,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
 
   /* button row */
   hbox = mx_box_layout_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), hbox, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), hbox, -1);
 
   button_box = mx_box_layout_new ();
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (button_box), TRUE);
@@ -840,7 +845,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   priv->send_button = mx_button_new_with_label (_("Send file"));
   clutter_actor_hide (priv->send_button);
   g_signal_connect (priv->send_button, "clicked",
-                    G_CALLBACK (_send_clicked_cb), shell);
+                    G_CALLBACK (_send_clicked_cb), box);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->send_button, -1);
 
   priv->add_button = mx_button_new_with_label (_("Add new"));
