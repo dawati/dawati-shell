@@ -1542,6 +1542,7 @@ carrick_service_desktop_notify_request_pin (CarrickServiceItem *item)
                               message,
                               icon);
 
+  notify_notification_clear_actions (priv->notify);
   /*TRANSLATORS: action button in desktop notification when a pin/puk
    * code is needed. Placeholder is a pin/puk type string */
   action = g_strdup_printf (_("Enter %s"),
