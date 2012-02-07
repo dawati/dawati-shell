@@ -1,4 +1,4 @@
-desktopfiles_in_files = dawati-panel-bluetooth.desktop.in dawati-panel-bluetooth-standalone.desktop.in
+desktopfiles_in_files = dawati-panel-bluetooth.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
 @INTLTOOL_DESKTOP_RULE@
@@ -9,14 +9,8 @@ panel_DATA = dawati-panel-bluetooth.desktop
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = dawati-panel-bluetooth.desktop
 
-if ENABLE_DAWATI_DESKTOP_FILE
-desktopdir = $(datadir)/applications
-desktop_DATA = dawati-panel-bluetooth-standalone.desktop
-endif
-
 EXTRA_DIST = \
 	dawati-panel-bluetooth.desktop.in.in \
-	dawati-panel-bluetooth-standalone.desktop.in.in \
 	$(NULL)
 CLEANFILES = \
 	$(desktopfiles_in_files) \
