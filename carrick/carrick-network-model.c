@@ -438,6 +438,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
         mac_address = get_string (dict, "Address");
 
       proxy_method = proxy_url = NULL;
+      proxy_excludes = proxy_servers = NULL;
       dict = get_boxed (properties, "Proxy");
       if (dict)
         {
@@ -448,6 +449,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
         }
 
       config_proxy_method = config_proxy_url = NULL;
+      config_proxy_excludes = config_proxy_servers = NULL;
       dict = get_boxed (properties, "Proxy.Configuration");
       if (dict)
         {

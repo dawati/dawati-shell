@@ -1571,7 +1571,6 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
                          CarrickServiceItem *item)
 {
   GError *error = NULL;
-  char *msg, *err_name = NULL;
 
   g_clear_error (&item->priv->ofono_error);
 
@@ -1598,8 +1597,6 @@ _ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
                          CarrickServiceItem *item)
 {
   GError *error = NULL;
-  char *msg, *err_name = NULL;
-  int retries;
 
   if (!carrick_ofono_agent_finish (agent, modem_path, res, &error)) {
     if (!error)
