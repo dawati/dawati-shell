@@ -13,4 +13,6 @@ OnlyShowIn=dawati;
 X-Meego-Priority=Low
 X-Dawati-Service=com.dawati.UX.Shell.Panels.bluetooth
 X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Type=applet
+X-Dawati-Panel-Stylesheet=@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-applet.css
 X-Dawati-Panel-Button-Style=bluetooth-button

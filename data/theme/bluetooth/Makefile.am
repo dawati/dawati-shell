@@ -6,7 +6,7 @@ dist_theme_DATA = \
 	icon-bluetooth-idle.png \
 	icon-bluetooth-connecting-highlight.png \
 	icon-bluetooth-connecting.png \
-	bluetooth-panel.css \
+	bluetooth-applet.css \
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels

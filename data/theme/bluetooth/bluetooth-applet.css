@@ -1,0 +1,22 @@
+MnbToolbarApplet#state-off MxIcon {
+  background-image: url("icon-bluetooth-off.png");
+}
+MnbToolbarApplet#state-off:hover MxIcon, MnbToolbarApplet#state-off:active MxIcon, MnbToolbarApplet#state-off:checked MxIcon {
+  background-image: url("icon-bluetooth-off-highlight.png");
+}
+
+
+MnbToolbarApplet#state-idle MxIcon {
+  background-image: url("icon-bluetooth-idle.png");
+}
+MnbToolbarApplet#state-idle:hover MxIcon, MnbToolbarApplet#state-idle:active MxIcon, MnbToolbarApplet#state-idle:checked MxIcon {
+  background-image: url("icon-bluetooth-idle-highlight.png");
+}
+
+
+MnbToolbarApplet#state-connecting MxIcon {
+  background-image: url("icon-bluetooth-connecting.png");
+}
+MnbToolbarApplet#state-connecting:hover MxIcon, MnbToolbarApplet#state-connecting:active MxIcon, MnbToolbarApplet#state-connecting:checked MxIcon {
+  background-image: url("icon-bluetooth-connecting-highlight.png");
+}
