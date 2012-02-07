@@ -24,6 +24,13 @@
 #include "dawati-bt-request.h"
 #include "dawati-bt-marshal.h"
 
+/* TODO: fill this list with translatable names for BT services */
+/* TRANSLATORS: these are names of Bluetooth services. They will be used in 
+ * messages like "%s wants access to %s service" */
+static const char *uuids[][2] = {
+  {"0000111f-0000-1000-8000-00805f9b34fb", N_("Hands-free Audio Gateway")},
+  {NULL, NULL}
+};
 G_DEFINE_TYPE (DawatiBtRequest, dawati_bt_request, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
@@ -72,15 +79,17 @@ dawati_bt_request_update_strings (DawatiBtRequest *request)
 
   switch (priv->request) {
     case DAWATI_BT_REQUEST_TYPE_AUTH:
-      if (priv->request_data)
+      if (priv->request_data) {
         name = g_hash_table_lookup (priv->uuid_strings, priv->request_data);
-      if (name)
-        msg = g_strdup_printf (_("wants access to %s service."),
-                               priv->request_data);
-      else
-        msg = g_strdup (_("wants access to a service."));
-      yes = _("Grant this time only");
-      no = _("Reject");
+        if (name) {
+          msg = g_strdup_printf (_("wants access to %s service."), name);
+        } else {
+          g_debug ("Unrecognised service '%s' requested", priv->request_data);
+          msg = g_strdup (_("wants access to a service."));
+        }
+        yes = _("Grant this time only");
+        no = _("Reject");
+      }
       break;
     case DAWATI_BT_REQUEST_TYPE_PIN:
     case DAWATI_BT_REQUEST_TYPE_PASSKEY:
@@ -295,6 +304,20 @@ _no_clicked_cb (MxButton *button, DawatiBtRequest *request)
                  DAWATI_BT_REQUEST_RESPONSE_NO, NULL);
 }
 
+static GHashTable*
+_new_uiid_strings (void)
+{
+  GHashTable *uuid_strings;
+  guint i = 0;
+
+  uuid_strings = g_hash_table_new (g_str_hash, g_str_equal);
+  while (uuids[i][0]) {
+    g_hash_table_insert (uuid_strings, (char*)uuids[i][0], _(uuids[i][1]));
+    i++;
+  }
+  return uuid_strings;
+}
+
 static void
 dawati_bt_request_init (DawatiBtRequest *request)
 {
@@ -307,10 +330,8 @@ dawati_bt_request_init (DawatiBtRequest *request)
 
   priv->request = DAWATI_BT_REQUEST_TYPE_PIN;
 
-
-  priv->uuid_strings = g_hash_table_new (g_str_hash, g_str_equal);
-  /* TODO: fill list of known uuids and their user-understandable
-   * names  */
+  /* FIXME: this should maybe not be instance-specific */
+  priv->uuid_strings = _new_uiid_strings ();
 
   priv->title = mx_label_new ();
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), priv->title, -1,

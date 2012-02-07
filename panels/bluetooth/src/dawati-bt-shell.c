@@ -867,6 +867,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   dawati_bt_shell_add_device (shell, "TestDeviceA", "a");
   dawati_bt_shell_add_device (shell, "TestDeviceB", "b");
   dawati_bt_shell_add_request (shell, "TestDeviceE", "e", DAWATI_BT_REQUEST_TYPE_CONFIRM, "001234");
+  dawati_bt_shell_add_request (shell, "TestDeviceE", "e", DAWATI_BT_REQUEST_TYPE_AUTH, "0000111f-0000-1000-8000-00805f9b34fb");
 #endif
 }
 
