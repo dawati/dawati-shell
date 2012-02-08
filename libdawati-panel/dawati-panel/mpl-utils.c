@@ -117,6 +117,19 @@ mpl_create_audio_store (void)
                              G_TYPE_STRING); // Album name
 }
 
+/**
+ * mpl_audio_store_set:
+ * @store: a #GtkListStore
+ * @iter: a #GtkTreeIter
+ * @id: a unique id
+ * @thumbnail: (allow-none): a URI to a thumbnail file
+ * @tracker_name: (allow-none): track name
+ * @artist_name: (allow-none): artist name
+ * @album_name: (allow-none): album name
+ *
+ * Store a new line inside a GtkListStore.
+ *
+ */
 void
 mpl_audio_store_set (GtkListStore *store,
                      GtkTreeIter *iter,
@@ -129,9 +142,9 @@ mpl_audio_store_set (GtkListStore *store,
   gtk_list_store_set (store, iter,
                       0, id,
                       1, thumbnail,
-                      2, track_name,
-                      3, artist_name,
-                      4, album_name,
+                      2, track_name != NULL ? track_name : _("Unknown"),
+                      3, artist_name != NULL ? artist_name : _("Unknown"),
+                      4, album_name != NULL ? album_name : _("Unknown"),
                       -1);
 }
 
