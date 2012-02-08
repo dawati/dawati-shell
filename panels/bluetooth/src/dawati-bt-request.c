@@ -58,7 +58,6 @@ struct _DawatiBtRequestPrivate {
   ClutterActor *request_entry;
   ClutterActor *request_always_btn;
   ClutterActor *request_yes_btn;
-  ClutterActor *request_no_btn;
 
   char *device_path;
   DawatiBtRequestType request;
@@ -88,7 +87,6 @@ dawati_bt_request_update_strings (DawatiBtRequest *request)
   DawatiBtRequestPrivate *priv = GET_PRIVATE (request);
   const char *name = NULL;
   char *msg = NULL;
-  const char *no = "";
   const char *yes = "";
 
   switch (priv->request) {
@@ -96,35 +94,38 @@ dawati_bt_request_update_strings (DawatiBtRequest *request)
       if (priv->request_data) {
         name = g_hash_table_lookup (priv->uuid_strings, priv->request_data);
         if (name) {
-          msg = g_strdup_printf (_("wants access to %s service."), name);
+          /* TRANSLATORS: request message. Will appear just below a device name */
+          msg = g_strdup_printf (_("Wants access to %s service"), name);
         } else {
           g_debug ("Unrecognised service '%s' requested", priv->request_data);
-          msg = g_strdup (_("wants access to a service."));
+          /* TRANSLATORS: request message. Will appear just below a device name */
+          msg = g_strdup (_("wants access to a service"));
         }
-        yes = _("Grant this time only");
-        no = _("Reject");
+      /* TRANSLATORS: request button label */
+        yes = _("Grant this time");
       }
       break;
     case DAWATI_BT_REQUEST_TYPE_PIN:
     case DAWATI_BT_REQUEST_TYPE_PASSKEY:
-      msg = g_strdup (_("wants to pair with this computer. "
-                        "Please enter the PIN mentioned on the device."));
+      /* TRANSLATORS: request message. Will appear just below a device name */
+      msg = g_strdup (_("Wants to pair with this computer. "
+                        "Please enter the PIN mentioned on the device"));
+      /* TRANSLATORS: request button label */
       yes = _("OK");
-      no = _("Cancel");
       break;
     case DAWATI_BT_REQUEST_TYPE_CONFIRM:
-      msg = g_strdup_printf (_("wants to pair with this computer. "
-                               "Please confirm whether the PIN '%s' matches the one on the device."),
+      /* TRANSLATORS: request message. Will appear just below a device name */
+      msg = g_strdup_printf (_("Wants to pair with this computer. "
+                               "Please confirm whether the PIN '%s' matches the one on the device"),
                              priv->request_data);
+      /* TRANSLATORS: request button label */
       yes = _("Matches");
-      no = _("Does not match");
       break;
     default:
       break;
   }
 
   mx_label_set_text (MX_LABEL (priv->request_label), msg);
-  mx_button_set_label (MX_BUTTON (priv->request_no_btn), no);
   mx_button_set_label (MX_BUTTON (priv->request_yes_btn), yes);
 
   g_free (msg);
@@ -312,7 +313,7 @@ _yes_clicked_cb (MxButton *button, DawatiBtRequest *request)
 }
 
 static void
-_no_clicked_cb (MxButton *button, DawatiBtRequest *request)
+_close_clicked_cb (MxButton *button, DawatiBtRequest *request)
 {
   g_signal_emit (request, signals[SIGNAL_RESPONSE], 0,
                  DAWATI_BT_REQUEST_RESPONSE_NO, NULL);
@@ -335,7 +336,7 @@ _new_uiid_strings (void)
 static void
 dawati_bt_request_init (DawatiBtRequest *request)
 {
-  ClutterActor *btn_box;
+  ClutterActor *title_box, *close_btn, *btn_box;
   DawatiBtRequestPrivate *priv = GET_PRIVATE (request);
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (request),
@@ -347,12 +348,25 @@ dawati_bt_request_init (DawatiBtRequest *request)
   /* FIXME: this should maybe not be instance-specific */
   priv->uuid_strings = _new_uiid_strings ();
 
-  priv->title = mx_label_new ();
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), priv->title, -1,
+  title_box = mx_box_layout_new ();
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), title_box, -1,
                                            "expand", TRUE,
-                                           "x-fill", FALSE,
+                                           "x-fill", TRUE,
                                            "x-align", MX_ALIGN_START,
                                            NULL);
+
+  priv->title = mx_label_new ();
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (title_box), priv->title, -1,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "x-align", MX_ALIGN_START,
+                                           NULL);
+
+  close_btn = mx_button_new ();
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (title_box), close_btn, -1);
+  g_signal_connect (close_btn, "clicked",
+                    G_CALLBACK (_close_clicked_cb), request);
+
 
   priv->request_label = mx_label_new ();
   mx_label_set_line_wrap (MX_LABEL (priv->request_label), TRUE);
@@ -373,6 +387,7 @@ dawati_bt_request_init (DawatiBtRequest *request)
   mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_entry, -1);
 
   priv->request_always_btn = mx_button_new ();
+  /* TRANSLATORS: request button label */
   mx_button_set_label (MX_BUTTON (priv->request_always_btn),
                        _("Always grant"));
   mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_always_btn, -1);
@@ -383,11 +398,6 @@ dawati_bt_request_init (DawatiBtRequest *request)
   mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_yes_btn, -1);
   g_signal_connect (priv->request_yes_btn, "clicked",
                     G_CALLBACK (_yes_clicked_cb), request);
-
-  priv->request_no_btn = mx_button_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_no_btn, -1);
-  g_signal_connect (priv->request_no_btn, "clicked",
-                    G_CALLBACK (_no_clicked_cb), request);
 }
 
 ClutterActor*
