@@ -24,13 +24,27 @@
 #include "dawati-bt-request.h"
 #include "dawati-bt-marshal.h"
 
-/* TODO: fill this list with translatable names for BT services */
+/* This is by far not a complete list. See
+ * http://www.bluetooth.org/Technical/AssignedNumbers/service_discovery.htm */
+
 /* TRANSLATORS: these are names of Bluetooth services. They will be used in 
- * messages like "%s wants access to %s service" */
+ * messages like "nokiaE72 wants access to %s service" */
 static const char *uuids[][2] = {
-  {"0000111f-0000-1000-8000-00805f9b34fb", N_("Hands-free Audio Gateway")},
+  {"00001103-0000-1000-8000-00805f9b34fb", N_("Dial-up network")},
+  {"00001104-0000-1000-8000-00805f9b34fb", N_("Sync")},
+  {"00001105-0000-1000-8000-00805f9b34fb", N_("File transfer")},
+  {"00001106-0000-1000-8000-00805f9b34fb", N_("File transfer")},
+  {"00001115-0000-1000-8000-00805f9b34fb", N_("Personal area network")},
+  {"00001116-0000-1000-8000-00805f9b34fb", N_("Personal area network")},
+  {"00001117-0000-1000-8000-00805f9b34fb", N_("Personal area network")},
+  {"0000111e-0000-1000-8000-00805f9b34fb", N_("Hands-free")},
+  {"0000111f-0000-1000-8000-00805f9b34fb", N_("Hands-free")},
+  {"00001132-0000-1000-8000-00805f9b34fb", N_("Message access")},
+  {"00001133-0000-1000-8000-00805f9b34fb", N_("Message access")},
   {NULL, NULL}
 };
+
+
 G_DEFINE_TYPE (DawatiBtRequest, dawati_bt_request, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
