@@ -2062,7 +2062,7 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
           clutter_actor_set_scale (actor, 0.0, 0.0);
           clutter_actor_show (actor);
 
-          animation = clutter_actor_animate (actor, CLUTTER_EASE_OUT_ELASTIC,
+          animation = clutter_actor_animate (actor, CLUTTER_EASE_OUT_BACK,
                                              MAP_TIMEOUT,
                                              "scale-x", 1.0,
                                              "scale-y", 1.0,
