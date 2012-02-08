@@ -101,21 +101,26 @@ _combo_index_changed (AnerleyPresenceChooser *self,
   MxComboBox *combo = MX_COMBO_BOX (self);
   gint index = mx_combo_box_get_index (combo);
   ComboEntry *entry;
-  const gchar *default_message;
+  gchar *message;
 
   if (index >= 0)
     entry = &g_array_index (priv->combo_entries, ComboEntry, index);
   else
     return;
 
-  default_message = anerley_presence_chooser_get_default_message (entry->presence);
-
   priv->presence = entry->presence;
+
+  /* Get current message to not modify it */
+  tp_account_manager_get_most_available_presence (priv->am,
+                                                  NULL,
+                                                  &message);
 
   tp_account_manager_set_all_requested_presences (priv->am,
                                                   entry->presence,
                                                   presences[entry->presence].status,
-                                                  default_message);
+                                                  message);
+
+  g_free (message);
 }
 
 static void
