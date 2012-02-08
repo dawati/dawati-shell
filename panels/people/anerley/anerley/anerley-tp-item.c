@@ -20,6 +20,7 @@
  */
 
 #include <telepathy-glib/telepathy-glib.h>
+#include <folks/folks-telepathy.h>
 
 #include "anerley-tp-item.h"
 
@@ -202,16 +203,48 @@ anerley_tp_item_get_unread_messages_count (AnerleyItem *item)
 static void
 anerley_tp_item_activate (AnerleyItem *item)
 {
-#if 0
-  /* FIXME: Need to select action.... */
   AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GeeSet *personas;
+  GeeIterator *iter;
+  GList *contacts = NULL;
+  TpContact *contact;
+  TpConnection *connection;
+  TpAccount *account;
   TpAccountChannelRequest *acr;
   GHashTable *request;
 
+  /* Collect all merged TpContacts */
+  personas = folks_individual_get_personas (priv->contact);
+  iter = gee_iterable_iterator (GEE_ITERABLE (personas));
+  while (gee_iterator_next (iter))
+  {
+    FolksPersona *persona = gee_iterator_get (iter);
+
+    if (TPF_IS_PERSONA (persona))
+    {
+      TpContact *tp_contact;
+
+      tp_contact = tpf_persona_get_contact (TPF_PERSONA (persona));
+      contacts = g_list_prepend (contacts, g_object_ref (tp_contact));
+    }
+
+    g_clear_object (&persona);
+  }
+  g_clear_object (&iter);
+
+  if (contacts == NULL)
+    return;
+
+  /* FIXME: Need to select which contact, pick first one for now... */
+  contact = contacts->data;
+  connection = tp_contact_get_connection (contact);
+  account = tp_connection_get_account (connection);
+
+  /* FIXME: Need to select which action, chat for now... */
   request = tp_asv_new (
       TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING, TP_IFACE_CHANNEL_TYPE_TEXT,
       TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
-      TP_PROP_CHANNEL_TARGET_HANDLE, G_TYPE_UINT,tp_contact_get_handle (priv->contact),
+      TP_PROP_CHANNEL_TARGET_HANDLE, G_TYPE_UINT, tp_contact_get_handle (contact),
       NULL);
 
   acr = tp_account_channel_request_new (account, request,
@@ -220,7 +253,7 @@ anerley_tp_item_activate (AnerleyItem *item)
 
   g_hash_table_unref (request);
   g_object_unref (acr);
-#endif
+  g_list_free_full (contacts, g_object_unref);
 }
 
 static void
