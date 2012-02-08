@@ -141,13 +141,13 @@ format_label (ClutterActor *label)
 			fmt = "%x";
 	}
 	localtime_r (&now, &tim);
-	
+
 	strftime (buf, 256, fmt, &tim);
 
 	mx_label_set_text ((MxLabel *)label, buf);
 }
 
-#if 0 
+#if 0
 static gboolean
 events_pane_update (MnpDatetime *dtime)
 {
@@ -159,7 +159,7 @@ events_pane_update (MnpDatetime *dtime)
 	g_object_set (priv->penge_events,
 			"time",
 			now,
-			NULL);	
+			NULL);
 	g_object_unref (now); */
 
       	start = jana_ecal_utils_time_now_local ();
@@ -190,9 +190,8 @@ penge_calendar_pane_update_calendar_icon (MnpDatetime *pane,
   {
     priv->day_of_month = jana_time_get_day (time);
     path = g_strdup_printf (CALENDAR_ICON, priv->day_of_month);
-    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->date_icon),
-                                   path,
-                                   &error);
+    mx_image_set_from_file (MX_IMAGE (priv->date_icon),
+                            path, NULL);
 
     g_free (path);
 
@@ -265,20 +264,20 @@ construct_calendar_area (MnpDatetime *dtime)
 #endif
 	ClutterActor *box, *label;
 	ClutterActor *div, *icon;
-  
+
 	JanaTime *now;
 	JanaTime *on_the_next_hour;
 	glong next_timeout_seconds;
-	
+
 	now = jana_ecal_utils_time_now_local ();
 
-#if 0	
+#if 0
       	start = jana_ecal_utils_time_now_local ();
       	end = jana_ecal_utils_time_now_local ();
       	jana_time_set_hours (end, 23);
       	jana_time_set_minutes (end, 59);
       	jana_time_set_seconds (end, 59);
-	
+
 	duration = jana_duration_new (start, end);
 #endif
 
@@ -288,27 +287,31 @@ construct_calendar_area (MnpDatetime *dtime)
 	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
                                priv->cal_area,
                                "expand", TRUE,
-			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
+			       "y-fill", TRUE,
+			       "x-fill", TRUE,
                                NULL);
 	//clutter_actor_set_size (priv->cal_area, 345, -1);
 
 	/* Events header */
 	box = mx_box_layout_new ();
-	clutter_actor_set_name (box, "EventsTitleBox");
+        mx_stylable_set_style_class (MX_STYLABLE (box), "sectionHeader");
+	/* clutter_actor_set_name (box, "EventsTitleBox"); */
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
    	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                box,
                                0, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 
-	priv->date_icon = clutter_texture_new ();
-	/* Need to fix the size to avoid being squashed */
-	clutter_actor_set_size (priv->date_icon, 27, 28);
+	priv->date_icon = mx_image_new ();
+        clutter_actor_set_size (priv->date_icon, 36, 36);
+        /* Need to fix the size to avoid being squashed */
+        mx_stylable_set_style_class (MX_STYLABLE (priv->date_icon),
+                                     "AppointmentsIcon");
+        /* clutter_actor_set_size (priv->date_icon, 27, 29); */
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), priv->date_icon, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->date_icon,
@@ -322,15 +325,15 @@ construct_calendar_area (MnpDatetime *dtime)
 
 
 	label = mx_label_new_with_text(_("Appointments"));
-	clutter_actor_set_name (label, "EventPaneTitle");
-	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, -1);
+	/* clutter_actor_set_name (label, "EventPaneTitle"); */
+	mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
 			       "expand", TRUE,
 			       "x-fill", TRUE,
-			       "y-fill", FALSE,			       
+			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
-			       "x-align", MX_ALIGN_START,			       
+			       "x-align", MX_ALIGN_START,
                                NULL);
 
 	/* Widgets header */
@@ -344,8 +347,8 @@ construct_calendar_area (MnpDatetime *dtime)
                                "x-expand", TRUE,
 			       "x-fill", TRUE,
                                "y-expand", FALSE,
-			       "y-fill", FALSE,		
-                               NULL);	
+			       "y-fill", FALSE,
+                               NULL);
 
 
 	/* format date */
@@ -356,9 +359,9 @@ construct_calendar_area (MnpDatetime *dtime)
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_header),
                                box,
                                "expand", TRUE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
@@ -366,26 +369,29 @@ construct_calendar_area (MnpDatetime *dtime)
                                2, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
         clutter_actor_set_height (div, 2);
 */
 	label = mx_label_new_with_text(_("Today"));
 	/* HACK: This is a fixed size element but ellipsizes in non english when font size/width is modified via CSS
-	 * So just expand the size a bit */	
-	clutter_text_set_ellipsize (mx_label_get_clutter_text(label), PANGO_ELLIPSIZE_NONE);
-	clutter_text_set_line_wrap (mx_label_get_clutter_text(label), FALSE);	
-	clutter_actor_set_width (mx_label_get_clutter_text(label), clutter_actor_get_width(label)+5);
-	
+	 * So just expand the size a bit */
+	clutter_text_set_ellipsize (CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label))),
+                                    PANGO_ELLIPSIZE_NONE);
+	clutter_text_set_line_wrap (CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label))),
+                                    FALSE);
+	clutter_actor_set_width (mx_label_get_clutter_text (MX_LABEL (label)),
+                                 clutter_actor_get_width (label) + 5);
+
 	clutter_actor_set_name (label, "CalendarPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
-	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
+
 	priv->cal_date_label = mx_label_new ();
 
 	clutter_actor_set_name (priv->cal_date_label, "CalendarPaneTitleDate");
@@ -393,9 +399,9 @@ construct_calendar_area (MnpDatetime *dtime)
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->cal_date_label,
                                "expand", TRUE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 	format_label (priv->cal_date_label);
 
 
@@ -403,7 +409,7 @@ construct_calendar_area (MnpDatetime *dtime)
 				    "time",
 				    now,
 //				    duration->start,
-				    "multiline-summary", 
+				    "multiline-summary",
 				    TRUE,
                                     NULL);
 	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
@@ -411,12 +417,12 @@ construct_calendar_area (MnpDatetime *dtime)
                                2, 0,
                                "x-expand", TRUE,
                                "y-expand", TRUE,
-			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
+			       "y-fill", TRUE,
+			       "x-fill", TRUE,
                                NULL);
 
 
-#if 0	
+#if 0
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
 	g_timeout_add_seconds (10, (GSourceFunc)events_pane_update, dtime);
@@ -448,14 +454,14 @@ construct_calendar_area (MnpDatetime *dtime)
   	g_object_unref (now);
   	g_object_unref (on_the_next_hour);
 
-/*	
+/*
 	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                div,
                                3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
         clutter_actor_set_height (div, 2);
 */
@@ -466,7 +472,7 @@ construct_calendar_area (MnpDatetime *dtime)
 	priv->cal_launcher_box = box;
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
-	
+
 	priv->cal_launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *) priv->cal_launcher, _("Open Appointments"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->cal_launcher), "EventLauncherButton");
@@ -486,9 +492,9 @@ construct_calendar_area (MnpDatetime *dtime)
                                3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
-	
+
 
 }
 
@@ -515,21 +521,22 @@ construct_task_area (MnpDatetime *dtime)
 
 	mx_box_layout_add_actor_with_properties ((MxBoxLayout *)dtime, priv->task_area, 4,
                                  "expand", TRUE,
-  			         "y-fill", TRUE,		
- 			         "x-fill", TRUE,			       			       
+			         "y-fill", TRUE,
+			         "x-fill", TRUE,
                                  NULL);
 
 	box = mx_box_layout_new ();
-	clutter_actor_set_name (box, "TasksTitleBox");
+        mx_stylable_set_style_class (MX_STYLABLE (box), "sectionHeader");
+        /* mx_stylable_set_style_class (MX_STYLABLE (label), "sectionHeader"); */
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->task_area),
                                box,
                                0, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 
 	icon = (ClutterActor *)mx_icon_new ();
   	mx_stylable_set_style_class (MX_STYLABLE (icon),
@@ -547,15 +554,16 @@ construct_task_area (MnpDatetime *dtime)
 
 
 	label = mx_label_new_with_text (_("Tasks"));
-	clutter_actor_set_name (label, "TaskPaneTitle");
+        /* mx_stylable_set_style_class (MX_STYLABLE (label), "sectionHeader"); */
+	/* clutter_actor_set_name (label, "TaskPaneTitle"); */
 	mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
 			       "expand", TRUE,
 			       "x-fill", TRUE,
-			       "y-fill", FALSE,			       
+			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
-			       "x-align", MX_ALIGN_START,			       
+			       "x-align", MX_ALIGN_START,
                                NULL);
 
 
@@ -571,35 +579,38 @@ construct_task_area (MnpDatetime *dtime)
                                "x-expand", TRUE,
 			       "x-fill", TRUE,
                                "y-expand", FALSE,
-			       "y-fill", FALSE,		
-                               NULL);	
+			       "y-fill", FALSE,
+                               NULL);
 
 
 	/* format date */
 	label = mx_label_new_with_text(_("Today"));
 	/* HACK: This is a fixed size element but ellipsizes in non english when font size/width is modified via CSS
-	 * So just expand the size a bit */	
-	clutter_text_set_ellipsize (mx_label_get_clutter_text(label), PANGO_ELLIPSIZE_NONE);
-	clutter_text_set_line_wrap (mx_label_get_clutter_text(label), FALSE);	
-	clutter_actor_set_width (mx_label_get_clutter_text(label), clutter_actor_get_width(label)+5);
+	 * So just expand the size a bit */
+	clutter_text_set_ellipsize (CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label))),
+                                    PANGO_ELLIPSIZE_NONE);
+	clutter_text_set_line_wrap (CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label))),
+                                    FALSE);
+	clutter_actor_set_width (mx_label_get_clutter_text (MX_LABEL (label)),
+                                 clutter_actor_get_width(label)+5);
 	clutter_actor_set_name (label, "TaskPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", FALSE,			       			       
-                               NULL);	
-	
+			       "y-fill", FALSE,
+			       "x-fill", FALSE,
+                               NULL);
+
 	priv->task_date_label = mx_label_new ();
 	clutter_actor_set_name (priv->task_date_label, "TaskPaneTitleDate");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->task_date_label, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->task_date_label,
                                "expand", TRUE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 	format_label (priv->task_date_label);
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
@@ -608,7 +619,7 @@ construct_task_area (MnpDatetime *dtime)
                                2, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
         clutter_actor_set_height (div, 2);
 */
@@ -619,8 +630,8 @@ construct_task_area (MnpDatetime *dtime)
                                2, 0,
                                "x-expand", TRUE,
                                "y-expand", TRUE,
-			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
+			       "y-fill", TRUE,
+			       "x-fill", TRUE,
                                NULL);
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
@@ -629,7 +640,7 @@ construct_task_area (MnpDatetime *dtime)
                                3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
         clutter_actor_set_height (div, 2);
 */
@@ -644,9 +655,9 @@ construct_task_area (MnpDatetime *dtime)
                                3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-			       "x-fill", TRUE,			       			       
+			       "x-fill", TRUE,
                                NULL);
-	
+
 	priv->task_launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *)priv->task_launcher, _("Open Tasks"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->task_launcher), "TasksLauncherButton");
@@ -665,7 +676,7 @@ static void
 time_changed_now (MnpWorldClock *clock, MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-	
+
 	g_source_remove (priv->date_update_timeout);
 	update_date(dtime);
 }
@@ -692,15 +703,15 @@ mnp_datetime_construct (MnpDatetime *time)
 			       "x-fill", TRUE,
 			       "y-align", MX_ALIGN_START,
                                NULL);
-	
+
 #if 0
 	priv->alarm_area = (ClutterActor *)mnp_alarms_new();
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)priv->alarm_area);
-	
+
 	div = clutter_texture_new_from_file (DOUBLE_DIV_LINE, NULL);
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)div);
-#endif	
-	
+#endif
+
 	construct_calendar_area(time);
 
 	construct_task_area (time);
@@ -742,7 +753,8 @@ mnp_datetime_set_panel_client (MnpDatetime *datetime,
 
   priv->panel_client = g_object_ref (panel_client);
 
-  mnp_world_clock_set_client (priv->world_clock, panel_client);
+  mnp_world_clock_set_client (MNP_WORLD_CLOCK (priv->world_clock),
+                              panel_client);
 
   g_signal_connect (panel_client,
                     "show-end",
@@ -783,7 +795,7 @@ update_date (MnpDatetime *datetime)
   jnow = jana_ecal_utils_time_now_local ();
 
   tom = get_start_of_nextday (now);
-  priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime); 
+  priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime);
 
   /* format_label (priv->top_date_label); */
   format_label (priv->cal_date_label);

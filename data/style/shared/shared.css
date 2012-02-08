@@ -38,6 +38,15 @@ MxLabel.sectionHeader {
   padding: 8 0 8 16;
 }
 
+MxBoxLayout.sectionHeader {
+  border-image: url("section-header-bg.png") 2;
+  padding: 8 0 8 16;
+}
+
+MxBoxLayout.sectionHeader MxLabel {
+  font-size: 14;
+}
+
 .searchBox, .searchBox:focus {
   border-image: url("search-box.png") 26 51 13 10;
   padding: 10 51 10 10;

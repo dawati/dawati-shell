@@ -118,7 +118,7 @@ mnp_shell_class_init (MnpShellClass *klass)
   g_type_class_add_private (klass, sizeof (MnpShellPrivate));
 
   object_class->get_property = mnps_get_property;
-  object_class->set_property = mnps_set_property;  
+  object_class->set_property = mnps_set_property;
   object_class->dispose = mnp_shell_dispose;
   object_class->finalize = mnp_shell_finalize;
 
@@ -139,7 +139,7 @@ mnp_shell_class_init (MnpShellClass *klass)
                                MPL_TYPE_PANEL_CLIENT,
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
-  
+
 }
 
 
@@ -153,16 +153,16 @@ mnp_shell_init (MnpShell *self)
 static void
 mnp_shell_construct (MnpShell *shell)
 {
-  MnpShellPrivate *priv = GET_PRIVATE (shell); 
-  	
+  MnpShellPrivate *priv = GET_PRIVATE (shell);
+
   mx_box_layout_set_orientation ((MxBoxLayout *)shell, MX_ORIENTATION_VERTICAL);
   clutter_actor_set_name ((ClutterActor *)shell, "datetime-panel");
   mx_box_layout_set_enable_animations ((MxBoxLayout *)shell, TRUE);
-  
+
   priv->datetime = mnp_datetime_new ();
 
   priv->label = mx_label_new_with_text (_("Time and Date"));
-  clutter_actor_set_name (priv->label, "PanelDateHeading");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->label), "titleBar");
   mnp_date_time_set_date_label ((MnpDatetime *)priv->datetime, priv->label);
 
   mx_box_layout_add_actor ((MxBoxLayout *)shell, priv->label, 1);
@@ -171,7 +171,7 @@ mnp_shell_construct (MnpShell *shell)
                                "expand", FALSE,
 			       "y-fill", FALSE,
 			       "x-fill", TRUE,
-                               NULL);  
+                               NULL);
   mx_box_layout_add_actor ((MxBoxLayout *)shell, priv->datetime, 2);
   clutter_container_child_set (CLUTTER_CONTAINER (shell),
                                (ClutterActor *)priv->datetime,

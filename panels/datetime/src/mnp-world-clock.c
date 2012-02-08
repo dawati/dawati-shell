@@ -55,7 +55,7 @@ enum {
 	LAST_SIGNAL
 };
 static guint signals[LAST_SIGNAL] = { 0 };
-	
+
 
 typedef struct _MnpWorldClockPrivate MnpWorldClockPrivate;
 
@@ -119,16 +119,16 @@ mnp_world_clock_class_init (MnpWorldClockClass *klass)
 
   object_class->dispose = mnp_world_clock_dispose;
   object_class->finalize = mnp_world_clock_finalize;
-  
+
   signals[TIME_CHANGED] =
 	g_signal_new ("time-changed",
 			G_OBJECT_CLASS_TYPE (object_class),
-			G_SIGNAL_RUN_FIRST,      
+			G_SIGNAL_RUN_FIRST,
 			G_STRUCT_OFFSET (MnpWorldClockClass, time_changed),
 			NULL, NULL,
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE, 0);
-  
+
 }
 
 
@@ -157,7 +157,7 @@ start_search (MnpWorldClock *area)
 
 	if (!priv->search_text || (strlen(priv->search_text) < 3))
 		clutter_actor_hide(priv->completion);
-	
+
 	if (priv->search_text && (strlen(priv->search_text) > 2))
 		g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	if (priv->search_text && (strlen(priv->search_text) > 2) && (clutter_model_get_n_rows(priv->zones_model) > 0)) {
@@ -221,7 +221,7 @@ find_word (const char *full_name, const char *word, int word_len,
     return NULL;
 }
 
-static gboolean 
+static gboolean
 filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (user_data);
@@ -235,7 +235,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 		return TRUE;
 
 	skey = key = g_ascii_strdown(priv->search_text, -1);
-	clutter_model_iter_get (iter, 
+	clutter_model_iter_get (iter,
 			GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, &name_mem,
 			GWEATHER_LOCATION_ENTRY_COL_LOCATION, &loc,
 			-1);
@@ -329,7 +329,7 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 		priv->location_tile = TRUE;
 		loc->local = TRUE;
 	}
-	
+
 	g_ptr_array_add (priv->zones, loc);
 	mnp_save_zones(priv->zones);
 
@@ -339,8 +339,8 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 	mnp_clock_area_add_tile (priv->area, tile);
 
 	priv->search_text = "asd";
-	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
-	
+	g_signal_emit_by_name (priv->zones_model, "filter-changed");
+
 	if (priv->zones->len >= 4)
 		clutter_actor_hide (priv->entry_box);
 
@@ -358,19 +358,19 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 
 	priv->search_text = NULL;
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
-	
+
 	add_location_tile (world_clock, mx_entry_get_text (priv->search_location), FALSE);
 
 	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), priv->zones_model);
 }
 
 
-static void 
+static void
 mnp_completion_done (gpointer data, const char *zone)
 {
 	MnpWorldClock *clock = (MnpWorldClock *)data;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
-	
+
 	clutter_actor_hide (priv->completion);
 	g_signal_handlers_block_by_func (priv->search_location, text_changed_cb, clock);
 	mx_entry_set_text (priv->search_location, zone);
@@ -403,7 +403,7 @@ zone_reordered_cb (MnpZoneLocation *location, int new_pos, MnpWorldClock *clock)
 		if (strcmp(cloc, loc->display) == 0) {
 			break;
 		}
-		
+
 	}
 
 	g_ptr_array_remove_index (priv->zones, i);
@@ -415,12 +415,12 @@ zone_reordered_cb (MnpZoneLocation *location, int new_pos, MnpWorldClock *clock)
 static void
 zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 {
-	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);	
+	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
 	int i;
 	MnpZoneLocation *loc;
 
 	for (i=0; i<priv->zones->len; i++) {
-		loc = (MnpZoneLocation *)priv->zones->pdata[i];		
+		loc = (MnpZoneLocation *)priv->zones->pdata[i];
 		if (strcmp(display, loc->display) == 0) {
 			break;
 		}
@@ -433,7 +433,7 @@ zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 
 	if (priv->zones->len < 4)
 		clutter_actor_show (priv->entry_box);
-	
+
 }
 
 static gboolean
@@ -478,7 +478,7 @@ construct_completion (MnpWorldClock *world_clock)
 	MnpButtonItem *button_item;
 
 	stage = clutter_stage_get_default ();
-	
+
         /* Create an event-box to capture input when the completion list
          * displays.
          */
@@ -509,11 +509,11 @@ construct_completion (MnpWorldClock *world_clock)
 	scroll = mx_scroll_view_new ();
 	clutter_actor_set_name (scroll, "CompletionScrollView");
         g_object_set (G_OBJECT (scroll), "clip-to-allocation", TRUE, NULL);
-	clutter_actor_set_size (scroll, -1, 300);	
+	clutter_actor_set_size (scroll, -1, 300);
         mx_bin_set_child (MX_BIN (frame), scroll);
 	clutter_container_add_actor ((ClutterContainer *)stage, frame);
       	clutter_actor_raise_top((ClutterActor *) frame);
-	clutter_actor_set_position (frame, 19, 147);  
+	clutter_actor_set_position (frame, 19, 147);
 	clutter_actor_hide (frame);
 
 	priv->completion = frame;
@@ -558,8 +558,9 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 
 	/* Time title */
 	box = mx_box_layout_new ();
-	clutter_actor_set_name (box,
-                               	"TimeTitleBox");
+        mx_stylable_set_style_class (MX_STYLABLE (box), "sectionHeader");
+	/* clutter_actor_set_name (box, */
+        /*                        	"TimeTitleBox"); */
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
@@ -578,23 +579,23 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
                                NULL);
 
 	text = mx_label_new_with_text (_("Time"));
-	clutter_actor_set_name (text, "TimeTitle");
+	/* clutter_actor_set_name (text, "TimeTitle"); */
 
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), text, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
 			       "expand", TRUE,
 			       "x-fill", TRUE,
-			       "y-fill", FALSE,			       
+			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
-			       "x-align", MX_ALIGN_START,			       
+			       "x-align", MX_ALIGN_START,
                                NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), box, -1);	
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (world_clock),
                                box,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
+			       "y-fill", FALSE,
 			       "x-fill", TRUE,
 			       "x-align", MX_ALIGN_START,
                                NULL);
@@ -607,10 +608,10 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	clutter_actor_set_name (box, "TwelveHourButtonBox");
 
 	box = mx_box_layout_new ();
-	
+
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
-	
+
 	tfh = gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL);
 	g_object_unref(client);
 	check_button = mx_button_new ();
@@ -626,10 +627,10 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                check_button,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
+			       "y-fill", FALSE,
 			       "x-fill", FALSE,
                                NULL);
-	
+
 	text = mx_label_new_with_text (_("24 hour clock"));
 
 	clutter_actor_set_name (text, "HourClockLabel");
@@ -637,28 +638,28 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
                                "expand", TRUE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
                                NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);	
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->widget_box),
                                box,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), priv->widget_box, -1);	
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), priv->widget_box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (world_clock),
                                box,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
                                NULL);
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);		
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);
 */
 }
 
@@ -720,7 +721,7 @@ mnp_wc_get_position_cb (GeocluePosition       *position,
 		g_warning ("Unable to get position: %s\n", error->message);
 		return;
 	}
-	
+
 	printf("POSI: %lf %lf\n", latitude, longitude);
 	n_accuracy = geoclue_accuracy_new (GEOCLUE_ACCURACY_LEVEL_DETAILED, 0, 0);
 	geoclue_reverse_geocode_position_to_address_async (priv->geo_reverse_geocode,
@@ -762,7 +763,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	priv->entry_box = box;
 	mx_stylable_set_style_class (MX_STYLABLE(box), "ZoneSearchEntryBox");
-	
+
 	entry = mx_entry_new ();
 	mx_stylable_set_style_class (MX_STYLABLE (entry), "ZoneSearchEntry");
 
@@ -775,7 +776,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	g_signal_connect (G_OBJECT (entry),
                     "notify::text", G_CALLBACK (text_changed_cb), world_clock);
-	
+
 	clutter_actor_get_size (entry, &width, &height);
 	clutter_actor_set_size (entry, width+10, -1);
 
@@ -792,7 +793,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->add_location = mx_button_new ();
 	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "ZoneSearchEntryAddButton");
-	
+
 	/* mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1); */
   	/* g_signal_connect (priv->add_location, "clicked",
                     	G_CALLBACK (add_location_clicked_cb), world_clock); */
@@ -802,17 +803,17 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
                                NULL);*/
-	
+
 
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->widget_box),
                                box,
                                "expand", FALSE,
-			       "y-fill", FALSE,		
+			       "y-fill", FALSE,
 			       "x-fill", FALSE,
 			       "x-align",  MX_ALIGN_START,
                                NULL);
-	
+
 	/* Prep GeoClue */
 	priv->geo_position = geoclue_position_new ("org.freedesktop.Geoclue.Providers.Hostip",
                                              	   "/org/freedesktop/Geoclue/Providers/Hostip");
@@ -837,7 +838,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_set_name ((ClutterActor *)priv->area, "WorldClockArea");
 
 	clutter_container_add_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
-	
+
 	clutter_actor_lower_bottom ((ClutterActor *)priv->area);
 	mx_droppable_enable ((MxDroppable *)priv->area);
 	g_object_ref ((GObject *)priv->area);
@@ -868,16 +869,16 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 		if (priv->zones->len >= 4)
 			clutter_actor_hide (priv->entry_box);
 	}
-	
+
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);		
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);
 */
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "DateTimeLauncherBox");
 	priv->launcher_box = box;
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
-	
+
 	priv->launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *) priv->launcher, _("Set Time & Date"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->launcher), "DateTimeLauncherButton");
@@ -920,7 +921,7 @@ static void
 dropdown_show_cb (MplPanelClient *client,
                   gpointer        userdata)
 {
-  MnpWorldClockPrivate *priv = GET_PRIVATE (userdata); 
+  MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
 
   mnp_clock_area_manual_update(priv->area);
 
@@ -934,7 +935,7 @@ dropdown_hide_cb (MplPanelClient *client,
   MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
   mx_entry_set_text (priv->search_location, "");
-  clutter_actor_hide (priv->completion);	
+  clutter_actor_hide (priv->completion);
 }
 
 void
@@ -943,9 +944,9 @@ mnp_world_clock_set_client (MnpWorldClock *clock, MplPanelClient *client)
   MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
 
   priv->panel_client = client;
-  g_signal_connect (priv->launcher, 
-		    "clicked", 
-		    G_CALLBACK(launch_date_config), 
+  g_signal_connect (priv->launcher,
+		    "clicked",
+		    G_CALLBACK(launch_date_config),
 		    clock);
 
   g_signal_connect (client,
