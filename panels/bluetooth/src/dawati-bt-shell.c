@@ -845,7 +845,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   priv->send_button = mx_button_new_with_label (_("Send file"));
   clutter_actor_hide (priv->send_button);
   g_signal_connect (priv->send_button, "clicked",
-                    G_CALLBACK (_send_clicked_cb), box);
+                    G_CALLBACK (_send_clicked_cb), shell);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->send_button, -1);
 
   priv->add_button = mx_button_new_with_label (_("Add new"));
