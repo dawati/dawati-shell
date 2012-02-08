@@ -58,8 +58,6 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
   MetaScreen *screen;
   ClutterActor *window_group;
 
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-
   if (running++)
     {
       /*
@@ -113,7 +111,6 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
   g_object_set (G_OBJECT (zones_preview),
                 "workspace-width", (guint)width,
                 "workspace-height", (guint)height,
-                "workspace-bg", priv->desktop_tex,
                 NULL);
 
   mnb_zones_preview_clear (MNB_ZONES_PREVIEW (zones_preview));

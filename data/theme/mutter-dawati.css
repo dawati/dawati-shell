@@ -415,15 +415,8 @@ NtfNotification > *.NotificationBody
     color: #333;
 }
 
-/* zone switching effect */
-MnbFancyBin {
-  padding: 6 6 7 6;
-  curve-radius: 2;
-  border-image: url("effects/bin-border-image.png") 8 8 9 8;
-}
-
 MnbZonesPreview {
-  spacing: 16;
+  spacing: 0;
   border-image: url("effects/zone-switch-background.png") 0;
 }
 

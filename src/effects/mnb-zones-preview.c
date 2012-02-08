@@ -21,9 +21,11 @@
 
 #include "mnb-zones-preview.h"
 #include "mnb-fancy-bin.h"
+#include "dawati-netbook.h"
 
 #include <stdlib.h>
 #include <math.h>
+#include <meta/meta-background-actor.h>
 
 static void mx_stylable_iface_init (MxStylableIface *iface);
 
@@ -41,8 +43,7 @@ enum
   PROP_ZOOM,
   PROP_WORKSPACE,
   PROP_WORKSPACE_WIDTH,
-  PROP_WORKSPACE_HEIGHT,
-  PROP_WORKSPACE_BG
+  PROP_WORKSPACE_HEIGHT
 };
 
 enum
@@ -100,10 +101,6 @@ mnb_zones_preview_get_property (GObject    *object,
       g_value_set_uint (value, priv->height);
       break;
 
-    case PROP_WORKSPACE_BG:
-      g_value_set_object (value, priv->workspace_bg);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -135,12 +132,6 @@ mnb_zones_preview_set_property (GObject      *object,
       priv->height = g_value_get_uint (value);
       break;
 
-    case PROP_WORKSPACE_BG:
-      if (priv->workspace_bg)
-        g_object_unref (priv->workspace_bg);
-      priv->workspace_bg = g_value_dup_object (value);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       return;
@@ -159,7 +150,8 @@ mnb_zones_preview_dispose (GObject *object)
 
   if (priv->workspace_bg)
     {
-      g_object_unref (priv->workspace_bg);
+      clutter_actor_unparent (priv->workspace_bg);
+      /* g_object_unref (priv->workspace_bg); */
       priv->workspace_bg = NULL;
     }
 
@@ -181,6 +173,7 @@ mnb_zones_preview_paint (ClutterActor *actor)
   /* Chain up for background */
   CLUTTER_ACTOR_CLASS (mnb_zones_preview_parent_class)->paint (actor);
 
+  clutter_actor_paint (priv->workspace_bg);
   /* Paint bins */
   for (w = priv->workspace_bins; w; w = w->next)
     clutter_actor_paint (CLUTTER_ACTOR (w->data));
@@ -353,17 +346,6 @@ mnb_zones_preview_class_init (MnbZonesPreviewClass *klass)
                                                       G_PARAM_STATIC_NICK |
                                                       G_PARAM_STATIC_BLURB));
 
-  g_object_class_install_property (object_class,
-                                   PROP_WORKSPACE_BG,
-                                   g_param_spec_object ("workspace-bg",
-                                                        "Workspace background",
-                                                        "Workspace background.",
-                                                        CLUTTER_TYPE_ACTOR,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_STATIC_NAME |
-                                                        G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
-
   signals[SWITCH_COMPLETED] =
     g_signal_new ("switch-completed",
                   G_TYPE_FROM_CLASS (klass),
@@ -410,10 +392,14 @@ static void
 mnb_zones_preview_init (MnbZonesPreview *self)
 {
   MnbZonesPreviewPrivate *priv = self->priv = ZONES_PREVIEW_PRIVATE (self);
+  MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
 
   priv->zoom = 1.0;
-  priv->spacing = 24;
+  priv->spacing = 0;
   priv->dest_workspace = -1;
+  priv->workspace_bg = meta_background_actor_new_for_screen (screen);
+  clutter_actor_set_parent (priv->workspace_bg, CLUTTER_ACTOR (self));
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mnb_zones_preview_style_changed_cb), self);
@@ -447,7 +433,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_STATIC:
       /* Start zooming out */
       priv->anim_phase = MNB_ZP_ZOOM_OUT;
-      mnb_zones_preview_enable_fanciness (preview, TRUE);
+      /* mnb_zones_preview_enable_fanciness (preview, TRUE); */
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_IN_SINE,
                              220,
@@ -474,7 +460,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       }
     case MNB_ZP_PAN:
       /* Start zooming in */
-      mnb_zones_preview_enable_fanciness (preview, FALSE);
+      /* mnb_zones_preview_enable_fanciness (preview, FALSE); */
       priv->anim_phase = MNB_ZP_ZOOM_IN;
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_OUT_CUBIC,
@@ -603,15 +589,9 @@ mnb_zones_preview_get_workspace_group (MnbZonesPreview *preview,
 
       /* Create a workspace clone */
       bin = mnb_fancy_bin_new ();
+      g_object_set (bin, "fancy", FALSE, NULL);
       group = clutter_group_new ();
-
-      /* Add background if it's set */
-      if (priv->workspace_bg)
-        {
-          ClutterActor *bg = clutter_clone_new (priv->workspace_bg);
-          clutter_actor_set_size (bg, priv->width, priv->height);
-          clutter_container_add_actor (CLUTTER_CONTAINER (group), bg);
-        }
+      clutter_actor_set_size (group, priv->width, priv->height);
 
       clutter_actor_set_clip (group, 0, 0, priv->width, priv->height);
       mnb_fancy_bin_set_child (MNB_FANCY_BIN (bin), group);
@@ -711,7 +691,7 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
                     G_CALLBACK (mnb_zones_preview_clone_destroy_cb),
                     window);
 
-  meta_window_get_outer_rect (meta_window_actor_get_meta_window (window), &rect);
+  meta_window_get_input_rect (meta_window_actor_get_meta_window (window), &rect);
   clutter_actor_set_position (clone, rect.x, rect.y);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
