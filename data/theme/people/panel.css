@@ -5,7 +5,7 @@
 
 *#people-panel-me-avatar-frame
 {
-  border-image: url("avatar-bg.png") 10 10 10 10;
+  border-image: url("avatar-bg.png") 10;
 }
 
 *#people-panel-me-label
@@ -26,25 +26,14 @@
 
 /* Anerley */
 
-*.AnerleyTileAvatar
+*#anerley-tile
 {
-  border-image: url("avatar_frame.png") 4 4 4 4;
-  padding: 2 2 2 2;
+  padding: 8;
 }
 
-AnerleyTile, AnerleyCompactTile
+AnerleyTile *.AnerleyTileAvatar
 {
-  padding: 6;
-}
-
-AnerleyCompactTile
-{
-}
-
-AnerleyTile:hover,
-AnerleyCompactTile:hover
-{
-  border-image: url("tile-bg-hover.png") 4 4 4 4;
+  border-image: url("avatar-bg.png") 8;
 }
 
 AnerleyTile *.AnerleyTilePrimaryLabel
@@ -53,33 +42,20 @@ AnerleyTile *.AnerleyTilePrimaryLabel
   font-size: 14;
 }
 
-*#people-primary-action, *#people-secondary-action
+AnerleyTile *.AnerleyTilePresenceLabel
+{
+  font-family: "Droid Sans";
+  font-size: 13;
+  color: #3e3e3eff;
+}
+
+AnerleyCompactTile
 {
 }
 
-*#content-table
+AnerleyCompactTile:hover
 {
-  border-image: url('scroll-view-bin-bg.png') 10;
-  padding: 8;
-}
-
-*#active-content-table
-{
-  border-image: url('active-content-table-bg.png') 2;
-  padding: 8;
-}
-
-*#active-content-header
-{
-  border-image: url('active-conversations-header.png') 1;
-  padding: 8;
-}
-
-*#active-content-header-label
-{
-  font-family: "Open Sans";
-  font-size: 16;
-  color: #7e7e7eff;
+  border-image: url("tile-bg-hover.png") 4;
 }
 
 *.AnerleyCompactTileMessageCount
@@ -87,6 +63,17 @@ AnerleyTile *.AnerleyTilePrimaryLabel
   font-family: "Open Sans";
   color: white;
   font-size: 11;
-  border-image: url('unread-message-bubble-bg.png') 7 7 7 7;
+  border-image: url('unread-message-bubble-bg.png') 7;
+  padding: 3 7 3 7;
+}
+
+.closeButton {
+    -mx-content-image: url("../../style/switcher/closebutton-normal.png");
+}
+.closeButton:hover {
+    -mx-content-image: url("../../style/switcher/closebutton-hover.png");
+}
+.closeButton:active {
+    -mx-content-image: url("../../style/switcher/closebutton-pressed.png");
 }
 

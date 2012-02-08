@@ -34,9 +34,6 @@ G_DEFINE_TYPE (AnerleyTpItem, anerley_tp_item, ANERLEY_TYPE_ITEM)
 struct _AnerleyTpItemPrivate {
   FolksIndividual *contact;
 
-  GSList *channel_requests;
-  GSList *signal_connections;
-
   gchar *display_name;
   GLoadableIcon *avatar;
   gchar *presence_message;
@@ -92,21 +89,6 @@ anerley_tp_item_dispose (GObject *object)
   AnerleyTpItemPrivate *priv = GET_PRIVATE (object);
 
   anerley_tp_item_update_contact (item, NULL);
-
-  if (priv->channel_requests != NULL)
-  {
-    g_slist_foreach (priv->channel_requests, (GFunc) g_object_unref, NULL);
-    g_slist_free (priv->channel_requests);
-    priv->channel_requests = NULL;
-  }
-
-  if (priv->signal_connections != NULL)
-  {
-    g_slist_foreach (priv->signal_connections,
-                     (GFunc) tp_proxy_signal_connection_disconnect, NULL);
-    g_slist_free (priv->signal_connections);
-    priv->signal_connections = NULL;
-  }
 
   if (priv->pending_messages)
     {
@@ -242,6 +224,20 @@ anerley_tp_item_activate (AnerleyItem *item)
 }
 
 static void
+anerley_tp_item_close (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GHashTableIter iter;
+  gpointer key;
+
+  g_hash_table_iter_init (&iter, priv->pending_messages);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    {
+      tp_channel_destroy_async (key, NULL, NULL);
+    }
+}
+
+static void
 anerley_tp_item_class_init (AnerleyTpItemClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -264,6 +260,7 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->is_online = anerley_tp_item_is_online;
   item_class->get_unread_messages_count = anerley_tp_item_get_unread_messages_count;
   item_class->activate = anerley_tp_item_activate;
+  item_class->close = anerley_tp_item_close;
 
   pspec = g_param_spec_object ("contact",
                                "The contact",
@@ -278,9 +275,6 @@ anerley_tp_item_init (AnerleyTpItem *self)
 {
   AnerleyTpItemPrivate *priv = GET_PRIVATE_REAL (self);
   self->priv = priv;
-
-  priv->channel_requests = NULL;
-  priv->signal_connections = NULL;
 
   priv->pending_messages = g_hash_table_new_full (NULL, NULL,
                                                   g_object_unref, NULL);

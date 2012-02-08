@@ -164,3 +164,9 @@ anerley_item_activate (AnerleyItem *item)
 {
   return ANERLEY_ITEM_GET_CLASS (item)->activate (item);
 }
+
+void
+anerley_item_close (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->close (item);
+}

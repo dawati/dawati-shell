@@ -34,6 +34,7 @@ struct _AnerleyCompactTilePrivate {
   ClutterActor *contact_name_label;
   ClutterActor *presence_icon;
   ClutterActor *message_count_label;
+  ClutterActor *close_button;
 };
 
 enum
@@ -44,6 +45,16 @@ enum
 
 static void anerley_compact_tile_set_item (AnerleyCompactTile *tile,
                                            AnerleyItem        *item);
+
+
+static void
+_close_button_clicked (MxButton           *button,
+                       AnerleyCompactTile *self)
+{
+  AnerleyCompactTilePrivate *priv = GET_PRIVATE (self);
+
+  anerley_item_close (priv->item);
+}
 
 static void
 anerley_compact_tile_get_property (GObject    *object,
@@ -99,7 +110,7 @@ anerley_compact_tile_finalize (GObject *object)
   G_OBJECT_CLASS (anerley_compact_tile_parent_class)->finalize (object);
 }
 
-#define SPACING 8
+#define SPACING 10
 
 static void
 anerley_compact_tile_allocate (ClutterActor           *actor,
@@ -107,12 +118,9 @@ anerley_compact_tile_allocate (ClutterActor           *actor,
                                ClutterAllocationFlags  flags)
 {
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (actor);
-  ClutterActorBox icon_box, label_box, count_label_box;
+  ClutterActorBox icon_box, label_box, count_box, close_box;
   gfloat width, height;
-  gfloat icon_nat_w, icon_min_w, label_nat_w, label_min_w;
-  gfloat count_label_nat_w, count_label_min_w;
-  gfloat icon_nat_h, icon_min_h, label_nat_h, label_min_h;
-  gfloat count_label_nat_h, count_label_min_h;
+  gfloat nat_w, min_w, nat_h, min_h;
   MxPadding padding;
 
   CLUTTER_ACTOR_CLASS (anerley_compact_tile_parent_class)->allocate (actor,
@@ -124,42 +132,53 @@ anerley_compact_tile_allocate (ClutterActor           *actor,
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
 
+  /* Presence icon */
   clutter_actor_get_preferred_size (priv->presence_icon,
-                                    &icon_min_w,
-                                    &icon_min_h,
-                                    &icon_nat_w,
-                                    &icon_nat_h);
-
+                                    &min_w,
+                                    &min_h,
+                                    &nat_w,
+                                    &nat_h);
   icon_box.x1 = padding.left;
-  icon_box.x2 = icon_box.x1 + icon_nat_w;
-  icon_box.y1 = (gint)((height - icon_nat_h) / 2);
-  icon_box.y2 =  icon_box.y1 + icon_nat_h;
+  icon_box.x2 = icon_box.x1 + nat_w;
+  icon_box.y1 = (gint)((height - nat_h) / 2);
+  icon_box.y2 =  icon_box.y1 + nat_h;
   clutter_actor_allocate (priv->presence_icon, &icon_box, flags);
 
-  clutter_actor_get_preferred_size (priv->contact_name_label,
-                                    &label_min_w,
-                                    &label_min_h,
-                                    &label_nat_w,
-                                    &label_nat_h);
+  /* Close button */
+  clutter_actor_get_preferred_size (priv->close_button,
+                                    &min_w,
+                                    &min_h,
+                                    &nat_w,
+                                    &nat_h);
+  close_box.x1 = width - padding.right - nat_w;
+  close_box.x2 = close_box.x1 + nat_w;
+  close_box.y1 = (gint)((height - nat_h) / 2);
+  close_box.y2 =  close_box.y1 + nat_h;
+  clutter_actor_allocate (priv->close_button, &close_box, flags);
 
+  /* Count label */
   clutter_actor_get_preferred_size (priv->message_count_label,
-                                    &count_label_min_w,
-                                    &count_label_min_h,
-                                    &count_label_nat_w,
-                                    &count_label_nat_h);
+                                    &min_w,
+                                    &min_h,
+                                    &nat_w,
+                                    &nat_h);
+  count_box.x1 = close_box.x1 - SPACING - nat_w;
+  count_box.x2 = count_box.x1 + nat_w;
+  count_box.y1 = (gint)((height - nat_h) / 2);
+  count_box.y2 =  count_box.y1 + nat_h;
+  clutter_actor_allocate (priv->message_count_label, &count_box, flags);
 
+  /* Name label */
+  clutter_actor_get_preferred_size (priv->contact_name_label,
+                                    &min_w,
+                                    &min_h,
+                                    &nat_w,
+                                    &nat_h);
   label_box.x1 = icon_box.x2 + SPACING;
-  label_box.x2 = width - (SPACING + padding.right + count_label_nat_w);
-  label_box.y1 = (gint)((height - label_nat_h) / 2);
-  label_box.y2 = label_box.y1 + label_nat_h;
+  label_box.x2 = count_box.x1 - SPACING;
+  label_box.y1 = (gint)((height - nat_h) / 2);
+  label_box.y2 = label_box.y1 + nat_h;
   clutter_actor_allocate (priv->contact_name_label, &label_box, flags);
-
-  count_label_box.x1 = label_box.x2 + SPACING;
-  count_label_box.x2 = count_label_box.x1 + count_label_nat_w;
-  count_label_box.y1 = (gint)((height - count_label_nat_h) / 2);
-  count_label_box.y2 = count_label_box.y1 + count_label_nat_h;
-  clutter_actor_allocate (priv->message_count_label, &count_label_box, flags);
-
 }
 
 static void
@@ -171,7 +190,7 @@ anerley_compact_tile_get_preferred_width (ClutterActor *actor,
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (actor);
   MxPadding padding;
   gfloat icon_nat_w, icon_min_w, label_nat_w, label_min_w;
-  gfloat count_label_nat_w, count_label_min_w;
+  gfloat count_label_nat_w, count_label_min_w, close_nat_w, close_min_w;
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
@@ -187,17 +206,25 @@ anerley_compact_tile_get_preferred_width (ClutterActor *actor,
                                      for_height,
                                      &count_label_min_w,
                                      &count_label_nat_w);
+  clutter_actor_get_preferred_width (priv->close_button,
+                                     for_height,
+                                     &close_min_w,
+                                     &close_nat_w);
 
   if (min_width)
   {
-    *min_width = padding.left + icon_min_w + SPACING + label_min_w + SPACING + count_label_min_w + padding.right;
+    *min_width = padding.left + icon_min_w + SPACING + label_min_w + SPACING +
+                 count_label_min_w + SPACING + close_min_w + padding.right;
   }
 
   if (nat_width)
   {
-    *nat_width = padding.left + icon_nat_w + SPACING + label_nat_w + SPACING + count_label_nat_w + padding.right;
+    *nat_width = padding.left + icon_nat_w + SPACING + label_nat_w + SPACING +
+                 count_label_nat_w + SPACING + close_nat_w + padding.right;
   }
 }
+
+#define MAX4(a,b,c,d) MAX (MAX ((a), (b)), MAX ((c), (d)))
 
 static void
 anerley_compact_tile_get_preferred_height (ClutterActor *actor,
@@ -208,6 +235,7 @@ anerley_compact_tile_get_preferred_height (ClutterActor *actor,
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (actor);
   MxPadding padding;
   gfloat icon_nat_h, icon_min_h, label_nat_h, label_min_h;
+  gfloat count_nat_h, count_min_h, close_nat_h, close_min_h;
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
@@ -219,17 +247,23 @@ anerley_compact_tile_get_preferred_height (ClutterActor *actor,
                                       for_width,
                                       &label_min_h,
                                       &label_nat_h);
+  clutter_actor_get_preferred_height (priv->message_count_label,
+                                      for_width,
+                                      &count_min_h,
+                                      &count_nat_h);
+  clutter_actor_get_preferred_height (priv->close_button,
+                                      for_width,
+                                      &close_min_h,
+                                      &close_nat_h);
 
   if (min_height)
   {
-    *min_height = padding.top + MAX (label_min_h, icon_min_h) + padding.bottom;
-    g_debug (G_STRLOC ": min_height = %f", *min_height);
+    *min_height = padding.top + MAX4 (label_min_h, icon_min_h, count_min_h, close_min_h) + padding.bottom;
   }
 
   if (nat_height)
   {
-    *nat_height = padding.top + MAX (label_nat_h, icon_nat_h) + padding.bottom;
-    g_debug (G_STRLOC ": nat_height = %f", *nat_height);
+    *nat_height = padding.top + MAX4 (label_nat_h, icon_nat_h, count_nat_h, close_nat_h) + padding.bottom;
   }
 }
 
@@ -243,6 +277,7 @@ anerley_compact_tile_map (ClutterActor *actor)
   clutter_actor_map (priv->presence_icon);
   clutter_actor_map (priv->contact_name_label);
   clutter_actor_map (priv->message_count_label);
+  clutter_actor_map (priv->close_button);
 }
 
 static void
@@ -255,6 +290,7 @@ anerley_compact_tile_unmap (ClutterActor *actor)
   clutter_actor_unmap (priv->presence_icon);
   clutter_actor_unmap (priv->contact_name_label);
   clutter_actor_unmap (priv->message_count_label);
+  clutter_actor_unmap (priv->close_button);
 }
 
 static void
@@ -274,6 +310,9 @@ anerley_compact_tile_paint (ClutterActor *actor)
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->message_count_label))
     clutter_actor_paint (priv->message_count_label);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->close_button))
+    clutter_actor_paint (priv->close_button);
 }
 
 static void
@@ -292,6 +331,9 @@ anerley_compact_tile_pick (ClutterActor       *actor,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->message_count_label))
     clutter_actor_paint (priv->message_count_label);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->close_button))
+    clutter_actor_paint (priv->close_button);
 }
 
 static void
@@ -328,6 +370,7 @@ static void
 anerley_compact_tile_init (AnerleyCompactTile *self)
 {
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (self);
+  ClutterActor *icon;
 
   priv->contact_name_label = mx_label_new ();
   clutter_actor_set_parent (priv->contact_name_label,
@@ -340,13 +383,20 @@ anerley_compact_tile_init (AnerleyCompactTile *self)
   priv->message_count_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->message_count_label),
                                "AnerleyCompactTileMessageCount");
-  clutter_actor_set_size (priv->message_count_label, 20, 20);
   mx_label_set_x_align (MX_LABEL (priv->message_count_label),
                         MX_ALIGN_MIDDLE);
   mx_label_set_y_align (MX_LABEL (priv->message_count_label),
                         MX_ALIGN_MIDDLE);
   clutter_actor_set_parent (priv->message_count_label,
                             CLUTTER_ACTOR (self));
+
+  priv->close_button = mx_button_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "closeButton");
+  clutter_actor_set_parent (priv->close_button, CLUTTER_ACTOR (self));
+  g_signal_connect (priv->close_button,
+                    "clicked",
+                    (GCallback)_close_button_clicked,
+                    self);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 }
