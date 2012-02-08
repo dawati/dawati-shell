@@ -596,6 +596,7 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
   Window        leader_xwin;
 
   static Atom   atom__DAWATI = None;
+  static Atom   atom__MEEGO = None;
   static gint   old_screen_width = 0, old_screen_height = 0;
 
   /*
@@ -616,6 +617,8 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
 
   if (!atom__DAWATI)
     atom__DAWATI = XInternAtom (xdpy, "_DAWATI", False);
+  if (!atom__MEEGO)
+    atom__MEEGO = XInternAtom (xdpy, "_MEEGO", False);
 
   leader_xwin = meta_display_get_leader_window (display);
 
@@ -623,12 +626,18 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
     g_strdup_printf ("session-type=%s",
                      priv->netbook_mode ? "small-screen" : "bigger-screen");
 
-  g_debug ("Setting _DAWATI=%s", dawati_session);
+  g_debug ("Setting _DAWATI/_MEEGO=%s", dawati_session);
 
   meta_error_trap_push (display);
   XChangeProperty (xdpy,
                    leader_xwin,
                    atom__DAWATI,
+                   XA_STRING,
+                   8, PropModeReplace,
+                   (unsigned char*)dawati_session, strlen (dawati_session));
+  XChangeProperty (xdpy,
+                   leader_xwin,
+                   atom__MEEGO,
                    XA_STRING,
                    8, PropModeReplace,
                    (unsigned char*)dawati_session, strlen (dawati_session));
