@@ -110,8 +110,8 @@ main (int    argc,
 
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     people_panel = mnb_people_panel_new ();
-    clutter_actor_set_size ((ClutterActor *)people_panel, 1016, 600);
-    clutter_actor_set_size (stage, 1016, 600);
+    clutter_actor_set_size ((ClutterActor *)people_panel, 1024, 580);
+    clutter_actor_set_size (stage, 1024, 580);
     clutter_actor_show_all (stage);
   }
 

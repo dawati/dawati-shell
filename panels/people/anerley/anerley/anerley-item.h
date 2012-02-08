@@ -64,6 +64,7 @@ typedef struct {
   const gchar * (*get_sortable_name) (AnerleyItem *item);
   guint (*get_unread_messages_count) (AnerleyItem *item);
   void (*activate) (AnerleyItem *item);
+  void (*close) (AnerleyItem *item);
 } AnerleyItemClass;
 
 GType anerley_item_get_type (void);
@@ -83,6 +84,7 @@ void anerley_item_emit_presence_changed (AnerleyItem *item);
 void anerley_item_emit_unread_messages_changed (AnerleyItem *item);
 
 void anerley_item_activate (AnerleyItem *item);
+void anerley_item_close (AnerleyItem *item);
 
 G_END_DECLS
 
