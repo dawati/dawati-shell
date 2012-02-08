@@ -757,7 +757,8 @@ dawati_bt_shell_init_applet (DawatiBtShell *shell)
 static void
 dawati_bt_shell_init (DawatiBtShell *shell)
 {
-  ClutterActor *box, *label, *hbox, *button_box, *settings_button;
+  ClutterActor *box, *label, *active_label, *active_box, *hbox,
+               *button_box, *settings_button;
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
 
   priv->devices = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -798,10 +799,21 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                            "y-fill", TRUE,
                                            NULL);
 
+  active_box = mx_box_layout_new ();
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), active_box, -1);
+
+  /* TRANSLATORS: Label for bluetooth enable/disable toggle */
+  active_label = mx_label_new_with_text (_("Active"));
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (active_box), active_label, -1,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "x-align", MX_ALIGN_START,
+                                           NULL);
+
   priv->kill_toggle = mx_toggle_new ();
   priv->kill_handler = g_signal_connect (priv->kill_toggle, "notify::active",
                                          G_CALLBACK (_toggle_active_cb), shell);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->kill_toggle, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (active_box), priv->kill_toggle, -1);
 
   /* devices that are requesting something go here */
   priv->request_box = mx_box_layout_new ();
