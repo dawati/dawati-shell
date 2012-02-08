@@ -41,37 +41,31 @@ ResultSet.prototype = {
         this.request = request;
         this.sorting = sorting;
         this.uris = [];
+        this.tracker_uris = {};
         this._init_zeitgeist();
     },
 
 
     _get_valid_uris_from_events: function (events) {
-        let uris = []
+        let uris = [];
         for (let i=0; i < events.length; i++) {
             for (let j=0; j < events[i].subjects.length; j++) {
-                let uri = events[i].subjects[j].uri.replace('file://', '');
-                    uri = uri.replace(/\%20/g, ' ');
+                let uri = unescape(events[i].subjects[j].uri).replace('file://', '');
                 if (GLib.file_test(uri, GLib.FileTest.EXISTS))
-                    uris.push(uri);
+                    uris.push("file://"+escape(uri));
                 if (uris.length == MAX_RESULTS)
-                    break
+                    break;
             }
             if (uris.length == MAX_RESULTS)
-                break
+                break;
         }
         return uris;
     },
 
-    _init_zeitgeist_most_recent_callback: function (events) {
+    _init_zeitgeist_callback: function (events) {
         this.uris = this._get_valid_uris_from_events(events);
-
+        this._init_tracker();
         // TODO: get music with the following uris
-    },
-
-    _init_zeitgeist_most_popular_callback: function (events) {
-        this.uris = this._get_valid_uris_from_events(events);
-
-        //TODO: Do some proper ranking here
     },
 
     _init_zeitgeist: function () {
@@ -81,9 +75,9 @@ ResultSet.prototype = {
             Zeitgeist.findEvents([new Date().getTime() - 86400000*7, Zeitgeist.MAX_TIMESTAMP],
                                  [eventTemplate],
                                  Zeitgeist.StorageState.ANY,
-                                 100,
+                                 1000,
                                  this.sorting,
-                                 Lang.bind(this, this._init_zeitgeist_most_recent_callback));
+                                 Lang.bind(this, this._init_zeitgeist_callback));
         }
         else if (this.sorting == Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS) {
             let subjTemplate = new Zeitgeist.Subject ('', Semantic.NFO_AUDIO, '', '', '', '', '');
@@ -91,9 +85,9 @@ ResultSet.prototype = {
             Zeitgeist.findEvents([new Date().getTime() - 86400000*30, Zeitgeist.MAX_TIMESTAMP],
                                  [eventTemplate],
                                  Zeitgeist.StorageState.ANY,
-                                 100,
+                                 1000,
                                  this.sorting,
-                                 Lang.bind(this, this._init_zeitgeist_most_popular_callback));
+                                 Lang.bind(this, this._init_zeitgeist_callback));
         }
         else
         {
@@ -102,6 +96,23 @@ ResultSet.prototype = {
     },
 
     _init_tracker: function() {
+        if (this.request == null) {
+            let uris_string = "(";
+            for (let i=0; i<this.uris.length; i++){
+                uris_string = uris_string + "'" + this.uris[i] + "'";
+                if (i<this.uris.length-1){
+                    uris_string = uris_string + ", ";
+                }
+            }
+            uris_string = uris_string + ")";
+            this.request = "select" +
+                            " nie:url(?u)" +
+                            " nie:title(?u)" +
+                            " nmm:artistName(nmm:performer(?u)) " +
+                            " nmm:albumTitle(nmm:musicAlbum(?u))" +
+                            " where { ?u a nmm:MusicPiece; nie:url" +
+                            " ?url. FILTER (?url IN "+ uris_string +")}"
+        }
         log("Starting request : " + this.request);
         this.trk_connection = Tracker.SparqlConnection.get(null);
         this.trk_connection.query_async(this.request,
@@ -132,13 +143,24 @@ ResultSet.prototype = {
                 {
                     while (this.data_array.length > 1) {
                         let ldata = this.data_array.shift();
-                        let iter = this.store.append();
-                        DawatiPanel.mpl_audio_store_set(this.store, iter,
-                                                        ldata[0],
-                                                        ldata[1],
-                                                        ldata[2],
-                                                        ldata[3],
-                                                        ldata[4]);
+
+                        ldata0 = ldata[0];
+                        let ldata1 = "Unknown";
+                        if (ldata[1] != null && ldata[1] != "")
+                            ldata1 = ldata[1];
+                        let ldata2 = "Unknown";
+                        if (ldata[2] != null && ldata[2] != "")
+                            ldata2 = ldata[2];
+                        let ldata3 = "Unknown";
+                        if (ldata[3] != null && ldata[3] != "")
+                            ldata3 = ldata[3];
+                        let ldata4 = "Unknown";
+                        if (ldata[4] != null && ldata[4] != "")
+                            ldata4 = ldata[4];
+
+                        if (this.sorting == null)
+                            this.uris.push(ldata1);
+                        this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
                     }
                     this.data_array = new Array();
                 }
@@ -149,23 +171,45 @@ ResultSet.prototype = {
             if (this.data_array != null) {
                 while (this.data_array.length >= 1) {
                     let ldata = this.data_array.shift();
-                    let iter = this.store.append();
-                    DawatiPanel.mpl_audio_store_set(this.store, iter,
-                                                    ldata[0],
-                                                    ldata[1],
-                                                    ldata[2],
-                                                    ldata[3],
-                                                    ldata[4]);
+
+                    ldata0 = ldata[0];
+                    let ldata1 = "Unknown";
+                    if (ldata[1] != null && ldata[1] != "")
+                        ldata1 = ldata[1];
+                    let ldata2 = "Unknown";
+                    if (ldata[2] != null && ldata[2] != "")
+                        ldata2 = ldata[2];
+                    let ldata3 = "Unknown"
+                    if (ldata[3] != null && ldata[3] != "")
+                        ldata3 = ldata[3];
+                    let ldata4 = "Unknown"
+                    if (ldata[4] != null && ldata[4] != "")
+                        ldata4 = ldata[4];
+
+                    if (this.sorting == null)
+                        this.uris.push(ldata1);
+                    this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
                 }
             }
             this.data_array = new Array();
             log("loading done.");
+            for (let i=0; i < this.uris.length; i++) {
+                let track = this.tracker_uris[this.uris[i]];
+                if (track != undefined) {
+                    let iter = this.store.append();
+                    DawatiPanel.mpl_audio_store_set(this.store, iter,
+                                                        track[0],
+                                                        track[1],
+                                                        track[2],
+                                                        track[3],
+                                                        track[4]);
+                }
+            }
         }
     },
 
     _tracker_results: function(connection, result) {
         let cursor = connection.query_finish(result);
-
         cursor.next_async(null,
                           Lang.bind(this, this._tracker_process_item));
     }
@@ -189,6 +233,7 @@ AudioLibrary.prototype = {
 
         this.combo = new Mx.ComboBox();
         this.combo.append_text(_("Recently Added"));
+        this.combo.append_text(_("Recently Played"));
         this.combo.append_text(_("Favorites"));
         this.combo.append_text(_("Rediscover"));
         this.combo.connect('notify::index', Lang.bind(this, this._switched_model));
@@ -216,6 +261,8 @@ AudioLibrary.prototype = {
         this.listview_actor = new GtkClutter.Actor({ contents: scroll });
 
         this.results = new Array();
+
+
         this.results.push(new ResultSet("select" +
                                         " nie:url(?u)" +
                                         " nie:title(?u)" +
@@ -223,15 +270,9 @@ AudioLibrary.prototype = {
                                         " nmm:albumTitle(nmm:musicAlbum(?u))" +
                                         " where { ?u a nmm:MusicPiece }" +
                                         " ORDER BY DESC(nie:contentAccessed(?u))" +
-                                        " LIMIT 10", Zeitgeist.ResultType.MOST_RECENT_SUBJECTS));
-        this.results.push(new ResultSet("select" +
-                                        " nie:url(?u)" +
-                                        " nie:title(?u)" +
-                                        " nmm:artistName(nmm:performer(?u)) " +
-                                        " nmm:albumTitle(nmm:musicAlbum(?u))" +
-                                        " where { ?u a nmm:MusicPiece }" +
-                                        " ORDER BY ASC(nie:usageCounter(?u))" +
-                                        " LIMIT 50", Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS));
+                                        " LIMIT 10", null));
+        this.results.push(new ResultSet(null, Zeitgeist.ResultType.MOST_RECENT_SUBJECTS));
+        this.results.push(new ResultSet(null, Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS));
         this.results.push(new ResultSet("select" +
                                         " nie:url(?u)" +
                                         " nie:title(?u)" +
@@ -397,8 +438,7 @@ MprisPlayerProxy.prototype = {
 
     update_infos: function(scope, callback) {
         this.GetRemote('Metadata', Lang.bind(this, function(dict) {
-            if (dict != null)
-                this._update_metadatas(dict);
+            this._update_metadatas(dict);
         }));
         this.GetRemote('PlaybackStatus', Lang.bind(this, function(str) {
             this._update_status(str);
