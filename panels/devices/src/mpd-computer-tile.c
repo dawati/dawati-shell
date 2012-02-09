@@ -83,7 +83,7 @@ mpd_computer_tile_init (MpdComputerTile *self)
   bool               show_brightness_tile;
 
   /* Wifi */
-  label = mx_label_new_with_text (_("Wifi"));
+  label = mx_label_new_with_text (_("WiFi"));
   mx_table_add_actor_with_properties (MX_TABLE (self), label,
                                       0, 0,
                                       "x-expand", FALSE,
