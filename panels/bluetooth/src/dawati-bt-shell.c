@@ -624,7 +624,6 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   mx_widget_set_disabled (MX_WIDGET (priv->kill_toggle), disabled);
   */
   g_object_set (priv->info_label, "visible", showinfo, NULL);
-  g_object_set (priv->device_panelbox, "visible", priv->enabled, NULL);
   if (priv->enabled) {
     if (!clutter_actor_get_parent (priv->device_panelbox))
       mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content),
@@ -725,6 +724,10 @@ dawati_bt_shell_dispose (GObject *object)
   if (priv->devices)
     g_hash_table_unref (priv->devices);
   priv->devices = NULL;
+
+  if (priv->device_panelbox)
+    g_object_unref (priv->device_panelbox);
+  priv->device_panelbox = NULL;
 
   G_OBJECT_CLASS (dawati_bt_shell_parent_class)->dispose (object);
 }
