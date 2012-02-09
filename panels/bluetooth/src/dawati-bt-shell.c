@@ -787,33 +787,32 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                            "expand", TRUE,
                                            "x-fill", TRUE,
                                            "x-align", MX_ALIGN_START,
-                                           "y-fill", FALSE,
                                            NULL);
 
   box = mx_box_layout_new ();
+  clutter_actor_set_name (box, "bt-panel-content");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (shell),
-                                           box,
-                                           -1,
-                                           "expand", TRUE,
-                                           "y-fill", TRUE,
-                                           NULL);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), box, -1);
 
   active_box = mx_box_layout_new ();
   mx_box_layout_add_actor (MX_BOX_LAYOUT (box), active_box, -1);
 
   /* TRANSLATORS: Label for bluetooth enable/disable toggle */
   active_label = mx_label_new_with_text (_("Active"));
+  mx_stylable_set_style_class (MX_STYLABLE (active_label), "BtTitle");
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (active_box), active_label, -1,
                                            "expand", TRUE,
                                            "x-fill", TRUE,
                                            "x-align", MX_ALIGN_START,
+                                           "y-fill", FALSE,
+                                           "y-align", MX_ALIGN_MIDDLE,
                                            NULL);
 
   priv->kill_toggle = mx_toggle_new ();
   priv->kill_handler = g_signal_connect (priv->kill_toggle, "notify::active",
                                          G_CALLBACK (_toggle_active_cb), shell);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (active_box), priv->kill_toggle, -1);
+
 
   /* devices that are requesting something go here */
   priv->request_box = mx_box_layout_new ();
@@ -832,6 +831,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->device_panelbox, -1);
 
   priv->info_label = mx_label_new_with_text (_("Nothing connected"));
+  mx_stylable_set_style_class (MX_STYLABLE (priv->info_label), "BtTitle");
   clutter_actor_hide (priv->info_label);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->device_panelbox), priv->info_label, -1);
 
@@ -847,6 +847,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
   mx_box_layout_add_actor (MX_BOX_LAYOUT (box), hbox, -1);
 
   button_box = mx_box_layout_new ();
+  clutter_actor_set_name (button_box, "bt-panel-button-box");
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (button_box), TRUE);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (hbox), button_box, -1,
                                            "expand", TRUE,
@@ -880,11 +881,17 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                     (GBusNameVanishedCallback)_connman_vanished_cb,
                     shell, NULL);
 
-#if 0
+#ifdef TEST_WITH_BOGUS_DATA
+  g_debug ("TEST_WITH_BOGUS_DATA: Adding false devices & requests, "
+           "and setting Bluetooth available even if connman is not there");
+  /* Dummies for quick testing without bluetooth devices or connman */
   dawati_bt_shell_add_device (shell, "TestDeviceA", "a");
   dawati_bt_shell_add_device (shell, "TestDeviceB", "b");
-  dawati_bt_shell_add_request (shell, "TestDeviceE", "e", DAWATI_BT_REQUEST_TYPE_CONFIRM, "001234");
+  dawati_bt_shell_add_request (shell, "TestDeviceC", "c", DAWATI_BT_REQUEST_TYPE_PIN, NULL);
+  dawati_bt_shell_add_request (shell, "TestDeviceD", "d", DAWATI_BT_REQUEST_TYPE_CONFIRM, "001234");
   dawati_bt_shell_add_request (shell, "TestDeviceE", "e", DAWATI_BT_REQUEST_TYPE_AUTH, "0000111f-0000-1000-8000-00805f9b34fb");
+  priv->enabled = priv->available = TRUE;
+  dawati_bt_shell_update (shell);
 #endif
 }
 

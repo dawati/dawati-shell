@@ -341,7 +341,7 @@ dawati_bt_request_init (DawatiBtRequest *request)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (request),
                                  MX_ORIENTATION_VERTICAL);
-  mx_stylable_set_style_class (MX_STYLABLE (request), "contentPanel");
+  mx_stylable_set_style_class (MX_STYLABLE (request), "BtRequest");
 
   priv->request = DAWATI_BT_REQUEST_TYPE_PIN;
 
@@ -356,6 +356,7 @@ dawati_bt_request_init (DawatiBtRequest *request)
                                            NULL);
 
   priv->title = mx_label_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->title), "BtTitle");
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (title_box), priv->title, -1,
                                            "expand", TRUE,
                                            "x-fill", TRUE,
@@ -363,12 +364,15 @@ dawati_bt_request_init (DawatiBtRequest *request)
                                            NULL);
 
   close_btn = mx_button_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (close_btn), "BtCloseButton");
+  mx_bin_set_child (MX_BIN (close_btn), mx_icon_new ());
   mx_box_layout_add_actor (MX_BOX_LAYOUT (title_box), close_btn, -1);
   g_signal_connect (close_btn, "clicked",
                     G_CALLBACK (_close_clicked_cb), request);
 
 
   priv->request_label = mx_label_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->request_label), "BtLabel");
   mx_label_set_line_wrap (MX_LABEL (priv->request_label), TRUE);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), priv->request_label, -1,
                                            "expand", TRUE,

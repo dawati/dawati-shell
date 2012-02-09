@@ -6,6 +6,9 @@ dist_theme_DATA = \
 	icon-bluetooth-idle.png \
 	icon-bluetooth-connecting-highlight.png \
 	icon-bluetooth-connecting.png \
+	closebutton-normal.png \
+	closebutton-hover.png \
+	closebutton-pressed.png \
 	bluetooth-applet.css \
 	$(NULL)
 

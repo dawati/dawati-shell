@@ -176,7 +176,10 @@ dawati_bt_device_init (DawatiBtDevice *device)
   ClutterActor *button;
   DawatiBtDevicePrivate *priv = GET_PRIVATE (device);
 
+  mx_stylable_set_style_class (MX_STYLABLE (device), "BtDevice");
+
   priv->label = mx_label_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->label), "BtTitle");
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (device), priv->label, -1,
                                            "expand", TRUE,
                                            "x-fill", FALSE,
@@ -185,7 +188,9 @@ dawati_bt_device_init (DawatiBtDevice *device)
                                            "y-align", MX_ALIGN_MIDDLE,
                                            NULL);
 
-  button = mx_button_new_with_label ("X");
+  button = mx_button_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (button), "BtCloseButton");
+  mx_bin_set_child (MX_BIN (button), mx_icon_new ());
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_disconnect_clicked_cb), device);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (device), button, -1);

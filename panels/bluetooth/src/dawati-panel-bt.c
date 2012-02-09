@@ -41,16 +41,6 @@ stage_width_notify_cb (ClutterActor  *stage,
   clutter_actor_set_width (shell, clutter_actor_get_width (stage));
 }
 
-static void
-shell_height_notify_cb (ClutterActor  *shell,
-                        GParamSpec    *pspec,
-                        ClutterActor  *stage)
-{
-  clutter_actor_set_height (stage, clutter_actor_get_height (shell) + 140);
-}
-
-
-
 
 int
 main (int     argc,
@@ -87,16 +77,14 @@ main (int     argc,
   mpl_panel_clutter_init_lib (&argc, &argv);
   mpl_panel_clutter_load_base_style ();
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/bluetooth-panel.css", NULL);
+                           THEMEDIR "/bluetooth-applet.css", NULL);
 
   if (standalone) {
     stage = clutter_stage_get_default ();
     shell = dawati_bt_shell_new (NULL);
     g_signal_connect (stage, "notify::width",
                       G_CALLBACK (stage_width_notify_cb), shell);
-    g_signal_connect (shell, "notify::height",
-                      G_CALLBACK (shell_height_notify_cb), stage);
-    clutter_actor_set_size (stage, 450, -1);
+    clutter_actor_set_size (stage, 325, 620);
 
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
     
@@ -104,10 +92,11 @@ main (int     argc,
   } else {
     client = mpl_panel_clutter_new ("bluetooth",
                                     _("bluetooth"),
-                                    THEMEDIR "/bluetooth-panel.css",
+                                    THEMEDIR "/bluetooth-applet.css",
                                     "state-off",
                                     TRUE);
     shell = dawati_bt_shell_new (client);
+    clutter_actor_set_size (shell, 325, -1);
     mpl_panel_clutter_set_child (MPL_PANEL_CLUTTER (client), shell);
     mpl_panel_clutter_track_actor_height (MPL_PANEL_CLUTTER (client),
                                           shell);
