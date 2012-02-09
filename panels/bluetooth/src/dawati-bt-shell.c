@@ -50,6 +50,7 @@ struct _DawatiBtShellPrivate {
   ClutterActor *kill_toggle;
   gulong        kill_handler;
 
+  ClutterActor *content;
   ClutterActor *request_box;
   ClutterActor *device_panelbox;
   ClutterActor *device_box;
@@ -624,8 +625,28 @@ dawati_bt_shell_update (DawatiBtShell *shell)
   */
   g_object_set (priv->info_label, "visible", showinfo, NULL);
   g_object_set (priv->device_panelbox, "visible", priv->enabled, NULL);
-  g_object_set (priv->add_button, "visible", priv->enabled, NULL);
-  g_object_set (priv->send_button, "visible", priv->enabled, NULL);
+  if (priv->enabled) {
+    if (!clutter_actor_get_parent (priv->device_panelbox))
+      mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content),
+                               priv->device_panelbox,
+                               2);
+    clutter_actor_animate (priv->add_button,
+                           CLUTTER_LINEAR, 300, "opacity", 0xff,
+                           NULL);
+    clutter_actor_animate (priv->send_button,
+                           CLUTTER_LINEAR, 300, "opacity", 0xff,
+                           NULL);
+  } else {
+    if (clutter_actor_get_parent (priv->device_panelbox))
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->content),
+                                      priv->device_panelbox);
+    clutter_actor_animate (priv->add_button,
+                           CLUTTER_LINEAR, 300, "opacity", 0x00,
+                           NULL);
+    clutter_actor_animate (priv->send_button,
+                           CLUTTER_LINEAR, 300, "opacity", 0x00,
+                           NULL);
+  }
 
   if (priv->panel_client) {
     g_object_set (priv->kill_toggle, "disabled", FALSE, NULL);
@@ -757,7 +778,7 @@ dawati_bt_shell_init_applet (DawatiBtShell *shell)
 static void
 dawati_bt_shell_init (DawatiBtShell *shell)
 {
-  ClutterActor *box, *label, *active_label, *active_box, *hbox,
+  ClutterActor *label, *active_label, *active_box, *hbox,
                *button_box, *settings_button;
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
 
@@ -779,7 +800,6 @@ dawati_bt_shell_init (DawatiBtShell *shell)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (shell),
                                  MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (shell), TRUE);
 
   label = mx_label_new_with_text (_("Bluetooth"));
   mx_stylable_set_style_class (MX_STYLABLE (label), "titleBar");
@@ -789,13 +809,14 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                            "x-align", MX_ALIGN_START,
                                            NULL);
 
-  box = mx_box_layout_new ();
-  clutter_actor_set_name (box, "bt-panel-content");
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), box, -1);
+  priv->content = mx_box_layout_new ();
+  clutter_actor_set_name (priv->content, "bt-panel-content");
+  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->content), TRUE);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->content), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (shell), priv->content, -1);
 
   active_box = mx_box_layout_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), active_box, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content), active_box, -1);
 
   /* TRANSLATORS: Label for bluetooth enable/disable toggle */
   active_label = mx_label_new_with_text (_("Active"));
@@ -820,15 +841,14 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->request_box),
                                        TRUE);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->request_box, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content), priv->request_box, -1);
 
 
   /* connected devices go here */
-  priv->device_panelbox = mx_box_layout_new ();
+  priv->device_panelbox = g_object_ref (mx_box_layout_new ());
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->device_panelbox),
                                  MX_ORIENTATION_VERTICAL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->device_panelbox), "contentPanel");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), priv->device_panelbox, -1);
 
   priv->info_label = mx_label_new_with_text (_("Nothing connected"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->info_label), "BtTitle");
@@ -844,7 +864,7 @@ dawati_bt_shell_init (DawatiBtShell *shell)
 
   /* button row */
   hbox = mx_box_layout_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), hbox, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content), hbox, -1);
 
   button_box = mx_box_layout_new ();
   clutter_actor_set_name (button_box, "bt-panel-button-box");
@@ -856,21 +876,19 @@ dawati_bt_shell_init (DawatiBtShell *shell)
                                            NULL);
 
   priv->send_button = mx_button_new_with_label (_("Send file"));
-  clutter_actor_hide (priv->send_button);
   g_signal_connect (priv->send_button, "clicked",
                     G_CALLBACK (_send_clicked_cb), shell);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->send_button, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->send_button, 0);
 
   priv->add_button = mx_button_new_with_label (_("Add new"));
-  clutter_actor_hide (priv->add_button);
   g_signal_connect (priv->add_button, "clicked",
                     G_CALLBACK (_add_clicked_cb), shell);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->add_button, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), priv->add_button, 1);
 
   settings_button = mx_button_new_with_label (_("Settings"));
   g_signal_connect (settings_button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), shell);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), settings_button, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (button_box), settings_button, 2);
 
   dawati_bt_shell_init_applet (shell);
 
