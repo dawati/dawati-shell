@@ -1,3 +1,10 @@
+MnbToolbarApplet MxIcon {
+  -mx-content-image: url("icon-bluetooth-off.png");
+}
+MnbToolbarApplet:hover MxIcon, MnbToolbarApplet:active MxIcon, MnbToolbarApplet:checked MxIcon {
+  -mx-content-image: url("icon-bluetooth-off-highlight.png");
+}
+
 MnbToolbarApplet#state-off MxIcon {
   -mx-content-image: url("icon-bluetooth-off.png");
 }
