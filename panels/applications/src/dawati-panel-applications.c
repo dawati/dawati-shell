@@ -31,6 +31,7 @@
 #include <dawati-panel/mpl-panel-clutter.h>
 #include <dawati-panel/mpl-panel-common.h>
 #include "dawati-netbook-launcher.h"
+
 #include "config.h"
 
 static void

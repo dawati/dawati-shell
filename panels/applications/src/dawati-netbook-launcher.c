@@ -740,8 +740,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                                                             self);
       if (button)
         {
-          clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
-                                  CLUTTER_ACTOR (button), NULL);
           g_signal_connect (button, "activated",
                             G_CALLBACK (launcher_button_activated_cb),
                             self);
@@ -768,55 +766,10 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 }
 
 static void
-mnb_launcher_fill_plain (MnbLauncher  *self)
+_add_launchers_to_grid (gpointer button, gpointer apps_grid)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MnbLauncherTree *tree;
-  GList           *directories;
-  GList const     *directories_iter;
-
-  /* Build list of launchers in priv->launchers. */
-
-  tree = mnb_launcher_tree_create ();
-  directories = mnb_launcher_tree_list_entries (tree);
-  for (directories_iter = directories;
-       directories_iter != NULL;
-       directories_iter = directories_iter->next)
-    {
-      MnbLauncherDirectory *directory = (MnbLauncherDirectory *) directories_iter->data;
-      GList const *entries_iter;
-
-      for (entries_iter = directory->entries;
-           entries_iter != NULL;
-           entries_iter = entries_iter->next)
-        {
-          MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
-          MxWidget *button = launcher_button_create_from_entry (launcher,
-                                                                directory->name,
-                                                                priv->theme,
-                                                                self);
-          if (button)
-            {
-              g_signal_connect (button, "activated",
-                                G_CALLBACK (launcher_button_activated_cb),
-                                self);
-              g_signal_connect (button, "fav-toggled",
-                                G_CALLBACK (launcher_button_fav_toggled_cb),
-                                self);
-              priv->launchers = g_slist_prepend (priv->launchers, button);
-            }
-        }
-    }
-
-  /* Watch for changes in installed apps */
-
-  priv->monitor = mnb_launcher_tree_create_monitor (
-                        tree,
-                        (MnbLauncherMonitorFunction) mnb_launcher_monitor_cb,
-                        self);
-
-  mnb_launcher_tree_free_entries (directories);
-  mnb_launcher_tree_free (tree);
+  clutter_container_add_actor (CLUTTER_CONTAINER (apps_grid),
+                               CLUTTER_ACTOR (button));
 }
 
 static void
@@ -829,16 +782,20 @@ mnb_launcher_fill (MnbLauncher  *self)
   mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid), APPS_GRID_ROW_GAP);
 
-
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
                                priv->apps_grid);
 
   while (mnb_launcher_fill_category (self))
         ;
 
-      mnb_launcher_fill_plain (self);
+  /* Sort Alphabetically */
+  priv->launchers = g_slist_sort (priv->launchers,
+                                  (GCompareFunc) mnb_launcher_button_compare);
 
-  mnb_launcher_update_last_launched (self);
+  /* Add to grid */
+  g_slist_foreach (priv->launchers,
+                   (GFunc)_add_launchers_to_grid,
+                   priv->apps_grid);
 }
 
 static void
@@ -859,9 +816,6 @@ mnb_launcher_monitor_cb (MnbLauncherMonitor  *monitor,
   mnb_launcher_reset (self);
   mnb_launcher_fill (self);
 }
-
-
-
 
 static void
 _dispose (GObject *object)
@@ -1019,6 +973,7 @@ _filter_captured_event_cb (ClutterActor *actor,
               const gchar *command;
 
               command = mx_entry_get_text (MX_ENTRY (actor));
+
               if (command)
                 {
                   if (strlen (command) > 0)
@@ -1048,7 +1003,8 @@ _bookmakrs_changed_cb (MplAppBookmarkManager *manager,
   /* refresh the bookmarks list */
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  g_list_free (priv->bookmarks_list);
+  if (priv->bookmarks_list)
+    g_list_free (priv->bookmarks_list);
 
   priv->bookmarks_list = mpl_app_bookmark_manager_get_bookmarks (manager);
 }
@@ -1182,9 +1138,6 @@ _constructor (GType                  gtype,
   /* add cateogires boxes here */
   clutter_container_add_actor (CLUTTER_CONTAINER (cat_scroll),
                                priv->category_section);
-
-
-
 
   /*
    * Applications
