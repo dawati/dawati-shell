@@ -54,6 +54,11 @@ typedef struct {
   ClutterListModelClass parent_class;
 } AnerleyFeedModelClass;
 
+typedef enum {
+  ANERLEY_FEED_MODEL_SORT_METHOD_NAME,
+  ANERLEY_FEED_MODEL_SORT_METHOD_PRESENCE,
+} AnerleyFeedModelSortMethod;
+
 GType anerley_feed_model_get_type (void);
 
 ClutterModel *anerley_feed_model_new (AnerleyFeed *feed);
@@ -61,6 +66,8 @@ void anerley_feed_model_set_filter_text (AnerleyFeedModel *model,
                                          const gchar      *filter_text);
 void anerley_feed_model_set_show_offline (AnerleyFeedModel *model,
                                           gboolean          show_offline);
+void anerley_feed_model_set_sort_method (AnerleyFeedModel *model,
+                                         AnerleyFeedModelSortMethod method);
 G_END_DECLS
 
 #endif /* _ANERLEY_FEED_MODEL */

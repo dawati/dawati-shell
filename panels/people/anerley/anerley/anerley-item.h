@@ -26,6 +26,9 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
+#include <folks/folks.h>
+#include <telepathy-glib/telepathy-glib.h>
+
 G_BEGIN_DECLS
 
 #define ANERLEY_TYPE_ITEM anerley_item_get_type()
@@ -45,34 +48,26 @@ G_BEGIN_DECLS
 #define ANERLEY_ITEM_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), ANERLEY_TYPE_ITEM, AnerleyItemClass))
 
+typedef struct _AnerleyItemPrivate AnerleyItemPrivate;
+
 typedef struct {
   GObject parent;
+  AnerleyItemPrivate *priv;
 } AnerleyItem;
 
 typedef struct {
   GObjectClass parent_class;
-  void (*display_name_changed) (AnerleyItem *item);
-  void (*avatar_changed) (AnerleyItem *item);
-  void (*presence_changed) (AnerleyItem *item);
-  void (*unread_messages_changed) (AnerleyItem *item, guint unread);
-  const gchar * (*get_display_name) (AnerleyItem *item);
-  GLoadableIcon * (*get_avatar) (AnerleyItem *item);
-  const gchar * (*get_presence_status) (AnerleyItem *item);
-  const gchar * (*get_presence_message) (AnerleyItem *item);
-  gboolean (*is_im) (AnerleyItem *item);
-  gboolean (*is_online) (AnerleyItem *item);
-  const gchar * (*get_sortable_name) (AnerleyItem *item);
-  guint (*get_unread_messages_count) (AnerleyItem *item);
-  void (*activate) (AnerleyItem *item);
-  void (*close) (AnerleyItem *item);
 } AnerleyItemClass;
 
 GType anerley_item_get_type (void);
+
+AnerleyItem *anerley_item_new (FolksIndividual *contact);
 
 const gchar *anerley_item_get_display_name (AnerleyItem *item);
 GLoadableIcon *anerley_item_get_avatar (AnerleyItem *item);
 const gchar *anerley_item_get_presence_status (AnerleyItem *item);
 const gchar *anerley_item_get_presence_message (AnerleyItem *item);
+FolksPresenceType anerley_item_get_presence_type (AnerleyItem *item);
 gboolean anerley_item_is_im (AnerleyItem *item);
 gboolean anerley_item_is_online (AnerleyItem *item);
 const gchar *anerley_item_get_sortable_name (AnerleyItem *item);
@@ -85,6 +80,8 @@ void anerley_item_emit_unread_messages_changed (AnerleyItem *item);
 
 void anerley_item_activate (AnerleyItem *item);
 void anerley_item_close (AnerleyItem *item);
+void anerley_item_associate_channel (AnerleyItem *item,
+                                     TpTextChannel *channel);
 
 G_END_DECLS
 

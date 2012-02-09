@@ -30,7 +30,6 @@
 #include <anerley/anerley-tile.h>
 #include <anerley/anerley-compact-tile.h>
 #include <anerley/anerley-tp-monitor-feed.h>
-#include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-presence-chooser.h>
 #include <anerley/anerley-tp-user-avatar.h>
 
@@ -637,7 +636,11 @@ sort_by_index_changed_cb (MxComboBox     *combo,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   gint index = mx_combo_box_get_index (combo);
 
-  if (index == 4)
+  if (index == 1)
+    anerley_feed_model_set_sort_method (priv->model, ANERLEY_FEED_MODEL_SORT_METHOD_PRESENCE);
+  else if (index == 2)
+    anerley_feed_model_set_sort_method (priv->model, ANERLEY_FEED_MODEL_SORT_METHOD_NAME);
+  else if (index == 4)
     anerley_feed_model_set_show_offline (priv->model, FALSE);
   else if (index == 5)
     anerley_feed_model_set_show_offline (priv->model, TRUE);
@@ -650,7 +653,7 @@ create_sort_by_chooser (MnbPeoplePanel *self)
 
   priv->sort_by_chooser = mx_combo_box_new ();
   mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Sort by:"));
-  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Top contacts"));
+  mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Presence"));
   mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Name"));
   mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("Show:"));
   mx_combo_box_append_text (MX_COMBO_BOX (priv->sort_by_chooser), _("- Only online"));
@@ -665,6 +668,50 @@ create_sort_by_chooser (MnbPeoplePanel *self)
 }
 
 static void
+new_index_changed_cb (MxComboBox     *combo,
+                      GParamSpec     *pspec,
+                      MnbPeoplePanel *self)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
+  gint index = mx_combo_box_get_index (combo);
+  GDesktopAppInfo *app_info;
+  GError *error = NULL;
+  const gchar *args[3] = { NULL, };
+  const gchar *option;
+
+  if (index == 0)
+    option = "--new-contact";
+  else if (index == 1)
+    option = "--join-chatroom";
+  else
+    return;
+
+  app_info = g_desktop_app_info_new ("empathy.desktop");
+  args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
+  args[1] = option;
+  args[2] = NULL;
+
+  if (!g_spawn_async (NULL,
+                      (gchar **)args,
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
+  {
+    g_warning (G_STRLOC ": Error starting empathy: %s", error->message);
+    g_clear_error (&error);
+  } else
+  {
+    if (priv->panel_client)
+      mpl_panel_client_hide (priv->panel_client);
+  }
+
+  g_object_unref (app_info);
+}
+
+static void
 create_new_chooser (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
@@ -674,6 +721,11 @@ create_new_chooser (MnbPeoplePanel *self)
   mx_combo_box_append_text (MX_COMBO_BOX (priv->new_chooser), _("New group chat"));
 
   mx_combo_box_set_active_text (MX_COMBO_BOX (priv->new_chooser), _("New"));
+
+  g_signal_connect (priv->new_chooser,
+                    "notify::index",
+                    G_CALLBACK (new_index_changed_cb),
+                    self);
 }
 
 static void
@@ -697,10 +749,6 @@ create_search_entry (MnbPeoplePanel *self)
 
   priv->search_entry = mx_entry_new ();
   mx_entry_set_hint_text (MX_ENTRY (priv->search_entry), _("Search"));
-
-  /* FIXME: wtf we can't set from icon name??
-   * mx_entry_set_secondary_icon_from_file (priv->search_entry, "");
-   */
 
   g_signal_connect (priv->search_entry,
                     "notify::text",

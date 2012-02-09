@@ -23,7 +23,6 @@
 
 #include <anerley/anerley-feed.h>
 #include <anerley/anerley-item.h>
-#include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-tp-feed.h>
 #include <telepathy-glib/channel.h>
 #include <folks/folks-telepathy.h>
@@ -178,7 +177,7 @@ _observer_new_channel_cb (TpSimpleObserver           *observer,
   AnerleyTpMonitorFeed *self = ANERLEY_TP_MONITIOR_FEED (user_data);
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (user_data);
   TpChannel *channel;
-  AnerleyTpItem *item;
+  AnerleyItem *item;
   GList *added_items;
   TpContact *target;
   FolksIndividual *contact;
@@ -212,12 +211,12 @@ _observer_new_channel_cb (TpSimpleObserver           *observer,
   /* FIXME: Should take the individual from the aggregator */
   target = tp_channel_get_target_contact (channel);
   contact = empathy_create_individual_from_tp_contact (target);
-  item = anerley_tp_item_new (contact);
+  item = anerley_item_new (contact);
   g_hash_table_insert (priv->channels_to_items, g_object_ref (channel), item);
   g_object_unref (contact);
 
-  anerley_tp_item_associate_channel (ANERLEY_TP_ITEM (item),
-                                     TP_TEXT_CHANNEL (channel));
+  anerley_item_associate_channel (ANERLEY_ITEM (item),
+                                  TP_TEXT_CHANNEL (channel));
 
   g_signal_connect (channel, "invalidated",
                     G_CALLBACK (_channel_invalidated_cb),

@@ -38,6 +38,7 @@ struct _AnerleyFeedModelPrivate {
   AnerleyFeed *feed;
   gchar *filter_text;
   gboolean show_offline;
+  AnerleyFeedModelSortMethod sort_method;
 };
 
 enum
@@ -172,10 +173,10 @@ anerley_feed_model_class_init (AnerleyFeedModelClass *klass)
 }
 
 static gint
-_model_sort_func (ClutterModel *model,
-                  const GValue *a,
-                  const GValue *b,
-                  gpointer      userdata)
+_model_sort_func_name (ClutterModel *model,
+                       const GValue *a,
+                       const GValue *b,
+                       gpointer      userdata)
 {
   AnerleyItem *item_a;
   AnerleyItem *item_b;
@@ -190,6 +191,54 @@ _model_sort_func (ClutterModel *model,
   str_b = anerley_item_get_sortable_name (item_b);
 
   return g_utf8_collate (str_a, str_b);
+}
+
+static gint
+_model_sort_func_presence (ClutterModel *model,
+                           const GValue *a,
+                           const GValue *b,
+                           gpointer      userdata)
+{
+  AnerleyItem *item_a;
+  AnerleyItem *item_b;
+  TpConnectionPresenceType presence_a;
+  TpConnectionPresenceType presence_b;
+  gint ret_val;
+
+  item_a = g_value_get_object (a);
+  item_b = g_value_get_object (b);
+
+  /* TpConnectionPresenceType as exact same values than FolksPresenceType.... */
+  presence_a = (TpConnectionPresenceType) anerley_item_get_presence_type (item_a);
+  presence_b = (TpConnectionPresenceType) anerley_item_get_presence_type (item_b);
+
+  ret_val = -tp_connection_presence_type_cmp_availability (presence_a, presence_b);
+  if (ret_val == 0)
+    {
+      /* Fallback: compare by name */
+      ret_val = _model_sort_func_name (model, a, b, userdata);
+    }
+
+  return ret_val;
+}
+
+static gint
+_model_sort_func (ClutterModel *model,
+                  const GValue *a,
+                  const GValue *b,
+                  gpointer      userdata)
+{
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
+
+  switch (priv->sort_method)
+  {
+    case ANERLEY_FEED_MODEL_SORT_METHOD_NAME:
+      return _model_sort_func_name (model, a, b, userdata);
+    case ANERLEY_FEED_MODEL_SORT_METHOD_PRESENCE:
+      return _model_sort_func_presence (model, a, b, userdata);
+  }
+
+  return 0;
 }
 
 static gboolean
@@ -426,4 +475,18 @@ anerley_feed_model_set_show_offline (AnerleyFeedModel *model,
   priv->show_offline = show_offline;
 
   refilter_all (model);
+}
+
+void
+anerley_feed_model_set_sort_method (AnerleyFeedModel *model,
+                                    AnerleyFeedModelSortMethod method)
+{
+  AnerleyFeedModelPrivate *priv = GET_PRIVATE (model);
+
+  if (method == priv->sort_method)
+    return;
+
+  priv->sort_method = method;
+
+  clutter_model_resort (CLUTTER_MODEL (model));
 }

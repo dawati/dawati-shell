@@ -19,16 +19,11 @@
  *
  */
 
-#include <telepathy-glib/account.h>
-#include <telepathy-glib/contact.h>
-#include <telepathy-glib/connection.h>
-#include <telepathy-glib/channel.h>
-#include <telepathy-glib/interfaces.h>
+#include <telepathy-glib/telepathy-glib.h>
 
 #include "anerley-feed.h"
 #include "anerley-item.h"
 #include "anerley-tp-feed.h"
-#include "anerley-tp-item.h"
 
 static void feed_interface_init (gpointer g_iface, gpointer iface_data);
 G_DEFINE_TYPE_WITH_CODE (AnerleyTpFeed,
@@ -94,14 +89,14 @@ anerley_tp_feed_dispose (GObject *object)
   G_OBJECT_CLASS (anerley_tp_feed_parent_class)->dispose (object);
 }
 
-static AnerleyTpItem *
+static AnerleyItem *
 _make_item_from_contact (AnerleyTpFeed *feed,
                          FolksIndividual *contact)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
-  AnerleyTpItem *item;
+  AnerleyItem *item;
 
-  item = anerley_tp_item_new (contact);
+  item = anerley_item_new (contact);
 
   /* Move the ownership of the reference to the hash table */
   g_hash_table_insert (priv->ids_to_items,
@@ -135,7 +130,7 @@ aggregator_individuals_changed_cb (FolksIndividualAggregator *aggregator,
   while (gee_iterator_next (iter))
   {
     FolksIndividual *ind = gee_iterator_get (iter);
-    AnerleyTpItem *item;
+    AnerleyItem *item;
 
     if (ind == NULL)
       continue;
@@ -160,7 +155,7 @@ aggregator_individuals_changed_cb (FolksIndividualAggregator *aggregator,
   while (gee_iterator_next (iter))
   {
     FolksIndividual *ind = gee_iterator_get (iter);
-    AnerleyTpItem *item;
+    AnerleyItem *item;
 
     if (ind == NULL)
       continue;

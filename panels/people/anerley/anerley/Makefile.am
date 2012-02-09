@@ -12,7 +12,6 @@ BUILT_SOURCES = anerley-marshals.c anerley-marshals.h
 libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-feed.h \
 			anerley-item.h \
-			anerley-tp-item.h \
 			anerley-tile.h \
 			anerley-simple-grid-view.h \
 			anerley-feed-model.h \
@@ -26,7 +25,6 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-feed.c \
 			anerley-item.c \
-			anerley-tp-item.c \
 			anerley-tile.c \
 			anerley-simple-grid-view.c \
 			anerley-feed-model.c \

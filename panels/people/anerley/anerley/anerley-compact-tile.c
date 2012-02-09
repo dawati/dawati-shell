@@ -370,7 +370,6 @@ static void
 anerley_compact_tile_init (AnerleyCompactTile *self)
 {
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor *icon;
 
   priv->contact_name_label = mx_label_new ();
   clutter_actor_set_parent (priv->contact_name_label,
