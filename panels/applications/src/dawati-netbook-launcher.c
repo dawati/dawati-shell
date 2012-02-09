@@ -108,7 +108,6 @@ struct MnbLauncherPrivate_
   MplAppLaunchesStore     *app_launches;
   MnbLauncherMonitor      *monitor;
   GHashTable              *categories;
-  MxExpander              *first_expander;
   GSList                  *launchers;
   GList                   *bookmarks_list;
 

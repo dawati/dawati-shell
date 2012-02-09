@@ -20,7 +20,6 @@
  */
 
 #include "mnb-launcher-grid.h"
-#include "mnb-expander.h"
 
 static void mx_focusable_iface_init (MxFocusableIface *iface);
 
