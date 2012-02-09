@@ -18,12 +18,7 @@
 
     <method name="Unload"/>
 
-    <method name="SetPosition">
-      <arg name="x" type="i" direction="in"/>
-      <arg name="y" type="i" direction="in"/>
-    </method>
-
-    <method name="SetSize">
+    <method name="SetMaximumSize">
       <arg name="max_window_width" type="i" direction="in"/>
       <arg name="max_window_height" type="i" direction="in"/>
     </method>
@@ -50,7 +45,7 @@
       <arg name="state" type="i"/>
     </signal>
 
-    <signal name="SetSize">
+    <signal name="SizeChanged">
       <arg name="requested_window_width" type="i"/>
       <arg name="requested_window_height" type="i"/>
     </signal>

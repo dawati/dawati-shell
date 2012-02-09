@@ -203,7 +203,7 @@ main (int     argc,
                       G_CALLBACK (_shell_request_hide_cb), panel);
     g_signal_connect (shell, "request-show",
                       G_CALLBACK (_shell_request_show_cb), panel);
-    g_signal_connect (panel, "set-size",
+    g_signal_connect (panel, "size-changed",
                       G_CALLBACK (_panel_set_size_cb), shell);
     clutter_container_add_actor (CLUTTER_CONTAINER (panel), shell);
   }

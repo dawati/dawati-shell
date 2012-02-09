@@ -98,7 +98,7 @@ main (int    argc,
     people_panel = mnb_people_panel_new ();
     mnb_people_panel_set_panel_client (MNB_PEOPLE_PANEL (people_panel), client);
     g_signal_connect (client,
-                      "set-size",
+                      "size-changed",
                       (GCallback)_client_set_size_cb,
                       people_panel);
   } else {

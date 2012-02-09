@@ -171,7 +171,7 @@ main (int    argc,
 
     dawati_netbook_netpanel_set_panel_client (netpanel, client);
     g_signal_connect (client,
-                      "set-size",
+                      "size-changed",
                       (GCallback)_client_set_size_cb,
                       base_pane);
   } else {

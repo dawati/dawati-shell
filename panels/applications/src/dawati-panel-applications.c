@@ -260,7 +260,7 @@ main (int     argc,
 
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
-      g_signal_connect (panel, "set-size",
+      g_signal_connect (panel, "size-changed",
                         G_CALLBACK (panel_set_size_cb), launcher);
     }
 

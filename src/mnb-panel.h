@@ -71,12 +71,12 @@ typedef struct {
   const gchar * (*get_button_style)    (MnbPanel *panel);
   const gchar * (*get_tooltip)         (MnbPanel *panel);
 
-  void          (*set_size)            (MnbPanel *panel,
-                                        guint     width,
-                                        guint     height);
+  void          (*set_maximum_size)    (MnbPanel *panel,
+                                        gint      width,
+                                        gint      height);
   void          (*get_size)            (MnbPanel *panel,
-                                        guint    *width,
-                                        guint    *height);
+                                        gint     *width,
+                                        gint     *height);
   void          (*set_position)        (MnbPanel *panel,
                                         gint      x,
                                         gint      y);
@@ -116,12 +116,12 @@ const gchar *    mnb_panel_get_name          (MnbPanel *panel);
 const gchar *    mnb_panel_get_tooltip       (MnbPanel *panel);
 const gchar *    mnb_panel_get_stylesheet    (MnbPanel *panel);
 const gchar *    mnb_panel_get_button_style  (MnbPanel *panel);
-void             mnb_panel_set_size          (MnbPanel *panel,
-                                              guint     width,
-                                              guint     height);
+void             mnb_panel_set_maximum_size  (MnbPanel *panel,
+                                              gint      width,
+                                              gint      height);
 void             mnb_panel_get_size          (MnbPanel *panel,
-                                              guint    *width,
-                                              guint    *height);
+                                              gint     *width,
+                                              gint     *height);
 void             mnb_panel_set_position      (MnbPanel *panel,
                                               gint      x,
                                               gint      y);

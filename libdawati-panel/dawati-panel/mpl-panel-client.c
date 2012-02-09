@@ -74,7 +74,7 @@ enum
 enum
 {
   UNLOAD,
-  SET_SIZE,
+  SIZE_CHANGED,
   SET_POSITION,
   SHOW,
   SHOW_BEGIN,
@@ -311,7 +311,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
        */
       mpl_panel_client_hide (self);
 
-      g_signal_emit (self, signals[SET_SIZE], 0,
+      g_signal_emit (self, signals[SIZE_CHANGED], 0,
                      priv->real_width, priv->real_height);
       g_signal_emit (self, signals[SET_POSITION], 0, x, y);
 
@@ -343,10 +343,10 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
  * The functions required by the interface.
  */
 static gboolean
-mnb_panel_dbus_set_size (MplPanelClient  *self,
-                         gint             width,
-                         gint             height,
-                         GError         **error)
+mnb_panel_dbus_set_maximum_size (MplPanelClient  *self,
+                                 gint             width,
+                                 gint             height,
+                                 GError         **error)
 {
   MplPanelClientPrivate *priv = self->priv;
   gint old_width = priv->real_width;
@@ -385,7 +385,7 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
     priv->real_width = priv->max_width;
 
   if (old_width != priv->real_width || old_height != priv->real_height)
-    g_signal_emit (self, signals[SET_SIZE], 0,
+    g_signal_emit (self, signals[SIZE_CHANGED], 0,
                    priv->real_width, priv->real_height);
 
   return TRUE;
@@ -584,16 +584,17 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_TYPE_NONE, 0);
 
   /**
-   * MplPanelClient::set-size:
+   * MplPanelClient::size-changed:
    * @panel: panel that received the signal
    * @width: new width of the panel
    * @height: new height of the panel
    *
-   * The ::set-size signal is emitted when the panel is being resized; the
-   * actual resizing is implemented by the signal closure.
+   * The ::size-changed signal is emitted when the panel is being
+   * resized; the actual resizing is implemented by the signal
+   * closure.
    */
-  signals[SET_SIZE] =
-    g_signal_new ("set-size",
+  signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (MplPanelClientClass, set_size),
@@ -1004,7 +1005,7 @@ mpl_panel_client_ready_idle_cb (gpointer data)
 
   if (mpl_utils_panel_in_standalone_mode ())
     {
-      mnb_panel_dbus_set_size (panel, 1024, 600, NULL);
+      mnb_panel_dbus_set_maximum_size (panel, 1024, 580, NULL);
       mnb_panel_dbus_show (panel, NULL);
     }
 
@@ -1503,7 +1504,7 @@ mpl_panel_client_set_size_request (MplPanelClient *panel, gint width, gint heigh
     }
 
   if ((priv->real_width != old_width) || (priv->real_height != old_height))
-    g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
+    g_signal_emit (panel, signals[SIZE_CHANGED], 0, width, height);
 }
 
 /**

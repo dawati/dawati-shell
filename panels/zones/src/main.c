@@ -445,7 +445,7 @@ main (int argc, char **argv)
       data->stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
       g_signal_connect (client,
-                        "set-size",
+                        "size-changed",
                         (GCallback)_client_set_size_cb,
                         data);
 

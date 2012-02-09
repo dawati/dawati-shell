@@ -69,8 +69,8 @@ GType mnb_panel_oop_get_type (void);
 MnbPanelOop *mnb_panel_oop_new (const gchar  *dbus_name,
                                 gint          x,
                                 gint          y,
-                                guint         width,
-                                guint         height);
+                                gint          width,
+                                gint          height);
 
 void mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MetaWindowActor *mcw);
 

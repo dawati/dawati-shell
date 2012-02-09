@@ -274,7 +274,7 @@ mnb_panel_get_stylesheet (MnbPanel *panel)
 }
 
 void
-mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
+mnb_panel_set_maximum_size (MnbPanel *panel, gint width, gint height)
 {
   MnbPanelIface *iface;
 
@@ -282,17 +282,17 @@ mnb_panel_set_size (MnbPanel *panel, guint width, guint height)
 
   iface = MNB_PANEL_GET_IFACE (panel);
 
-  if (!iface->set_size)
+  if (!iface->set_maximum_size)
     {
-      MNB_PANEL_WARN_NOT_IMPLEMENTED (panel, "set_size");
+      MNB_PANEL_WARN_NOT_IMPLEMENTED (panel, "set_maximum_size");
       return;
     }
 
-  iface->set_size (panel, width, height);
+  iface->set_maximum_size (panel, width, height);
 }
 
 void
-mnb_panel_get_size (MnbPanel *panel, guint *width, guint *height)
+mnb_panel_get_size (MnbPanel *panel, gint *width, gint *height)
 {
   MnbPanelIface *iface;
 
@@ -461,7 +461,7 @@ mnb_panel_ensure_size (MnbPanel *panel)
   if (workspace)
     {
       gint  x, y;
-      guint w, h;
+      gint  w, h;
 
       meta_workspace_get_work_area_all_monitors (workspace, &r);
 
@@ -470,7 +470,7 @@ mnb_panel_ensure_size (MnbPanel *panel)
 
       if (r.height != h || r.width != w)
         {
-          mnb_panel_set_size (panel, r.width, r.height);
+          mnb_panel_set_maximum_size (panel, r.width, r.height);
         }
     }
 }

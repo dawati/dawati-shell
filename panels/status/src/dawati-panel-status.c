@@ -164,7 +164,7 @@ setup_panel (DawatiStatusPanel *status_panel)
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 
   g_signal_connect (panel,
-                    "set-size", G_CALLBACK (on_client_set_size),
+                    "size-changed", G_CALLBACK (on_client_set_size),
                     status);
 }
 

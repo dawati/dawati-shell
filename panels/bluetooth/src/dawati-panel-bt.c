@@ -41,7 +41,6 @@ stage_width_notify_cb (ClutterActor  *stage,
   clutter_actor_set_width (shell, clutter_actor_get_width (stage));
 }
 
-
 int
 main (int     argc,
       char  **argv)
@@ -87,7 +86,7 @@ main (int     argc,
     clutter_actor_set_size (stage, 325, 620);
 
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
-    
+
     clutter_actor_show (stage);
   } else {
     client = mpl_panel_clutter_new ("bluetooth",

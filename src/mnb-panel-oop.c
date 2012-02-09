@@ -71,7 +71,6 @@ static const gchar * mnb_panel_oop_get_name (MnbPanel *panel);
 static const gchar * mnb_panel_oop_get_tooltip (MnbPanel *panel);
 static const gchar * mnb_panel_oop_get_button_style (MnbPanel *panel);
 static const gchar  *mnb_panel_oop_get_stylesheet    (MnbPanel *panel);
-static void mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height);
 static void mnb_panel_oop_show (MnbPanel *panel);
 static void mnb_panel_oop_show_animate      (MnbPanelOop *panel);
 
@@ -116,8 +115,8 @@ struct _MnbPanelOopPrivate
 
   gint             x;
   gint             y;
-  guint            width;
-  guint            height;
+  gint             width;
+  gint             height;
 
   MetaWindowActor *mcw;
 
@@ -296,10 +295,10 @@ mnb_panel_oop_request_tooltip_cb (DBusGProxy  *proxy,
 }
 
 static void
-mnb_panel_oop_set_size_cb (DBusGProxy  *proxy,
-                           guint        width,
-                           guint        height,
-                           MnbPanelOop *panel)
+mnb_panel_oop_size_changed_cb (DBusGProxy  *proxy,
+                               gint         width,
+                               gint         height,
+                               MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
 
@@ -514,9 +513,7 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
 static void
 mnb_panel_oop_init (MnbPanelOop *self)
 {
-  MnbPanelOopPrivate *priv;
-
-  priv = self->priv = MNB_PANEL_OOP_GET_PRIVATE (self);
+  self->priv = MNB_PANEL_OOP_GET_PRIVATE (self);
 }
 
 /*
@@ -540,8 +537,8 @@ mnb_panel_oop_show_begin (MnbPanel *self)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (self)->priv;
 
   com_dawati_UX_Shell_Panel_show_begin_async (priv->proxy,
-                                             mnb_panel_oop_dbus_dumb_reply_cb,
-                                             NULL);
+                                              mnb_panel_oop_dbus_dumb_reply_cb,
+                                              NULL);
 }
 
 static void
@@ -552,8 +549,8 @@ mnb_panel_oop_show_completed (MnbPanel *self)
   mnb_panel_oop_focus (MNB_PANEL_OOP (self));
 
   com_dawati_UX_Shell_Panel_show_end_async (priv->proxy,
-                                           mnb_panel_oop_dbus_dumb_reply_cb,
-                                           NULL);
+                                            mnb_panel_oop_dbus_dumb_reply_cb,
+                                            NULL);
 }
 
 static void
@@ -570,8 +567,8 @@ mnb_panel_oop_hide_begin (MnbPanel *self)
     }
 
   com_dawati_UX_Shell_Panel_hide_begin_async (priv->proxy,
-                                             mnb_panel_oop_dbus_dumb_reply_cb,
-                                             NULL);
+                                              mnb_panel_oop_dbus_dumb_reply_cb,
+                                              NULL);
 }
 
 static void
@@ -588,8 +585,8 @@ mnb_panel_oop_hide_completed (MnbPanel *self)
     }
 
   com_dawati_UX_Shell_Panel_hide_end_async (priv->proxy,
-                                           mnb_panel_oop_dbus_dumb_reply_cb,
-                                           NULL);
+                                            mnb_panel_oop_dbus_dumb_reply_cb,
+                                            NULL);
 }
 
 static DBusGConnection *
@@ -632,8 +629,8 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
                                        gchar      *tooltip,
                                        gchar      *stylesheet,
                                        gchar      *button_style_id,
-                                       guint       window_width,
-                                       guint       window_height,
+                                       gint        window_width,
+                                       gint        window_height,
                                        GError     *error,
                                        gpointer    panel)
 {
@@ -769,11 +766,11 @@ mnb_panel_oop_init_owner (MnbPanelOop *panel)
    * tooltip and xid.
    */
   com_dawati_UX_Shell_Panel_init_panel_async (priv->proxy,
-                                          priv->x,
-                                          priv->y,
-                                          priv->width, priv->height,
-                                          mnb_panel_oop_init_panel_oop_reply_cb,
-                                          panel);
+                                              priv->x,
+                                              priv->y,
+                                              priv->width, priv->height,
+                                              mnb_panel_oop_init_panel_oop_reply_cb,
+                                              panel);
 }
 
 static void
@@ -881,10 +878,10 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
                                G_CALLBACK (mnb_panel_oop_request_modality_cb),
                                panel, NULL);
 
-  dbus_g_proxy_add_signal (proxy, "SetSize",
-                           G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
-  dbus_g_proxy_connect_signal (proxy, "SetSize",
-                               G_CALLBACK (mnb_panel_oop_set_size_cb),
+  dbus_g_proxy_add_signal (proxy, "SizeChanged",
+                           G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "SizeChanged",
+                               G_CALLBACK (mnb_panel_oop_size_changed_cb),
                                panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "SetPosition",
@@ -938,8 +935,8 @@ MnbPanelOop *
 mnb_panel_oop_new (const gchar  *dbus_name,
                    gint          x,
                    gint          y,
-                   guint         width,
-                   guint         height)
+                   gint          width,
+                   gint          height)
 {
   MnbPanelOop *panel = g_object_new (MNB_TYPE_PANEL_OOP,
                                      "dbus-name",     dbus_name,
@@ -1047,6 +1044,10 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MetaWindowActor *mcw)
   priv->mcw = mcw;
   priv->mapped = TRUE;
 
+  clutter_actor_set_x (CLUTTER_ACTOR (mcw), priv->x);
+  meta_window_move (meta_window_actor_get_meta_window (mcw),
+                    TRUE, priv->x, priv->y);
+
   g_signal_connect (mcw, "destroy",
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
                     panel);
@@ -1069,7 +1070,7 @@ mnb_panel_oop_is_ready (MnbPanelOop *panel)
 }
 
 static void
-mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
+mnb_panel_oop_set_maximum_size (MnbPanel *panel, gint width, gint height)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
   gfloat w, h;
@@ -1082,10 +1083,10 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
        */
       clutter_actor_get_size (CLUTTER_ACTOR (priv->mcw), &w, &h);
 
-      if ((guint)w != width)
+      if (w != width)
         w_change = TRUE;
 
-      if ((guint)h != height)
+      if (h != height)
         h_change = TRUE;
     }
   else
@@ -1099,9 +1100,9 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
   if (!w_change && !h_change)
     return;
 
-  com_dawati_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
-                                           mnb_panel_oop_dbus_dumb_reply_cb,
-                                           NULL);
+  com_dawati_UX_Shell_Panel_set_maximum_size_async (priv->proxy, width, height,
+                                                    mnb_panel_oop_dbus_dumb_reply_cb,
+                                                    NULL);
 }
 
 MetaWindowActor *
@@ -1267,26 +1268,12 @@ mnb_panel_oop_show_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 }
 
 static void
-mnb_toolbar_show_completed_cb (MnbToolbar *toolbar, gpointer data)
-{
-  MnbPanelOop *panel = data;
-
-  g_signal_handlers_disconnect_by_func (toolbar,
-                                        mnb_toolbar_show_completed_cb,
-                                        data);
-
-  mnb_panel_oop_show_animate (panel);
-}
-
-static void
 mnb_panel_oop_show_animate (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MetaPlugin         *plugin = dawati_netbook_get_plugin_singleton ();
   gfloat x, y;
   gfloat height, width;
   ClutterAnimation *animation;
-  ClutterActor *toolbar;
   ClutterActor *mcw = (ClutterActor*)priv->mcw;
 
   if (!mcw)
@@ -1307,36 +1294,6 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
     }
 
   mnb_panel_ensure_size ((MnbPanel*)panel);
-
-  /*
-   * Check the toolbar is visible, if not show it.
-   */
-  toolbar = dawati_netbook_get_toolbar (plugin);
-
-  if (!toolbar)
-    {
-      g_warning ("Cannot show Panel that is not associated with the Toolbar.");
-      return;
-    }
-
-  if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
-    {
-      /*
-       * We need to show the toolbar first, and only when it is visible
-       * to show this panel.
-       */
-      g_signal_connect (toolbar, "show-completed",
-                        G_CALLBACK (mnb_toolbar_show_completed_cb),
-                        panel);
-
-      /*
-       * Must hide the mcw, otherwise it becomes visible during the toolbar
-       * animation.
-       */
-      clutter_actor_hide (mcw);
-      mnb_toolbar_show ((MnbToolbar*)toolbar, MNB_SHOW_HIDE_BY_PANEL);
-      return;
-    }
 
   g_signal_emit_by_name (panel, "show-begin");
 
@@ -1385,7 +1342,6 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
                                 panel);
       priv->show_anim = animation;
     }
-
 }
 
 static void
@@ -1405,8 +1361,8 @@ mnb_panel_oop_show (MnbPanel *panel)
     }
 
   com_dawati_UX_Shell_Panel_show_async (priv->proxy,
-                                       mnb_panel_oop_dbus_dumb_reply_cb,
-                                       NULL);
+                                        mnb_panel_oop_dbus_dumb_reply_cb,
+                                        NULL);
 }
 
 static void
@@ -1515,12 +1471,12 @@ mnb_panel_oop_hide (MnbPanel *panel)
   priv->modal  = FALSE;
 
   com_dawati_UX_Shell_Panel_hide_async (priv->proxy,
-                                       mnb_panel_oop_dbus_dumb_reply_cb,
-                                       NULL);
+                                        mnb_panel_oop_dbus_dumb_reply_cb,
+                                        NULL);
 }
 
 static void
-mnb_panel_oop_get_size (MnbPanel *panel, guint *width, guint *height)
+mnb_panel_oop_get_size (MnbPanel *panel, gint *width, gint *height)
 {
   MnbPanelOopPrivate  *priv = MNB_PANEL_OOP (panel)->priv;
   gfloat               w = 0.0, h = 0.0;
@@ -1606,10 +1562,10 @@ mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
        */
       clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
 
-      if ((guint)xf != x)
+      if ((gint)xf != x)
         x_change = TRUE;
 
-      if ((guint)yf != y)
+      if ((gint)yf != y)
         y_change = TRUE;
     }
   else
@@ -1624,9 +1580,12 @@ mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
   if (!x_change && !y_change)
     return;
 
-  com_dawati_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
-                                            mnb_panel_oop_dbus_dumb_reply_cb,
-                                            NULL);
+  priv->x = x;
+  priv->y = y;
+
+  if (priv->mcw)
+    meta_window_move (meta_window_actor_get_meta_window (priv->mcw),
+                      TRUE, priv->x, priv->y);
 }
 
 static void
@@ -1637,6 +1596,11 @@ mnb_panel_oop_get_position (MnbPanel *panel, gint *x, gint *y)
 
   if (priv->mcw)
     clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
+  else
+    {
+      xf = priv->x;
+      yf = priv->y;
+    }
 
   if (x)
     *x = xf;
@@ -1660,7 +1624,7 @@ mnb_panel_iface_init (MnbPanelIface *iface)
   iface->get_button_style = mnb_panel_oop_get_button_style;
   iface->get_stylesheet   = mnb_panel_oop_get_stylesheet;
 
-  iface->set_size         = mnb_panel_oop_set_size;
+  iface->set_maximum_size = mnb_panel_oop_set_maximum_size;
   iface->get_size         = mnb_panel_oop_get_size;
   iface->set_position     = mnb_panel_oop_set_position;
   iface->get_position     = mnb_panel_oop_get_position;
@@ -1677,8 +1641,8 @@ mnb_panel_oop_unload (MnbPanelOop *panel)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
 
   com_dawati_UX_Shell_Panel_unload_async (priv->proxy,
-                                         mnb_panel_oop_dbus_dumb_reply_cb,
-                                         NULL);
+                                          mnb_panel_oop_dbus_dumb_reply_cb,
+                                          NULL);
 }
 
 void

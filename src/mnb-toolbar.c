@@ -197,6 +197,8 @@ struct _MnbToolbarPanel
   ClutterActor *button;
   MnbPanel   *panel;
 
+  gint        pos_x;
+
   MnbToolbarPanelType type;
 
   gboolean    windowless : 1; /* button-only panel */
@@ -205,6 +207,7 @@ struct _MnbToolbarPanel
   gboolean    pinged     : 1;
   gboolean    required   : 1;
   gboolean    failed     : 1;
+  gboolean    ready      : 1;
 };
 
 static void
@@ -612,6 +615,8 @@ mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
   animation = clutter_actor_animate (actor,
                                      CLUTTER_LINEAR, TOOLBAR_DROPDOWN_DURATION,
                                      "y", 0.0, NULL);
+  if (mnb_toolbar_get_active_panel (toolbar) != NULL)
+    mnb_toolbar_show_lowlight (toolbar);
 
   g_signal_connect (animation,
                     "completed",
@@ -1132,9 +1137,9 @@ mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   gint               screen_width, screen_height;
 
   meta_plugin_query_screen_size (priv->plugin,
-                                   &screen_width, &screen_height);
+                                 &screen_width, &screen_height);
 
-  clutter_actor_set_size (priv->panel_stub, screen_width, screen_height / 3);
+  clutter_actor_set_size (priv->panel_stub, 1024, screen_height / 3);
 
   /*
    * Set the waiting_for_panel_show flag, but without the timeout (since we
@@ -1522,13 +1527,59 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 }
 
 static void
+mnb_toolbar_set_panel_position (MnbToolbar *toolbar, MnbPanel *panel)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MnbToolbarPanel *tp;
+  gfloat x, y;
+  ClutterActorBox box;
+  gint center_x;
+  gint panel_x, panel_y;
+  gint panel_width, panel_height;
+
+  tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel);
+
+  if (!tp || !tp->button)
+    return;
+
+  clutter_actor_get_allocation_box (tp->button, &box);
+  clutter_actor_get_transformed_position (tp->button, &x, &y);
+
+  box.x2 = x + box.x2 - box.x1;
+  box.y2 = x + box.y2 - box.y1;
+  box.x1 = x;
+  box.y1 = y;
+
+  mnb_panel_get_position (tp->panel, &panel_x, &panel_y);
+  mnb_panel_get_size (tp->panel, &panel_width, &panel_height);
+
+  center_x = priv->old_screen_width / 2 - panel_width / 2;
+
+  if (box.x1 >= center_x)
+    {
+      if (box.x2 > (center_x + panel_width))
+        {
+          center_x += box.x2 - (center_x + panel_width);
+        }
+    }
+  else
+    {
+      center_x -= center_x - box.x1;
+    }
+
+  tp->pos_x = center_x;
+
+  mnb_panel_set_position (tp->panel, tp->pos_x, panel_y);
+}
+
+static void
 mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel_stub))
     {
-      guint  w, h;
+      gint  w, h;
       gfloat wf, hf;
 
       mnb_panel_get_size (panel, &w, &h);
@@ -1543,6 +1594,8 @@ mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
                              "height", hf,
                              NULL);
     }
+
+  mnb_toolbar_set_panel_position (toolbar, panel);
 
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
@@ -1589,6 +1642,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
 
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
+
 }
 
 static void
@@ -1598,7 +1652,7 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
   MetaPlugin        *plugin = priv->plugin;
   MnbPanel          *active;
 
-  dawati_netbook_stash_window_focus (plugin, CurrentTime);
+  dawati_netbook_unstash_window_focus (plugin, CurrentTime);
 
   if (!priv->waiting_for_panel_show &&
       (!(active = mnb_toolbar_get_active_panel (toolbar)) ||
@@ -1941,6 +1995,8 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
       if (!tp)
         return;
+
+      tp->ready = TRUE;
 
       button = tp->button;
 
@@ -2787,8 +2843,11 @@ mnb_toolbar_constructed (GObject *self)
     mx_bin_set_child (MX_BIN (panel_stub), spinner);
 
     clutter_actor_set_size (panel_stub,
-                            screen_width, screen_height / 3);
-    clutter_actor_set_position (panel_stub, 0, STATUSBAR_HEIGHT);
+                            1024,
+                            screen_height / 3);
+    clutter_actor_set_position (panel_stub,
+                                priv->old_screen_width / 2 - 512,
+                                STATUSBAR_HEIGHT);
     clutter_actor_set_name (panel_stub, "panel-stub");
     clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
     clutter_actor_hide (panel_stub);
@@ -3038,24 +3097,6 @@ mnb_toolbar_load_panel (MnbToolbar *toolbar, const gchar *panel_name)
   g_free (dbus_name);
 }
 
-/* returns NULL if no panel active */
-const gchar *
-mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
-{
-  MnbToolbarPrivate *priv  = toolbar->priv;
-  GList             *l;
-
-  for (l = priv->panels; l; l = l->next)
-    {
-      MnbToolbarPanel *tp = l->data;
-
-      if (tp && tp->panel && mnb_panel_is_mapped (tp->panel))
-        return tp->name;
-    }
-
-  return NULL;
-}
-
 /* Are we animating in */
 gboolean
 mnb_toolbar_in_show_transition (MnbToolbar *toolbar)
@@ -3187,6 +3228,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   gint               screen_width, screen_height;
   gboolean           netbook_mode;
   gint               width = priv->old_screen_width;
+  GList             *panel;
 
   netbook_mode = dawati_netbook_use_netbook_mode (priv->plugin);
 
@@ -3268,6 +3310,24 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
+
+  /* Resize panels */
+  clutter_actor_set_x (priv->panel_stub,
+                       priv->old_screen_width / 2 -
+                       clutter_actor_get_width (priv->panel_stub) / 2);
+
+  for (panel = priv->panels; panel != NULL; panel = panel->next)
+    {
+      MnbToolbarPanel *tp = (MnbToolbarPanel *) panel->data;
+
+      if (tp->windowless || tp->unloaded || tp->failed)
+        continue;
+
+      if (tp->ready)
+        mnb_panel_set_maximum_size (tp->panel,
+                                    priv->old_screen_width,
+                                    priv->old_screen_height);
+    }
 }
 
 static void
@@ -3461,9 +3521,6 @@ mnb_toolbar_get_active_panel (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   GList             *l;
-
-  if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
-    return NULL;
 
   for (l = priv->panels; l; l = l->next)
     {

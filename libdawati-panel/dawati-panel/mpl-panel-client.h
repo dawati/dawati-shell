@@ -69,7 +69,7 @@ struct _MplPanelClient
 /**
  * MplPanelClientClass:
  * @unload: signal closure for the #MplPanelClient::unload signal
- * @set_size: signal closure for the #MplPanelClient::set-size signal
+ * @set_size: signal closure for the #MplPanelClient::size-changed signal
  * @set_position: signal closure for the #MplPanelClient::set-position signal
  * @show: signal closure for the #MplPanelClient::show signal
  * @show_begin: signal closure for the #MplPanelClient::show_begin signal

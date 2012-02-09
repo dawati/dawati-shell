@@ -48,21 +48,12 @@
 #include <config.h>
 
 static void
-stage_width_notify_cb (ClutterActor  *stage,
-                       GParamSpec    *pspec,
-                       ClutterActor  *shell)
+_client_set_size_cb (MplPanelClient *client,
+                     guint           width,
+                     guint           height,
+                     ClutterActor   *shell)
 {
-  guint width = clutter_actor_get_width (stage);
-  clutter_actor_set_width (shell, width);
-}
-
-static void
-stage_height_notify_cb (ClutterActor  *stage,
-                        GParamSpec    *pspec,
-                        ClutterActor  *shell)
-{
-  guint height = clutter_actor_get_height (stage);
-  clutter_actor_set_height (shell, height);
+  clutter_actor_set_size (shell, width, height);
 }
 
 static void
@@ -125,12 +116,10 @@ main (int    argc,
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_shell_new ();
+    g_signal_connect (client, "size-changed",
+                      G_CALLBACK (_client_set_size_cb), datetime);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
 
-    g_signal_connect (stage, "notify::width",
-                      G_CALLBACK (stage_width_notify_cb), datetime);
-    g_signal_connect (stage, "notify::height",
-                      G_CALLBACK (stage_height_notify_cb), datetime);
     g_signal_connect (datetime,
 		      "activated",
 		      (GCallback)_client_activated_cb,

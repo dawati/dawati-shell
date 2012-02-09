@@ -143,13 +143,8 @@ static gboolean
 alt_tab_initial_timeout_cb (gpointer data)
 {
   struct alt_tab_show_complete_data *alt_data = data;
-  ClutterActor              *stage;
-  Window                     xwin;
   MnbAlttabOverlayPrivate   *priv = alt_data->overlay->priv;
   MetaPlugin                *plugin = dawati_netbook_get_plugin_singleton ();
-
-  stage = meta_get_stage_for_screen (alt_data->screen);
-  xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   priv->waiting_for_timeout = FALSE;
 

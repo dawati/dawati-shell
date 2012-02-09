@@ -148,7 +148,7 @@ main (int    argc,
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                  (ClutterActor *)grid_view);
     g_signal_connect (client,
-                      "set-size",
+                      "size-changed",
                       (GCallback)_client_set_size_cb,
                       grid_view);
 

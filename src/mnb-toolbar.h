@@ -97,8 +97,6 @@ void mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
 void mnb_toolbar_unload_panel (MnbToolbar *toolbar, const gchar *panel_name);
 void mnb_toolbar_load_panel   (MnbToolbar *toolbar, const gchar *panel_name);
 
-const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
-
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
 void mnb_toolbar_set_disabled (MnbToolbar *toolbar, gboolean disabled);
