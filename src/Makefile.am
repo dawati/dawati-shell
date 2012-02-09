@@ -10,7 +10,7 @@ AM_CFLAGS = \
 	$(MUTTER_PLUGIN_CFLAGS) \
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)\" \
+	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" \
 	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" \
 	-I$(top_srcdir)/libdawati-panel
 

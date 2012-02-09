@@ -12,7 +12,7 @@ desktopfiles_in_files = \
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
-themedir = $(DAWATI_THEME_DIR)
+themedir = $(DAWATI_RUNTIME_THEME_DIR)
 dist_theme_DATA = \
 	theme/dawati-toolbar-properties.css
 

@@ -88,6 +88,17 @@ PKG_CHECK_MODULES(LIBMPL,
                   $GTK_DEPS
                   $MX_DEPS)
 
+AC_ARG_WITH([style],
+            [AS_HELP_STRING([--with-style], [])],
+            [style=$withval],
+            [style=$PACKAGE])
+
+DAWATI_RUNTIME_THEME_DIR="${datadir}/${style}/theme"
+AC_SUBST([DAWATI_RUNTIME_THEME_DIR])
+
+DAWATI_RUNTIME_STYLE_DIR="${datadir}/${style}/style"
+AC_SUBST([DAWATI_RUNTIME_STYLE_DIR])
+
 DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([DAWATI_THEME_DIR])
 
