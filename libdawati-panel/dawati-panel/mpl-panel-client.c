@@ -1482,7 +1482,7 @@ mpl_panel_client_set_size_request (MplPanelClient *panel, gint width, gint heigh
     {
       if (height <= priv->max_height)
         {
-          priv->real_width = height;
+          priv->real_height = height;
         }
       else
         g_warning ("Panel requested height %d which is grater than maximum "
