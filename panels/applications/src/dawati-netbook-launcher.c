@@ -41,15 +41,15 @@
 #include <dawati-panel/mpl-content-pane.h>
 
 #include "dawati-netbook-launcher.h"
-#include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
+#include "mnb-launcher-running.h"
 
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S    2
 
-#define FAV_PANE_WIDTH  302.0
+#define CAT_PANE_WIDTH  302.0
 #define FILTER_WIDTH    277.0
 
 #define APPS_GRID_COLUMN_GAP   18
@@ -110,6 +110,7 @@ struct MnbLauncherPrivate_
   GHashTable              *categories;
   GSList                  *launchers;
   GList                   *bookmarks_list;
+  MnbLauncherRunning      *running;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
@@ -306,13 +307,6 @@ mnb_launcher_cancel_search (MnbLauncher     *self)
 static void
 _destroy_cat_children_cb (ClutterActor *actor, gpointer data)
 {
-  /* We don't want to destroy the "All" or "Fav" category as this will
-   * always be valid.
-   */
-  if (g_strcmp0 (clutter_actor_get_name (actor), "all") == 0 ||
-      g_strcmp0 (clutter_actor_get_name (actor), "fav") == 0)
-    return;
-
   clutter_actor_destroy (actor);
 }
 
@@ -451,9 +445,6 @@ mnb_launcher_filter_cb (MnbLauncher *self)
   return FALSE;
 }
 
-
-
-
 static void
 _filter_text_notify_cb (MxEntry     *filter,
                         GParamSpec  *pspec,
@@ -504,6 +495,66 @@ mnb_launcher_show_favourites (MnbLauncher *self, gboolean show)
     }
 }
 
+static void
+mnb_launcher_show_running (MnbLauncher *self, gboolean show)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  GSList *iter = NULL;
+  GList *current_iter, *current = NULL;
+
+  /* Hide non current */
+  current = mnb_launcher_running_get_running (priv->running);
+
+  for (iter = priv->launchers; iter; iter = iter->next)
+    {
+      if (show)
+        {
+          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+          const gchar *executable;
+          gboolean found = FALSE;
+
+          executable = mnb_launcher_button_get_executable (button);
+
+          for (current_iter = current;
+               current_iter;
+               current_iter = current_iter->next)
+            {
+              if (g_strcmp0 (executable, (gchar *)current_iter->data) == 0)
+                found = TRUE;
+            }
+
+          if (found == TRUE)
+            clutter_actor_show (CLUTTER_ACTOR (button));
+          else
+            clutter_actor_hide (CLUTTER_ACTOR (button));
+        }
+      else
+        {
+          clutter_actor_show (CLUTTER_ACTOR (iter->data));
+        }
+    }
+
+  g_list_free (current);
+}
+
+static void
+_running_changed_cb (MnbLauncherRunning *running,
+                     MnbLauncher        *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  MxButton *active_button;
+
+  active_button = mx_button_group_get_active_button (priv->category_group);
+
+  if (!active_button)
+    return;
+
+  if (g_strcmp0 (mx_button_get_label (active_button), "current") == 0)
+    {
+      /* refresh the running applications */
+      mnb_launcher_show_running (self, TRUE);
+    }
+}
 
 
 static void
@@ -521,6 +572,12 @@ _category_button_toggled_cb (ClutterActor *button,
   if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "fav") == 0)
     {
       mnb_launcher_show_favourites (self, toggled_on);
+      return;
+    }
+
+  if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "current") == 0)
+    {
+      mnb_launcher_show_running (self, toggled_on);
       return;
     }
 
@@ -600,18 +657,14 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
 
   /* special case "All" */
   if (g_strcmp0 (text, "all") == 0)
-    {
-      clutter_actor_set_name (box, "all");
-      text = _("All");
-    }
+    text = _("All");
 
   /* special case "Favourites" */
   if (g_strcmp0 (text, "fav") == 0)
-    {
-      clutter_actor_set_name (box, "fav");
-      mx_stylable_set_style_class (MX_STYLABLE (box), "fav");
-      text = _("Favourites");
-    }
+    text = _("Favourites");
+
+  if (g_strcmp0 (text, "current") == 0)
+    text = _("Running applications");
 
   label = mx_label_new_with_text (text);
   clutter_actor_set_reactive (label, TRUE);
@@ -834,6 +887,12 @@ _dispose (GObject *object)
       priv->bookmarks_list = NULL;
     }
 
+  if (priv->running)
+    {
+      g_object_unref (priv->running);
+      priv->running = NULL;
+    }
+
 
   mnb_launcher_reset (self);
 
@@ -1015,6 +1074,7 @@ _constructor (GType                  gtype,
   ClutterActor  *pane;
   ClutterActor  *label;
   ClutterActor  *cat_scroll;
+  ClutterActor  *static_categories;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
@@ -1042,7 +1102,7 @@ _constructor (GType                  gtype,
   pane = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (pane),
                                  MX_ORIENTATION_VERTICAL);
-  clutter_actor_set_width (pane, FAV_PANE_WIDTH);
+  clutter_actor_set_width (pane, CAT_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (pane), 10);
   mx_stylable_set_style_class (MX_STYLABLE (pane), "contentPanel");
@@ -1063,13 +1123,20 @@ _constructor (GType                  gtype,
                     G_CALLBACK (_search_entry_clear_clicked_cb), self);
    */
 
+
+  /* Current running */
+
+  priv->running = mnb_launcher_running_new ();
+  g_signal_connect (priv->running, "changed",
+                    G_CALLBACK (_running_changed_cb), self);
+
   clutter_actor_set_width (priv->filter, FILTER_WIDTH);
   g_signal_connect (priv->filter, "captured-event",
                     G_CALLBACK (_filter_captured_event_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->filter);
 
 
-  /* category section */
+  /* Auto category section e.g. "Accessories, Internet etc */
   priv->category_section = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->category_section),
                                  MX_ORIENTATION_VERTICAL);
@@ -1078,11 +1145,27 @@ _constructor (GType                  gtype,
   mx_stylable_set_style_class (MX_STYLABLE (priv->category_section),
                                "category-section");
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
-                               mnb_launcher_category_button_new (self, "all"));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->category_section),
+  /* This is the container for "All", "Current running etc" */
+  static_categories = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (static_categories),
+                                 MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (static_categories),
+                             8);
+
+  mx_stylable_set_style_class (MX_STYLABLE (static_categories),
+                               "static-categories-section");
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
+                               mnb_launcher_category_button_new (self, "all"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
                                mnb_launcher_category_button_new (self, "fav"));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
+                               mnb_launcher_category_button_new (self,
+                                                                 "current"));
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (pane), static_categories);
 
   cat_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (cat_scroll, "fav-pane-content");

@@ -17,6 +17,8 @@ dawati_panel_applications_SOURCES = \
 	mnb-launcher-application.c \
 	mnb-launcher-application.h \
 	mnb-launcher-button.c \
+	mnb-launcher-running.c \
+	mnb-launcher-running.h \
 	mnb-launcher-button.h \
 	mnb-launcher-grid.c \
 	mnb-launcher-grid.h \

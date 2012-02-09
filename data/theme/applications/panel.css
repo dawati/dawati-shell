@@ -17,8 +17,8 @@ MnbLauncher {
 }
 
 /* Fav category */
-MxBoxLayout.fav {
-  padding: 0 0 10 0;
+MxBoxLayout.static-categories-section {
+  padding: 10 0 10 5;
   border-image: url("category-divider.png") 0 0 1;
 }
 

@@ -250,8 +250,8 @@ AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                gconf-2.0
                                $GTK_DEPS
                                $MX_DEPS
-                               libgnome-menu-3.0])
-
+                               libgnome-menu-3.0
+                               libwnck-3.0])
 # Bluetooth
 AS_DAWATI_PANEL(bluetooth, [$MX_DEPS
                             libnotify
