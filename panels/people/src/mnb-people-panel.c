@@ -676,7 +676,7 @@ new_index_changed_cb (MxComboBox     *combo,
   gint index = mx_combo_box_get_index (combo);
   GDesktopAppInfo *app_info;
   GError *error = NULL;
-  const gchar *args[3] = { NULL, };
+  const gchar *args[4] = { NULL, };
   const gchar *option;
 
   if (index == 0)
@@ -688,8 +688,9 @@ new_index_changed_cb (MxComboBox     *combo,
 
   app_info = g_desktop_app_info_new ("empathy.desktop");
   args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
-  args[1] = option;
-  args[2] = NULL;
+  args[1] = "--start-hidden";
+  args[2] = option;
+  args[3] = NULL;
 
   if (!g_spawn_async (NULL,
                       (gchar **)args,
