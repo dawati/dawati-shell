@@ -13,207 +13,16 @@ const GtkClutter = imports.gi.GtkClutter;
 const Pango = imports.gi.Pango;
 const Mx = imports.gi.Mx;
 const DawatiPanel = imports.gi.DawatiPanel;
-const Tracker = imports.gi.Tracker;
 const DBus = imports.dbus;
 const Mainloop = imports.mainloop;
 const Path = imports.path;
 const Zeitgeist = imports.zeitgeist;
-const Semantic = imports.semantic;
+const Tracker = imports.trackerResultSet;
 
 Gettext.textdomain("dawati-shell");
 Gettext.bindtextdomain("dawati-shell", Path.LOCALE_DIR);
 
 const _ = Gettext.gettext;
-
-const MAX_RESULTS = 50;
-
-//
-// Result set: Model a tracker query
-//
-
-function ResultSet(request, sorting) {
-    this._init(request, sorting);
-}
-
-ResultSet.prototype = {
-    _init: function(request, sorting) {
-        this.store = DawatiPanel.mpl_create_audio_store();
-        this.request = request;
-        this.sorting = sorting;
-        this.uris = [];
-        this.tracker_uris = {};
-        this._init_zeitgeist();
-    },
-
-
-    _get_valid_uris_from_events: function (events) {
-        let uris = [];
-        for (let i=0; i < events.length; i++) {
-            for (let j=0; j < events[i].subjects.length; j++) {
-                let uri = unescape(events[i].subjects[j].uri).replace('file://', '');
-                if (GLib.file_test(uri, GLib.FileTest.EXISTS))
-                    uris.push("file://"+escape(uri));
-                if (uris.length == MAX_RESULTS)
-                    break;
-            }
-            if (uris.length == MAX_RESULTS)
-                break;
-        }
-        return uris;
-    },
-
-    _init_zeitgeist_callback: function (events) {
-        this.uris = this._get_valid_uris_from_events(events);
-        this._init_tracker();
-        // TODO: get music with the following uris
-    },
-
-    _init_zeitgeist: function () {
-        if (this.sorting == Zeitgeist.ResultType.MOST_RECENT_SUBJECTS) {
-            let subjTemplate = new Zeitgeist.Subject ('', Semantic.NFO_AUDIO, '', '', '', '', '');
-            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
-            Zeitgeist.findEvents([new Date().getTime() - 86400000*7, Zeitgeist.MAX_TIMESTAMP],
-                                 [eventTemplate],
-                                 Zeitgeist.StorageState.ANY,
-                                 1000,
-                                 this.sorting,
-                                 Lang.bind(this, this._init_zeitgeist_callback));
-        }
-        else if (this.sorting == Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS) {
-            let subjTemplate = new Zeitgeist.Subject ('', Semantic.NFO_AUDIO, '', '', '', '', '');
-            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
-            Zeitgeist.findEvents([new Date().getTime() - 86400000*30, Zeitgeist.MAX_TIMESTAMP],
-                                 [eventTemplate],
-                                 Zeitgeist.StorageState.ANY,
-                                 1000,
-                                 this.sorting,
-                                 Lang.bind(this, this._init_zeitgeist_callback));
-        }
-        else
-        {
-            this._init_tracker();
-        }
-    },
-
-    _init_tracker: function() {
-        if (this.request == null) {
-            let uris_string = "(";
-            for (let i=0; i<this.uris.length; i++){
-                uris_string = uris_string + "'" + this.uris[i] + "'";
-                if (i<this.uris.length-1){
-                    uris_string = uris_string + ", ";
-                }
-            }
-            uris_string = uris_string + ")";
-            this.request = "select" +
-                            " nie:url(?u)" +
-                            " nie:title(?u)" +
-                            " nmm:artistName(nmm:performer(?u)) " +
-                            " nmm:albumTitle(nmm:musicAlbum(?u))" +
-                            " where { ?u a nmm:MusicPiece; nie:url" +
-                            " ?url. FILTER (?url IN "+ uris_string +")}"
-        }
-        log("Starting request : " + this.request);
-        this.trk_connection = Tracker.SparqlConnection.get(null);
-        this.trk_connection.query_async(this.request,
-                                        null,
-                                        Lang.bind(this, this._tracker_results));
-    },
-
-    _tracker_process_item: function(cursor, result) {
-        if (cursor.next_finish(result)) {
-            // Batching results
-            if (this.data_array == null || this.data_array.length == 0)
-            {
-                this.data_array = new Array();
-                this.data_array[this.data_array.length] = ["",
-                                                           cursor.get_string(0, null)[0],
-                                                           cursor.get_string(1, null)[0],
-                                                           cursor.get_string(2, null)[0],
-                                                           cursor.get_string(3, null)[0]];
-            } else {
-                if (this.data_array.length < 50) {
-                    this.data_array.push(["",
-                                          cursor.get_string(0, null)[0],
-                                          cursor.get_string(1, null)[0],
-                                          cursor.get_string(2, null)[0],
-                                          cursor.get_string(3, null)[0]]);
-                }
-                else
-                {
-                    while (this.data_array.length > 1) {
-                        let ldata = this.data_array.shift();
-
-                        ldata0 = ldata[0];
-                        let ldata1 = "Unknown";
-                        if (ldata[1] != null && ldata[1] != "")
-                            ldata1 = ldata[1];
-                        let ldata2 = "Unknown";
-                        if (ldata[2] != null && ldata[2] != "")
-                            ldata2 = ldata[2];
-                        let ldata3 = "Unknown";
-                        if (ldata[3] != null && ldata[3] != "")
-                            ldata3 = ldata[3];
-                        let ldata4 = "Unknown";
-                        if (ldata[4] != null && ldata[4] != "")
-                            ldata4 = ldata[4];
-
-                        if (this.sorting == null)
-                            this.uris.push(ldata1);
-                        this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
-                    }
-                    this.data_array = new Array();
-                }
-            }
-            cursor.next_async(null,
-                              Lang.bind(this, this._tracker_process_item));
-        } else {
-            if (this.data_array != null) {
-                while (this.data_array.length >= 1) {
-                    let ldata = this.data_array.shift();
-
-                    ldata0 = ldata[0];
-                    let ldata1 = "Unknown";
-                    if (ldata[1] != null && ldata[1] != "")
-                        ldata1 = ldata[1];
-                    let ldata2 = "Unknown";
-                    if (ldata[2] != null && ldata[2] != "")
-                        ldata2 = ldata[2];
-                    let ldata3 = "Unknown"
-                    if (ldata[3] != null && ldata[3] != "")
-                        ldata3 = ldata[3];
-                    let ldata4 = "Unknown"
-                    if (ldata[4] != null && ldata[4] != "")
-                        ldata4 = ldata[4];
-
-                    if (this.sorting == null)
-                        this.uris.push(ldata1);
-                    this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
-                }
-            }
-            this.data_array = new Array();
-            log("loading done.");
-            for (let i=0; i < this.uris.length; i++) {
-                let track = this.tracker_uris[this.uris[i]];
-                if (track != undefined) {
-                    let iter = this.store.append();
-                    DawatiPanel.mpl_audio_store_set(this.store, iter,
-                                                        track[0],
-                                                        track[1],
-                                                        track[2],
-                                                        track[3],
-                                                        track[4]);
-                }
-            }
-        }
-    },
-
-    _tracker_results: function(connection, result) {
-        let cursor = connection.query_finish(result);
-        cursor.next_async(null,
-                          Lang.bind(this, this._tracker_process_item));
-    }
-};
 
 //
 // Audio Library
@@ -263,24 +72,24 @@ AudioLibrary.prototype = {
         this.results = new Array();
 
 
-        this.results.push(new ResultSet("select" +
-                                        " nie:url(?u)" +
-                                        " nie:title(?u)" +
-                                        " nmm:artistName(nmm:performer(?u)) " +
-                                        " nmm:albumTitle(nmm:musicAlbum(?u))" +
-                                        " where { ?u a nmm:MusicPiece }" +
-                                        " ORDER BY DESC(nie:contentAccessed(?u))" +
-                                        " LIMIT 10", null));
-        this.results.push(new ResultSet(null, Zeitgeist.ResultType.MOST_RECENT_SUBJECTS));
-        this.results.push(new ResultSet(null, Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS));
-        this.results.push(new ResultSet("select" +
-                                        " nie:url(?u)" +
-                                        " nie:title(?u)" +
-                                        " nmm:artistName(nmm:performer(?u)) " +
-                                        " nmm:albumTitle(nmm:musicAlbum(?u))" +
-                                        " where { ?u a nmm:MusicPiece }" +
-                                        " ORDER BY ASC(tracker:added(?u))" +
-                                        " LIMIT 50", null));
+        this.results.push(new Tracker.ResultSet("select" +
+                                                " nie:url(?u)" +
+                                                " nie:title(?u)" +
+                                                " nmm:artistName(nmm:performer(?u)) " +
+                                                " nmm:albumTitle(nmm:musicAlbum(?u))" +
+                                                " where { ?u a nmm:MusicPiece }" +
+                                                " ORDER BY DESC(nie:contentAccessed(?u))" +
+                                                " LIMIT 10"));
+        this.results.push(new Zeitgeist.ResultSet(Zeitgeist.ResultType.MOST_RECENT_SUBJECTS));
+        this.results.push(new Zeitgeist.ResultSet(Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS));
+        this.results.push(new Tracker.ResultSet("select" +
+                                                " nie:url(?u)" +
+                                                " nie:title(?u)" +
+                                                " nmm:artistName(nmm:performer(?u)) " +
+                                                " nmm:albumTitle(nmm:musicAlbum(?u))" +
+                                                " where { ?u a nmm:MusicPiece }" +
+                                               " ORDER BY ASC(tracker:added(?u))" +
+                                                " LIMIT 50"));
 
         // GtkIconView setup
         // let icon = new Gtk.CellRendererPixbuf();
@@ -438,7 +247,8 @@ MprisPlayerProxy.prototype = {
 
     update_infos: function(scope, callback) {
         this.GetRemote('Metadata', Lang.bind(this, function(dict) {
-            this._update_metadatas(dict);
+            if (dict != NULL)
+                this._update_metadatas(dict);
         }));
         this.GetRemote('PlaybackStatus', Lang.bind(this, function(str) {
             this._update_status(str);
@@ -506,7 +316,7 @@ MprisProxy.prototype = {
                                    'org.gnome.Rhythmbox3',
                                    '/org/mpris/MediaPlayer2');
         DBus.session.watch_name('org.gnome.Rhythmbox3',
-                                true, // do (not) launch a name-owner if none exists
+                                false, // do (not) launch a name-owner if none exists
                                 null,
                                 null);
     }

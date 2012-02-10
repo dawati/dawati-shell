@@ -4,8 +4,9 @@ libexec_SCRIPTS = dawati-panel-music
 
 jsfilesdir = $(PANEL_MUSIC_DATADIR)
 dist_jsfiles_DATA = main.js \
-	zeitgeist.js \
 	semantic.js \
+	trackerResultSet.js \
+	zeitgeist.js \
 	$(NULL)
 
 desktopfiles_in_files = dawati-panel-music.desktop.in

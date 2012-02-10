@@ -22,6 +22,11 @@
  */
 
 const DBus = imports.dbus;
+const Lang = imports.lang;
+const DawatiPanel = imports.gi.DawatiPanel;
+const Tracker = imports.gi.Tracker;
+const Semantic = imports.semantic;
+
 
 const SIG_EVENT = '(asaasay)';
 const MAX_TIMESTAMP = 9999999999999;
@@ -277,3 +282,188 @@ function fullTextSearch(query, eventTemplates, callback) {
                         MAX_RESULTS,
                         ResultType.MOST_POPULAR_SUBJECTS, handler);
 }
+
+//
+// Result set: Model a zeitgeist query
+//
+
+function ResultSet(sorting) {
+    this._init(sorting);
+}
+
+ResultSet.prototype = {
+    _init: function(sorting) {
+        this.store = DawatiPanel.mpl_create_audio_store();
+        this.sorting = sorting;
+        this.uris = [];
+        this.tracker_uris = {};
+        this._init_zeitgeist();
+    },
+
+
+    _get_valid_uris_from_events: function (events) {
+        let uris = [];
+        for (let i=0; i < events.length; i++) {
+            for (let j=0; j < events[i].subjects.length; j++) {
+                let uri = unescape(events[i].subjects[j].uri).replace('file://', '');
+                if (GLib.file_test(uri, GLib.FileTest.EXISTS))
+                    uris.push("file://"+escape(uri));
+                if (uris.length == MAX_RESULTS)
+                    break;
+            }
+            if (uris.length == MAX_RESULTS)
+                break;
+        }
+        return uris;
+    },
+
+    _init_zeitgeist_callback: function (events) {
+        this.uris = this._get_valid_uris_from_events(events);
+        this._init_tracker();
+        // TODO: get music with the following uris
+    },
+
+    _init_zeitgeist: function () {
+        if (this.sorting == Zeitgeist.ResultType.MOST_RECENT_SUBJECTS) {
+            let subjTemplate = new Zeitgeist.Subject('', Semantic.NFO_AUDIO, '', '', '', '', '');
+            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
+            Zeitgeist.findEvents([new Date().getTime() - 86400000*7, Zeitgeist.MAX_TIMESTAMP],
+                                 [eventTemplate],
+                                 Zeitgeist.StorageState.ANY,
+                                 1000,
+                                 this.sorting,
+                                 Lang.bind(this, this._init_zeitgeist_callback));
+        }
+        else if (this.sorting == Zeitgeist.ResultType.MOST_POPULAR_SUBJECTS) {
+            let subjTemplate = new Zeitgeist.Subject('', Semantic.NFO_AUDIO, '', '', '', '', '');
+            let eventTemplate = new Zeitgeist.Event('', '', '', [subjTemplate], []);
+            Zeitgeist.findEvents([new Date().getTime() - 86400000*30, Zeitgeist.MAX_TIMESTAMP],
+                                 [eventTemplate],
+                                 Zeitgeist.StorageState.ANY,
+                                 1000,
+                                 this.sorting,
+                                 Lang.bind(this, this._init_zeitgeist_callback));
+        }
+        else
+        {
+            this._init_tracker();
+        }
+    },
+
+    _init_tracker: function() {
+        let uris_string = "(";
+        for (let i=0; i<this.uris.length; i++){
+            uris_string = uris_string + "'" + this.uris[i] + "'";
+            if (i<this.uris.length-1){
+                uris_string = uris_string + ", ";
+            }
+        }
+        uris_string = uris_string + ")";
+        let request = "select" +
+            " nie:url(?u)" +
+            " nie:title(?u)" +
+            " nmm:artistName(nmm:performer(?u)) " +
+            " nmm:albumTitle(nmm:musicAlbum(?u))" +
+            " where { ?u a nmm:MusicPiece; nie:url" +
+            " ?url. FILTER (?url IN "+ uris_string +")}"
+        log("Starting request : " + request);
+        this.trk_connection = Tracker.SparqlConnection.get(null);
+        this.trk_connection.query_async(request,
+                                        null,
+                                        Lang.bind(this, this._tracker_results));
+    },
+
+    _tracker_process_item: function(cursor, result) {
+        if (cursor.next_finish(result)) {
+            // Batching results
+            if (this.data_array == null || this.data_array.length == 0)
+            {
+                this.data_array = new Array();
+                this.data_array[this.data_array.length] = ["",
+                                                           cursor.get_string(0, null)[0],
+                                                           cursor.get_string(1, null)[0],
+                                                           cursor.get_string(2, null)[0],
+                                                           cursor.get_string(3, null)[0]];
+            } else {
+                if (this.data_array.length < 50) {
+                    this.data_array.push(["",
+                                          cursor.get_string(0, null)[0],
+                                          cursor.get_string(1, null)[0],
+                                          cursor.get_string(2, null)[0],
+                                          cursor.get_string(3, null)[0]]);
+                }
+                else
+                {
+                    while (this.data_array.length > 1) {
+                        let ldata = this.data_array.shift();
+
+                        ldata0 = ldata[0];
+                        let ldata1 = "Unknown";
+                        if (ldata[1] != null && ldata[1] != "")
+                            ldata1 = ldata[1];
+                        let ldata2 = "Unknown";
+                        if (ldata[2] != null && ldata[2] != "")
+                            ldata2 = ldata[2];
+                        let ldata3 = "Unknown";
+                        if (ldata[3] != null && ldata[3] != "")
+                            ldata3 = ldata[3];
+                        let ldata4 = "Unknown";
+                        if (ldata[4] != null && ldata[4] != "")
+                            ldata4 = ldata[4];
+
+                        if (this.sorting == null)
+                            this.uris.push(ldata1);
+                        this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
+                    }
+                    this.data_array = new Array();
+                }
+            }
+            cursor.next_async(null,
+                              Lang.bind(this, this._tracker_process_item));
+        } else {
+            if (this.data_array != null) {
+                while (this.data_array.length >= 1) {
+                    let ldata = this.data_array.shift();
+
+                    ldata0 = ldata[0];
+                    let ldata1 = "Unknown";
+                    if (ldata[1] != null && ldata[1] != "")
+                        ldata1 = ldata[1];
+                    let ldata2 = "Unknown";
+                    if (ldata[2] != null && ldata[2] != "")
+                        ldata2 = ldata[2];
+                    let ldata3 = "Unknown"
+                    if (ldata[3] != null && ldata[3] != "")
+                        ldata3 = ldata[3];
+                    let ldata4 = "Unknown"
+                    if (ldata[4] != null && ldata[4] != "")
+                        ldata4 = ldata[4];
+
+                    if (this.sorting == null)
+                        this.uris.push(ldata1);
+                    this.tracker_uris[ldata1] = [ldata0, ldata1, ldata2, ldata3, ldata4];
+                }
+            }
+            this.data_array = new Array();
+            log("loading done.");
+            for (let i=0; i < this.uris.length; i++) {
+                let track = this.tracker_uris[this.uris[i]];
+                if (track != undefined) {
+                    let iter = this.store.append();
+                    DawatiPanel.mpl_audio_store_set(this.store, iter,
+                                                    track[0],
+                                                    track[1],
+                                                    track[2],
+                                                    track[3],
+                                                    track[4]);
+                }
+            }
+        }
+    },
+
+    _tracker_results: function(connection, result) {
+        let cursor = connection.query_finish(result);
+        cursor.next_async(null,
+                          Lang.bind(this, this._tracker_process_item));
+    }
+};
