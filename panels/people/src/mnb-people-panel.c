@@ -124,12 +124,11 @@ _settings_launcher_button_clicked_cb (MxButton *button,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   GDesktopAppInfo *app_info;
   GError *error = NULL;
-  const gchar *args[3] = { NULL, };
+  const gchar *args[2] = { NULL, };
 
-  app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+  app_info = g_desktop_app_info_new ("empathy-accounts.desktop");
   args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
-  args[1] = "empathy-accounts.desktop";
-  args[2] = NULL;
+  args[1] = NULL;
 
   if (!g_spawn_async (NULL,
                       (gchar **)args,
@@ -140,7 +139,7 @@ _settings_launcher_button_clicked_cb (MxButton *button,
                       NULL,
                       &error))
   {
-    g_warning (G_STRLOC ": Error starting control center for empathy-accounts: %s",
+    g_warning (G_STRLOC ": Error starting empathy-accounts: %s",
                error->message);
     g_clear_error (&error);
   } else {
@@ -455,18 +454,20 @@ _update_placeholder_state (MnbPeoplePanel *self)
   gint accounts_online = 0;
   GList *accounts;
 
-  accounts = tp_account_manager_get_valid_accounts (priv->am);
-  while (accounts != NULL)
+  for (accounts = tp_account_manager_get_valid_accounts (priv->am);
+       accounts != NULL;
+       accounts = g_list_delete_link (accounts, accounts))
   {
     TpAccount *account = accounts->data;
+
+    if (!tp_account_is_enabled (account))
+      continue;
 
     accounts_available++;
 
     if (tp_account_get_connection_status (account, NULL) ==
         TP_CONNECTION_STATUS_CONNECTED)
       accounts_online++;
-
-    accounts = g_list_delete_link (accounts, accounts);
   }
 
   /* There is something in the model, hide all placeholders */
