@@ -299,7 +299,7 @@ AS_DAWATI_PANEL(networks, [gconf-2.0
                            $GTK_DEPS
                            rest-0.7])
 
-if test x$dawati_use_networks_panel = xyes; then
+if test x$dawati_use_networks_panel = xyes || test x$dawati_use_bluetooth_panel = xyes; then
    PKG_CHECK_MODULES(CARRICK, [gthread-2.0
                                gconf-2.0
                                dbus-glib-1
@@ -341,7 +341,7 @@ if test x$dawati_use_networks_panel = xyes; then
                     AC_MSG_ERROR([Cannot find iso-codes]))
 
 fi
-AM_CONDITIONAL([USE_CARRICK_CALLOUTS], [test "$dawati_use_networks_panel" = "yes"])
+AM_CONDITIONAL([USE_CARRICK_CALLOUTS], [test "$dawati_use_networks_panel" = "yes" || test "$dawati_use_bluetooth_panel" = "yes"])
 AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 
 
