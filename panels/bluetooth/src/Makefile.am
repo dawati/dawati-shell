@@ -3,6 +3,7 @@ libexec_PROGRAMS = dawati-panel-bluetooth
 AM_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_BLUETOOTH_CFLAGS) \
+	-I$(top_srcdir) \
 	$(NULL)
 
 BUILT_SOURCES = \
@@ -13,6 +14,7 @@ dawati_panel_bluetooth_LDADD = \
 	$(LIBMPL_LIBS) \
 	$(PANEL_BLUETOOTH_LIBS) \
 	$(BLUETOOTH_APPLET_LIBS) \
+	$(top_builddir)/carrick/libcarrick.la \
 	$(NULL)
 
 dawati_panel_bluetooth_SOURCES = \

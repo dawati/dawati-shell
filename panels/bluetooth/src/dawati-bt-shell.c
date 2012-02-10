@@ -23,6 +23,8 @@
 #include <glib/gi18n.h>
 #include <libnotify/notify.h>
 
+#include "carrick/carrick-connman-manager.h"
+
 #include "bluetooth-applet.h"
 
 #include "dawati-bt-shell.h"
@@ -67,7 +69,7 @@ struct _DawatiBtShellPrivate {
   BluetoothApplet *applet;
   gboolean discoverable;
 
-  GDBusProxy *connman;
+  CarrickConnmanManager *cm;
   gboolean available;
   gboolean enabled;
 
@@ -82,8 +84,6 @@ enum
 
 static void dawati_bt_shell_launch (DawatiBtShell *shell, const char *command_line);
 static void dawati_bt_shell_update (DawatiBtShell *shell);
-static void dawati_bt_shell_set_connman (DawatiBtShell *shell, GDBusProxy *proxy);
-static void dawati_bt_shell_handle_connman_property (DawatiBtShell *shell, const char *key, GVariant *value);
 static ClutterActor* dawati_bt_shell_add_device (DawatiBtShell *shell, const char *name, const char *device_path);
 static void dawati_bt_shell_add_request (DawatiBtShell *shell, const char *name, const char *device_path, DawatiBtRequestType type, const char *data);
 
@@ -231,24 +231,6 @@ _devices_changed_cb(BluetoothApplet *applet,
 }
 
 static void
-_connman_enable_bluetooth_cb (GDBusProxy *connman,
-                              GAsyncResult *res,
-                              DawatiBtShell *shell)
-{
-  GError *err = NULL;
-
-  g_dbus_proxy_call_finish (connman, res, &err);
-  if (err) {
-    g_warning ("Failed to change RFKILL state using Connman: %s",
-               err->message);
-    g_error_free (err);
-
-    /* update because switch may now be incorrect */
-    dawati_bt_shell_update (shell);
-  }
-}
-
-static void
 _toggle_active_cb (MxToggle      *toggle,
                    GParamSpec    *pspec,
                    DawatiBtShell *shell)
@@ -264,16 +246,7 @@ _toggle_active_cb (MxToggle      *toggle,
     return;
   }
 
-  if (priv->connman) {
-    g_dbus_proxy_call (priv->connman,
-                       active ? "EnableTechnology" : "DisableTechnology",
-                       g_variant_new ("(s)", "bluetooth"),
-                       G_DBUS_CALL_FLAGS_NONE,
-                       -1,
-                       NULL,
-                       (GAsyncReadyCallback)_connman_enable_bluetooth_cb,
-                       shell);
-  }
+  carrick_connman_manager_set_technology_state (priv->cm, "bluetooth", active);
 }
 
 static void
@@ -292,88 +265,6 @@ static void
 _settings_clicked_cb (MxButton *button, DawatiBtShell *shell)
 {
   dawati_bt_shell_launch (shell, "gnome-control-center bluetooth");
-}
-
-static void
-_connman_proxy_new_for_bus_cb (GDBusProxy *connman,
-                               GAsyncResult *res,
-                               DawatiBtShell *shell)
-{
-  GError *err = NULL;
-  GDBusProxy *proxy = NULL;
-
-  proxy = g_dbus_proxy_new_for_bus_finish (res, &err);
-  if (err) {
-    g_warning ("No connman proxy: %s", err->message);
-    g_error_free (err);
-  }
-  dawati_bt_shell_set_connman (shell, proxy);
-}
-
-static void
-_connman_appeared_cb (GDBusConnection *connection,
-                      const char *name,
-                      const char *owner,
-                      DawatiBtShell *shell)
-{
-  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                            G_DBUS_PROXY_FLAGS_NONE,
-                            NULL, /* should add iface info here */
-                            "net.connman",
-                            "/",
-                            "net.connman.Manager",
-                            NULL,
-                            (GAsyncReadyCallback)_connman_proxy_new_for_bus_cb,
-                            shell);
-}
-
-static void
-_connman_vanished_cb (GDBusConnection *connection,
-                      const char *name,
-                      DawatiBtShell *shell)
-{
-  dawati_bt_shell_set_connman (shell, NULL);
-}
-
-static void
-_connman_signal_cb (GDBusProxy *connman,
-                    gchar *sender_name,
-                    gchar *signal_name,
-                    GVariant *parameters,
-                    DawatiBtShell *shell)
-{
-  GVariant *value;
-  const char *key;
-
-  if (g_strcmp0 (signal_name, "PropertyChanged") == 0) {
-     g_variant_get (parameters, "(sv)", &key, &value);
-     dawati_bt_shell_handle_connman_property (shell, key, value);
-  }
-}
-
-static void
-_connman_get_properties_cb (GDBusProxy *connman,
-                            GAsyncResult *res,
-                            DawatiBtShell *shell)
-{
-  GError *err = NULL;
-  GVariant *props, *value;
-  GVariantIter *iter;
-  const char *key;
-
-  props = g_dbus_proxy_call_finish (connman, res, &err);
-  if (err) {
-    g_warning ("Connman GetProperties failed: %s", err->message);
-    g_error_free (err);
-    return;
-  }
-
-  g_variant_get (props, "(a{sv})", &iter);
-  while (g_variant_iter_loop (iter, "{sv}", &key, &value))
-    dawati_bt_shell_handle_connman_property (shell, key, value);
-
-  g_variant_iter_free (iter);
-  g_variant_unref (props);
 }
 
 static void
@@ -542,70 +433,59 @@ dawati_bt_shell_add_request (DawatiBtShell *shell,
 }
 
 static void
-dawati_bt_shell_handle_connman_property (DawatiBtShell *shell,
-                                         const char *key,
-                                         GVariant *value)
+_available_techs_changed (CarrickConnmanManager *cm,
+                          GParamSpec      *pspec,
+                          DawatiBtShell   *shell)
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
-  const char **techs;
-  gboolean val = FALSE;
+  char **techs, **iter;
+  gboolean val  =FALSE;
 
-  if (g_strcmp0 (key, "AvailableTechnologies") == 0) {
-    techs = g_variant_get_strv (value, NULL);
-    while (*techs) {
-      if (g_strcmp0 (*techs, "bluetooth") == 0) {
-        val = TRUE;
-        break;
-      }
-      techs++;
+  g_object_get (cm, "available-technologies", &techs, NULL);
+  iter = techs;
+
+  while (*iter) {
+    if (g_strcmp0 (*iter, "bluetooth") == 0) {
+      val = TRUE;
+      break;
     }
-    if (val != priv->available) {
-      priv->available = val;
-      dawati_bt_shell_update (shell);
-    }
-  } else if (g_strcmp0 (key, "EnabledTechnologies") == 0) {
-    techs = g_variant_get_strv (value, NULL);
-    while (*techs) {
-      if (g_strcmp0 (*techs, "bluetooth") == 0) {
-        val = TRUE;
-        break;
-      }
-      techs++;
-    }
-    if (val != priv->enabled) {
-      priv->enabled = val;
-      dawati_bt_shell_update (shell);
-    }
+    iter++;
   }
+
+  if (val != priv->available) {
+    priv->available = val;
+    dawati_bt_shell_update (shell);
+  }
+
+  g_strfreev (techs);
 }
 
 static void
-dawati_bt_shell_set_connman (DawatiBtShell *shell,
-                             GDBusProxy *proxy)
+_enabled_techs_changed (CarrickConnmanManager *cm,
+                        GParamSpec      *pspec,
+                        DawatiBtShell   *shell)
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
+  char **techs, **iter;
+  gboolean val = FALSE;
 
-  if (priv->connman) {
-    g_signal_handlers_disconnect_by_func (priv->connman,
-                                          G_CALLBACK (_connman_signal_cb),
-                                          shell);
-    g_object_unref (priv->connman);
+  g_object_get (cm, "enabled-technologies", &techs, NULL);
+  iter = techs;
+
+  while (*iter) {
+    if (g_strcmp0 (*iter, "bluetooth") == 0) {
+      val = TRUE;
+      break;
+    }
+    iter++;
   }
 
-  priv->connman = proxy;
-  if (priv->connman) {
-    g_signal_connect (priv->connman, "g-signal",
-                      G_CALLBACK (_connman_signal_cb), shell);
-
-    g_dbus_proxy_call (priv->connman,
-                       "GetProperties",
-                       NULL,
-                       G_DBUS_CALL_FLAGS_NONE,
-                       -1,
-                       NULL,
-                       (GAsyncReadyCallback)_connman_get_properties_cb,
-                       shell);
+  if (val != priv->enabled) {
+    priv->enabled = val;
+    dawati_bt_shell_update (shell);
   }
+
+  g_strfreev (techs);
 }
 
 static void
@@ -715,7 +595,9 @@ dawati_bt_shell_dispose (GObject *object)
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (object);
 
-  dawati_bt_shell_set_connman (DAWATI_BT_SHELL (object), NULL);
+  if (priv->cm)
+    g_object_unref (priv->cm);
+  priv->cm = NULL;
 
   if (priv->panel_client)
     g_object_unref (priv->panel_client);
@@ -895,12 +777,11 @@ dawati_bt_shell_init (DawatiBtShell *shell)
 
   dawati_bt_shell_init_applet (shell);
 
-  g_bus_watch_name (G_BUS_TYPE_SYSTEM,
-                    "net.connman",
-                    G_BUS_NAME_WATCHER_FLAGS_NONE,
-                    (GBusNameAppearedCallback)_connman_appeared_cb,
-                    (GBusNameVanishedCallback)_connman_vanished_cb,
-                    shell, NULL);
+  priv->cm = carrick_connman_manager_new ();
+  g_signal_connect (priv->cm, "notify::available-technologies",
+                    G_CALLBACK (_available_techs_changed), shell);
+  g_signal_connect (priv->cm, "notify::enabled-technologies",
+                    G_CALLBACK (_enabled_techs_changed), shell);
 
 #ifdef TEST_WITH_BOGUS_DATA
   g_debug ("TEST_WITH_BOGUS_DATA: Adding false devices & requests, "

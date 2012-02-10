@@ -20,6 +20,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libcarrick_la_SOURCES = \
+	carrick-connman-manager.c \
+	carrick-connman-manager.h \
 	carrick-applet.c \
 	carrick-applet.h \
 	carrick-pane.c \
