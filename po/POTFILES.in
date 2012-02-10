@@ -135,6 +135,9 @@ penge/penge-welcome-tile.c
 penge/penge-everything-pane.c
 penge/penge-email-pane.c
 
+libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c
+libdawati-panel/dawati-panel/mpl-utils.c
+
 src/dawati-netbook.c
 src/mnb-toolbar.c
 src/mnb-statusbar.c
@@ -145,5 +148,4 @@ src/notifications/ntf-source.c
 src/notifications/ntf-overlay.c
 src/notifications/ntf-libnotify.c
 src/notifications/ntf-wm.c
-# TODO libdawati-panel needs it's own translations
-libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c
+
