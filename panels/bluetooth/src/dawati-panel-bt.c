@@ -76,7 +76,7 @@ main (int     argc,
   mpl_panel_clutter_init_lib (&argc, &argv);
   mpl_panel_clutter_load_base_style ();
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/bluetooth-applet.css", NULL);
+                           THEMEDIR "/panel.css", NULL);
 
   if (standalone) {
     stage = clutter_stage_get_default ();
@@ -91,7 +91,7 @@ main (int     argc,
   } else {
     client = mpl_panel_clutter_new ("bluetooth",
                                     _("bluetooth"),
-                                    THEMEDIR "/bluetooth-applet.css",
+                                    THEMEDIR "/toolbar-button.css",
                                     "state-off",
                                     TRUE);
     shell = dawati_bt_shell_new (client);

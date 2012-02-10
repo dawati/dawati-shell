@@ -9,7 +9,8 @@ dist_theme_DATA = \
 	closebutton-normal.png \
 	closebutton-hover.png \
 	closebutton-pressed.png \
-	bluetooth-applet.css \
+	panel.css \
+	toolbar-button.css \
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels

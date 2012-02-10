@@ -40,7 +40,6 @@ MxBoxLayout.BtDevice:first-child {
   border-image: none;
 }
 
-
 MxButton.BtCloseButton,
 MxButton.BtCloseButton:hover,
 MxButton.BtCloseButton:active {
