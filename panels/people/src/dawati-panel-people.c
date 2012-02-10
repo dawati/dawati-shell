@@ -24,6 +24,7 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
+#include <gio/gdesktopappinfo.h>
 #include <dawati-panel/mpl-panel-clutter.h>
 #include <dawati-panel/mpl-panel-common.h>
 #include "mnb-people-panel.h"
@@ -48,6 +49,32 @@ static GOptionEntry entries[] = {
   {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
+
+static void
+start_empathy (void)
+{
+  GDesktopAppInfo *app_info;
+  GError *error = NULL;
+  const gchar *args[3] = { NULL, };
+
+  app_info = g_desktop_app_info_new ("empathy.desktop");
+  args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
+  args[1] = "--start-hidden";
+  args[2] = NULL;
+
+  if (!g_spawn_async (NULL,
+                      (gchar **)args,
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
+  {
+    g_warning (G_STRLOC ": Error starting empathy: %s", error->message);
+    g_clear_error (&error);
+  }
+}
 
 int
 main (int    argc,
@@ -84,6 +111,11 @@ main (int    argc,
 
   if (!standalone)
   {
+    /* Ensure that empathy is running. This is mandatory since that process is
+     * responsible to show notifications and some sub-dialogs like new-contact
+     * or join-room. Will be replaced later... */
+    start_empathy ();
+
     client = mpl_panel_clutter_new (MPL_PANEL_PEOPLE,
                                     _("people"),
                                     NULL,
