@@ -20,6 +20,7 @@
 #include <config.h>
 #include <glib/gi18n-lib.h>
 
+#include <zeitgeist.h>
 #include <libsocialweb-client/sw-client.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
@@ -50,7 +51,9 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 struct _PengeEverythingPanePrivate {
   SwClient *client;
   GList *views;
-  GtkRecentManager *recent_manager;
+  GPtrArray *templates;
+  ZeitgeistLog *recent_log;
+  ZeitgeistMonitor *recent_monitor;
   GHashTable *pointer_to_actor;
 
   gint block_count;
@@ -123,11 +126,11 @@ penge_everything_pane_dispose (GObject *object)
     priv->client = NULL;
   }
 
-  if (priv->recent_manager)
-  {
-    g_object_unref (priv->recent_manager);
-    priv->recent_manager = NULL;
-  }
+  if(priv->recent_log)
+    {
+      g_object_unref (priv->recent_log);
+      priv->recent_log = NULL;
+    }
 
   if (priv->ratio_notify_id)
   {
@@ -166,21 +169,14 @@ penge_everything_pane_class_init (PengeEverythingPaneClass *klass)
 
 /* Sort funct for sorting recent files */
 static gint
-_recent_files_sort_func (GtkRecentInfo *a,
-                         GtkRecentInfo *b)
+_recent_files_sort_func (ZeitgeistEvent *a,
+                         ZeitgeistEvent *b)
 {
   time_t time_a;
   time_t time_b;
 
-  if (gtk_recent_info_get_modified (a) > gtk_recent_info_get_visited (a))
-    time_a = gtk_recent_info_get_modified (a);
-  else
-    time_a = gtk_recent_info_get_visited (a);
-
-  if (gtk_recent_info_get_modified (b) > gtk_recent_info_get_visited (b))
-    time_b = gtk_recent_info_get_modified (b);
-  else
-    time_b = gtk_recent_info_get_visited (b);
+  time_a = zeitgeist_event_get_timestamp (a);
+  time_b = zeitgeist_event_get_timestamp (b);
 
   if (time_a > time_b)
   {
@@ -192,10 +188,10 @@ _recent_files_sort_func (GtkRecentInfo *a,
   }
 }
 
-/* Compare a SwItem with a GtkRecentInfo */
+/* Compare a SwItem with a ZeitgeistEvent */
 static gint
-_compare_item_and_info (SwItem        *item,
-                        GtkRecentInfo *info)
+_compare_item_and_event (SwItem           *item,
+                         ZeitgeistEvent *event)
 {
   time_t time_a;
   time_t time_b;
@@ -205,15 +201,11 @@ _compare_item_and_info (SwItem        *item,
     return 1;
 
   /* Prefer item */
-  if (info == NULL)
+  if (event == NULL)
     return -1;
 
   time_a = item->date.tv_sec;
-
-  if (gtk_recent_info_get_modified (info) > gtk_recent_info_get_visited (info))
-    time_b = gtk_recent_info_get_modified (info);
-  else
-    time_b = gtk_recent_info_get_visited (info);
+  time_b = zeitgeist_event_get_timestamp (event);
 
   if (time_a > time_b)
   {
@@ -266,37 +258,64 @@ _add_from_sw_item (PengeEverythingPane *pane,
 }
 
 static void
+_zeitgeist_log_delete_events_received (GObject *source_object,
+                                       GAsyncResult *res,
+                                       gpointer user_data)
+{
+  ZeitgeistLog *log = ZEITGEIST_LOG (source_object);
+  GError *error = NULL;
+
+  g_warning ("delted events");
+
+  g_return_if_fail (PENGE_IS_INTERESTING_TILE (user_data));
+
+  zeitgeist_log_delete_events_finish (log, res, &error);
+  if (error != NULL)
+    {
+      g_warning (G_STRLOC ": Unable to remove item: %s",
+          error->message);
+      g_clear_error (&error);
+    }
+}
+
+
+static void
 _recent_file_tile_remove_clicked_cb (PengeInterestingTile *tile,
                                      gpointer              userdata)
 {
   PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
-  GtkRecentInfo *info;
-  GError *error = NULL;
+  ZeitgeistEvent *event;
+  GArray *event_ids;
+  guint32 id;
 
   g_object_get (tile,
-                "info", &info,
+                "zg-event", &event,
                 NULL);
 
-  if (!gtk_recent_manager_remove_item (priv->recent_manager,
-                                       gtk_recent_info_get_uri (info),
-                                       &error))
-  {
-    g_warning (G_STRLOC ": Unable to remove item: %s",
-               error->message);
-    g_clear_error (&error);
-  }
+
+  event_ids = g_array_sized_new (FALSE, FALSE, sizeof(guint32), 1);
+  id = zeitgeist_event_get_id (event);
+  g_array_append_val (event_ids, id);
+
+  zeitgeist_log_delete_events (priv->recent_log,
+                               event_ids,
+                               NULL,
+                               _zeitgeist_log_delete_events_received,
+                               tile);
+  g_array_unref (event_ids);
+
 }
 
 static ClutterActor *
-_add_from_recent_file_info (PengeEverythingPane *pane,
-                            GtkRecentInfo       *info,
-                            const gchar         *thumbnail_path)
+_add_from_recent_file_event (PengeEverythingPane *pane,
+                             ZeitgeistEvent       *event,
+                             const gchar         *thumbnail_path)
 {
   ClutterActor *actor;
 
   actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
-                        "info", info,
+                        "zg-event", event,
                         "thumbnail-path", thumbnail_path,
                         NULL);
 
@@ -339,64 +358,119 @@ _sw_item_weight (SwItem *item)
 
 GList *
 _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
-                                     GList               *list)
+                                     ZeitgeistResultSet  *set)
 {
-  GList *l;
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  GList *ret = NULL;
+  guint i; /* loop index */
 
-  l = list;
-  while (l)
+  /* probably an error (or an actual empty set, obv), we need to return empty
+   * list anyway */
+  if (set == NULL)
+    return NULL;
+
+  while (zeitgeist_result_set_has_next (set))
   {
-    GtkRecentInfo *info = (GtkRecentInfo *)l->data;
-    const gchar *uri = NULL;
+    ZeitgeistEvent *event = NULL;
     gchar *thumbnail_path = NULL;
 
     /* We have to do this because we edit the list */
-    l = l->next;
+    event = zeitgeist_result_set_next (set);
 
-    /* Skip *local* non-existing files */
-    if (gtk_recent_info_is_local (info) &&
-      !gtk_recent_info_exists (info))
-    {
-      gtk_recent_info_unref (info);
-      list = g_list_remove (list,
-                            info);
-      continue;
-    }
+    /* FIXME, so far this is the assumption, then we can use a better data
+     * structure for managing events with multiple subjects */
+    g_assert (zeitgeist_event_num_subjects (event) == 1);
 
-    uri = gtk_recent_info_get_uri (info);
+    for (i = 0; i < zeitgeist_event_num_subjects (event); ++i)
+      {
+        ZeitgeistSubject *s;
+        GFile *file;
+        const gchar *uri = NULL;
 
-    thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+        s = zeitgeist_event_get_subject (event, i);
+        g_assert (s != NULL);
+        uri = zeitgeist_subject_get_uri (s);
+        g_assert (uri != NULL);
 
-    /* Skip those without thumbnail */
-    if (!thumbnail_path || !g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
-    {
-      gtk_recent_info_unref (info);
-      list = g_list_remove (list,
-                            info);
-      g_free (thumbnail_path);
-      continue;
-    }
+        g_warning ("%s: subj(%d): i=%s m=%s",
+            zeitgeist_subject_get_uri (s),
+            i,
+            zeitgeist_subject_get_interpretation (s),
+            zeitgeist_subject_get_manifestation (s));
 
-    g_free (thumbnail_path);
+
+        file = g_file_new_for_uri (uri);
+        /* if it's not local, it's probably a template error, log it and
+         * move on */
+        if (!g_str_has_prefix (uri, "file:"))
+          {
+            g_warning ("uri %s for recent event is not local", uri);
+            continue;
+          }
+
+        /* if the file does not exist anymore we remove it (fire-and-forget)
+         * from the log and ignore the event for this round */
+        if (!g_file_query_exists (file, NULL))
+            {
+              GArray *ids;
+              guint32 id;
+              
+              ids = g_array_sized_new (FALSE, FALSE,
+                  sizeof(guint32), 1);
+              id = zeitgeist_event_get_id (event);
+              g_array_append_val (ids, id);
+
+              zeitgeist_log_delete_events (priv->recent_log, ids,
+                  NULL, NULL, NULL);
+
+              g_array_unref (ids);
+
+              break; /* consider the next event */
+            }
+
+        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+
+        /* add to the return list only if it has a valid thumbnail */
+        if (thumbnail_path && g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
+          ret = g_list_prepend (ret, g_object_ref (event));
+
+        g_free (thumbnail_path);
+      }
   }
 
-  return list;
+  return ret;
 }
 
 static void
-penge_everything_pane_update (PengeEverythingPane *pane)
+_zeitgeist_log_find_received (GObject *source_object,
+                              GAsyncResult *res,
+                              gpointer user_data)
 {
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  ZeitgeistLog *log = ZEITGEIST_LOG (source_object);
+  PengeEverythingPane *pane = user_data;
+  PengeEverythingPanePrivate *priv;
   GList *sw_items, *recent_file_items, *l;
+  ZeitgeistResultSet *set = NULL;
   GList *old_actors = NULL;
   ClutterActor *actor;
   gboolean show_welcome_tile = TRUE;
   gint recent_files_count, sw_items_count;
+  GError *error = NULL;
 
-  /* Get recent files and sort */
-  recent_file_items = gtk_recent_manager_get_items (priv->recent_manager);
-  recent_file_items = _filter_out_unshowable_recent_items (pane,
-                                                           recent_file_items);
+  g_return_if_fail (PENGE_IS_EVERYTHING_PANE (user_data));
+
+  priv = GET_PRIVATE (pane);
+
+  set = zeitgeist_log_find_events_finish (log, res, &error);
+  if (error != NULL)
+    {
+      g_warning (G_STRLOC ": Error obtaining recent files: %s",
+          error->message);
+      g_clear_error (&error);
+    }
+
+  /* It actually moves the interesting events into a list */
+  recent_file_items = _filter_out_unshowable_recent_items (pane, set);
   recent_file_items = g_list_sort (recent_file_items,
                                    (GCompareFunc)_recent_files_sort_func);
 
@@ -414,7 +488,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 
-  if (sw_items || recent_file_items)
+  if (sw_items != NULL || recent_file_items != NULL)
   {
     if (priv->welcome_tile)
     {
@@ -428,7 +502,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
          (recent_files_count && recent_file_items))
   {
     SwItem *sw_item = NULL;
-    GtkRecentInfo *recent_file_info = NULL;
+    ZeitgeistEvent *recent_file_event = NULL;
 
     /* If no sw items -> force compare to favour recent file */
     if (sw_items_count && sw_items)
@@ -438,11 +512,11 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
     /* If no recent files -> force compare to favour sw stuff */
     if (recent_files_count && recent_file_items)
-      recent_file_info = (GtkRecentInfo *)recent_file_items->data;
+      recent_file_event = recent_file_items->data;
     else
-      recent_file_info = NULL;
+      recent_file_event = NULL;
 
-    if (_compare_item_and_info (sw_item, recent_file_info) < 1)
+    if (_compare_item_and_event (sw_item, recent_file_event) < 1)
     {
       /* Sw item is newer */
 
@@ -473,36 +547,39 @@ penge_everything_pane_update (PengeEverythingPane *pane)
       /* Recent file item is newer */
 
       actor = g_hash_table_lookup (priv->pointer_to_actor,
-                                   recent_file_info);
+                                   recent_file_event);
 
       if (!actor)
       {
         const gchar *uri = NULL;
         gchar *thumbnail_path = NULL;
+        ZeitgeistSubject *subj;
 
-        uri = gtk_recent_info_get_uri (recent_file_info);
+        /* FIXME we assume there is only one subject */
+        subj = zeitgeist_event_get_subject (recent_file_event, 0);
+        uri = zeitgeist_subject_get_uri (subj);
 
         thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
-        actor = _add_from_recent_file_info (pane,
-                                            recent_file_info,
+        actor = _add_from_recent_file_event (pane,
+                                            recent_file_event,
                                             thumbnail_path);
         g_free (thumbnail_path);
         g_hash_table_insert (priv->pointer_to_actor,
-                             recent_file_info,
+                             recent_file_event,
                              actor);
 
         /* Needed to remove from hash when we kill the actor */
-        g_object_set_data (G_OBJECT (actor), "data-pointer", recent_file_info);
+        g_object_set_data (G_OBJECT (actor), "data-pointer", recent_file_event);
 
         show_welcome_tile = FALSE;
       }
 
       recent_files_count--;
 
-      gtk_recent_info_unref (recent_file_info);
+      g_object_unref (recent_file_event);
       recent_file_items = g_list_remove (recent_file_items,
-                                         recent_file_info);
+                                         recent_file_event);
     }
 
     clutter_container_lower_child (CLUTTER_CONTAINER (pane),
@@ -542,10 +619,28 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
   for (l = recent_file_items; l; l = l->next)
   {
-    GtkRecentInfo *recent_file_info = (GtkRecentInfo *)l->data;
-    gtk_recent_info_unref (recent_file_info);
+    ZeitgeistEvent *recent_file_event = l->data;
+    g_object_unref (recent_file_event);
   }
   g_list_free (recent_file_items);
+
+}
+
+static void
+penge_everything_pane_update (PengeEverythingPane *pane)
+{
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+
+  /* Get recent files and sort */
+  zeitgeist_log_find_events (priv->recent_log,
+                             zeitgeist_time_range_new_anytime (),
+                             g_ptr_array_ref (priv->templates),
+                             ZEITGEIST_STORAGE_STATE_ANY,
+                             50,
+                             ZEITGEIST_RESULT_TYPE_MOST_RECENT_SUBJECTS,
+                             NULL,
+                             _zeitgeist_log_find_received,
+                             pane);
 }
 
 static gboolean
@@ -727,11 +822,27 @@ _client_get_services_cb (SwClient    *client,
 }
 
 static void
-_recent_manager_changed_cb (GtkRecentManager *manager,
-                            gpointer          userdata)
+_zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
+                                           ZeitgeistTimeRange *time_range,
+                                           GPtrArray *events,
+                                           gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
 
+  g_warning ("update");
+  penge_everything_pane_queue_update (pane);
+}
+
+
+static void
+_zeitgeist_monitor_events_deleted_signal (ZeitgeistMonitor *m,
+                                          ZeitgeistTimeRange *time_range,
+                                          GArray *ids,
+                                          gpointer          userdata)
+{
+  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+
+  g_warning ("update");
   penge_everything_pane_queue_update (pane);
 }
 
@@ -792,12 +903,37 @@ penge_everything_pane_init (PengeEverythingPane *self)
                           (SwClientGetServicesCallback)_client_get_services_cb,
                           self);
 
-  priv->recent_manager = gtk_recent_manager_new ();
+  priv->templates = g_ptr_array_new ();
+  g_ptr_array_add (priv->templates, zeitgeist_event_new_full (
+        ZEITGEIST_ZG_ACCESS_EVENT,
+        ZEITGEIST_ZG_USER_ACTIVITY,
+        NULL,
+        zeitgeist_subject_new_full (
+          "file:*",
+          ZEITGEIST_NFO_IMAGE, // interpretation
+          ZEITGEIST_NFO_FILE_DATA_OBJECT, // manifestation
+          NULL, // mime-type
+          NULL,
+          NULL,
+          NULL // storage - auto-guess
+          ), NULL));
 
-  g_signal_connect (priv->recent_manager,
-                    "changed",
-                    (GCallback)_recent_manager_changed_cb,
+  priv->recent_log = g_object_new (ZEITGEIST_TYPE_LOG, NULL);
+  priv->recent_monitor = zeitgeist_monitor_new (
+                                            zeitgeist_time_range_new_anytime (),
+                                            g_ptr_array_ref (priv->templates));
+
+  g_signal_connect (priv->recent_monitor,
+                    "events-inserted",
+                    (GCallback)_zeitgeist_monitor_events_inserted_signal,
                     self);
+
+  g_signal_connect (priv->recent_monitor,
+                    "events-deleted",
+                    (GCallback)_zeitgeist_monitor_events_deleted_signal,
+                    self);
+
+  zeitgeist_log_install_monitor (priv->recent_log, priv->recent_monitor);
 
   penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
 

@@ -80,6 +80,7 @@ CLUTTER_DEPS="clutter-1.0 >= 1.8"
 MX_DEPS="mx-2.0"
 CLUTTER_GTK_DEPS="clutter-gtk-1.0"
 MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
+ZEITGEIST_DEPS="zeitgeist-1.0 >= 0.3.12"
 
 GLIB_GSETTINGS
 
@@ -419,7 +420,8 @@ if test x$dawati_use_myzone_panel = xyes || test x$dawati_use_datetime_panel = x
                              libsocialweb-client
                              telepathy-glib >= 0.14
                              $GTK_DEPS
-                             $MX_DEPS])
+                             $MX_DEPS
+			     $ZEITGEIST_DEPS])
 
    PKG_CHECK_MODULES(MAILME, [glib-2.0
                               gthread-2.0

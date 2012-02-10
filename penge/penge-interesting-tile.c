@@ -116,7 +116,6 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 
     case PROP_SOCIAL_NETWORK:
       priv->social_network = g_value_get_uint (value);
-      g_warning ("social net prop set to %d", priv->social_network);
 
       clutter_actor_hide (priv->header);
 
@@ -137,7 +136,6 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
             break;
 
           case SOCIAL_NETWORK_TWITTER:
-            g_warning ("TWITTER set!");
             logo = clutter_texture_new_from_file (SOCIAL_NETWORK_TWITTER_LOGO_PATH, NULL);
             clutter_actor_set_name (logo, "logo");
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);

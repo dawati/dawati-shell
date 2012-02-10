@@ -22,6 +22,7 @@
 
 #include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <zeitgeist.h>
 
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
@@ -38,7 +39,7 @@ G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, PENGE_TYPE_INTERESTI
 
 struct _PengeRecentFileTilePrivate {
   gchar *thumbnail_path;
-  GtkRecentInfo *info;
+  ZeitgeistEvent *event;
   ClutterActor *tex;
 };
 
@@ -46,8 +47,7 @@ enum
 {
   PROP_0,
   PROP_THUMBNAIL_PATH,
-  PROP_MODEL,
-  PROP_INFO,
+  PROP_EVENT,
 };
 
 static void penge_recent_file_tile_update (PengeRecentFileTile *tile);
@@ -63,9 +63,8 @@ penge_recent_file_tile_get_property (GObject *object, guint property_id,
     case PROP_THUMBNAIL_PATH:
       g_value_set_string (value, priv->thumbnail_path);
       break;
-    case PROP_INFO:
-      g_value_set_boxed (value, priv->info);
-      break;
+    case PROP_EVENT:
+      g_value_set_object (value, priv->event);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -78,7 +77,7 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
 {
   PengeRecentFileTile *tile = (PengeRecentFileTile *)object;
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (object);
-  GtkRecentInfo *info;
+  ZeitgeistEvent *event = NULL;
 
   switch (property_id) {
     case PROP_THUMBNAIL_PATH:
@@ -88,20 +87,19 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
       priv->thumbnail_path = g_value_dup_string (value);
       penge_recent_file_tile_update_thumbnail (tile);
       break;
-    case PROP_INFO:
-      info = (GtkRecentInfo *)g_value_get_boxed (value);
-      if (info == priv->info)
+    case PROP_EVENT:
+      event = (ZeitgeistEvent*) g_value_get_object (value);
+      if (event == priv->event)
         return;
 
-      if (priv->info)
-        gtk_recent_info_unref (priv->info);
+      if (priv->event)
+        g_object_unref (priv->event);
 
-      priv->info = info;
+      priv->event = event;
 
-      if (info)
-      {
-        gtk_recent_info_ref (info);
-      }
+      if (event)
+        g_object_ref (event);
+      if (event)
 
       penge_recent_file_tile_update (tile);
       break;
@@ -115,10 +113,10 @@ penge_recent_file_tile_dispose (GObject *object)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->info)
+  if (priv->event)
   {
-    gtk_recent_info_unref (priv->info);
-    priv->info = NULL;
+    g_object_unref (priv->event);
+    priv->event = NULL;
   }
 
   G_OBJECT_CLASS (penge_recent_file_tile_parent_class)->dispose (object);
@@ -139,12 +137,17 @@ _clicked_cb (MxButton *button,
              gpointer  userdata)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
+  ZeitgeistSubject *subj;
+
+  /* FIXME we still assume there is only one subj per event */
+  subj = zeitgeist_event_get_subject (priv->event, 0);
 
   if (!penge_utils_launch_for_uri ((ClutterActor *)button,
-                                   gtk_recent_info_get_uri (priv->info)))
+        zeitgeist_subject_get_uri (subj)))
   {
     g_warning (G_STRLOC ": Error launching: %s",
-               gtk_recent_info_get_uri (priv->info));
+               zeitgeist_subject_get_uri (subj));
+               
   } else {
     penge_utils_signal_activated ((ClutterActor *)button);
   }
@@ -156,6 +159,7 @@ penge_recent_file_tile_update_thumbnail (PengeRecentFileTile *tile)
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
   GError *error = NULL;
 
+  g_warning ("opening thumb %s", priv->thumbnail_path);
   if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
                                       priv->thumbnail_path,
                                       &error))
@@ -170,6 +174,7 @@ static void
 penge_recent_file_tile_update (PengeRecentFileTile *tile)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
+  ZeitgeistSubject *subj;
   GError *error = NULL;
   GFile *file;
   const gchar *content_type;
@@ -177,7 +182,8 @@ penge_recent_file_tile_update (PengeRecentFileTile *tile)
   const gchar *uri;
   GFileInfo *info;
 
-  uri = gtk_recent_info_get_uri (priv->info);
+  subj = zeitgeist_event_get_subject (priv->event, 0);
+  uri = zeitgeist_subject_get_uri (subj);
 
   if (g_str_has_prefix (uri, "file:/"))
   {
@@ -208,18 +214,21 @@ penge_recent_file_tile_update (PengeRecentFileTile *tile)
     g_object_unref (info);
     g_object_unref (file);
   } else {
+    ZeitgeistSubject *s = zeitgeist_event_get_subject (priv->event, 0);
+
     if (g_str_has_prefix (uri, "http"))
     {
+
       g_object_set (tile,
                     "primary-text",
-                    gtk_recent_info_get_display_name (priv->info),
+                    zeitgeist_subject_get_text (s),
                     "secondary-text",
                     _("Web page"),
                     NULL);
     } else {
       g_object_set (tile,
                     "primary-text",
-                    gtk_recent_info_get_display_name (priv->info),
+                    zeitgeist_subject_get_text (s),
                     "secondary-text",
                     "",
                     NULL);
@@ -248,13 +257,13 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_THUMBNAIL_PATH, pspec);
 
-  pspec = g_param_spec_boxed ("info",
-                              "Recent file information",
-                              "The GtkRecentInfo structure for this recent"
+  pspec = g_param_spec_object ("zg-event",
+                              "Recent file event",
+                              "The ZeitgeistEvent instance for this recent"
                               "file",
-                              GTK_TYPE_RECENT_INFO,
+                              ZEITGEIST_TYPE_EVENT,
                               G_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_INFO, pspec);
+  g_object_class_install_property (object_class, PROP_EVENT, pspec);
 }
 
 static void
@@ -283,7 +292,8 @@ const gchar *
 penge_recent_file_tile_get_uri (PengeRecentFileTile *tile)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
+  ZeitgeistSubject *s = zeitgeist_event_get_subject (priv->event, 0);
 
-  return gtk_recent_info_get_uri (priv->info);
+  return zeitgeist_subject_get_uri (s);
 }
 
