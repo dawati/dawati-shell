@@ -31,8 +31,16 @@ MxBoxLayout#bt-panel-content {
   padding: 10 10 10 10;
 }
 
+MxBoxLayout#bt-panel-active-box {
+  padding: 0 0 5 0;
+}
+
+
 MxBoxLayout#bt-panel-button-box {
   padding: 10 0 0 0;
+}
+MxBoxLayout#bt-panel-button-box:state-off {
+  border-image: url("divider.png") 1 0 0 0;
 }
 
 MxLabel.BtTitle {
@@ -47,6 +55,7 @@ MxLabel.BtLabel {
 }
 
 MxBoxLayout.BtRequest {
+  border-image: url("divider.png") 1 0 0 0;
   padding: 10 0 10 0;
 }
 

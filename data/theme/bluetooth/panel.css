@@ -1,0 +1,58 @@
+MxBoxLayout#bt-panel-content {
+  padding: 10 10 10 10;
+  background-color: #ecede6;
+}
+
+MxBoxLayout#bt-panel-active-box {
+  padding: 0 0 5 0;
+}
+
+MxBoxLayout#bt-panel-button-box {
+  padding: 10 0 0 0;
+}
+MxBoxLayout#bt-panel-button-box:state-off {
+  border-image: url("divider.png") 1 0 0 0;
+}
+
+
+MxLabel.BtTitle {
+  font-size: 14;
+  color: #364350;
+}
+
+MxLabel.BtLabel {
+  padding: 5 0 10 0;
+  font-size: 13;
+  color: #677784;
+}
+
+MxBoxLayout.BtRequest {
+  border-image: url("divider.png") 1 0 0 0;
+  padding: 10 0 10 0;
+}
+
+MxBoxLayout.BtDevice {
+  border-image: url("divider.png") 1 0 0 0;
+  padding: 10 0 10 0;
+}
+
+MxBoxLayout.BtDevice:first-child {
+  border-image: none;
+}
+
+
+MxButton.BtCloseButton,
+MxButton.BtCloseButton:hover,
+MxButton.BtCloseButton:active {
+  border-image: none;
+  padding: 0;
+}
+MxButton.BtCloseButton MxIcon {
+  -mx-content-image: url('closebutton-normal.png');
+}
+MxButton.BtCloseButton:hover MxIcon {
+  -mx-content-image: url('closebutton-hover.png');
+}
+MxButton.BtCloseButton:active MxIcon {
+  -mx-content-image: url('closebutton-pressed.png');
+}
