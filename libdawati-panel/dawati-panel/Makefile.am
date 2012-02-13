@@ -5,7 +5,7 @@ AM_CPPFLAGS = \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/dawati-panel/mx.cache\" \
 	-DDATADIR=\"$(datadir)\" \
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/dawati-panel\" \
-	-DSTYLEDIR=\"$(DAWATI_STYLE_DIR)\" \
+	-DSTYLEDIR=\"$(DAWATI_RUNTIME_STYLE_DIR)\" \
 	-DDAWATI_APP_LAUNCHES_STORE=\"$(libexecdir)/dawati-app-launches-store\"
 
 # these are the gir files we generate using g-ir-scanner
