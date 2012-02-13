@@ -493,6 +493,17 @@ _enabled_techs_changed (CarrickConnmanManager *cm,
 }
 
 static void
+fadeout_completed_cb (ClutterAnimation *anim, DawatiBtShell *shell)
+{
+  DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
+
+  if (!priv->enabled) {
+    clutter_actor_hide (priv->add_button);
+    clutter_actor_hide (priv->send_button);
+  }
+}
+
+static void
 dawati_bt_shell_update (DawatiBtShell *shell)
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
@@ -513,9 +524,11 @@ dawati_bt_shell_update (DawatiBtShell *shell)
       mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->content),
                                priv->device_panelbox,
                                2);
+    clutter_actor_show (priv->add_button);
     clutter_actor_animate (priv->add_button,
                            CLUTTER_LINEAR, 300, "opacity", 0xff,
                            NULL);
+    clutter_actor_show (priv->send_button);
     clutter_actor_animate (priv->send_button,
                            CLUTTER_LINEAR, 300, "opacity", 0xff,
                            NULL);
@@ -529,6 +542,7 @@ dawati_bt_shell_update (DawatiBtShell *shell)
                            NULL);
     clutter_actor_animate (priv->send_button,
                            CLUTTER_LINEAR, 300, "opacity", 0x00,
+                           "signal::completed", fadeout_completed_cb, shell,
                            NULL);
     mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->button_box), "state-off");
   }
