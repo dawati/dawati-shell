@@ -800,7 +800,10 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
       MnbToolbarPanel *panel = l->data;
 
       if (panel->button)
-        clutter_actor_set_reactive (CLUTTER_ACTOR (panel->button), FALSE);
+        {
+          mx_widget_hide_tooltip (MX_WIDGET (panel->button));
+          clutter_actor_set_reactive (CLUTTER_ACTOR (panel->button), FALSE);
+        }
     }
 
   g_signal_emit (actor, toolbar_signals[HIDE_BEGIN], 0);
@@ -886,15 +889,37 @@ mnb_toolbar_allocate (ClutterActor          *actor,
                       const ClutterActorBox *box,
                       ClutterAllocationFlags flags)
 {
-  /*
-   * If the drop down is not visible, we just return; this insures that the
-   * needs_allocation flag in ClutterActor remains set, and the actor will get
-   * reallocated when we show it.
-   */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
-    return;
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+  ClutterActorBox child_box;
+  gfloat applets_width;
+  gfloat min_w;
 
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->allocate (actor, box, flags);
+
+  clutter_actor_get_preferred_width (priv->hbox_applets, -1, &min_w, &applets_width);
+
+  child_box.y1 = 0;
+  child_box.y2 = TOOLBAR_HEIGHT;
+
+  child_box.x1 = priv->old_screen_width - applets_width;
+  child_box.x2 = child_box.x1 + applets_width;
+  clutter_actor_allocate (priv->hbox_applets, &child_box, flags);
+
+  child_box.x1 = 0;
+  child_box.x2 = priv->old_screen_width - applets_width -
+    mx_box_layout_get_spacing (MX_BOX_LAYOUT (priv->hbox_buttons));
+  clutter_actor_allocate (priv->hbox_buttons, &child_box, flags);
+}
+
+static void
+mnb_toolbar_paint (ClutterActor *actor)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->paint (actor);
+
+  clutter_actor_paint (priv->hbox_applets);
+  clutter_actor_paint (priv->hbox_buttons);
 }
 
 static gboolean
@@ -954,6 +979,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   clutter_class->show = mnb_toolbar_real_show;
   clutter_class->hide = mnb_toolbar_real_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
+  clutter_class->paint = mnb_toolbar_paint;
   clutter_class->button_press_event = mnb_toolbar_button_press_event;
   clutter_class->get_preferred_width = mnb_toolbar_get_preferred_width;
   clutter_class->get_preferred_height = mnb_toolbar_get_preferred_height;
@@ -1117,7 +1143,6 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
                                      tp->tooltip);
 
           mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip);
-          mx_widget_show_tooltip (MX_WIDGET (tp->button));
 
           g_free (tooltip);
 
@@ -2787,15 +2812,42 @@ mnb_toolbar_constructed (GObject *self)
                                  MX_ORIENTATION_HORIZONTAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->hbox_main);
 
+  /*
+   * The shadow needs to go into the window group, like the lowlight.
+   */
+  sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
+                                             THEMEDIR
+                                             "/toolbar/toolbar-shadow.png");
+  if (sh_texture)
+    {
+      priv->shadow = mnb_toolbar_shadow_new (MNB_TOOLBAR (self),
+                                             sh_texture,
+                                             0, /* top */
+                                             0, /* right */
+                                             0, /* bottom */
+                                             0  /* left */);
+      clutter_actor_set_size (priv->shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
+      clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
+      clutter_actor_lower (priv->shadow, priv->hbox_main);
+      clutter_actor_set_y (priv->shadow, TOOLBAR_HEIGHT - 10);
+      clutter_actor_hide (priv->shadow);
+    }
+
   priv->hbox_buttons = mx_box_layout_new ();
   clutter_actor_set_name (priv->hbox_buttons, "toolbar-left-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_buttons),
                                  MX_ORIENTATION_HORIZONTAL);
+  clutter_actor_set_parent (priv->hbox_buttons, actor);
+  clutter_actor_set_reactive (priv->hbox_buttons, TRUE);
+  clutter_actor_raise (priv->hbox_buttons, priv->hbox_main);
 
   priv->hbox_applets = mx_box_layout_new ();
   clutter_actor_set_name (priv->hbox_applets, "toolbar-right-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_applets),
                                  MX_ORIENTATION_HORIZONTAL);
+  clutter_actor_set_parent (priv->hbox_applets, actor);
+  clutter_actor_set_reactive (priv->hbox_applets, TRUE);
+  clutter_actor_raise (priv->hbox_applets, priv->hbox_main);
 
   g_object_set (self,
                 "show-on-set-parent", FALSE,
@@ -2855,41 +2907,6 @@ mnb_toolbar_constructed (GObject *self)
     priv->panel_stub = panel_stub;
   }
 
-  /*
-   * The shadow needs to go into the window group, like the lowlight.
-   */
-  sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
-                                             THEMEDIR
-                                             "/toolbar/toolbar-shadow.png");
-  if (sh_texture)
-    {
-      priv->shadow = mnb_toolbar_shadow_new (MNB_TOOLBAR (self),
-                                             sh_texture,
-                                             0, /* top */
-                                             0, /* right */
-                                             0, /* bottom */
-                                             0  /* left */);
-      clutter_actor_set_size (priv->shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
-      clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
-      clutter_actor_lower (priv->shadow, priv->hbox_main);
-      clutter_actor_set_y (priv->shadow, TOOLBAR_HEIGHT - 10);
-      clutter_actor_hide (priv->shadow);
-    }
-
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (priv->hbox_main),
-                                           priv->hbox_buttons,
-                                           0,
-                                           "expand", TRUE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_START,
-                                           NULL);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (priv->hbox_main),
-                                           priv->hbox_applets,
-                                           1,
-                                           "expand", FALSE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_END,
-                                           NULL);
 
   /* mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_START, MX_ALIGN_START); */
   /* mx_bin_set_child (MX_BIN (self), hbox); */
@@ -3226,11 +3243,8 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   MetaScreen        *screen    = meta_plugin_get_screen (priv->plugin);
   MetaWorkspace     *workspace = meta_screen_get_active_workspace (screen);
   gint               screen_width, screen_height;
-  gboolean           netbook_mode;
   gint               width = priv->old_screen_width;
   GList             *panel;
-
-  netbook_mode = dawati_netbook_use_netbook_mode (priv->plugin);
 
   meta_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -3247,25 +3261,6 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
       priv->old_screen_height == screen_height)
     {
       return;
-    }
-
-  /*
-   * Ensure that the handler for showing Toolbar in small-screen mode is
-   * (dis)connected as appropriate.
-   */
-  if (netbook_mode && !priv->trigger_cb_id)
-    {
-      /* priv->trigger_cb_id = */
-      /*   g_signal_connect (meta_plugin_get_stage (priv->plugin), */
-      /*                     "captured-event", */
-      /*                     G_CALLBACK (mnb_toolbar_stage_captured_cb), */
-      /*                     toolbar); */
-    }
-  else if (!netbook_mode && priv->trigger_cb_id)
-    {
-      g_signal_handler_disconnect (meta_plugin_get_stage (priv->plugin),
-                                   priv->trigger_cb_id);
-      priv->trigger_cb_id = 0;
     }
 
   /*
