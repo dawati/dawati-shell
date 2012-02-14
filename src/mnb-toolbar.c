@@ -650,6 +650,10 @@ mnb_toolbar_real_show (ClutterActor *actor)
       {
         clutter_actor_show (CLUTTER_ACTOR (panel->button));
         clutter_actor_set_reactive (CLUTTER_ACTOR (panel->button), FALSE);
+        /*
+         * Clear any left over hover state (MB#5518)
+         */
+        mx_stylable_set_style_pseudo_class (MX_STYLABLE (panel->button), NULL);
       }
     }
 
@@ -2233,10 +2237,11 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     }
   else
     {
-      button = tp->button = mx_button_new ();
+      button = tp->button = mnb_toolbar_button_new ();
       mx_stylable_set_style_class (MX_STYLABLE (button),
                                    "ToolbarButton");
       mx_button_set_label (MX_BUTTON (button), tp->tooltip);
+      mx_widget_set_tooltip_text (MX_WIDGET (button), tp->tooltip);
       mx_button_set_icon_name (MX_BUTTON (button), "player_play");
       mx_button_set_icon_position (MX_BUTTON (button), MX_POSITION_LEFT);
       mx_widget_hide_tooltip (MX_WIDGET (button));
