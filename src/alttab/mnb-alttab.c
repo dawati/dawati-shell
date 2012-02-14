@@ -46,6 +46,7 @@
 #include "../mnb-toolbar.h"
 
 #include <meta/display.h>
+#include <meta/keybindings.h>
 
 /*
  * Establishes an active kbd grab for us via the Meta API.
