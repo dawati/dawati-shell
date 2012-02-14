@@ -67,9 +67,6 @@
 #define TOOLBAR_DROPDOWN_DURATION 150
 #define SLIDE_DURATION 150
 
-#define KEY_DIR "/desktop/dawati/toolbar/panels"
-#define KEY_ORDER KEY_DIR "/order"
-
 #define BUTTON_SPACING 6
 #define BUTTON_SPACING_INITIAL (0+TOOLBAR_X_PADDING)
 #define BUTTON_Y 0
@@ -155,7 +152,7 @@ static MnbToolbarPanel * mnb_toolbar_panel_to_toolbar_panel (MnbToolbar *toolbar
 static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp,
                                                  MnbShowHideReason reason);
-static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
+static void mnb_toolbar_setup_settings (MnbToolbar *toolbar);
 static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
 static void mnb_toolbar_workarea_changed_cb (MetaScreen *screen,
@@ -312,15 +309,9 @@ static GSList *
 mnb_toolbar_get_default_panel_list (void)
 {
   const gchar *panels_required[] = {"dawati-panel-myzone",
-                                    "dawati-panel-zones",
                                     "dawati-panel-applications",
-                                    "dawati-panel-status",
-                                    "dawati-panel-people",
-                                    "dawati-panel-internet",
-                                    "dawati-panel-music",
                                     "dawati-panel-devices",
                                     "dawati-panel-datetime",
-                                    "dawati-panel-bluetooth",
                                     "carrick",
                                     "dawati-power-icon" };
   gint i;
@@ -2720,9 +2711,9 @@ static void
 mnb_toolbar_setup_panels (MnbToolbar *toolbar)
 {
   /*
-   * Set up panels from gconf watch for changes
+   * Set up panels from settings watch for changes
    */
-  mnb_toolbar_setup_gconf (toolbar);
+  mnb_toolbar_setup_settings (toolbar);
 
   mnb_toolbar_dbus_setup_panels (toolbar);
 }
@@ -3298,7 +3289,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
        * all the panels that can be loaded are. This will also take care of
        * the panel positions.
        */
-      gconf_client_notify (ppriv->gconf_client, KEY_ORDER);
+      g_signal_emit_by_name (ppriv->settings, "changed", "order");
     }
 
   clutter_actor_set_width (priv->hbox_main, screen_width);
@@ -3728,7 +3719,7 @@ mnb_toolbar_find_panel_by_name (const MnbToolbarPanel *tp, const gchar *name)
  * strings, if FALSE they are GConfValues holding a string.
  */
 static void
-mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
+mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
   GSList            *l;
@@ -3741,14 +3732,7 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
       GList           *k;
       MnbToolbarPanel *tp;
 
-      if (!strings)
-        {
-          GConfValue *value = l->data;
-
-          name = gconf_value_get_string (value);
-        }
-      else
-        name = l->data;
+      name = l->data;
 
       k = g_list_find_custom (panels, name,
                               (GCompareFunc) mnb_toolbar_find_panel_by_name);
@@ -3911,77 +3895,75 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
     }
 }
 
-static void
-mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
-                                        guint        cnxn_id,
-                                        GConfEntry  *entry,
-                                        gpointer     data)
+static GSList *
+mnb_toolbar_get_panel_list_from_strv (gchar **value)
 {
-  MnbToolbar  *toolbar = MNB_TOOLBAR (data);
-  GConfValue  *value;
-  const gchar *key;
+  GSList *list;
+  gint i = 0;
 
-  key = gconf_entry_get_key (entry);
-
-  if (!key)
+  list = NULL;
+  while (value[i] != NULL)
     {
-      g_warning (G_STRLOC ": no key!");
-      return;
+      list = g_slist_append (list, value[i]);
+      i++;
     }
 
-  if (!strcmp (key, KEY_ORDER))
-    {
-      GSList *order;
-
-      value = gconf_entry_get_value (entry);
-
-      if (value)
-        {
-          if (value->type != GCONF_VALUE_LIST)
-            {
-              g_warning (G_STRLOC ": %s does not contain a list!", KEY_ORDER);
-              return;
-            }
-
-          if (gconf_value_get_list_type (value) != GCONF_VALUE_STRING)
-            {
-              g_warning (G_STRLOC ": %s list does not contain strings!", KEY_ORDER);
-              return;
-            }
-
-          order = gconf_value_get_list (value);
-
-          mnb_toolbar_fixup_panels (toolbar, order, FALSE);
-        }
-      else
-        {
-          GSList *order;
-
-          g_warning (G_STRLOC ": no value for key %s !", key);
-
-          order = mnb_toolbar_get_default_panel_list ();
-
-          mnb_toolbar_fixup_panels (toolbar, order, TRUE);
-
-          g_slist_free (order);
-        }
-      return;
-    }
-
-  g_warning (G_STRLOC ": Unknown key %s", key);
+  return list;
 }
 
 static void
-mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
+mnb_toolbar_panel_settings_changed_cb (GSettings  *settings,
+                                       gchar      *key,
+                                       MnbToolbar *toolbar)
+{
+  gchar **value;
+  GSList *order;
+
+  if (strcmp (key, "order") != 0)
+    {
+      g_warning (G_STRLOC ": Unknown key %s", key);
+      return;
+    }
+
+  value = g_settings_get_strv (settings, key);
+
+  if (value)
+    {
+      order = mnb_toolbar_get_panel_list_from_strv (value);
+
+      mnb_toolbar_fixup_panels (toolbar, order);
+
+      g_strfreev (value);
+    }
+  else
+    {
+      g_warning (G_STRLOC
+                 ": no value for key %s, using default list of panels !", key);
+
+      order = mnb_toolbar_get_default_panel_list ();
+
+      mnb_toolbar_fixup_panels (toolbar, order);
+    }
+
+  g_slist_free (order);
+}
+
+static void
+mnb_toolbar_load_settings (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate          *priv   = toolbar->priv;
   MetaPlugin                 *plugin = priv->plugin;
   DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  GConfClient                *client = ppriv->gconf_client;
+  GSettings                  *settings = ppriv->settings;
   GSList                     *order;
   GSList                     *l, *defaults;
+  gchar                     **value;
 
-  order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
+  value = g_settings_get_strv (settings, "order");
+  if (value)
+    {
+      order = mnb_toolbar_get_panel_list_from_strv (value);
+    }
 
   defaults = mnb_toolbar_get_default_panel_list ();
 
@@ -3998,45 +3980,30 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
       l = l->next;
     }
 
-  mnb_toolbar_fixup_panels (toolbar, order, TRUE);
+  mnb_toolbar_fixup_panels (toolbar, order);
 
   /*
    * Clean up
    */
   g_slist_free (defaults);
-  g_slist_foreach (order, (GFunc) g_free, NULL);
   g_slist_free (order);
+  g_strfreev (value);
 }
 
 static void
-mnb_toolbar_setup_gconf (MnbToolbar *toolbar)
+mnb_toolbar_setup_settings (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate          *priv   = toolbar->priv;
   MetaPlugin                 *plugin = priv->plugin;
-  DawatiNetbookPluginPrivate  *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  GConfClient                *client = ppriv->gconf_client;
-  GError                     *error  = NULL;
+  DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  GSettings                  *settings = ppriv->settings;
 
-  gconf_client_add_dir (client,
-                        KEY_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE,
-                        &error);
+  g_signal_connect (settings, "changed",
+                    G_CALLBACK (mnb_toolbar_panel_settings_changed_cb),
+                    toolbar);
 
-  if (error)
-    {
-      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
 
-  gconf_client_notify_add (client,
-                           KEY_DIR,
-                           mnb_toolbar_panel_gconf_key_changed_cb,
-                           toolbar,
-                           NULL,
-                           &error);
-
-  mnb_toolbar_load_gconf_settings (toolbar);
+  mnb_toolbar_load_settings (toolbar);
 }
 
 CoglHandle

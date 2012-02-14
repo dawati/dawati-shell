@@ -112,6 +112,7 @@ struct _DawatiNetbookPluginPrivate
 
   /* Desktop background stuff */
   GConfClient           *gconf_client;
+  GSettings             *settings;
 
   MetaWindowActor       *screen_saver_mcw;
 

@@ -81,6 +81,8 @@ MX_DEPS="mx-2.0"
 CLUTTER_GTK_DEPS="clutter-gtk-1.0"
 MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
 
+GLIB_GSETTINGS
+
 # Libdawati-panel
 PKG_CHECK_MODULES(LIBMPL,
                   gio-unix-2.0

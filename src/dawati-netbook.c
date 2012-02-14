@@ -806,6 +806,7 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
   plugin_singleton = plugin;
 
   gconf_client = priv->gconf_client = gconf_client_get_default ();
+  priv->settings = g_settings_new ("org.dawati.shell.toolbar");
 
   /*
    * Disable the cycle_group bindings; the default for this is Alt+` which
