@@ -73,14 +73,9 @@
 #define MYZONE_TIMEOUT              200
 #define INIT_TIMEOUT                0
 #define ACTOR_DATA_KEY "MCCP-dawati-netbook-actor-data"
-#define BG_KEY_DIR "/desktop/gnome/background"
-#define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
-#define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
-#define KEY_BG_COLOR BG_KEY_DIR "/primary_color"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
 #define KEY_BUTTONS THEME_KEY_DIR "/button_layout"
-#define KEY_ALLWAYS_SMALL_SCREEN "/desktop/dawati/always_small_screen_mode"
 
 static guint32 compositor_options = 0;
 
@@ -544,43 +539,6 @@ dawati_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
 }
 
 static void
-dawati_netbook_compute_netbook_mode (MetaPlugin *plugin)
-{
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-
-  MetaScreen  *screen             = meta_plugin_get_screen (META_PLUGIN (plugin));
-  MetaDisplay *display            = meta_screen_get_display (screen);
-  Display     *xdpy               = meta_display_get_xdisplay (display);
-  guint        screen_no          = meta_screen_get_screen_number (screen);
-  gint         screen_width_mm    = XDisplayWidthMM (xdpy, screen_no);
-  gint         screen_height_mm   = XDisplayHeightMM (xdpy, screen_no);
-  gboolean     external           = FALSE;
-  gboolean     force_small_screen;
-
-  force_small_screen = gconf_client_get_bool (priv->gconf_client,
-                                              KEY_ALLWAYS_SMALL_SCREEN,
-                                              NULL);
-
-  if (!force_small_screen)
-    {
-      dawati_netbook_compute_screen_size (xdpy,
-                                          screen_no,
-                                          &screen_width_mm,
-                                          &screen_height_mm,
-                                          &external);
-
-      g_debug ("Screen size %dmm x %dmm, external %d",
-               screen_width_mm, screen_height_mm, external);
-    }
-
-
-  /* if (force_small_screen || (!external && screen_width_mm < 280)) */
-    priv->netbook_mode = TRUE;
-  /* else */
-  /*   priv->netbook_mode = FALSE; */
-}
-
-static void
 dawati_netbook_handle_screen_size (MetaPlugin *plugin,
                                   gint       *screen_width,
                                   gint       *screen_height)
@@ -612,8 +570,6 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
 
   old_screen_width  = *screen_width;
   old_screen_height = *screen_height;
-
-  dawati_netbook_compute_netbook_mode (plugin);
 
   if (!atom__DAWATI)
     atom__DAWATI = XInternAtom (xdpy, "_DAWATI", False);
@@ -898,8 +854,6 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
                     "notify::focus-window",
                     G_CALLBACK (dawati_netbook_display_focus_window_notify_cb),
                     plugin);
-
-  dawati_netbook_compute_netbook_mode (plugin);
 
   overlay = meta_plugin_get_overlay_group (plugin);
 
