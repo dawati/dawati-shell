@@ -29,10 +29,10 @@ G_BEGIN_DECLS
 #define MPD_TYPE_COMPUTER_TILE mpd_computer_tile_get_type()
 
 #define MPD_COMPUTER_TILE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPD_TYPE_COMPUTER_TILE, MpdComputerPane))
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPD_TYPE_COMPUTER_TILE, MpdComputerTile))
 
 #define MPD_COMPUTER_TILE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MPD_TYPE_COMPUTER_TILE, MpdComputerPaneClass))
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MPD_TYPE_COMPUTER_TILE, MpdComputerTileClass))
 
 #define MPD_IS_COMPUTER_TILE(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPD_TYPE_COMPUTER_TILE))
