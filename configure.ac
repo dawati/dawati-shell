@@ -179,6 +179,17 @@ CFLAGS="$CFLAGS -Wall"
 AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g3 -O0"])
 AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
+# zeitgeist
+AC_ARG_ENABLE([zeitgeist],
+              [AC_HELP_STRING([--enable-zeitgeist],
+                              [Enable zeitgeist features])],
+              [1],
+              [enable_zeitgeist=no])
+
+if test x"$enable_zeitgeist" = xyes; then
+	AC_DEFINE(WITH_ZEITGEIST, 1, [Use Zeitgeist features])
+fi
+
 # control center capplet
 AC_ARG_ENABLE([capplet],
               [AC_HELP_STRING([--enable-capplet],
@@ -485,6 +496,9 @@ if test x$dawati_use_people_panel = xyes || test x$dawati_use_status_panel = xye
         [AC_MSG_ERROR([Unknown argument to --with-online])])
 fi
 
+# zeitgeist
+PKG_CHECK_MODULES(ZEITGEIST, zeitgeist-1.0)
+
 # libnotify API breakage upon 0.7
 PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= 0.7,
                   AC_DEFINE(HAVE_NOTIFY_0_7, 1, [we have libnotify 0.7 or better]),
@@ -648,6 +662,6 @@ echo "
 	    Scaled background:    ${scale_background}
             API Reference    :    ${enable_gtk_doc}
             Panels           :    ${WITH_PANELS}
-
+            Zeitgeist        :    ${enable_zeitgeist}
 	    CFLAGS: ${CFLAGS}
 "

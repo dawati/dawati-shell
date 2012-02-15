@@ -5,11 +5,13 @@ AM_CFLAGS = \
 	$(PANEL_APPLICATIONS_CFLAGS) \
 	\
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
+	$(ZEITGEIST_CFLAGS) \
 	$(NULL)
 
 dawati_panel_applications_LDADD = \
 	$(LIBMPL_LIBS) \
 	$(PANEL_APPLICATIONS_LIBS) \
+	$(ZEITGEIST_LIBS) \
 	$(NULL)
 
 dawati_panel_applications_SOURCES = \
@@ -23,6 +25,8 @@ dawati_panel_applications_SOURCES = \
 	mnb-launcher-grid.h \
 	mnb-launcher-tree.c \
 	mnb-launcher-tree.h \
+	mnb-launcher-zg-utils.c \
+	mnb-launcher-zg-utils.h \
 	dawati-netbook-launcher.c \
 	dawati-netbook-launcher.h \
 	dawati-panel-applications.c
