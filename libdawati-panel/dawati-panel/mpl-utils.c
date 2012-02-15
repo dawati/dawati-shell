@@ -123,7 +123,7 @@ mpl_create_audio_store (void)
  * @iter: a #GtkTreeIter
  * @id: a unique id
  * @thumbnail: (allow-none): a URI to a thumbnail file
- * @tracker_name: (allow-none): track name
+ * @track_name: (allow-none): track name
  * @artist_name: (allow-none): artist name
  * @album_name: (allow-none): album name
  *
