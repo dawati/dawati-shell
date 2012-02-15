@@ -579,8 +579,8 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
   leader_xwin = meta_display_get_leader_window (display);
 
   dawati_session =
-    g_strdup_printf ("session-type=%s",
-                     priv->netbook_mode ? "small-screen" : "bigger-screen");
+    g_strdup_printf ("session-type=%s", "small-screen");
+                     /* priv->netbook_mode ? "small-screen" : "bigger-screen"); */
 
   g_debug ("Setting _DAWATI/_MEEGO=%s", dawati_session);
 
@@ -601,13 +601,10 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
 
   g_free (dawati_session);
 
-  gconf_client_set_string (priv->gconf_client, KEY_THEME,
-                           priv->netbook_mode ? "Dawati" : "Dawati",
-                           NULL);
+  gconf_client_set_string (priv->gconf_client, KEY_THEME, "Dawati", NULL);
 
   gconf_client_set_string (priv->gconf_client, KEY_BUTTONS,
-                           priv->netbook_mode ? ":close" : ":maximize,close",
-                           NULL);
+                           ":close" /* ":maximize,close" */, NULL);
 
   /*
    * It seems that sometimes the screen resize gets delayed until something
@@ -616,13 +613,13 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
    */
   clutter_actor_queue_redraw (stage);
 
-  if (!priv->netbook_mode &&
+  if (/* !priv->netbook_mode && */
       /* CLUTTER_ACTOR_IS_VISIBLE (stage) && */
       !CLUTTER_ACTOR_IS_VISIBLE (toolbar))
     {
       mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_POLICY);
     }
-  else if (priv->netbook_mode &&
+  else if (/* priv->netbook_mode && */
            CLUTTER_ACTOR_IS_VISIBLE (stage) &&
            /* CLUTTER_ACTOR_IS_VISIBLE (toolbar) && */
            !mnb_toolbar_get_active_panel (toolbar))
@@ -658,12 +655,6 @@ maybe_show_myzone (MetaPlugin *plugin)
   MetaScreen                 *screen = meta_plugin_get_screen (plugin);
   gboolean                    no_apps = TRUE;
   GList                      *l;
-
-  /*
-   * Do not drop Myzone if the Toolbar is visible.
-   */
-  if (CLUTTER_ACTOR_IS_MAPPED (priv->toolbar))
-    return FALSE;
 
   /*
    * Check for running applications; we do this by checking if any
@@ -1937,6 +1928,7 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
       MetaScreen        *screen = meta_plugin_get_screen (plugin);
       gint               screen_width, screen_height;
       gfloat             actor_width, actor_height;
+      MnbThreeState      state;
 
       /* Hide toolbar etc in presence of modal window */
       if (meta_window_is_blessed_window (mw))
@@ -1955,23 +1947,19 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
        *     - only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL,
        *     - exclude modal windows and windows that are transient.
        */
-      if (priv->netbook_mode)
-        {
-          MnbThreeState state =
-            dawati_netbook_mutter_hints_on_new_workspace (mw);
+      state = dawati_netbook_mutter_hints_on_new_workspace (mw);
 
-          if (state == MNB_STATE_YES)
-            {
-              move_window = TRUE;
-            }
-          else if (state == MNB_STATE_UNSET)
-            {
-              move_window =
-                (type == META_WINDOW_NORMAL  &&
-                 !meta_window_is_modal (mw)       &&
-                 meta_window_get_transient_for_as_xid (mw) == None &&
-                 !dawati_netbook_never_move_window (mw));
-            }
+      if (state == MNB_STATE_YES)
+        {
+          move_window = TRUE;
+        }
+      else if (state == MNB_STATE_UNSET)
+        {
+          move_window =
+            (type == META_WINDOW_NORMAL  &&
+             !meta_window_is_modal (mw)       &&
+             meta_window_get_transient_for_as_xid (mw) == None &&
+             !dawati_netbook_never_move_window (mw));
         }
 
       if (move_window)
@@ -2489,14 +2477,6 @@ dawati_netbook_activate_mutter_window (MetaWindowActor *mcw)
     }
 
   return TRUE;
-}
-
-gboolean
-dawati_netbook_use_netbook_mode (MetaPlugin *plugin)
-{
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-
-  return priv->netbook_mode != FALSE;
 }
 
 guint32

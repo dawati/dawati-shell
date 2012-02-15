@@ -99,7 +99,6 @@ struct _DawatiNetbookPluginPrivate
 
   gboolean               holding_focus       : 1;
   gboolean               compositor_disabled : 1;
-  gboolean               netbook_mode        : 1;
   gboolean               screen_saver_dpms   : 1;
   gboolean               scaled_background   : 1;
 
@@ -184,9 +183,6 @@ dawati_netbook_get_toolbar (MetaPlugin *plugin);
 
 gboolean
 dawati_netbook_activate_mutter_window (MetaWindowActor *mcw);
-
-gboolean
-dawati_netbook_use_netbook_mode (MetaPlugin *plugin);
 
 guint32
 dawati_netbook_get_compositor_option_flags (void);
