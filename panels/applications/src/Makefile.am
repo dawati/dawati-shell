@@ -4,11 +4,13 @@ AM_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_APPLICATIONS_CFLAGS) \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
+	$(ZEITGEIST_CFLAGS) \
 	$(NULL)
 
 dawati_panel_applications_LDADD = \
 	$(LIBMPL_LIBS) \
 	$(PANEL_APPLICATIONS_LIBS) \
+	$(ZEITGEIST_LIBS) \
 	$(NULL)
 
 dawati_panel_applications_SOURCES = \
@@ -25,6 +27,10 @@ dawati_panel_applications_SOURCES = \
 	dawati-netbook-launcher.c \
 	dawati-netbook-launcher.h \
 	dawati-panel-applications.c
+
+if WITH_ZEITGEIST
+dawati_panel_applications_SOURCES += mnb-launcher-zg-utils.c mnb-launcher-zg-utils.h
+endif
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.applications.service.in
