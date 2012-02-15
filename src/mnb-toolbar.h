@@ -42,7 +42,7 @@
 #define TRAY_BUTTON_HEIGHT 64
 #define CLOCK_WIDTH        106
 
-#define TOOLBAR_CUT_OUT 1
+#define TOOLBAR_CUT_OUT 0
 
 #define MNB_24H_KEY_DIR "/apps/date-time-panel"
 #define MNB_24H_KEY MNB_24H_KEY_DIR "/24_h_clock"
