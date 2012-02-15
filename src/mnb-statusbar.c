@@ -416,25 +416,9 @@ static void
 mnb_statusbar_init (MnbStatusbar *self)
 {
   MnbStatusbarPrivate *priv;
-  ClutterActor *button;
   GDateTime *datetime;
 
   priv = self->priv = STATUSBAR_PRIVATE (self);
-
-  button = mx_button_new ();
-  clutter_actor_set_name (button, "statusbar-myzone-button");
-  mx_button_set_icon_name (MX_BUTTON (button), "player_play");
-  mx_button_set_label (MX_BUTTON (button), _("Myzone"));
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           button, 0,
-                                           "expand", FALSE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_START,
-                                           NULL);
-
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (mnb_statusbar_myzone_clicked_cb),
-                    self);
 
   g_signal_connect (self,
                     "event",
