@@ -265,7 +265,7 @@ _zeitgeist_log_delete_events_received (GObject *source_object,
   ZeitgeistLog *log = ZEITGEIST_LOG (source_object);
   GError *error = NULL;
 
-  g_warning ("delted events");
+  g_warning ("deleted events");
 
   g_return_if_fail (PENGE_IS_INTERESTING_TILE (user_data));
 
@@ -392,16 +392,18 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
         uri = zeitgeist_subject_get_uri (s);
         g_assert (uri != NULL);
 
+        /* Just a small debug help :)
         g_warning ("%s: subj(%d): i=%s m=%s",
             zeitgeist_subject_get_uri (s),
             i,
             zeitgeist_subject_get_interpretation (s),
             zeitgeist_subject_get_manifestation (s));
+        */
 
 
         file = g_file_new_for_uri (uri);
-        /* if it's not local, it's probably a template error, log it and
-         * move on */
+        /* Current priv->templates look for local files only, if it's not local,
+         * it's probably a template error, log it and move on */
         if (!g_str_has_prefix (uri, "file:"))
           {
             g_warning ("uri %s for recent event is not local", uri);
@@ -636,7 +638,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                              zeitgeist_time_range_new_anytime (),
                              g_ptr_array_ref (priv->templates),
                              ZEITGEIST_STORAGE_STATE_ANY,
-                             50,
+                             50, /* how many result should it return */
                              ZEITGEIST_RESULT_TYPE_MOST_RECENT_SUBJECTS,
                              NULL,
                              _zeitgeist_log_find_received,
