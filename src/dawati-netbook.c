@@ -2066,18 +2066,7 @@ switch_workspace (MetaPlugin         *plugin,
       return;
     }
 
-  /*
-   * We do not run an effect if a panel is visible (as the effect runs above
-   * the panel.
-   */
-  if (mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar)))
-    {
-      meta_plugin_switch_workspace_completed (plugin);
-    }
-  else
-    {
-      mnb_switch_zones_effect (plugin, from, to, direction);
-    }
+  mnb_switch_zones_effect (plugin, from, to, direction);
 }
 
 static void
