@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-switcher
+TryExec=@libexecdir@/dawati-panel-switcher
+_Name=Switcher
+Icon=dawati-panel-switcher
+_Comment=Switcher panel
+Terminal=false
+Categories=
+OnlyShowIn=dawati;
+X-Meego-Priority=Highest
+X-Dawati-Service=com.dawati.UX.Shell.Panels.switcher
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=switcher-button

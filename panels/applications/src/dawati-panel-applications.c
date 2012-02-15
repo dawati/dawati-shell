@@ -238,7 +238,7 @@ main (int     argc,
        * don't pass our own stylesheet. */
       panel = mpl_panel_clutter_new ("applications",
                                       _("applications"),
-                                     /*THEMEDIR "/toolbar-button.css" */ NULL,
+                                     NULL,
                                      "applications-button",
                                      TRUE);
 

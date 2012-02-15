@@ -18,7 +18,7 @@
 #include <glib/gi18n.h>
 #include <locale.h>
 
-#define ZONES_PANEL_TOOLTIP _("switcher")
+#define SWITCHER_PANEL_TOOLTIP _("switcher")
 
 static MplPanelClient *client = NULL;
 
@@ -283,7 +283,7 @@ setup (ZonePanelData *data)
 
   /* load custom style */
   mx_style_load_from_file (mx_style_get_default (),
-                           DAWATI_STYLE_DIR "/switcher/switcher.css", &error);
+                           THEMEDIR "/switcher.css", &error);
 
   if (error)
     {
@@ -351,7 +351,7 @@ setup (ZonePanelData *data)
 
       data->placeholder = mx_image_new ();
       mx_image_set_from_file (MX_IMAGE (data->placeholder),
-                              DAWATI_STYLE_DIR "/switcher/blank-page-message.png",
+                              THEMEDIR "/blank-page-message.png",
                               &error);
 
       if (error)
@@ -404,7 +404,7 @@ main (int argc, char **argv)
 
   data = g_new0 (ZonePanelData, 1);
 
-  context = g_option_context_new ("- mutter-dawati zones panel");
+  context = g_option_context_new ("- mutter-dawati switcher panel");
   g_option_context_add_main_entries (context, entries, NULL);
   g_option_context_add_group (context,
                               clutter_get_option_group_without_init ());
@@ -430,10 +430,10 @@ main (int argc, char **argv)
 
   if (!standalone)
     {
-      client = mpl_panel_clutter_new ("zones",
-                                      ZONES_PANEL_TOOLTIP,
+      client = mpl_panel_clutter_new ("switcher",
+                                      SWITCHER_PANEL_TOOLTIP,
                                       NULL,
-                                      "zones-button",
+                                      "switcher-button",
                                       TRUE);
 
       update_toolbar_icon (data->screen, NULL, data);
@@ -449,7 +449,7 @@ main (int argc, char **argv)
                         (GCallback)_client_set_size_cb,
                         data);
 
-      mpl_panel_client_request_tooltip (client, ZONES_PANEL_TOOLTIP);
+      mpl_panel_client_request_tooltip (client, SWITCHER_PANEL_TOOLTIP);
 
       g_signal_connect_swapped (data->stage, "hide", G_CALLBACK (hide), data);
       g_signal_connect_swapped (data->stage, "show", G_CALLBACK (show), data);

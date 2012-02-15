@@ -252,7 +252,7 @@ AC_SUBST(GJS_CONSOLE)
 ###########################
 
 # Default list of panels to compile
-WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,zones,bluetooth"
+WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,switcher,bluetooth"
 
 # Provide a --with-panels/--without-panels configure option
 AS_DAWATI_ARG_WITH_PANELS
@@ -399,12 +399,12 @@ AS_DAWATI_PANEL(web, [sqlite3
                       $CLUTTER_DEPS
                       $MX_DEPS])
 
-# Zones
-AS_DAWATI_PANEL(zones, [gthread-2.0
-                        $GTK_DEPS
-                        $CLUTTER_GTK_DEPS
-                        $MX_DEPS
-                        libwnck-3.0])
+# Switcher
+AS_DAWATI_PANEL(switcher, [gthread-2.0
+                           $GTK_DEPS
+                           $CLUTTER_GTK_DEPS
+                           $MX_DEPS
+                           libwnck-3.0])
 
 
 ###########################
@@ -628,9 +628,9 @@ panels/web/common/Makefile
 panels/web/data/Makefile
 panels/web/netpanel/Makefile
 
-panels/zones/Makefile
-panels/zones/data/Makefile
-panels/zones/src/Makefile
+panels/switcher/Makefile
+panels/switcher/data/Makefile
+panels/switcher/src/Makefile
 
 panels/bluetooth/Makefile
 panels/bluetooth/src/Makefile

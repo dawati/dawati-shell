@@ -2,7 +2,7 @@
   <schema id="org.dawati.shell.toolbar" path="/org/dawati/shell/toolbar/">
 
     <key name="order" type="as">
-      <default>['dawati-panel-myzone','dawati-panel-zones','dawati-panel-applications','dawati-panel-people','dawati-panel-devices','dawati-panel-datetime','dawati-panel-bluetooth','carrick','dawati-power-icon']</default>
+      <default>['dawati-panel-myzone','dawati-panel-switcher','dawati-panel-applications','dawati-panel-people','dawati-panel-devices','dawati-panel-datetime','dawati-panel-bluetooth','carrick','dawati-power-icon']</default>
       <summary>Order of panels on toolbar</summary>
       <description> Determines the order of panels on the toolbar.</description>
     </key>

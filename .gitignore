@@ -122,8 +122,8 @@ data/org.dawati.shell.gschema.valid
 /panels/web/common/libcommon.a
 /panels/web/netpanel/dawati-panel-internet.desktop
 /panels/web/netpanel/dawati-panel-web
-/panels/zones/data/dawati-panel-zones.desktop
-/panels/zones/src/dawati-panel-zones
+/panels/switcher/data/dawati-panel-switcher.desktop
+/panels/switcher/src/dawati-panel-switcher
 /penge/test-block-container
 /penge/test-everything-pane
 /po/*.gmo

@@ -1704,7 +1704,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
        * BTW -- this code should not be reached; we should have exited
        * already in the button test.
        */
-      g_warning ("The Zones Panel cannot be replaced\n");
+      g_warning ("The Switcher Panel cannot be replaced\n");
       return;
     }
 

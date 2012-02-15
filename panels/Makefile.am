@@ -40,8 +40,8 @@ if USE_PANEL_WEB
 SUBDIRS += web
 endif
 
-if USE_PANEL_ZONES
-SUBDIRS += zones
+if USE_PANEL_SWITCHER
+SUBDIRS += switcher
 endif
 
 if USE_PANEL_BLUETOOTH
