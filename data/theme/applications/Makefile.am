@@ -1,6 +1,5 @@
 themedir = $(PANEL_APPLICATIONS_THEMEDIR)
 dist_theme_DATA = \
-	toolbar-button.css \
 	apps-coloured.png \
 	apps-normal.png \
 	panel.css \

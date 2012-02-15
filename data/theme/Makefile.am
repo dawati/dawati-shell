@@ -27,6 +27,12 @@ dist_theme_panel_DATA = \
 	toolbar/icon-apps-highlight.png \
 	toolbar/icon-apps.png \
 	toolbar/clock-background.png \
+	toolbar/icon-bluetooth-connecting-highlight.png \
+	toolbar/icon-bluetooth-connecting.png \
+	toolbar/icon-bluetooth-idle-highlight.png \
+	toolbar/icon-bluetooth-idle.png \
+	toolbar/icon-bluetooth-off-highlight.png \
+	toolbar/icon-bluetooth-off.png \
 	toolbar/icon-devices-highlight.png \
 	toolbar/icon-devices.png \
 	toolbar/icon-devices-active-highlight.png \

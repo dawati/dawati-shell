@@ -246,10 +246,10 @@ MxButton.ToolbarButton#status-button:hover MxIcon, MxButton.ToolbarButton#status
 
 /* bluetooth button */
 MnbToolbarApplet#bluetooth-button MxIcon {
-  -mx-content-image: url("icon-bluetooth-off.png");
+  -mx-content-image: url("toolbar/icon-bluetooth-off.png");
 }
 MnbToolbarApplet:hover#bluetooth-button MxIcon, MnbToolbarApplet:active#bluetooth-button MxIcon, MnbToolbarApplet:checked#bluetooth-button MxIcon {
-  -mx-content-image: url("icon-bluetooth-off-highlight.png");
+  -mx-content-image: url("toolbar/icon-bluetooth-off-highlight.png");
 }
 
 /* network button */

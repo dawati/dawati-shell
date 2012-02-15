@@ -1,20 +1,20 @@
 MnbToolbarApplet#state-off MxIcon {
-  -mx-content-image: url("icon-bluetooth-off.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-off.png");
 }
 MnbToolbarApplet#state-off:hover MxIcon, MnbToolbarApplet#state-off:active MxIcon, MnbToolbarApplet#state-off:checked MxIcon {
-  -mx-content-image: url("icon-bluetooth-off-highlight.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-off-highlight.png");
 }
 
 MnbToolbarApplet#state-idle MxIcon {
-  -mx-content-image: url("icon-bluetooth-idle.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-idle.png");
 }
 MnbToolbarApplet#state-idle:hover MxIcon, MnbToolbarApplet#state-idle:active MxIcon, MnbToolbarApplet#state-idle:checked MxIcon {
-  -mx-content-image: url("icon-bluetooth-idle-highlight.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-idle-highlight.png");
 }
 
 MnbToolbarApplet#state-connecting MxIcon {
-  -mx-content-image: url("icon-bluetooth-connecting.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-connecting.png");
 }
 MnbToolbarApplet#state-connecting:hover MxIcon, MnbToolbarApplet#state-connecting:active MxIcon, MnbToolbarApplet#state-connecting:checked MxIcon {
-  -mx-content-image: url("icon-bluetooth-connecting-highlight.png");
+  -mx-content-image: url("../toolbar/icon-bluetooth-connecting-highlight.png");
 }
