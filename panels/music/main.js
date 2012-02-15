@@ -247,7 +247,7 @@ MprisPlayerProxy.prototype = {
 
     update_infos: function(scope, callback) {
         this.GetRemote('Metadata', Lang.bind(this, function(dict) {
-            if (dict != NULL)
+            if (dict != null)
                 this._update_metadatas(dict);
         }));
         this.GetRemote('PlaybackStatus', Lang.bind(this, function(str) {
