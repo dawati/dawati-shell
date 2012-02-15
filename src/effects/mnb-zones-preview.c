@@ -437,7 +437,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_IN_SINE,
                              220,
-                             "zoom", 0.3,
+                             "zoom", 0.6,
                              NULL);
       break;
 
