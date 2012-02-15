@@ -6,7 +6,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/libdawati-panel \
 	-DDATADIR=\"$(datadir)\" \
   -DCSS_DIR=\"$(abs_builddir)\" \
-	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/dawati-panel\" \
+	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/panel\" \
 	-DDAWATI_APP_LAUNCHES_STORE=\"$(libexecdir)/dawati-app-launches-store\"
 
 LDADD = $(LIBMPL_LIBS)
@@ -20,7 +20,7 @@ noinst_PROGRAMS = \
 
 test_entry_CFLAGS = \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/dawati-panel\"
+	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/panel\"
 
 # FIXME use this once split out
 # -DTHEMEDIR=\"$(DAWATI_THEME_DIR)/$(PACKAGE_NAME)\"

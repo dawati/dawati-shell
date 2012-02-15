@@ -7,9 +7,12 @@ SUBDIRS = \
 	music \
 	myzone \
 	networks \
+	panel \
 	people \
 	power-icon \
+	shared \
 	status \
+	switcher \
 	web \
 	zones \
 	$(NULL)

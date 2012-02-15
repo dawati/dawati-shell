@@ -2,9 +2,9 @@
 AM_CPPFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	-I$(top_srcdir)/libdawati-panel \
-	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/dawati-panel/mx.cache\" \
+	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/panel/mx.cache\" \
 	-DDATADIR=\"$(datadir)\" \
-	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/dawati-panel\" \
+	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)/panel\" \
 	-DSTYLEDIR=\"$(DAWATI_RUNTIME_STYLE_DIR)\" \
 	-DDAWATI_APP_LAUNCHES_STORE=\"$(libexecdir)/dawati-app-launches-store\"
 

@@ -1,4 +1,4 @@
-SUBDIRS = theme style
+SUBDIRS = theme
 
 gsettings_SCHEMAS = org.dawati.shell.gschema.xml
 

@@ -531,13 +531,14 @@ data/theme/devices/icons/Makefile
 data/theme/music/Makefile
 data/theme/myzone/Makefile
 data/theme/networks/Makefile
+data/theme/panel/Makefile
 data/theme/people/Makefile
 data/theme/power-icon/Makefile
+data/theme/shared/Makefile
 data/theme/status/Makefile
+data/theme/switcher/Makefile
 data/theme/web/Makefile
 data/theme/zones/Makefile
-
-data/style/Makefile
 
 src/Makefile
 src/effects/Makefile
@@ -556,7 +557,6 @@ libdawati-panel/dawati-panel.pc
 libdawati-panel/dawati-panel/Makefile
 libdawati-panel/dawati-panel/mpl-version.h
 libdawati-panel/js/Makefile
-libdawati-panel/theme/Makefile
 libdawati-panel/tests/Makefile
 
 carrick/Makefile
