@@ -5,7 +5,7 @@ AM_CFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/shell
 
 libeffects_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 libeffects_la_SOURCES =					\

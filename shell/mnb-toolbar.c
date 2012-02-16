@@ -877,7 +877,7 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
   return TRUE;
 }
 
-#include "../src/mnb-toolbar-dbus-glue.h"
+#include "mnb-toolbar-dbus-glue.h"
 
 static void
 mnb_toolbar_allocate (ClutterActor          *actor,

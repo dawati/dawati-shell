@@ -24,7 +24,7 @@ AC_INIT([dawati-shell], [plugin_version], [http://dawati.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_AUX_DIR([build])
 
-AC_CONFIG_SRCDIR(src/dawati-netbook.c)
+AC_CONFIG_SRCDIR(shell/dawati-netbook.c)
 
 AM_INIT_AUTOMAKE([foreign -Wno-portability tar-ustar no-dist-gzip dist-xz])
 
@@ -539,11 +539,11 @@ data/theme/switcher/Makefile
 data/theme/web/Makefile
 data/theme/zones/Makefile
 
-src/Makefile
-src/effects/Makefile
-src/alttab/Makefile
-src/notifications/Makefile
-src/presence/Makefile
+shell/Makefile
+shell/effects/Makefile
+shell/alttab/Makefile
+shell/notifications/Makefile
+shell/presence/Makefile
 po/Makefile.in
 tests/Makefile
 

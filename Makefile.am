@@ -18,7 +18,7 @@ SUBDIRS += carrick callouts
 endif
 
 if HAVE_MUTTER
-SUBDIRS += src
+SUBDIRS += shell
 endif
 
 # extra

@@ -136,14 +136,14 @@ penge/penge-email-pane.c
 libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c
 libdawati-panel/dawati-panel/mpl-utils.c
 
-src/dawati-netbook.c
-src/mnb-toolbar.c
-src/mnb-statusbar.c
-src/mnb-toolbar-clock.c
-src/notifications/ntf-notification.c
-src/notifications/ntf-tray.c
-src/notifications/ntf-source.c
-src/notifications/ntf-overlay.c
-src/notifications/ntf-libnotify.c
-src/notifications/ntf-wm.c
+shell/dawati-netbook.c
+shell/mnb-toolbar.c
+shell/mnb-statusbar.c
+shell/mnb-toolbar-clock.c
+shell/notifications/ntf-notification.c
+shell/notifications/ntf-tray.c
+shell/notifications/ntf-source.c
+shell/notifications/ntf-overlay.c
+shell/notifications/ntf-libnotify.c
+shell/notifications/ntf-wm.c
 
