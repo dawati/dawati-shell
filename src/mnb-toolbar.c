@@ -2219,6 +2219,8 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   else if (tp->windowless)
     {
       button = tp->button = mnb_toolbar_button_new ();/* mnb_toolbar_icon_new (); */
+      mnb_toolbar_button_set_tooltip_active (MNB_TOOLBAR_BUTTON (button),
+                                             TRUE);
       mx_button_set_label (MX_BUTTON (button), "");
       mx_widget_set_tooltip_text (MX_WIDGET (tp->button),
                                   tp->tooltip);

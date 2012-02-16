@@ -1,64 +1,63 @@
-
-MnbToolbarButton#state-20 {
-  background-image: url("../toolbar/icon-battery-20.png");
+MnbToolbarButton#state-20 MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-20.png");
 }
 
-MnbToolbarButton#state-20:hover {
-  background-image: url("../toolbar/icon-battery-20-highlight.png");
+MnbToolbarButton#state-20:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-20-highlight.png");
 }
 
-MnbToolbarButton#state-40 {
-  background-image: url("../toolbar/icon-battery-40.png");
+MnbToolbarButton#state-40 MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-40.png");
 }
 
-MnbToolbarButton#state-40:hover {
-  background-image: url("../toolbar/icon-battery-40-highlight.png");
+MnbToolbarButton#state-40:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-40-highlight.png");
 }
 
-MnbToolbarButton#state-60 {
-  background-image: url("../toolbar/icon-battery-60.png");
+MnbToolbarButton#state-60 MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-60.png");
 }
 
-MnbToolbarButton#state-60:hover {
-  background-image: url("../toolbar/icon-battery-60-highlight.png");
+MnbToolbarButton#state-60:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-60-highlight.png");
 }
 
-MnbToolbarButton#state-80 {
-  background-image: url("../toolbar/icon-battery-80.png");
+MnbToolbarButton#state-80 MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-80.png");
 }
 
-MnbToolbarButton#state-80:hover {
-  background-image: url("../toolbar/icon-battery-80-highlight.png");
+MnbToolbarButton#state-80:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-80-highlight.png");
 }
 
-MnbToolbarButton#state-full {
-  background-image: url("../toolbar/icon-battery-100.png");
+MnbToolbarButton#state-full MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-100.png");
 }
 
-MnbToolbarButton#state-full:hover {
-  background-image: url("../toolbar/icon-battery-100-highlight.png");
+MnbToolbarButton#state-full:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-100-highlight.png");
 }
 
-MnbToolbarButton#state-missing {
-  background-image: url("../toolbar/icon-battery-missing.png");
+MnbToolbarButton#state-missing MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-missing.png");
 }
 
-MnbToolbarButton#state-missing:hover {
-  background-image: url("../toolbar/icon-battery-missing-highlight.png");
+MnbToolbarButton#state-missing:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-missing-highlight.png");
 }
 
-MnbToolbarButton#state-empty {
-  background-image: url("../toolbar/icon-battery-empty.png");
+MnbToolbarButton#state-empty MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-empty.png");
 }
 
-MnbToolbarButton#state-empty:hover {
-  background-image: url("../toolbar/icon-battery-empty-highlight.png");
+MnbToolbarButton#state-empty:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-empty-highlight.png");
 }
 
-MnbToolbarButton#state-plugged {
-  background-image: url("../toolbar/icon-battery-plugged.png");
+MnbToolbarButton#state-plugged MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-plugged.png");
 }
 
-MnbToolbarButton#state-plugged:hover {
-  background-image: url("../toolbar/icon-battery-plugged-highlight.png");
+MnbToolbarButton#state-plugged:hover MxIcon {
+  -mx-content-image: url("../toolbar/icon-battery-plugged-highlight.png");
 }

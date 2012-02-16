@@ -36,7 +36,26 @@ struct _MnbToolbarButtonPrivate
 {
   gchar   *tooltip;
   gboolean in_tooltip_change : 1;
+  gboolean need_tooltip : 1;
+  gboolean force_tooltip : 1;
 };
+
+static gboolean
+mnb_toolbar_button_reset (MnbToolbarButton *button)
+{
+  MnbToolbarButtonPrivate *priv = button->priv;
+
+  priv->in_tooltip_change = TRUE;
+
+  if (priv->need_tooltip || priv->force_tooltip)
+    mx_widget_set_tooltip_text (MX_WIDGET (button), priv->tooltip);
+  else
+    mx_widget_set_tooltip_text (MX_WIDGET (button), NULL);
+
+  priv->in_tooltip_change = FALSE;
+
+  return FALSE;
+}
 
 static void
 mnb_toolbar_button_allocate (ClutterActor          *actor,
@@ -45,25 +64,28 @@ mnb_toolbar_button_allocate (ClutterActor          *actor,
 {
   MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
   gfloat nat_width;
+  gboolean need_tooltip;
+
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->allocate (actor, box, flags);
 
   clutter_actor_get_preferred_width (actor, -1, NULL, &nat_width);
 
-  priv->in_tooltip_change = TRUE;
-
   if ((box->x2 - box->x1) < nat_width)
-    mx_widget_set_tooltip_text (MX_WIDGET (actor), priv->tooltip);
+    need_tooltip = TRUE;
   else
-    mx_widget_set_tooltip_text (MX_WIDGET (actor), NULL);
+    need_tooltip = FALSE;
 
-  priv->in_tooltip_change = FALSE;
-
-  CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->allocate (actor, box, flags);
+  if (need_tooltip != priv->need_tooltip)
+    {
+      priv->need_tooltip = need_tooltip;
+      g_timeout_add (10, (GSourceFunc) mnb_toolbar_button_reset, actor);
+    }
 }
 
 static void
 mnb_toolbar_button_tooltip_text_cb (MnbToolbarButton *button,
-                                    GParamSpec *pspec,
-                                    gpointer data)
+                                    GParamSpec       *pspec,
+                                    gpointer          data)
 {
   MnbToolbarButtonPrivate *priv = button->priv;
   const gchar *tooltip = mx_widget_get_tooltip_text (MX_WIDGET (button));
@@ -124,10 +146,32 @@ static void
 mnb_toolbar_button_init (MnbToolbarButton *self)
 {
   self->priv = MNB_TOOLBAR_BUTTON_GET_PRIVATE (self);
+
+  self->priv->need_tooltip = TRUE;
 }
 
 ClutterActor*
 mnb_toolbar_button_new (void)
 {
   return g_object_new (MNB_TYPE_TOOLBAR_BUTTON, NULL);
+}
+
+void
+mnb_toolbar_button_set_tooltip_active (MnbToolbarButton *button,
+                                       gboolean tooltip_active)
+{
+  MnbToolbarButtonPrivate *priv;
+  gboolean new_val;
+
+  g_return_if_fail (MNB_IS_TOOLBAR_BUTTON (button));
+
+  priv = button->priv;
+
+  new_val = tooltip_active != FALSE;
+
+  if (new_val != priv->force_tooltip)
+    {
+      priv->force_tooltip = new_val;
+      mnb_toolbar_button_reset (button);
+    }
 }

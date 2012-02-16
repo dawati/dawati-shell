@@ -63,7 +63,10 @@ typedef struct {
 GType mnb_toolbar_button_get_type (void);
 
 ClutterActor* mnb_toolbar_button_new (void);
-void mnb_toolbar_button_set_reactive_area (MnbToolbarButton  *button, gint x, gint y, gint width, gint height);
+
+void mnb_toolbar_button_set_reactive_area (MnbToolbarButton *button, gint x, gint y, gint width, gint height);
+
+void mnb_toolbar_button_set_tooltip_active (MnbToolbarButton *button, gboolean tooltip_active);
 
 G_END_DECLS
 
