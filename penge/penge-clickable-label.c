@@ -106,11 +106,9 @@ _update_attributes_from_matches (PengeClickableLabel *label,
   PangoAttrList *attrs;
   PangoAttribute *attr;
   ClutterActor *text;
-  const gchar *str;
   gint i = 0;
 
   text = mx_label_get_clutter_text (MX_LABEL (label));
-  str = clutter_text_get_text (CLUTTER_TEXT (text));
 
   attrs = pango_attr_list_new ();
 
@@ -240,7 +238,6 @@ _motion_event_cb (ClutterActor        *actor,
   ClutterButtonEvent *bevent = (ClutterButtonEvent *)event;
   gfloat layout_x, layout_y;
   PangoLayout *layout;
-  const gchar *str;
   gint i = 0, index = 0;
   Display *dpy;
   ClutterActor *stage;
@@ -264,7 +261,6 @@ _motion_event_cb (ClutterActor        *actor,
 
 
   layout = clutter_text_get_layout (CLUTTER_TEXT (actor));
-  str = clutter_text_get_text (CLUTTER_TEXT (actor));
 
   if (pango_layout_xy_to_index (layout,
                                 layout_x * PANGO_SCALE,

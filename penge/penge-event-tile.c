@@ -447,7 +447,7 @@ ___clutter_color_from_string (ClutterColor *color,
     {
       gint64 result;
 
-      if (sscanf (str + 1, "%lx", &result))
+      if (sscanf (str + 1, "%"G_GINT64_FORMAT, &result))
         {
           gsize length = strlen (str);
 
@@ -547,7 +547,7 @@ static void
 _update_calendar_indicator (PengeEventTile *tile)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
-  ClutterColor color;
+  ClutterColor color = {0, 0, 0, 0};
   cairo_t *cr;
 
   ___clutter_color_from_string (&color, e_source_peek_color_spec (priv->source));

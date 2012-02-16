@@ -44,7 +44,11 @@ main (int    argc,
   gint i;
   gint n_rects = 16;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Unable to initialise Clutter");
+      return EXIT_FAILURE;
+    }
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);

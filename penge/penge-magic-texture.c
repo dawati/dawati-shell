@@ -65,7 +65,7 @@ penge_magic_texture_paint (ClutterActor *actor)
 
   alpha = clutter_actor_get_paint_opacity (actor);
 
-  cogl_material_set_color4ub (material,
+  cogl_material_set_color4ub (COGL_MATERIAL (material),
                               alpha,
                               alpha,
                               alpha,
