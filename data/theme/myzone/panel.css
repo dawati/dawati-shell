@@ -19,14 +19,14 @@ PengeCalendarPane
 
 *.PengeGridViewTopContainer
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  border-image: url('../shared/content-panel-bg.png') 5;
 }
 
 PengeAppsPane
 {
   padding: 6 0 15;
 /*
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  border-image: url('../shared/content-panel-bg.png') 5;
 */
 }
 
@@ -57,17 +57,17 @@ PengeAppTile,
 PengeAppTile:hover,
 PengeAppTile:active
 {
-  border-image: url('../../style/shared/application-icon-mask.png') 8 9;
+  border-image: url('../shared/application-icon-mask.png') 8 9;
 }
 
 PengeAppsPane *.PengeAppTileOverlay
 {
-  border-image: url('../../style/shared/application-mask.png');
+  border-image: url('../shared/application-mask.png');
 }
 
 PengeRecentFileTile
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  border-image: url('../shared/content-panel-bg.png') 5;
   padding: 8;
 }
 
@@ -80,7 +80,7 @@ PengeRecentFileTile:active
 
 PengePeopleTile
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  border-image: url('../shared/content-panel-bg.png') 5;
   padding: 0;
 }
 
@@ -144,13 +144,13 @@ PengePeopleTile *.PengePeopleTileContentLabel
 
 PengePeopleTile *.PengePeopleTileContentBackgroundWithoutHeader
 {
-  border-image: url('../../style/shared/content-tile-bg.png') 45 51 46 52;
+  border-image: url('../shared/content-tile-bg.png') 45 51 46 52;
   padding: 8;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackgroundWithHeader
 {
-  border-image: url('../../style/shared/content-tile-bg.png') 45 51 46 52;
+  border-image: url('../shared/content-tile-bg.png') 45 51 46 52;
   padding: 8;
 }
 
@@ -218,7 +218,7 @@ PengeWelcomeTile
 
 *#penge-welcome-launcher
 {
-  border-image: url('../../style/shared/content-panel-bg.png') 5;
+  border-image: url('../shared/content-panel-bg.png') 5;
   padding: 4 4 4 4;
 }
 
@@ -250,17 +250,17 @@ PengeWelcomeTile
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('../../style/switcher/closebutton-normal.png');
+  -mx-content-image: url('../switcher/closebutton-normal.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('../../style/switcher/closebutton-hover.png');
+  -mx-content-image: url('../switcher/closebutton-hover.png');
 }
 
 *.PengeInterestingTileRemoveButton:active *.PengeInterestingTileIcon
 {
-  -mx-content-image: url('../../style/switcher/closebutton-pressed.png');
+  -mx-content-image: url('../switcher/closebutton-pressed.png');
 }
 
 

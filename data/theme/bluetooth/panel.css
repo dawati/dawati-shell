@@ -11,7 +11,7 @@ MxBoxLayout#bt-panel-button-box {
   padding: 10 0 0 0;
 }
 MxBoxLayout#bt-panel-button-box:state-off {
-  border-image: url("../../style/shared/divider.png") 1 0 0 0;
+  border-image: url("../shared/divider.png") 1 0 0 0;
 }
 
 

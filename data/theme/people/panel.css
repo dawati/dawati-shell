@@ -68,12 +68,12 @@ AnerleyCompactTile:hover
 }
 
 .closeButton {
-    -mx-content-image: url("../../style/switcher/closebutton-normal.png");
+    -mx-content-image: url("../switcher/closebutton-normal.png");
 }
 .closeButton:hover {
-    -mx-content-image: url("../../style/switcher/closebutton-hover.png");
+    -mx-content-image: url("../switcher/closebutton-hover.png");
 }
 .closeButton:active {
-    -mx-content-image: url("../../style/switcher/closebutton-pressed.png");
+    -mx-content-image: url("../switcher/closebutton-pressed.png");
 }
 
