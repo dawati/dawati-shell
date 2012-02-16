@@ -21,12 +21,12 @@
 #endif
 
 #include <stdlib.h>
-extern "C" {
-#include <cogl/cogl-pango.h>
-}
 #include <string.h>
-#include <glib/gi18n.h>
 #include <math.h>
+
+#include <glib/gi18n.h>
+#include <cogl/cogl.h>
+
 #include "mwb-ac-list.h"
 #include "mwb-separator.h"
 #include "mwb-utils.h"
