@@ -31,8 +31,6 @@ carrick/carrick-pane.c
 carrick/carrick-service-item.c
 carrick/carrick-util.c
 
-data/mutter-dawati.schemas.in
-
 gvc/gvc-mixer-control.c
 
 panels/applications/src/dawati-netbook-launcher.c
@@ -114,6 +112,9 @@ panels/status/src/mps-feed-switcher.c
 panels/status/src/mps-geotag-pane.c
 panels/status/src/mps-tweet-card.c
 
+panels/switcher/data/dawati-panel-switcher.desktop.in.in
+panels/switcher/src/main.c
+
 panels/web/common/mwb-ac-list.cc
 panels/web/common/mwb-radical-bar.cc
 panels/web/common/mwb-separator.cc
@@ -121,9 +122,6 @@ panels/web/common/mwb-utils.cc
 panels/web/netpanel/dawati-netbook-netpanel.cc
 panels/web/netpanel/dawati-panel-web.cc
 panels/web/netpanel/dawati-panel-internet.desktop.in.in
-
-panels/zones/data/dawati-panel-zones.desktop.in.in
-panels/zones/src/main.c
 
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
