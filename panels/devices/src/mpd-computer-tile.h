@@ -43,9 +43,12 @@ G_BEGIN_DECLS
 #define MPD_COMPUTER_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_COMPUTER_TILE, MpdComputerTileClass))
 
+typedef struct _MpdComputerTilePrivate MpdComputerTilePrivate;
+
 typedef struct
 {
   MxTable parent;
+  MpdComputerTilePrivate *priv;
 } MpdComputerTile;
 
 typedef struct

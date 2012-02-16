@@ -310,7 +310,9 @@ AS_DAWATI_PANEL(networks, [gconf-2.0
                            $GTK_DEPS
                            rest-0.7])
 
-if test x$dawati_use_networks_panel = xyes || test x$dawati_use_bluetooth_panel = xyes; then
+if test x$dawati_use_networks_panel = xyes  || \
+   test x$dawati_use_bluetooth_panel = xyes || \
+   test x$dawati_use_devices_panel = xyes; then
    PKG_CHECK_MODULES(CARRICK, [gthread-2.0
                                gconf-2.0
                                dbus-glib-1

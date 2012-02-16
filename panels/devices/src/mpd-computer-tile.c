@@ -23,6 +23,8 @@
 
 #include <glib/gi18n.h>
 
+#include "carrick/carrick-connman-manager.h"
+
 #include "mpd-battery-tile.h"
 #include "mpd-brightness-tile.h"
 #include "mpd-computer-tile.h"
@@ -33,8 +35,22 @@
 
 G_DEFINE_TYPE (MpdComputerTile, mpd_computer_tile, MX_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_COMPUTER_TILE, MpdComputerTilePrivate))
+#define COMPUTER_TILE_PRIVATE(o)                              \
+        (G_TYPE_INSTANCE_GET_PRIVATE ((o),                    \
+                                      MPD_TYPE_COMPUTER_TILE, \
+                                      MpdComputerTilePrivate))
+
+typedef enum
+{
+  RADIO_WIFI,
+  RADIO_WIMAX,
+  RADIO_BLUETOOTH,
+  RADIO_3G,
+
+  N_RADIO_TECHS
+} RadioTechs;
+
+#define OFFLINE_MODE  N_RADIO_TECHS
 
 enum
 {
@@ -45,14 +61,170 @@ enum
 
 typedef struct
 {
-  int dummy;
-} MpdComputerTilePrivate;
+  ClutterActor *label, *frame, *toggle;
+} RadioRow;
+
+typedef struct
+{
+  MpdComputerTile *tile;
+  int row;
+} ToggledData;
+
+struct _MpdComputerTilePrivate
+{
+  CarrickConnmanManager *cm;
+
+  RadioRow rows[N_RADIO_TECHS + 1]; /* techs + Offline mode */
+
+  /* Those structures are used by the notify::active handlers */
+  ToggledData toggled_data[N_RADIO_TECHS + 1];
+};
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
+
+static const gchar *
+radio_tech_to_connman_tech (RadioTechs tech)
+{
+  static const char *connman_techs[N_RADIO_TECHS] =
+    { "wifi", "wimax", "bluetooth", "cellular" };
+
+  g_assert (tech >= 0 && tech < N_RADIO_TECHS);
+
+  return connman_techs[tech];
+}
+
+static void
+on_switch_toggled (MxToggle    *toggle,
+                   GParamSpec  *property,
+                   ToggledData *data)
+{
+  MpdComputerTilePrivate *priv = data->tile->priv;
+  gboolean active;
+
+  active = mx_toggle_get_active (toggle);
+  carrick_connman_manager_set_technology_state (priv->cm,
+                                                radio_tech_to_connman_tech (data->row),
+                                                active);
+}
+
+static void
+show_tech (MpdComputerTile *tile,
+           RadioTechs       tech,
+           gboolean         available)
+{
+  MpdComputerTilePrivate *priv = tile->priv;
+
+  if (available)
+    {
+      clutter_actor_show (priv->rows[tech].label);
+      clutter_actor_show (priv->rows[tech].frame);
+    }
+  else
+    {
+      clutter_actor_hide (priv->rows[tech].label);
+      clutter_actor_hide (priv->rows[tech].frame);
+    }
+}
+
+static void
+show_airplane_mode (MpdComputerTile *tile,
+                    gboolean         available)
+{
+  show_tech (tile, OFFLINE_MODE, available);
+}
+
+static void
+_available_techs_changed (CarrickConnmanManager *cm,
+                          GParamSpec            *pspec,
+                          MpdComputerTile       *tile)
+{
+  gboolean available_techs[N_RADIO_TECHS];
+  char **techs, **iter;
+  int show_airplane = 0, i;
+
+  memset (available_techs, 0, N_RADIO_TECHS * sizeof (gboolean));
+
+  g_object_get (cm, "available-technologies", &techs, NULL);
+  iter = techs;
+
+  while (*iter)
+    {
+      for (i = 0; i < N_RADIO_TECHS; i++)
+        if (g_strcmp0 (*iter, radio_tech_to_connman_tech (i)) == 0)
+          available_techs[i] = TRUE;
+      iter++;
+    }
+
+  for (i = 0; i < N_RADIO_TECHS; i++)
+    {
+      if (available_techs[i])
+        {
+          show_airplane++;
+          show_tech (tile, i, TRUE);
+        }
+      else
+        {
+          show_tech (tile, i, FALSE);
+        }
+    }
+
+  show_airplane_mode (tile, show_airplane);
+
+  g_strfreev (techs);
+}
+
+static void
+_enabled_techs_changed (CarrickConnmanManager *cm,
+                        GParamSpec            *pspec,
+                        MpdComputerTile       *tile)
+{
+  MpdComputerTilePrivate *priv = tile->priv;
+  gboolean enabled_techs[N_RADIO_TECHS];
+  char **techs, **iter;
+  int i;
+
+  memset (enabled_techs, 0, N_RADIO_TECHS * sizeof (gboolean));
+
+  g_object_get (cm, "enabled-technologies", &techs, NULL);
+  iter = techs;
+
+  while (*iter) {
+      for (i = 0; i < N_RADIO_TECHS; i++)
+        if (g_strcmp0 (*iter, radio_tech_to_connman_tech (i)) == 0)
+          enabled_techs[i] = TRUE;
+    iter++;
+  }
+
+  for (i = 0; i < N_RADIO_TECHS; i++)
+    {
+      g_signal_handlers_block_by_func (priv->rows[i].toggle,
+                                       on_switch_toggled,
+                                       &priv->toggled_data[i]);
+      mx_toggle_set_active (MX_TOGGLE (priv->rows[i].toggle), enabled_techs[i]);
+      g_signal_handlers_unblock_by_func (priv->rows[i].toggle,
+                                         on_switch_toggled,
+                                         &priv->toggled_data[i]);
+    }
+
+  g_strfreev (techs);
+}
+
+
+/*
+ * GObject implementation
+ */
 
 static void
 _dispose (GObject *object)
 {
+  MpdComputerTilePrivate *priv = MPD_COMPUTER_TILE (object)->priv;
+
+  if (priv->cm)
+    {
+      g_object_unref (priv->cm);
+      priv->cm = NULL;
+    }
+
   G_OBJECT_CLASS (mpd_computer_tile_parent_class)->dispose (object);
 }
 
@@ -76,87 +248,94 @@ mpd_computer_tile_class_init (MpdComputerTileClass *klass)
 }
 
 static void
+create_network_row (MpdComputerTile *tile,
+                    const gchar     *label_text,
+                    gint             row)
+{
+  MpdComputerTilePrivate *priv = tile->priv;
+  ClutterActor *label, *toggle, *frame;
+
+  label = mx_label_new_with_text (label_text);
+  mx_table_add_actor_with_properties (MX_TABLE (tile), label,
+                                      row, 0,
+                                      "x-expand", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  frame = mx_frame_new ();
+  toggle = mx_toggle_new ();
+
+  mx_bin_set_child (MX_BIN (frame), toggle);
+  mx_table_add_actor_with_properties (MX_TABLE (tile), frame,
+                                      row, 1,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_START,
+                                      NULL);
+
+  priv->toggled_data[row].tile = tile;
+  priv->toggled_data[row].row = row;
+  g_signal_connect (toggle,
+                    "notify::active",
+                    G_CALLBACK (on_switch_toggled),
+                    &priv->toggled_data[row]);
+
+  priv->rows[row].label = label;
+  priv->rows[row].frame = frame;
+  priv->rows[row].toggle = toggle;
+}
+
+static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor      *tile, *label, *toggle, *frame;
+  MpdComputerTilePrivate *priv;
+  ClutterActor      *tile, *label;
   MpdDisplayDevice  *display;
   bool               show_brightness_tile;
 
-  /* Wifi */
-  label = mx_label_new_with_text (_("WiFi"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  self->priv = priv = COMPUTER_TILE_PRIVATE (self);
 
-  frame = mx_frame_new ();
-  toggle = mx_toggle_new ();
-  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  priv->cm = carrick_connman_manager_new ();
+  g_signal_connect (priv->cm, "notify::available-technologies",
+                    G_CALLBACK (_available_techs_changed), self);
+  g_signal_connect (priv->cm, "notify::enabled-technologies",
+                    G_CALLBACK (_enabled_techs_changed), self);
 
-  mx_bin_set_child (MX_BIN (frame), toggle);
-  mx_table_add_actor_with_properties (MX_TABLE (self), frame,
-                                      0, 1,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
 
-  /* Bluetooth */
-  label = mx_label_new_with_text (_("Bluetooth"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      1, 0,
-                                      "x-expand", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  /* Let's reserve some room (rows) for the different "radios", we need:
+   * WiFi (0)
+   * Wimax (1)
+   * Bluetooth (2)
+   * 3G (3)
+   * Air plane mode (4) */
+#define START_ROW 5
 
-  frame = mx_frame_new ();
-  toggle = mx_toggle_new ();
-  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
+  create_network_row (self, _("Wifi"), RADIO_WIFI);
+  create_network_row (self, _("Wimax"), RADIO_WIMAX);
+  create_network_row (self, _("Bluetooth"), RADIO_BLUETOOTH);
+  create_network_row (self, _("3G"), RADIO_3G);
+#if 0
+  create_network_row (self, _("Offline mode"), OFFLINE_MODE);
+#endif
 
-  mx_bin_set_child (MX_BIN (frame), toggle);
-  mx_table_add_actor_with_properties (MX_TABLE (self), frame,
-                                      1, 1,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
-
-  /* Flight mode */
-  label = mx_label_new_with_text (_("Flight Mode"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      2, 0,
-                                      "x-expand", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-  frame = mx_frame_new ();
-  toggle = mx_toggle_new ();
-  mx_widget_set_disabled (MX_WIDGET (toggle), TRUE);
-
-  mx_bin_set_child (MX_BIN (frame), toggle);
-  mx_table_add_actor_with_properties (MX_TABLE (self), frame,
-                                      2, 1,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
+  show_tech (self, RADIO_WIFI, FALSE);
+  show_tech (self, RADIO_WIMAX, FALSE);
+  show_tech (self, RADIO_BLUETOOTH, FALSE);
+  show_tech (self, RADIO_3G, FALSE);
 
   /* Volume */
   /* Note to translators, volume here is sound volume */
   label = mx_label_new_with_text (_("Volume"));
   mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      3, 0,
+                                      START_ROW, 0,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-fill", FALSE,
                                       NULL);
 
   tile = mpd_volume_tile_new ();
   mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                      3, 1,
+                                      START_ROW, 1,
                                       "y-expand", FALSE,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-fill", FALSE,
@@ -170,14 +349,14 @@ mpd_computer_tile_init (MpdComputerTile *self)
     {
       label = mx_label_new_with_text (_("Brightness"));
       mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                          4, 0,
+                                          START_ROW + 1, 0,
                                           "y-align", MX_ALIGN_MIDDLE,
                                           "y-fill", FALSE,
                                           NULL);
 
       tile = mpd_brightness_tile_new ();
       mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                          4, 1,
+                                          START_ROW + 1, 1,
                                           "x-expand", TRUE,
                                           NULL);
     }

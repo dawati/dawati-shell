@@ -13,6 +13,7 @@ dawati_panel_devices_LDADD = \
 	$(PANEL_DEVICES_LIBS) \
 	$(top_builddir)/gpm/libgpm.la \
 	$(top_builddir)/gvc/libgvc.la \
+	$(top_builddir)/carrick/libcarrick.la \
 	$(NULL)
 
 dawati_panel_devices_SOURCES = \
