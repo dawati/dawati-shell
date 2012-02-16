@@ -673,7 +673,7 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
     text = _("Favourites");
 
   if (g_strcmp0 (text, "current") == 0)
-    text = _("Running applications");
+    text = _("Running Applications");
 
   label = mx_label_new_with_text (text);
   clutter_actor_set_reactive (label, TRUE);
