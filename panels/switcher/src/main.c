@@ -116,26 +116,26 @@ update_toolbar_icon (WnckScreen    *screen,
     {
     case 1:
     case 2:
-      mpl_panel_client_request_button_style (client, "zones-button-1");
+      mpl_panel_client_request_button_style (client, "switcher-button-1");
       break;
 
     case 3:
     case 4:
-      mpl_panel_client_request_button_style (client, "zones-button-2");
+      mpl_panel_client_request_button_style (client, "switcher-button-2");
       break;
 
     case 5:
     case 6:
-      mpl_panel_client_request_button_style (client, "zones-button-3");
+      mpl_panel_client_request_button_style (client, "switcher-button-3");
       break;
 
     case 7:
     case 8:
-      mpl_panel_client_request_button_style (client, "zones-button-4");
+      mpl_panel_client_request_button_style (client, "switcher-button-4");
       break;
 
     default:
-      mpl_panel_client_request_button_style (client, "zones-button");
+      mpl_panel_client_request_button_style (client, "switcher-button");
       break;
     }
 }
