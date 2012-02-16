@@ -401,7 +401,6 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
         */
 
 
-        file = g_file_new_for_uri (uri);
         /* Current priv->templates look for local files only, if it's not local,
          * it's probably a template error, log it and move on */
         if (!g_str_has_prefix (uri, "file:"))
@@ -409,6 +408,8 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
             g_warning ("uri %s for recent event is not local", uri);
             continue;
           }
+
+        file = g_file_new_for_uri (uri);
 
         /* if the file does not exist anymore we remove it (fire-and-forget)
          * from the log and ignore the event for this round */
@@ -426,6 +427,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
                   NULL, NULL, NULL);
 
               g_array_unref (ids);
+              g_object_unref (file);
 
               break; /* consider the next event */
             }
@@ -437,6 +439,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
           ret = g_list_prepend (ret, g_object_ref (event));
 
         g_free (thumbnail_path);
+        g_object_unref (file);
       }
   }
 
