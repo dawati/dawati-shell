@@ -100,23 +100,6 @@ MxBoxLayout#toolbar-left-box {
 
 /* theme the icon and text of the panel */
 
-MnbToolbarButton {
-  -mx-border-image-transition-duration: 0;
-  background-color: #fff0;
-  border-image: url("toolbar/toolbar-button-normal.png") 12;
-  color: #2a3c4a;
-  font-size: 13px;
-}
-
-MnbToolbarButton MxIcon {
-    padding: 0 10 0 0;
-}
-
-MnbToolbarButton:hover, MnbToolbarButton:active {
-  -mx-border-image-transition-duration: 0;
-  border-image: url("toolbar/toolbar-button-normal.png") 12;
-}
-
 /* theme the clock */
 MnbToolbarClock {
   border-image: url("toolbar/toolbar-button-normal.png") 12;
@@ -145,8 +128,17 @@ MnbToolbarApplet, MnbToolbarApplet:hover, MnbToolbarApplet:active, MnbToolbarApp
 
 /* All toolbar buttons */
 MnbToolbarButton, MnbToolbarButton:hover, MnbToolbarButton:active, MnbToolbarButton:checked {
-    padding: 0 0 0 0;
-    font-family: "Open Sans";
+  -mx-border-image-transition-duration: 0;
+  background-color: #fff0;
+  border-image: url("toolbar/toolbar-button-normal.png") 12;
+  color: #2a3c4a;
+  font-size: 13px;
+  padding: 0 0 0 0;
+  font-family: "Open Sans";
+}
+
+MnbToolbarButton MxIcon {
+    padding: 0 10 0 0;
 }
 
 /* applications button */
