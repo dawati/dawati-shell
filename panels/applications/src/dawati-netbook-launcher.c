@@ -57,7 +57,9 @@
 
 #define LAUNCHER_BUTTON_WIDTH     147
 #define LAUNCHER_BUTTON_HEIGHT     148
+/* This is the icon we request from the theme */
 #define LAUNCHER_BUTTON_ICON_SIZE  256
+/* This is the size we set the icon as */
 #define LAUNCHER_BUTTON_ICON_TARGET_SIZE 90
 
 #define REAL_GET_PRIVATE(obj) \
@@ -229,8 +231,15 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
     return;
 
   const gchar *icon_name = mnb_launcher_button_get_icon_name (MNB_LAUNCHER_BUTTON (launcher));
-  gchar *icon_file = mpl_icon_theme_lookup_icon_file (theme, icon_name, LAUNCHER_BUTTON_ICON_SIZE);
-  mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher), icon_file, LAUNCHER_BUTTON_ICON_SIZE);
+  gchar *icon_file;
+
+  icon_file = mpl_icon_theme_lookup_icon_file (theme,
+                                               icon_name,
+                                               LAUNCHER_BUTTON_ICON_SIZE);
+
+  mnb_launcher_button_set_icon (MNB_LAUNCHER_BUTTON (launcher),
+                                icon_file,
+                                LAUNCHER_BUTTON_ICON_TARGET_SIZE);
   g_free (icon_file);
 
 }
