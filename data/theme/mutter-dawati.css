@@ -276,12 +276,12 @@ MxButton.ToolbarButton#devices-button-active:hover MxIcon, MxButton.ToolbarButto
 }
 
 /* power-icon */
-MnbToolbarButton#power-icon {
-  background-image: url("toolbar/icon-battery-80.png");
+MnbToolbarButton#power-icon MxIcon {
+  -mx-content-image: url("toolbar/icon-battery-80.png");
 }
 
-MnbToolbarButton#power-icon:hover {
-  background-image: url("toolbar/icon-battery-80-highlight.png");
+MnbToolbarButton#power-icon:hover MxIcon, MxButton.ToolbarButton#power-icon:active MxIcon, MxButton.ToolbarButton#power-icon:checked MxIcon {
+  -mx-content-image: url("toolbar/icon-battery-80-highlight.png");
 }
 
 

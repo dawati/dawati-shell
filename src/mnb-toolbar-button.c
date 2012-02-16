@@ -85,6 +85,9 @@ mnb_toolbar_button_constructed (GObject *self)
     G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->constructed (self);
 
   mx_widget_set_tooltip_delay (MX_WIDGET (self), 0);
+  mx_button_set_icon_name (MX_BUTTON (self), "player_play");
+  mx_stylable_set_style_class (MX_STYLABLE (button),
+                               "ToolbarButton");
 
   tooltip = mx_widget_get_tooltip_text (MX_WIDGET (button));
   button->priv->tooltip = g_strdup (tooltip);

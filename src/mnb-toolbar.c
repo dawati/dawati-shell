@@ -2218,9 +2218,10 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     }
   else if (tp->windowless)
     {
-      button = tp->button = mnb_toolbar_icon_new ();
-      /* mx_widget_set_tooltip_text (MX_WIDGET (tp->button), */
-      /*                             tp->tooltip); */
+      button = tp->button = mnb_toolbar_button_new ();/* mnb_toolbar_icon_new (); */
+      mx_button_set_label (MX_BUTTON (button), "");
+      mx_widget_set_tooltip_text (MX_WIDGET (tp->button),
+                                  tp->tooltip);
     }
   else if (tp->type == MNB_TOOLBAR_PANEL_APPLET)
     {
@@ -2229,11 +2230,8 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   else
     {
       button = tp->button = mnb_toolbar_button_new ();
-      mx_stylable_set_style_class (MX_STYLABLE (button),
-                                   "ToolbarButton");
       mx_button_set_label (MX_BUTTON (button), tp->tooltip);
       mx_widget_set_tooltip_text (MX_WIDGET (button), tp->tooltip);
-      mx_button_set_icon_name (MX_BUTTON (button), "player_play");
       mx_button_set_icon_position (MX_BUTTON (button), MX_POSITION_LEFT);
       mx_widget_hide_tooltip (MX_WIDGET (button));
     }
