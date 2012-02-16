@@ -2,7 +2,6 @@ AM_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_APPLICATIONS_CFLAGS) \
 	-I$(srcdir)/../src \
-	-DSTYLEDIR=\"$(DAWATI_STYLE_DIR)\" \
 	$(NULL)
 
 LDADD = \

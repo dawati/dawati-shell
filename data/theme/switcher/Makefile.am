@@ -1,4 +1,4 @@
-switcherstyledir = $(DAWATI_STYLE_DIR)/switcher
+switcherstyledir = $(DAWATI_THEME_DIR)/switcher
 dist_switcherstyle_DATA = \
 	app-shadow.png \
 	app-tile.png \

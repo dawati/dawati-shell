@@ -322,7 +322,8 @@ mpl_panel_clutter_load_base_style (void)
                                  THEMEDIR "/theme.css", NULL);
 #endif
       mx_style_load_from_file (mx_style_get_default (),
-                               STYLEDIR "/shared/shared.css", &error);
+                               DAWATI_RUNTIME_THEME_DIR "/shared/shared.css",
+                               &error);
 
       if (error)
         {

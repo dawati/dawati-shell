@@ -5,7 +5,6 @@ AM_CFLAGS = \
 	$(PANEL_APPLICATIONS_CFLAGS) \
 	\
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
-	-DSTYLEDIR=\"$(DAWATI_STYLE_DIR)\" \
 	$(NULL)
 
 dawati_panel_applications_LDADD = \

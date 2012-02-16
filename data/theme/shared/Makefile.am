@@ -1,4 +1,4 @@
-sharedstyledir = $(DAWATI_STYLE_DIR)/shared
+sharedstyledir = $(DAWATI_THEME_DIR)/shared
 dist_sharedstyle_DATA = \
 	application-icon-mask.png \
 	application-icon-texture-bg.png \

@@ -2,7 +2,6 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(PANEL_SWITCHER_CFLAGS) \
-	-DDAWATI_STYLE_DIR=\"$(DAWATI_STYLE_DIR)\"
 	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-switcher
