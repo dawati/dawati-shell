@@ -100,7 +100,7 @@ MxBoxLayout#toolbar-left-box {
 
 /* theme the icon and text of the panel */
 
-MxButton.ToolbarButton {
+MnbToolbarButton {
   -mx-border-image-transition-duration: 0;
   background-color: #fff0;
   border-image: url("toolbar/toolbar-button-normal.png") 12;
@@ -108,11 +108,11 @@ MxButton.ToolbarButton {
   font-size: 13px;
 }
 
-MxButton.ToolbarButton MxIcon {
+MnbToolbarButton MxIcon {
     padding: 0 10 0 0;
 }
 
-MxButton.ToolbarButton:hover, MxButton.ToolbarButton:active {
+MnbToolbarButton:hover, MnbToolbarButton:active {
   -mx-border-image-transition-duration: 0;
   border-image: url("toolbar/toolbar-button-normal.png") 12;
 }
@@ -144,103 +144,103 @@ MnbToolbarApplet, MnbToolbarApplet:hover, MnbToolbarApplet:active, MnbToolbarApp
 }
 
 /* All toolbar buttons */
-MxButton.ToolbarButton, MxButton.ToolbarButton:hover, MxButton.ToolbarButton:active, MxButton.ToolbarButton:checked {
+MnbToolbarButton, MnbToolbarButton:hover, MnbToolbarButton:active, MnbToolbarButton:checked {
     padding: 0 0 0 0;
     font-family: "Open Sans";
 }
 
 /* applications button */
-MxButton.ToolbarButton#applications-button MxIcon {
+MnbToolbarButton#applications-button MxIcon {
     -mx-content-image: url("toolbar/icon-apps.png");
 }
-MxButton.ToolbarButton#applications-button:hover MxIcon, MxButton.ToolbarButton#applications-button:active MxIcon, MxButton.ToolbarButton#applications-button:checked MxIcon {
+MnbToolbarButton#applications-button:hover MxIcon, MnbToolbarButton#applications-button:active MxIcon, MnbToolbarButton#applications-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-apps-highlight.png");
 }
 
 /* internet button */
-MxButton.ToolbarButton#internet-button MxIcon {
+MnbToolbarButton#internet-button MxIcon {
     -mx-content-image: url("toolbar/icon-internet.png");
 }
-MxButton.ToolbarButton#internet-button:hover MxIcon, MxButton.ToolbarButton#internet-button:active MxIcon, MxButton.ToolbarButton#internet-button:checked MxIcon {
+MnbToolbarButton#internet-button:hover MxIcon, MnbToolbarButton#internet-button:active MxIcon, MnbToolbarButton#internet-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-internet-highlight.png");
 }
 
 /* music button */
-MxButton.ToolbarButton#music-button MxIcon {
+MnbToolbarButton#music-button MxIcon {
     -mx-content-image: url("toolbar/icon-music.png");
 }
-MxButton.ToolbarButton#music-button:hover MxIcon, MxButton.ToolbarButton#music-button:active MxIcon, MxButton.ToolbarButton#music-button:checked MxIcon {
+MnbToolbarButton#music-button:hover MxIcon, MnbToolbarButton#music-button:active MxIcon, MnbToolbarButton#music-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-music-highlight.png");
 }
 
 /* myzone button */
-MxButton.ToolbarButton#myzone-button MxIcon {
+MnbToolbarButton#myzone-button MxIcon {
     -mx-content-image: url("toolbar/icon-myzone.png");
 }
-MxButton.ToolbarButton#myzone-button:hover MxIcon, MxButton.ToolbarButton#myzone-button:active MxIcon, MxButton.ToolbarButton#myzone-button:checked MxIcon {
+MnbToolbarButton#myzone-button:hover MxIcon, MnbToolbarButton#myzone-button:active MxIcon, MnbToolbarButton#myzone-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-myzone-highlight.png");
 }
 
 /* pasteboard button */
-MxButton.ToolbarButton#pasteboard-button MxIcon {
+MnbToolbarButton#pasteboard-button MxIcon {
     -mx-content-image: url("toolbar/icon-pasteboard.png");
 }
-MxButton.ToolbarButton#pasteboard-button:hover MxIcon, MxButton.ToolbarButton#pasteboard-button:active MxIcon, MxButton.ToolbarButton#pasteboard-button:checked MxIcon {
+MnbToolbarButton#pasteboard-button:hover MxIcon, MnbToolbarButton#pasteboard-button:active MxIcon, MnbToolbarButton#pasteboard-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-pasteboard-highlight.png");
 }
 
 /* people button */
-MxButton.ToolbarButton#people-button MxIcon {
+MnbToolbarButton#people-button MxIcon {
     -mx-content-image: url("toolbar/icon-im.png");
 }
-MxButton.ToolbarButton#people-button:hover MxIcon, MxButton.ToolbarButton#people-button:active MxIcon, MxButton.ToolbarButton#people-button:checked MxIcon {
+MnbToolbarButton#people-button:hover MxIcon, MnbToolbarButton#people-button:active MxIcon, MnbToolbarButton#people-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-im-highlight.png");
 }
 
-MxButton.ToolbarButton#people-button-active MxIcon {
+MnbToolbarButton#people-button-active MxIcon {
     -mx-content-image: url("toolbar/icon-im-active.png");
 }
-MxButton.ToolbarButton#people-button-active:hover MxIcon, MxButton.ToolbarButton#people-button-active:active MxIcon, MxButton.ToolbarButton#people-button-active:checked MxIcon {
+MnbToolbarButton#people-button-active:hover MxIcon, MnbToolbarButton#people-button-active:active MxIcon, MnbToolbarButton#people-button-active:checked MxIcon {
     -mx-content-image: url("toolbar/icon-im-active-highlight.png");
 }
 
 /* switcher button */
-MxButton.ToolbarButton#switcher-button MxIcon {
+MnbToolbarButton#switcher-button MxIcon {
     -mx-content-image: url("toolbar/icon-switcher.png");
 }
-MxButton.ToolbarButton#switcher-button:hover MxIcon, MxButton.ToolbarButton#switcher-button:active MxIcon, MxButton.ToolbarButton#switcher-button:checked MxIcon {
+MnbToolbarButton#switcher-button:hover MxIcon, MnbToolbarButton#switcher-button:active MxIcon, MnbToolbarButton#switcher-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-highlight.png");
 }
-MxButton.ToolbarButton#switcher-button-1 MxIcon {
+MnbToolbarButton#switcher-button-1 MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-1.png");
 }
-MxButton.ToolbarButton#switcher-button-1:hover MxIcon, MxButton.ToolbarButton#switcher-button-1:active MxIcon, MxButton.ToolbarButton#switcher-button-1:checked MxIcon {
+MnbToolbarButton#switcher-button-1:hover MxIcon, MnbToolbarButton#switcher-button-1:active MxIcon, MnbToolbarButton#switcher-button-1:checked MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-highlight-1.png");
 }
-MxButton.ToolbarButton#switcher-button-2 MxIcon {
+MnbToolbarButton#switcher-button-2 MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-2.png");
 }
-MxButton.ToolbarButton#switcher-button-2:hover MxIcon, MxButton.ToolbarButton#switcher-button-2:active MxIcon, MxButton.ToolbarButton#switcher-button-2:checked MxIcon {
+MnbToolbarButton#switcher-button-2:hover MxIcon, MnbToolbarButton#switcher-button-2:active MxIcon, MnbToolbarButton#switcher-button-2:checked MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-highlight-2.png");
 }
-MxButton.ToolbarButton#switcher-button-3 MxIcon {
+MnbToolbarButton#switcher-button-3 MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-3.png");
 }
-MxButton.ToolbarButton#switcher-button-3:hover MxIcon, MxButton.ToolbarButton#switcher-button-3:active MxIcon, MxButton.ToolbarButton#switcher-button-3:checked MxIcon {
+MnbToolbarButton#switcher-button-3:hover MxIcon, MnbToolbarButton#switcher-button-3:active MxIcon, MnbToolbarButton#switcher-button-3:checked MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-highlight-3.png");
 }
-MxButton.ToolbarButton#switcher-button-4 MxIcon {
+MnbToolbarButton#switcher-button-4 MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-4.png");
 }
-MxButton.ToolbarButton#switcher-button-4:hover MxIcon, MxButton.ToolbarButton#switcher-button-4:active MxIcon, MxButton.ToolbarButton#switcher-button-4:checked MxIcon {
+MnbToolbarButton#switcher-button-4:hover MxIcon, MnbToolbarButton#switcher-button-4:active MxIcon, MnbToolbarButton#switcher-button-4:checked MxIcon {
     -mx-content-image: url("toolbar/icon-switcher-highlight-4.png");
 }
 
 /* status button */
-MxButton.ToolbarButton#status-button MxIcon {
+MnbToolbarButton#status-button MxIcon {
     -mx-content-image: url("toolbar/icon-status.png");
 }
-MxButton.ToolbarButton#status-button:hover MxIcon, MxButton.ToolbarButton#status-button:active MxIcon, MxButton.ToolbarButton#status-button:checked MxIcon {
+MnbToolbarButton#status-button:hover MxIcon, MnbToolbarButton#status-button:active MxIcon, MnbToolbarButton#status-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-status-highlight.png");
 }
 
@@ -253,25 +253,25 @@ MnbToolbarApplet:hover#bluetooth-button MxIcon, MnbToolbarApplet:active#bluetoot
 }
 
 /* network button */
-MxButton.ToolbarButton#network-button MxIcon {
+MnbToolbarButton#network-button MxIcon {
     -mx-content-image: url("toolbar/icon-network.png");
 }
-MxButton.ToolbarButton#network-button:hover MxIcon, MxButton.ToolbarButton#network-button:active MxIcon, MxButton.ToolbarButton#network-button:checked MxIcon {
+MnbToolbarButton#network-button:hover MxIcon, MnbToolbarButton#network-button:active MxIcon, MnbToolbarButton#network-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-network-highlight.png");
 }
 
 /* devices button */
-MxButton.ToolbarButton#devices-button MxIcon {
+MnbToolbarButton#devices-button MxIcon {
     -mx-content-image: url("toolbar/icon-devices.png");
 }
-MxButton.ToolbarButton#devices-button:hover MxIcon, MxButton.ToolbarButton#devices-button:active MxIcon, MxButton.ToolbarButton#devices-button:checked MxIcon {
+MnbToolbarButton#devices-button:hover MxIcon, MnbToolbarButton#devices-button:active MxIcon, MnbToolbarButton#devices-button:checked MxIcon {
     -mx-content-image: url("toolbar/icon-devices-highlight.png");
 }
 
-MxButton.ToolbarButton#devices-button-active MxIcon {
+MnbToolbarButton#devices-button-active MxIcon {
     -mx-content-image: url("toolbar/icon-devices-active.png");
 }
-MxButton.ToolbarButton#devices-button-active:hover MxIcon, MxButton.ToolbarButton#devices-button-active:active MxIcon, MxButton.ToolbarButton#devices-button-active:checked MxIcon {
+MnbToolbarButton#devices-button-active:hover MxIcon, MnbToolbarButton#devices-button-active:active MxIcon, MnbToolbarButton#devices-button-active:checked MxIcon {
     -mx-content-image: url("toolbar/icon-devices-active-highlight.png");
 }
 
@@ -280,7 +280,7 @@ MnbToolbarButton#power-icon MxIcon {
   -mx-content-image: url("toolbar/icon-battery-80.png");
 }
 
-MnbToolbarButton#power-icon:hover MxIcon, MxButton.ToolbarButton#power-icon:active MxIcon, MxButton.ToolbarButton#power-icon:checked MxIcon {
+MnbToolbarButton#power-icon:hover MxIcon, MnbToolbarButton#power-icon:active MxIcon, MnbToolbarButton#power-icon:checked MxIcon {
   -mx-content-image: url("toolbar/icon-battery-80-highlight.png");
 }
 
