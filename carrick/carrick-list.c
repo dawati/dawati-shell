@@ -79,7 +79,7 @@ struct _CarrickListPrivate
   gboolean have_bluetooth;
 
   CarrickOfonoAgent *ofono;
-  int sims;
+  int ofono_connmans;
   GHashTable *cell_services;
   guint pin_requests;
 };
@@ -462,14 +462,12 @@ carrick_list_update_modem_service (CarrickList *list)
     return;
 
   /* show the dummy if
-   * A) we have more sims than cell services
+   * A) we have more ofono Connection managers than cell services
    *    (meaning we can configure a new sim)
-   * B) there is a pin query and more than one sim
-   *    (in this case the cell services cannot figure out which one
-   *     should show the query -- so show it in a generic dummy)
+   * B) there is a pin query
    */
-  show_dummy_modem = (list->priv->sims > g_hash_table_size (list->priv->cell_services) ||
-                      (list->priv->sims > 1 && list->priv->pin_requests > 0));
+  show_dummy_modem = (list->priv->ofono_connmans > g_hash_table_size (list->priv->cell_services) ||
+                      (list->priv->pin_requests > 0));
   gtk_widget_set_visible (list->priv->modem_box, show_dummy_modem);
 }
 
@@ -1419,11 +1417,11 @@ carrick_list_class_init (CarrickListClass *klass)
 }
 
 static void
-_ofono_notify_n_present_sims_cb (CarrickOfonoAgent *ofono,
-                                 GParamSpec *arg1,
-                                 CarrickList *self)
+_ofono_notify_n_connection_managers_cb (CarrickOfonoAgent *ofono,
+                                        GParamSpec *arg1,
+                                        CarrickList *self)
 {
-  g_object_get (ofono, "n-present-sims", &self->priv->sims, NULL);
+  g_object_get (ofono, "n-connection-managers", &self->priv->ofono_connmans, NULL);
   carrick_list_update_modem_service (self);
 }
 
@@ -1451,9 +1449,9 @@ carrick_list_init (CarrickList *self)
   priv->have_daemon = FALSE;
   priv->cell_services = g_hash_table_new (g_direct_hash, g_direct_equal);
   priv->ofono = carrick_ofono_agent_new ();
-  g_signal_connect (priv->ofono, "notify::n-present-sims",
-                    G_CALLBACK (_ofono_notify_n_present_sims_cb), self);
-  _ofono_notify_n_present_sims_cb (priv->ofono, NULL, self);
+  g_signal_connect (priv->ofono, "notify::n-connection-managers",
+                    G_CALLBACK (_ofono_notify_n_connection_managers_cb), self);
+  _ofono_notify_n_connection_managers_cb (priv->ofono, NULL, self);
   g_signal_connect (priv->ofono, "notify::required-pins",
                     G_CALLBACK (_ofono_notify_required_pins_cb), self);
   _ofono_notify_required_pins_cb (priv->ofono, NULL, self);

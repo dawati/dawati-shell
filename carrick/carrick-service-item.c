@@ -29,6 +29,11 @@
  * The _populate_variables() / _set_state() cycle is
  * inefficient and complex. _set_state() updates everything, 
  * even if nothing changed since the last update.
+ * 
+ * The modem_dummy-related code should really live in another
+ * file -- it's now here to get the same layout, but that could be
+ * achieved bys common widget names, style classes or a common
+ * inherited widget...
  */
 
 #include "carrick-service-item.h"
@@ -1873,15 +1878,10 @@ _ofono_notify_required_pins_cb (CarrickOfonoAgent *ofono,
   GHashTable *required_pins;
   GHashTableIter iter;
   gpointer key, val;
-  int sims;
 
-  /* if this is a real cell service we will only show the UI if we
-   * are certain this is the right service... in other words when 
-   * there's only one sim. In other situations we expect carricklist
-   * to use a dummy service */
-  g_object_get (ofono, "n-present-sims", &sims, NULL);
-  if (sims > 1 && !self->priv->is_modem_dummy)
+  if (!self->priv->is_modem_dummy)
     return;
+
   g_object_get (ofono, "required-pins", &required_pins, NULL);
   g_hash_table_iter_init (&iter, required_pins);
 
@@ -1899,14 +1899,8 @@ _ofono_notify_locked_puks_cb (CarrickOfonoAgent *ofono,
   GHashTable *locked_puks;
   GHashTableIter iter;
   gpointer key, val;
-  int sims;
 
-  /* if this is a real cell service we will only show the UI if we
-   * are certain this is the right service... in other words when 
-   * there's only one sim. In other situations we expect carricklist
-   * to use a dummy service */
-  g_object_get (ofono, "n-present-sims", &sims, NULL);
-  if (sims > 1 && !self->priv->is_modem_dummy)
+  if (!self->priv->is_modem_dummy)
     return;
 
   g_object_get (ofono, "locked-puks", &locked_puks, NULL);

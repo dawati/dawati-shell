@@ -40,7 +40,7 @@ typedef struct Modem {
   GDBusProxy *modem;
   GDBusProxy *sim;
 
-  gboolean present;
+  gboolean has_connman;
   char *required_pin;
   char *locked_puk;
   GHashTable *retries;
@@ -50,14 +50,14 @@ struct _CarrickOfonoAgentPrivate {
   GDBusProxy *ofono_mgr;
   GHashTable *modems;
 
-  guint present_sims;
+  guint connmans;
   GHashTable *required_pins;
   GHashTable *locked_puks;
 };
 
 enum {
   PROP_0,
-  PROP_N_PRESENT_SIMS,
+  PROP_N_CONNECTION_MANAGERS,
   PROP_REQUIRED_PINS,
   PROP_LOCKED_PUKS,
 };
@@ -228,8 +228,8 @@ carrick_ofono_agent_get_property (GObject *object, guint property_id,
   CarrickOfonoAgent *self = CARRICK_OFONO_AGENT (object);
 
   switch (property_id) {
-  case PROP_N_PRESENT_SIMS:
-    g_value_set_uint (value, self->priv->present_sims);
+  case PROP_N_CONNECTION_MANAGERS:
+    g_value_set_uint (value, self->priv->connmans);
     break;
   case PROP_REQUIRED_PINS:
     g_value_set_boxed (value, self->priv->required_pins);
@@ -263,13 +263,13 @@ carrick_ofono_agent_class_init (CarrickOfonoAgentClass *klass)
   object_class->get_property = carrick_ofono_agent_get_property;
   object_class->set_property = carrick_ofono_agent_set_property;
 
-  pspec = g_param_spec_uint ("n-present-sims",
-                             "n-present-sims",
-                             "Number of modems with a SIM",
+  pspec = g_param_spec_uint ("n-connection-managers",
+                             "n-connection-managers",
+                             "Number of modems with a ConnectionManager API",
                              0, G_MAXUINT, 0,
                              G_PARAM_READABLE|G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class,
-                                   PROP_N_PRESENT_SIMS,
+                                   PROP_N_CONNECTION_MANAGERS,
                                    pspec);
 
   pspec = g_param_spec_boxed ("required-pins",
@@ -310,17 +310,7 @@ carrick_ofono_agent_sim_property_changed (CarrickOfonoAgent *self,
 {
   const char *path;
 
-  if (g_strcmp0 (key, "Present") == 0) {
-    if (modem->present != g_variant_get_boolean (value)) {
-      modem->present = !modem->present;
-      if (modem->present)
-        self->priv->present_sims++;
-      else
-        self->priv->present_sims--;
-      g_object_notify (G_OBJECT (self), "n-present-sims");
-    }
-
-  } else if (g_strcmp0 (key, "LockedPins") == 0) {
+  if (g_strcmp0 (key, "LockedPins") == 0) {
     const char **locked_pins;
     const char *locked_puk = NULL;
 
@@ -513,11 +503,11 @@ carrick_ofono_agent_remove_sim_from_modem (CarrickOfonoAgent *self, Modem *modem
   g_object_unref (modem->sim);
   modem->sim = NULL;
 
-  if (modem->present) {
-    self->priv->present_sims--;
-    g_object_notify (G_OBJECT (self), "n-present-sims");
+  if (modem->has_connman) {
+    self->priv->connmans--;
+    g_object_notify (G_OBJECT (self), "n-connection-managers");
   }
-  modem->present = FALSE;
+  modem->has_connman = FALSE;
 
   /* check if the modem was requiring a pin or had a locked puk */
   if (g_hash_table_remove (self->priv->required_pins,
@@ -538,14 +528,15 @@ carrick_ofono_agent_modem_property_changed (CarrickOfonoAgent *self,
 {
   if (g_strcmp0 (key, "Interfaces") == 0) {
     gboolean has_sim_manager = FALSE;
+    gboolean has_connection_manager = FALSE;
     const char **ifaces, **iter;
 
     ifaces = iter = g_variant_get_strv (value, NULL);
     while (*iter) {
-      if (g_strcmp0 (*iter, "org.ofono.SimManager") == 0) {
+      if (g_strcmp0 (*iter, "org.ofono.SimManager") == 0)
         has_sim_manager = TRUE;
-        break;
-      }
+      else if (g_strcmp0 (*iter, "org.ofono.ConnectionManager") == 0)
+        has_connection_manager = TRUE;
       iter++;
     }
     g_free (ifaces);
@@ -554,6 +545,14 @@ carrick_ofono_agent_modem_property_changed (CarrickOfonoAgent *self,
       carrick_ofono_agent_add_sim_to_modem (self, modem);
     } else {
       carrick_ofono_agent_remove_sim_from_modem (self, modem);
+    }
+
+    if (has_connection_manager != modem->has_connman) {
+      modem->has_connman = has_connection_manager;
+      if (has_connection_manager)
+        self->priv->connmans++;
+      else
+        self->priv->connmans--;
     }
   }
 }
@@ -674,8 +673,8 @@ static void
 carrick_ofono_agent_add_modem (CarrickOfonoAgent *self,
                                const char *obj_path)
 {
-  /* We need Modem interface only for seeing when the object starts/stops 
-   * supporting SimManager */
+  /* We need Modem interface for seeing when the object starts/stops 
+   * supporting SimManager and ConnectionManager */
   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
                             G_DBUS_PROXY_FLAGS_NONE,
                             NULL, /* should add iface info here */
