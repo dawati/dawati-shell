@@ -14,7 +14,6 @@ SUBDIRS = \
 	status \
 	switcher \
 	web \
-	zones \
 	$(NULL)
 
 themedir = $(DAWATI_THEME_DIR)

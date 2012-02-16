@@ -537,7 +537,6 @@ data/theme/shared/Makefile
 data/theme/status/Makefile
 data/theme/switcher/Makefile
 data/theme/web/Makefile
-data/theme/zones/Makefile
 
 shell/Makefile
 shell/effects/Makefile
