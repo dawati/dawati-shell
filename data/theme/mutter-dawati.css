@@ -275,6 +275,16 @@ MxButton.ToolbarButton#devices-button-active:hover MxIcon, MxButton.ToolbarButto
     -mx-content-image: url("toolbar/icon-devices-active-highlight.png");
 }
 
+/* power-icon */
+MnbToolbarButton#power-icon {
+  background-image: url("toolbar/icon-battery-80.png");
+}
+
+MnbToolbarButton#power-icon:hover {
+  background-image: url("toolbar/icon-battery-80-highlight.png");
+}
+
+
 MnbToolbarIcon, MnbToolbarIcon:hover, MnbToolbarIcon:active {
   border-image: none;
 }

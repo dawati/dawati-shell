@@ -12,4 +12,4 @@ X-Dawati-Service=com.dawati.UX.Shell.Panels.network
 X-Dawati-Panel-Optional=false
 X-Dawati-Panel-Type=applet
 X-Dawati-Panel-Stylesheet=@PANEL_NETWORKS_THEMEDIR@/network-applet.css
-X-Dawati-Panel-Button-Style=offline
+X-Dawati-Panel-Button-Style=network-button

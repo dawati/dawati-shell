@@ -26,7 +26,22 @@ theme_paneldir = $(DAWATI_THEME_DIR)/toolbar
 dist_theme_panel_DATA = \
 	toolbar/icon-apps-highlight.png \
 	toolbar/icon-apps.png \
-	toolbar/clock-background.png \
+	toolbar/icon-battery-20.png \
+	toolbar/icon-battery-40.png \
+	toolbar/icon-battery-60.png \
+	toolbar/icon-battery-80.png \
+	toolbar/icon-battery-100.png \
+	toolbar/icon-battery-empty.png \
+	toolbar/icon-battery-missing.png \
+	toolbar/icon-battery-plugged.png \
+	toolbar/icon-battery-20-highlight.png \
+	toolbar/icon-battery-40-highlight.png \
+	toolbar/icon-battery-60-highlight.png \
+	toolbar/icon-battery-80-highlight.png \
+	toolbar/icon-battery-100-highlight.png \
+	toolbar/icon-battery-empty-highlight.png \
+	toolbar/icon-battery-missing-highlight.png \
+	toolbar/icon-battery-plugged-highlight.png \
 	toolbar/icon-bluetooth-connecting-highlight.png \
 	toolbar/icon-bluetooth-connecting.png \
 	toolbar/icon-bluetooth-idle-highlight.png \
