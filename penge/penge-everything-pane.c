@@ -53,7 +53,6 @@ struct _PengeEverythingPanePrivate {
   GList *views;
   GPtrArray *templates;
   ZeitgeistLog *recent_log;
-  ZeitgeistMonitor *recent_monitor;
   GHashTable *pointer_to_actor;
 
   gint block_count;
@@ -886,6 +885,7 @@ static void
 penge_everything_pane_init (PengeEverythingPane *self)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE_REAL (self);
+  ZeitgeistMonitor *recent_monitor;
   gfloat tile_width, tile_height;
   GError *error = NULL;
 
@@ -921,21 +921,22 @@ penge_everything_pane_init (PengeEverythingPane *self)
           ), NULL));
 
   priv->recent_log = g_object_new (ZEITGEIST_TYPE_LOG, NULL);
-  priv->recent_monitor = zeitgeist_monitor_new (
+  recent_monitor = zeitgeist_monitor_new (
                                             zeitgeist_time_range_new_anytime (),
                                             g_ptr_array_ref (priv->templates));
 
-  g_signal_connect (priv->recent_monitor,
+  g_signal_connect (recent_monitor,
                     "events-inserted",
                     (GCallback)_zeitgeist_monitor_events_inserted_signal,
                     self);
 
-  g_signal_connect (priv->recent_monitor,
+  g_signal_connect (recent_monitor,
                     "events-deleted",
                     (GCallback)_zeitgeist_monitor_events_deleted_signal,
                     self);
 
-  zeitgeist_log_install_monitor (priv->recent_log, priv->recent_monitor);
+  /* Log takes ownership of the monitor */
+  zeitgeist_log_install_monitor (priv->recent_log, recent_monitor);
 
   penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
 
