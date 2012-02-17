@@ -130,6 +130,11 @@ mpl_app_launches_query_init (MplAppLaunchesQuery *self)
 /*
  * Look up executable.
  */
+
+/**
+ * mpl_app_launches_query_lookup: (skip)
+ *
+ */
 bool
 mpl_app_launches_query_lookup (MplAppLaunchesQuery   *self,
                                char const            *executable,

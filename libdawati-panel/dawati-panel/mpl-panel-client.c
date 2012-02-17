@@ -394,6 +394,10 @@ mnb_panel_dbus_set_maximum_size (MplPanelClient  *self,
 /*
  * The functions required by the interface.
  */
+
+/* XXX: This looks vaguely useful, but it's not used. Commenting out. */
+
+#if 0
 static gboolean
 mnb_panel_dbus_set_position (MplPanelClient  *self,
                              gint             x,
@@ -409,6 +413,7 @@ mnb_panel_dbus_set_position (MplPanelClient  *self,
 
   return TRUE;
 }
+#endif
 
 static gboolean
 mnb_panel_dbus_show (MplPanelClient *self, GError **error)
@@ -1365,7 +1370,8 @@ mpl_panel_client_launch_application (MplPanelClient *panel,
  * mpl_panel_client_launch_application_from_desktop_file:
  * @panel: #MplPanelClient
  * @desktop: path to desktop file
- * @files: #GList of files to be passed as arugments, or %NULL
+ * @files: (element-type GFile): #GList of files to be passed as arugments, or
+ * %NULL
  *
  * Launches the program specified by desktop file.
  *
@@ -1532,7 +1538,7 @@ mpl_panel_client_get_size_request (MplPanelClient *panel, gint *width, gint *hei
 }
 
 /**
- * mpl_panel_client_get_xid:
+ * mpl_panel_client_get_xid: (skip)
  * @panel: #MplPanelClient
  *
  * Returns the xid of the asociated window.

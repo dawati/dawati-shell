@@ -117,6 +117,11 @@ mpl_app_launch_context_new (void)
   return g_object_new (MPL_TYPE_APP_LAUNCH_CONTEXT, NULL);
 }
 
+/**
+ * mpl_app_launch_context_get_default:
+ *
+ * Returns: (transfer full): The ApplLaunchContext singleton
+ */
 GAppLaunchContext *
 mpl_app_launch_context_get_default (void)
 {

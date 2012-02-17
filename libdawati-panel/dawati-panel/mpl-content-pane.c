@@ -280,7 +280,7 @@ mpl_content_pane_set_title (MplContentPane  *self,
  *
  * Returns the content child of the pane.
  *
- * Return value: #ClutterActor
+ * Return value: (transfer none): #ClutterActor
  */
 ClutterActor *
 mpl_content_pane_get_child (MplContentPane *self)
@@ -316,7 +316,7 @@ mpl_content_pane_set_child (MplContentPane  *self,
  *
  * Returns the pane header actor, if set or %NULL.
  *
- * Return value: #ClutterActor
+ * Return value: (transfer none): #ClutterActor
  */
 ClutterActor *
 mpl_content_pane_get_header_actor (MplContentPane  *self)

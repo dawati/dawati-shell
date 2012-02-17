@@ -516,7 +516,7 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
 }
 
 /**
- * mpl_panel_clutter_setup_events_with_gtk_for_xid:
+ * mpl_panel_clutter_setup_events_with_gtk_for_xid: (skip)
  * @xid: the stage window
  *
  * Sets up X event handling in panels that use both Clutter and Gtk; for such

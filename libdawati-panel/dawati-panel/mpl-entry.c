@@ -571,8 +571,8 @@ mpl_entry_set_text (MplEntry     *self,
  *
  * Returns pointer to the actual #MxEntry widget inside #MplEntry.
  *
- * Return value: #MxWidget; the entry widget is owned by the entry and no
- * additional reference is added to it by this function.
+ * Return value: (transfer none): #MxWidget; the entry widget is owned by the
+ * entry and no additional reference is added to it by this function.
  */
 MxWidget *
 mpl_entry_get_mx_entry (MplEntry *self)

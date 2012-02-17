@@ -31,6 +31,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -576,7 +577,7 @@ store_insert (MplAppLaunchesStore   *self,
  * Add executable launch event to the store.
  * When 0 is passed for timestamp the current time is used.
  */
-bool
+gboolean
 mpl_app_launches_store_add (MplAppLaunchesStore  *self,
                             char const           *executable,
                             time_t                timestamp,
@@ -587,7 +588,7 @@ mpl_app_launches_store_add (MplAppLaunchesStore  *self,
   uint32_t               hash;
   GError                *error = NULL;
 
-  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), false);
+  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), FALSE);
 
   mpl_app_launches_store_open (self, true, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
@@ -627,17 +628,17 @@ mpl_app_launches_store_add (MplAppLaunchesStore  *self,
   mpl_app_launches_store_close (self, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
 
-  return true;
+  return TRUE;
 }
 
-bool
+gboolean
 mpl_app_launches_store_add_async (MplAppLaunchesStore  *self,
                                   char const           *executable,
                                   time_t                timestamp,
                                   GError              **error)
 {
   char  *command_line;
-  bool   ret;
+  gboolean   ret;
 
   command_line = g_strdup_printf ("%s --add %s --timestamp %li",
                                   DAWATI_APP_LAUNCHES_STORE,
@@ -650,12 +651,15 @@ mpl_app_launches_store_add_async (MplAppLaunchesStore  *self,
   return ret;
 }
 
-/*
+/**
+ * mpl_app_launches_store_lookup: (skip)
+ *
  * Look up executable.
- * For looking up a number of executables please refer to
- * MplAppLaunchesQuery, as it is more efficient for subsequent lookups.
+ *
+ * For looking up a number of executables please refer to MplAppLaunchesQuery,
+ * as it is more efficient for subsequent lookups.
  */
-bool
+gboolean
 mpl_app_launches_store_lookup (MplAppLaunchesStore   *self,
                                char const            *executable,
                                time_t                *last_launched_out,
@@ -666,7 +670,7 @@ mpl_app_launches_store_lookup (MplAppLaunchesStore   *self,
   uint32_t               hash;
   GError                *error = NULL;
 
-  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), false);
+  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), FALSE);
 
   mpl_app_launches_store_open (self, false, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
@@ -684,13 +688,13 @@ mpl_app_launches_store_lookup (MplAppLaunchesStore   *self,
   mpl_app_launches_store_close (self, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
 
-  return (bool) record;
+  return record != NULL;
 }
 
 /*
  * Dump the store to stdout.
  */
-bool
+gboolean
 mpl_app_launches_store_dump (MplAppLaunchesStore   *self,
                              GError               **error_out)
 {
@@ -699,7 +703,7 @@ mpl_app_launches_store_dump (MplAppLaunchesStore   *self,
   unsigned               i;
   GError                *error = NULL;
 
-  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), false);
+  g_return_val_if_fail (MPL_IS_APP_LAUNCHES_STORE (self), FALSE);
 
   mpl_app_launches_store_open (self, false, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
@@ -724,12 +728,17 @@ mpl_app_launches_store_dump (MplAppLaunchesStore   *self,
   mpl_app_launches_store_close (self, &error);
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
 
-  return true;
+  return FALSE;
 }
 
-/*
+/**
+ * mpl_app_launches_store_create_query:
+ * @self: a #MplAppLaunchesStore instance
+ *
  * Create a query object for efficiently looking up multiple executables.
  * The object needs to be unref'd after being used.
+ *
+ * Returns: (transfer full): A new #MplAppLaunchesQuery
  */
 MplAppLaunchesQuery *
 mpl_app_launches_store_create_query (MplAppLaunchesStore *self)

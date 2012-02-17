@@ -518,8 +518,9 @@ mpl_app_bookmark_manager_init (MplAppBookmarkManager *self)
  *
  * Returns an instance of #MplAppBookmarkManager object.
  *
- * Return value: #MplAppBookmarkManager; the caller holds a reference to the
- * object, and should release it using g_object_unref() when no longer needed.
+ * Return value: (transfer full): #MplAppBookmarkManager; the caller holds a
+ * reference to the object, and should release it using g_object_unref() when
+ * no longer needed.
  */
 MplAppBookmarkManager *
 mpl_app_bookmark_manager_get_default (void)
@@ -546,9 +547,10 @@ mpl_app_bookmark_manager_get_default (void)
  *
  * Obtains list of current bookmarks.
  *
- * Return value: current bookmarks as a #GList of constant strings; the list is
- * owned by the caller and must be freed with g_list_free() when no longer
- * needed, however, the list data is owned by the manager and must not be freed.
+ * Return value: (element-type utf8) (transfer container): current bookmarks as
+ * a #GList of constant strings; the list is owned by the caller and must be
+ * freed with g_list_free() when no longer needed, however, the list data is
+ * owned by the manager and must not be freed.
  */
 GList *
 mpl_app_bookmark_manager_get_bookmarks (MplAppBookmarkManager *manager)

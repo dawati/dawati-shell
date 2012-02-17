@@ -23,7 +23,6 @@
 #ifndef MPL_APP_LAUNCHES_STORE_H
 #define MPL_APP_LAUNCHES_STORE_H
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <glib-object.h>
 #include <dawati-panel/mpl-app-launches-query.h>
@@ -71,26 +70,26 @@ mpl_app_launches_store_get_type (void);
 MplAppLaunchesStore *
 mpl_app_launches_store_new (void);
 
-bool
+gboolean
 mpl_app_launches_store_add (MplAppLaunchesStore  *self,
                             char const           *executable,
                             time_t                timestamp,
                             GError              **error);
 
-bool
+gboolean
 mpl_app_launches_store_add_async (MplAppLaunchesStore  *self,
                                   char const           *executable,
                                   time_t                timestamp,
                                   GError              **error);
 
-bool
+gboolean
 mpl_app_launches_store_lookup (MplAppLaunchesStore   *self,
                                char const            *executable,
                                time_t                *last_launched_out,
                                uint32_t              *n_launches_out,
                                GError               **error);
 
-bool
+gboolean
 mpl_app_launches_store_dump (MplAppLaunchesStore   *self,
                              GError               **error);
 
