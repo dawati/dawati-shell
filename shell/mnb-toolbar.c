@@ -3955,15 +3955,13 @@ mnb_toolbar_load_settings (MnbToolbar *toolbar)
   MetaPlugin                 *plugin = priv->plugin;
   DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   GSettings                  *settings = ppriv->settings;
-  GSList                     *order;
+  GSList                     *order = NULL;
   GSList                     *l, *defaults;
   gchar                     **value;
 
   value = g_settings_get_strv (settings, "order");
   if (value)
-    {
-      order = mnb_toolbar_get_panel_list_from_strv (value);
-    }
+    order = mnb_toolbar_get_panel_list_from_strv (value);
 
   defaults = mnb_toolbar_get_default_panel_list ();
 
