@@ -436,7 +436,9 @@ mnb_launcher_button_new (const gchar *icon_name,
   if (description)
   {
     self->priv->description = g_strdup (description);
-     mx_widget_set_tooltip_text (MX_WIDGET (self), self->priv->description);
+    /* NO tooltip due to ugly ness and length of description
+     * mx_widget_set_tooltip_text (MX_WIDGET (self), self->priv->description);
+     */
   }
 
   if (executable)
