@@ -22,6 +22,7 @@
 
 #include <config.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <rest/rest-xml-parser.h>
 #include <gtk/gtk.h>
@@ -149,10 +150,17 @@ state_machine (void)
       }
 
       if (sim_get_plan (sim, &name, &apn, &username, &password)) {
-        /* ofono has a context already. We cannot really tell if this
-         * was a manual setup or from a template... so skip to manual dialog
-         * and let the user restart wizard if needed */
-        state = STATE_MANUAL;
+        /* ofono has a context already. skip to showing current values
+         * and let the user restart wizard if needed.
+         * One exception: if all values are empty, consider this a
+         * non-existing context (ofono may do this buggy behaviour).
+         * */
+        if ((!username || strlen (username) == 0) &&
+            (!apn || strlen (apn) == 0) &&
+            (!password || strlen (password) == 0))
+          sim_remove_plan (sim);
+        else
+          state = STATE_MANUAL;
       }
 
       break;
