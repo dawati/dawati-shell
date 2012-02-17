@@ -52,15 +52,17 @@
 #define CAT_PANE_WIDTH  302.0
 #define FILTER_WIDTH    277.0
 
-#define APPS_GRID_COLUMN_GAP   18
-#define APPS_GRID_ROW_GAP      27
+#define APPS_GRID_COLUMN_GAP   5
+#define APPS_GRID_ROW_GAP      5
 
-#define LAUNCHER_BUTTON_WIDTH     147
-#define LAUNCHER_BUTTON_HEIGHT     148
+#define LAUNCHER_BUTTON_WIDTH     128
+#define LAUNCHER_BUTTON_HEIGHT     129
 /* This is the icon we request from the theme */
 #define LAUNCHER_BUTTON_ICON_SIZE  256
 /* This is the size we set the icon as */
-#define LAUNCHER_BUTTON_ICON_TARGET_SIZE 90
+#define LAUNCHER_BUTTON_ICON_TARGET_SIZE 48
+/* This is the spacing between the two main columns of the panel */
+#define PANEL_COLUMN_SPACING 15.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -1051,7 +1053,7 @@ _constructor (GType                  gtype,
 
   columns = mx_box_layout_new ();
   mx_stylable_set_style_class (MX_STYLABLE (columns), "panel");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 37.0);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), PANEL_COLUMN_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), columns);
   clutter_container_child_set (CLUTTER_CONTAINER (self), columns,
                                "expand", TRUE,
