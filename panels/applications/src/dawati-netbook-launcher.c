@@ -123,7 +123,7 @@ struct MnbLauncherPrivate_
 
   ClutterActor            *category_section;
   MxButtonGroup           *category_group;
-  MxButton                *all_category_button;
+  ClutterActor            *all_category_button;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
@@ -466,7 +466,7 @@ _filter_text_notify_cb (MxEntry     *filter,
   gchar *needle;
 
   mx_button_group_set_active_button (priv->category_group,
-                                     priv->all_category_button);
+                                     MX_BUTTON (priv->all_category_button));
 
   mnb_launcher_cancel_search (self);
 
