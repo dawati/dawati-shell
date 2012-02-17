@@ -59,8 +59,6 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
   gfloat ex, ey;
   gfloat tx1, ty1, tx2, ty2;
   guint8 opacity;
-  CoglHandle selector_texture;
-  GError *error = NULL;
 
   /* Copied from MxWidget:
    *

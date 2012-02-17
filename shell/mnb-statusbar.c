@@ -190,13 +190,6 @@ mnb_statusbar_event_cb (MnbStatusbar *self,
 }
 
 static void
-mnb_statusbar_myzone_clicked_cb (MxButton     *button,
-                                 MnbStatusbar *self)
-{
-  g_print ("Myzone clicked\n");
-}
-
-static void
 mnb_statusbar_update_datetime (MnbStatusbar *self)
 {
   MnbStatusbarPrivate *priv = self->priv;

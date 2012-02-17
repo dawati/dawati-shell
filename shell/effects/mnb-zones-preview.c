@@ -412,17 +412,6 @@ mnb_zones_preview_new ()
 }
 
 static void
-mnb_zones_preview_enable_fanciness (MnbZonesPreview *preview,
-                                    gboolean         enable)
-{
-  GList *b;
-  MnbZonesPreviewPrivate *priv = preview->priv;
-
-  for (b = priv->workspace_bins; b; b = b->next)
-    mnb_fancy_bin_set_fancy (MNB_FANCY_BIN (b->data), enable);
-}
-
-static void
 mnb_zones_preview_completed_cb (ClutterAnimation *animation,
                                 MnbZonesPreview  *preview)
 {
@@ -433,7 +422,6 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_STATIC:
       /* Start zooming out */
       priv->anim_phase = MNB_ZP_ZOOM_OUT;
-      /* mnb_zones_preview_enable_fanciness (preview, TRUE); */
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_IN_SINE,
                              220,
@@ -460,7 +448,6 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       }
     case MNB_ZP_PAN:
       /* Start zooming in */
-      /* mnb_zones_preview_enable_fanciness (preview, FALSE); */
       priv->anim_phase = MNB_ZP_ZOOM_IN;
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_OUT_CUBIC,

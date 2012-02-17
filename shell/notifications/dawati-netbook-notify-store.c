@@ -543,23 +543,6 @@ dawati_netbook_notify_store_init (DawatiNetbookNotifyStore *self)
   connect_to_dbus (self);
 }
 
-static DBusMessage*
-create_signal_for_notification (Notification *n, const char *signal_name)
-{
-  DBusMessage *message;
-
-  message = dbus_message_new_signal("/org/freedesktop/Notifications",
-				    "org.freedesktop.Notifications",
-				    signal_name);
-
-  dbus_message_set_destination(message, n->sender);
-  dbus_message_append_args(message,
-			   DBUS_TYPE_UINT32, &n->id,
-			   DBUS_TYPE_INVALID);
-
-  return message;
-}
-
 DawatiNetbookNotifyStore *
 dawati_netbook_notify_store_new (void)
 {

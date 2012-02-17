@@ -582,9 +582,7 @@ mnb_alttab_overlay_app_class_init (MnbAlttabOverlayAppClass *klass)
 static void
 mnb_alttab_overlay_app_init (MnbAlttabOverlayApp *self)
 {
-  MnbAlttabOverlayAppPrivate *priv;
-
-  priv = self->priv = MNB_ALTTAB_OVERLAY_APP_GET_PRIVATE (self);
+  self->priv = MNB_ALTTAB_OVERLAY_APP_GET_PRIVATE (self);
 }
 
 MnbAlttabOverlayApp *

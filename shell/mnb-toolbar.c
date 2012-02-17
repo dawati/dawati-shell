@@ -1226,12 +1226,14 @@ mnb_toolbar_show_selector (MnbToolbar *self)
 #endif /* TOOLBAR_CUT_OUT */
 }
 
+#if TOOLBAR_CUT_OUT
 static void
 mnb_toolbar_selector_animation_completed_cb (ClutterAnimation *anim,
                                              MnbToolbar       *toolbar)
 {
   mnb_toolbar_show_selector (toolbar);
 }
+#endif
 
 static void
 mnb_toolbar_move_selector (MnbToolbar *self)
@@ -1253,6 +1255,7 @@ mnb_toolbar_move_selector (MnbToolbar *self)
 #endif /* TOOLBAR_CUT_OUT */
 }
 
+#if TOOLBAR_CUT_OUT
 static void
 mnb_toolbar_lightspot_moved_cb (ClutterActor           *actor,
                                 ClutterActorBox        *box,
@@ -1264,6 +1267,7 @@ mnb_toolbar_lightspot_moved_cb (ClutterActor           *actor,
   clutter_actor_queue_redraw (priv->shadow);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (toolbar));
 }
+#endif
 
 /*
  * Toolbar button click handler.

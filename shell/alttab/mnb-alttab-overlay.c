@@ -487,9 +487,7 @@ mnb_alttab_overlay_class_init (MnbAlttabOverlayClass *klass)
 static void
 mnb_alttab_overlay_init (MnbAlttabOverlay *self)
 {
-  MnbAlttabOverlayPrivate *priv;
-
-  priv = self->priv = MNB_ALTTAB_OVERLAY_GET_PRIVATE (self);
+  self->priv = MNB_ALTTAB_OVERLAY_GET_PRIVATE (self);
 
   mnb_alttab_overlay_setup_metacity_keybindings (self);
 }

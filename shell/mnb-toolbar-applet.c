@@ -55,7 +55,6 @@ static void
 mnb_toolbar_applet_class_init (MnbToolbarAppletClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbToolbarAppletPrivate));
 

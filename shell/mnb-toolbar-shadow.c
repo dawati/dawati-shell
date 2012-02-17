@@ -61,8 +61,6 @@ mnb_toolbar_shadow_paint (ClutterActor *self)
   gfloat ex, ey;
   gfloat tx1, ty1, tx2, ty2;
   guint8 opacity;
-  CoglHandle selector_texture;
-  GError *error = NULL;
 
   /* no need to paint stuff if we don't have a texture */
   if (G_UNLIKELY (priv->parent_texture == NULL))

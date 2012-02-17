@@ -611,7 +611,6 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
 {
   NtfTrayPrivate   *priv;
   ClutterActor     *ntfa;
-  ClutterAnimation *anim;
   MetaPlugin       *plugin;
 
   g_return_if_fail (NTF_IS_TRAY (tray) && NTF_IS_NOTIFICATION (ntf));
@@ -662,13 +661,13 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
               clutter_actor_get_height (priv->active_notifier)
                  - clutter_actor_get_height (priv->control) - 30);
 
-      anim = clutter_actor_animate (priv->control,
-                                    CLUTTER_EASE_IN_SINE,
-                                    FADE_DURATION,
-                                    "opacity", 0xff,
-                                    "y", clutter_actor_get_height
-                                    (priv->active_notifier)- 30,
-                                    NULL);
+      clutter_actor_animate (priv->control,
+                             CLUTTER_EASE_IN_SINE,
+                             FADE_DURATION,
+                             "opacity", 0xff,
+                             "y", clutter_actor_get_height
+                             (priv->active_notifier)- 30,
+                             NULL);
     }
   else
     {

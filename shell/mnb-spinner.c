@@ -393,9 +393,7 @@ mnb_spinner_class_init (MnbSpinnerClass *klass)
 static void
 mnb_spinner_init (MnbSpinner *self)
 {
-  MnbSpinnerPrivate *priv;
-
-  priv = self->priv = MNB_SPINNER_GET_PRIVATE (self);
+  self->priv = MNB_SPINNER_GET_PRIVATE (self);
 }
 
 ClutterActor*
