@@ -123,6 +123,7 @@ struct MnbLauncherPrivate_
 
   ClutterActor            *category_section;
   MxButtonGroup           *category_group;
+  MxButton                *all_category_button;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
@@ -464,11 +465,8 @@ _filter_text_notify_cb (MxEntry     *filter,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
 
-  MxButton *active_button;
-
-  if ((active_button =
-       mx_button_group_get_active_button (priv->category_group)))
-    mx_button_set_toggled (active_button, FALSE);
+  mx_button_group_set_active_button (priv->category_group,
+                                     priv->all_category_button);
 
   mnb_launcher_cancel_search (self);
 
@@ -668,7 +666,10 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
 
   /* special case "All" */
   if (g_strcmp0 (text, "all") == 0)
-    text = _("All");
+    {
+      text = _("All");
+      priv->all_category_button = button;
+    }
 
   /* special case "Favourites" */
   if (g_strcmp0 (text, "fav") == 0)
@@ -1065,6 +1066,8 @@ _constructor (GType                  gtype,
    * categories section
    */
   priv->category_group = mx_button_group_new ();
+
+  mx_button_group_set_allow_no_active (priv->category_group, TRUE);
 
   pane = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (pane),
