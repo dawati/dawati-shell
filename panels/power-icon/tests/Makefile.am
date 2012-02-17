@@ -15,9 +15,9 @@ tools = \
 	$(NULL)
 
 if INSTALL_TEST_TOOLS
-	pkglib_PROGRAMS = $(tools)
+pkglib_PROGRAMS = $(tools)
 else
-	noinst_PROGRAMS = $(tools)
+noinst_PROGRAMS = $(tools)
 endif
 
 LDADD = \

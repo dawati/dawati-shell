@@ -22,9 +22,9 @@ tools = \
 	$(NULL)
 
 if INSTALL_TEST_TOOLS
-	pkglib_PROGRAMS = $(tools)
+pkglib_PROGRAMS = $(tools)
 else
-	noinst_PROGRAMS = $(tools)
+noinst_PROGRAMS = $(tools)
 endif
 
 test_battery_device_SOURCES = \
@@ -40,8 +40,8 @@ test_battery_icon_SOURCES = \
 
 test_conf_SOURCES = \
 	test-conf.c \
-	$(top_srcdir)/panels/devices/panels/devices/src/mpd-conf.c \
-	$(top_srcdir)/panels/devices/panels/devices/src/mpd-gobject.c \
+	$(top_srcdir)/panels/devices/src/mpd-conf.c \
+	$(top_srcdir)/panels/devices/src/mpd-gobject.c \
 	$(NULL)
 
 test_display_device_LDADD = \

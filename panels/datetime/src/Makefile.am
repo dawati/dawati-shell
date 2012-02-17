@@ -15,14 +15,7 @@ dawati_panel_datetime_LDADD = \
 	$(top_builddir)/penge/libpenge.la \
 	$(NULL)
 
-dawati_alarm_notify_LDADD = \
-	$(LIBMPL_LIBS) \
-	$(PANEL_DATETIME_LIBS) \
-	$(NULL)
-
 libexec_PROGRAMS = dawati-panel-datetime
-
-#bin_PROGRAMS = dawati-alarm-notify
 
 dawati_panel_datetime_SOURCES = \
 	dawati-panel-date-time.c \
@@ -55,14 +48,21 @@ dawati_panel_datetime_SOURCES = \
 #				 mx-spin-entry.h	\
 #				 mnp-alarm-utils.h
 
-dawati_alarm_notify_SOURCES = \
-	dawati-alarm-notify.c \
-	mnp-alarm-manager.c \
-	mnp-alarm-manager.h \
-	mnp-alarm-instance.c \
-	mnp-alarm-instance.h \
-	mnp-alarm-utils.h \
-	$(NULL)
+#bin_PROGRAMS = dawati-alarm-notify
+
+#dawati_alarm_notify_LDADD = \
+#	$(LIBMPL_LIBS) \
+#	$(PANEL_DATETIME_LIBS) \
+#	$(NULL)
+
+#dawati_alarm_notify_SOURCES = \
+#	dawati-alarm-notify.c \
+#	mnp-alarm-manager.c \
+#	mnp-alarm-manager.h \
+#	mnp-alarm-instance.c \
+#	mnp-alarm-instance.h \
+#	mnp-alarm-utils.h \
+#	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.datetime.service.in
