@@ -94,6 +94,7 @@ main (int     argc,
                                     THEMEDIR "/toolbar-button.css",
                                     "state-off",
                                     TRUE);
+    stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     shell = dawati_bt_shell_new (client);
     clutter_actor_set_size (shell, 325, -1);
     mpl_panel_clutter_set_child (MPL_PANEL_CLUTTER (client), shell);
@@ -101,6 +102,8 @@ main (int     argc,
                                           shell);
     clutter_actor_show (shell);
   }
+
+  mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 
   clutter_main ();
 
