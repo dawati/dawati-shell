@@ -46,6 +46,10 @@
 #include "mnb-launcher-tree.h"
 #include "mnb-launcher-running.h"
 
+#ifdef WITH_ZEITGEIST
+#include "mnb-launcher-zg-utils.h"
+#endif 
+
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S    2
 
@@ -166,6 +170,8 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
   desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
   g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
+  mnb_launcher_zg_utils_send_launch_event(mnb_launcher_button_get_executable (launcher), 
+                                 mnb_launcher_button_get_title(launcher));
 }
 
 
@@ -565,6 +571,67 @@ _running_changed_cb (MnbLauncherRunning *running,
     }
 }
 
+#ifdef WITH_ZEITGEIST
+typedef struct {
+  MnbLauncher *launcher;
+  gboolean show;
+} mnb_launcher_show_most_cb_user_data;
+
+static void 
+mnb_launcher_show_most_cb (GList *apps, gpointer user_data)
+{
+  mnb_launcher_show_most_cb_user_data *data = (mnb_launcher_show_most_cb_user_data*) user_data;
+  MnbLauncher *self = data->launcher;
+  gboolean show = data->show;
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  GSList *iter;
+  
+  for (iter = priv->launchers; iter; iter = iter->next)
+    {
+      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+      char* exec = mnb_launcher_button_get_executable(button);
+      if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
+          clutter_actor_show (CLUTTER_ACTOR (button));
+      else
+          clutter_actor_hide (CLUTTER_ACTOR (button));
+    }
+}
+
+static void 
+mnb_launcher_show_most (MnbLauncher *self, gboolean show)
+{ 
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  GSList *iter = NULL;
+  
+  if (show) {
+    
+    mnb_launcher_show_most_cb_user_data *data;
+    
+    data = g_new0(mnb_launcher_show_most_cb_user_data, 1);
+    data->launcher = self;
+    data->show = show;
+    
+    mnb_launcher_zg_utils_cb_struct *cb_data;
+    cb_data = g_new0(mnb_launcher_zg_utils_cb_struct, 1);
+    cb_data->callback = mnb_launcher_show_most_cb;
+    cb_data->data = data;
+    
+    for (iter = priv->launchers; iter; iter = iter->next)
+    {
+      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+      clutter_actor_hide (CLUTTER_ACTOR (button));
+    }
+    mnb_launcher_zg_utils_get_most_used_apps(cb_data);
+  }
+  else {
+    for (iter = priv->launchers; iter; iter = iter->next)
+      {
+        MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+        clutter_actor_show (CLUTTER_ACTOR (button));
+      }
+  }
+}
+#endif
 
 static void
 _category_button_toggled_cb (ClutterActor *button,
@@ -583,7 +650,13 @@ _category_button_toggled_cb (ClutterActor *button,
       mnb_launcher_show_favourites (self, toggled_on);
       return;
     }
-
+#ifdef WITH_ZEITGEIST
+  if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "most") == 0)
+    {
+      mnb_launcher_show_most(self, toggled_on);
+      return;
+    }
+#endif
   if (g_strcmp0 (mx_button_get_label (MX_BUTTON (button)), "current") == 0)
     {
       mnb_launcher_show_running (self, toggled_on);
@@ -667,7 +740,10 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
   /* special case "All" */
   if (g_strcmp0 (text, "all") == 0)
     text = _("All");
-
+#ifdef WITH_ZEITGEIST
+  if (g_strcmp0 (text, "most") == 0)
+    text = _("Most Used");
+#endif
   /* special case "Favourites" */
   if (g_strcmp0 (text, "fav") == 0)
     text = _("Favourites");
@@ -1123,6 +1199,10 @@ _constructor (GType                  gtype,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
                                mnb_launcher_category_button_new (self, "all"));
+#ifdef WITH_ZEITGEIST
+  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
+                               mnb_launcher_category_button_new (self, "most"));
+#endif
   clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
                                mnb_launcher_category_button_new (self, "fav"));
 
