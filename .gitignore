@@ -89,6 +89,15 @@ data/org.dawati.shell.gschema.valid
 /panels/devices/data/dawati-panel-devices.desktop
 /panels/devices/data/dawati-panel-devices.schemas
 /panels/devices/src/dawati-panel-devices
+/panels/devices/tests/test-battery-device
+/panels/devices/tests/test-battery-icon
+/panels/devices/tests/test-conf
+/panels/devices/tests/test-disk-tile
+/panels/devices/tests/test-display-device
+/panels/devices/tests/test-folder-button
+/panels/devices/tests/test-folder-tile
+/panels/devices/tests/test-storage-device
+/panels/devices/tests/test-storage-device-tile
 /panels/music/dawati-panel-music
 /panels/music/dawati-panel-music.desktop
 /panels/myzone/data/dawati-panel-myzone.desktop
@@ -114,6 +123,11 @@ data/org.dawati.shell.gschema.valid
 /panels/people/src/sw-marshals.h
 /panels/power-icon/data/dawati-power-icon.desktop
 /panels/power-icon/src/dawati-power-icon
+/panels/power-icon/tests/test-battery-notification
+/panels/power-icon/tests/test-brightness-keys
+/panels/power-icon/tests/test-idle-manager
+/panels/power-icon/tests/test-shutdown-notification
+/panels/power-icon/tests/test-xbacklight
 /panels/status/data/dawati-panel-status.desktop
 /panels/status/src/dawati-panel-status
 /panels/status/src/dawati-panel-status.pc
@@ -180,3 +194,5 @@ omf.make
 stamp-h1
 tags
 xmldocs.make
+pick
+
