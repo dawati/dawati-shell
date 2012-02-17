@@ -3,7 +3,6 @@ libexec_PROGRAMS = dawati-panel-applications
 AM_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_APPLICATIONS_CFLAGS) \
-	\
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	$(NULL)
 
