@@ -37,6 +37,7 @@ struct _CarrickConnmanManagerPrivate
 {
   GDBusProxy *cm;
 
+  gboolean offline_mode;
   char **enabled_techs;
   char **available_techs;
 };
@@ -46,11 +47,13 @@ enum
   PROP_0,
   PROP_AVAILABLE_TECHNOLOGIES,
   PROP_ENABLED_TECHNOLOGIES,
+  PROP_OFFLINE_MODE,
 };
 
 static void carrick_connman_manager_handle_property (CarrickConnmanManager *manager, const char *key, GVariant *value);
 static void carrick_connman_manager_set_available_techs (CarrickConnmanManager *self, const char **techs);
 static void carrick_connman_manager_set_enabled_techs (CarrickConnmanManager *self, const char **techs);
+static void carrick_connman_manager_update_offline_mode (CarrickConnmanManager *self, gboolean offline_mode);
 
 static void
 _connman_get_properties_cb (GDBusProxy            *cm,
@@ -180,6 +183,24 @@ _connman_set_tech_state_cb (GDBusProxy            *cm,
   }
 }
 
+static void
+_connman_set_offline_mode_cb (GDBusProxy *proxy,
+                              GAsyncResult *result,
+                              CarrickConnmanManager *self)
+{
+  GError *error = NULL;
+
+  g_dbus_proxy_call_finish (proxy, result, &error);
+  if (error) {
+    g_warning ("Failed to change the OfflineMode property: %s", error->message);
+    g_error_free (error);
+
+    /* fake property change -- useful for UIs as they can now reset the
+     * toggle that the user foolishly imagined he could toggle */
+    g_object_notify (G_OBJECT (self), "enabled-technologies");
+  }
+}
+
 static gboolean
 _strv_equal (const char **strv1,
              const char **strv2)
@@ -223,10 +244,24 @@ carrick_connman_manager_set_enabled_techs (CarrickConnmanManager  *self,
 }
 
 static void
+carrick_connman_manager_update_offline_mode (CarrickConnmanManager *self,
+                                             gboolean               offline_mode)
+{
+  CarrickConnmanManagerPrivate *priv = self->priv;
+
+  if (priv->offline_mode == offline_mode)
+    return;
+
+  priv->offline_mode = offline_mode;
+  g_object_notify (G_OBJECT (self), "offline-mode");
+}
+
+static void
 carrick_connman_manager_handle_property (CarrickConnmanManager *self,
                                          const char            *key,
                                          GVariant              *value)
 {
+  gboolean offline_mode;
   const char **techs;
 
   if (g_strcmp0 (key, "AvailableTechnologies") == 0) {
@@ -235,6 +270,9 @@ carrick_connman_manager_handle_property (CarrickConnmanManager *self,
   } else if (g_strcmp0 (key, "EnabledTechnologies") == 0) {
     techs = g_variant_get_strv (value, NULL);
     carrick_connman_manager_set_enabled_techs (self, techs);
+  } else if (g_strcmp0 (key, "OfflineMode") == 0) {
+    offline_mode = g_variant_get_boolean (value);
+    carrick_connman_manager_update_offline_mode (self, offline_mode);
   }
 }
 
@@ -254,6 +292,9 @@ carrick_connman_manager_get_property (GObject    *object,
     case PROP_AVAILABLE_TECHNOLOGIES:
       g_value_set_boxed (value, self->priv->available_techs);
       break;
+    case PROP_OFFLINE_MODE:
+      g_value_set_boolean (value, self->priv->offline_mode);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -265,8 +306,14 @@ carrick_connman_manager_set_property (GObject      *object,
                                       const GValue *value,
                                       GParamSpec   *pspec)
 {
+  CarrickConnmanManager *self = CARRICK_CONNMAN_MANAGER (object);
+
   switch (property_id)
     {
+    case PROP_OFFLINE_MODE:
+      carrick_connman_manager_set_offline_mode (self,
+                                                g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -322,6 +369,14 @@ carrick_connman_manager_class_init (CarrickConnmanManagerClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_AVAILABLE_TECHNOLOGIES,
                                    pspec);
+
+  pspec = g_param_spec_boolean ("offline-mode",
+                                "Offline Mode",
+                                "Wether the offline (airplane) mode is enabled"
+                                " or not",
+                                FALSE,
+                                G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class, PROP_OFFLINE_MODE, pspec);
 }
 
 static void
@@ -356,4 +411,33 @@ CarrickConnmanManager *
 carrick_connman_manager_new (void)
 {
   return g_object_new (CARRICK_TYPE_CONNMAN_MANAGER, NULL);
+}
+
+gboolean
+carrick_connman_manager_get_offline_mode (CarrickConnmanManager *self)
+{
+  g_return_val_if_fail (CARRICK_IS_CONNMAN_MANAGER (self), FALSE);
+
+  return self->priv->offline_mode;
+}
+
+void
+carrick_connman_manager_set_offline_mode (CarrickConnmanManager *self,
+                                          gboolean               offline_mode)
+{
+  CarrickConnmanManagerPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_CONNMAN_MANAGER (self));
+  priv = self->priv;
+
+  g_dbus_proxy_call (priv->cm,
+                     "SetProperty",
+                     g_variant_new ("(sv)",
+                                    "OfflineMode",
+                                    g_variant_new ("b", offline_mode)),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback)_connman_set_offline_mode_cb,
+                     self);
 }

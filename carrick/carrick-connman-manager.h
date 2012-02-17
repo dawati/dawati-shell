@@ -68,6 +68,10 @@ GType carrick_connman_manager_get_type (void) G_GNUC_CONST;
 void carrick_connman_manager_set_technology_state (CarrickConnmanManager *self, const char *tech, gboolean enabled);
 CarrickConnmanManager *carrick_connman_manager_new (void);
 
+gboolean carrick_connman_manager_get_offline_mode (CarrickConnmanManager *self);
+void carrick_connman_manager_set_offline_mode (CarrickConnmanManager *self,
+                                               gboolean               offline_mode);
+
 G_END_DECLS
 
 #endif /* _CARRICK_CONNMAN_MANAGER_H */
