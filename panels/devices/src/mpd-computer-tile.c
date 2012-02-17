@@ -102,9 +102,18 @@ on_switch_toggled (MxToggle    *toggle,
   gboolean active;
 
   active = mx_toggle_get_active (toggle);
-  carrick_connman_manager_set_technology_state (priv->cm,
-                                                radio_tech_to_connman_tech (data->row),
-                                                active);
+
+  if (data->row == OFFLINE_MODE)
+    {
+      carrick_connman_manager_set_offline_mode (priv->cm, active);
+    }
+  else
+    {
+      carrick_connman_manager_set_technology_state (
+          priv->cm,
+          radio_tech_to_connman_tech (data->row),
+          active);
+    }
 }
 
 static void
@@ -140,7 +149,8 @@ _available_techs_changed (CarrickConnmanManager *cm,
 {
   gboolean available_techs[N_RADIO_TECHS];
   char **techs, **iter;
-  int show_airplane = 0, i;
+  gboolean n_techs = 0;
+  int i;
 
   memset (available_techs, 0, N_RADIO_TECHS * sizeof (gboolean));
 
@@ -159,7 +169,7 @@ _available_techs_changed (CarrickConnmanManager *cm,
     {
       if (available_techs[i])
         {
-          show_airplane++;
+          n_techs++;
           show_tech (tile, i, TRUE);
         }
       else
@@ -168,7 +178,7 @@ _available_techs_changed (CarrickConnmanManager *cm,
         }
     }
 
-  show_airplane_mode (tile, show_airplane);
+  show_airplane_mode (tile, n_techs);
 
   g_strfreev (techs);
 }
@@ -209,6 +219,27 @@ _enabled_techs_changed (CarrickConnmanManager *cm,
   g_strfreev (techs);
 }
 
+static void
+_offline_mode_changed (CarrickConnmanManager *cm,
+                       GParamSpec            *pspec,
+                       MpdComputerTile       *tile)
+{
+  MpdComputerTilePrivate *priv = tile->priv;
+  gboolean offline_mode;
+
+  offline_mode = carrick_connman_manager_get_offline_mode (cm);
+
+  g_signal_handlers_block_by_func (priv->rows[OFFLINE_MODE].toggle,
+                                   on_switch_toggled,
+                                   &priv->toggled_data[OFFLINE_MODE]);
+
+  mx_toggle_set_active (MX_TOGGLE (priv->rows[OFFLINE_MODE].toggle),
+                        offline_mode);
+
+  g_signal_handlers_unblock_by_func (priv->rows[OFFLINE_MODE].toggle,
+                                     on_switch_toggled,
+                                     &priv->toggled_data[OFFLINE_MODE]);
+}
 
 /*
  * GObject implementation
@@ -301,7 +332,8 @@ mpd_computer_tile_init (MpdComputerTile *self)
                     G_CALLBACK (_available_techs_changed), self);
   g_signal_connect (priv->cm, "notify::enabled-technologies",
                     G_CALLBACK (_enabled_techs_changed), self);
-
+  g_signal_connect (priv->cm, "notify::offline-mode",
+                    G_CALLBACK (_offline_mode_changed), self);
 
   /* Let's reserve some room (rows) for the different "radios", we need:
    * WiFi (0)
@@ -315,14 +347,13 @@ mpd_computer_tile_init (MpdComputerTile *self)
   create_network_row (self, _("Wimax"), RADIO_WIMAX);
   create_network_row (self, _("Bluetooth"), RADIO_BLUETOOTH);
   create_network_row (self, _("3G"), RADIO_3G);
-#if 0
   create_network_row (self, _("Offline mode"), OFFLINE_MODE);
-#endif
 
   show_tech (self, RADIO_WIFI, FALSE);
   show_tech (self, RADIO_WIMAX, FALSE);
   show_tech (self, RADIO_BLUETOOTH, FALSE);
   show_tech (self, RADIO_3G, FALSE);
+  show_airplane_mode (self, FALSE);
 
   /* Volume */
   /* Note to translators, volume here is sound volume */
