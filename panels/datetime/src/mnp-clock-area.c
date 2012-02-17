@@ -307,9 +307,8 @@ mnp_clock_area_manual_update (MnpClockArea *area)
 {
 	int i;
 	GPtrArray *tmp = area->priv->clock_tiles;
-	gboolean ret;
 
-	ret = mnp_clock_area_refresh_time(area, FALSE);
+	mnp_clock_area_refresh_time(area, FALSE);
 	for (i=0; i<tmp->len; i++) { 
 		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
 	}

@@ -230,8 +230,6 @@ _refresh_timeout_cb (gpointer userdata)
 static gboolean
 _first_refresh_timeout_cb (gpointer userdata)
 {
-  MnpDatetimePrivate *priv = GET_PRIVATE (userdata);
-
   penge_calendar_pane_update ((MnpDatetime *)userdata);
 
   /* refresxh every ten minutes to handle timezone changes */
@@ -263,7 +261,6 @@ construct_calendar_area (MnpDatetime *dtime)
 	JanaDuration *duration;
 #endif
 	ClutterActor *box, *label;
-	ClutterActor *div, *icon;
 
 	JanaTime *now;
 	JanaTime *on_the_next_hour;
@@ -513,7 +510,7 @@ static void
 construct_task_area (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-	ClutterActor *label, *div, *box, *icon;
+	ClutterActor *label, *box, *icon;
 
 	priv->task_area = mx_table_new ();
 	clutter_actor_set_name (priv->task_area, "TaskPane");

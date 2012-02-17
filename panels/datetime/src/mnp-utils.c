@@ -260,7 +260,7 @@ find_location_entry (GWeatherLocation *loc,
 
     case GWEATHER_LOCATION_COUNTRY: {
 	/* Recurse, initializing the names to the country name */
-	char *lcountry = gweather_location_get_name (loc);
+	const char *lcountry = gweather_location_get_name (loc);
 
 	if (g_ascii_strcasecmp (lcountry, country) == 0) {
 
@@ -283,13 +283,13 @@ find_location_entry (GWeatherLocation *loc,
 	return zone;
 
     case GWEATHER_LOCATION_CITY: {
-	char *lcity = gweather_location_get_name (loc);
+	const char *lcity = gweather_location_get_name (loc);
 
 	if (g_ascii_strcasecmp (lcity, city) == 0) {
 		if (children[0] && children[1]) {
 			display_name = g_strdup_printf ("%s (%s), %s",
 						gweather_location_get_name (loc),
-						gweather_location_get_name (children[i]),
+						gweather_location_get_name (children[1]),
 						parent_display_name);
 			printf("display: %s\n", display_name);
 			return display_name;
@@ -415,9 +415,6 @@ get_tzname (char *tzid)
 static void
 clock_set_tz (char *tzone)
 {
-        time_t now_t;
-        struct tm now;
-
         setenv ("TZ", tzone, 1);
         tzset();
 }

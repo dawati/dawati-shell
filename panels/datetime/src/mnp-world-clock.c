@@ -288,7 +288,7 @@ clear_btn_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 static void
 add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean priority)
 {
-	const GWeatherLocation *location;
+	GWeatherLocation *location;
 	MnpClockTile *tile;
 	MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
 	const GWeatherTimezone *tzone;
@@ -298,7 +298,7 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 	if (!priv->zones_model)
 		priv->zones_model = mnp_get_world_timezones();
 
-	location = mnp_utils_get_location_from_display (priv->zones_model, display);
+	location = (GWeatherLocation *) mnp_utils_get_location_from_display (priv->zones_model, display);
 	if (!location)
 		return;
 
@@ -319,7 +319,8 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 			g_free (loc->city);
 			g_free (loc->display);
 			g_free (loc);
-			printf("Not adding %s, as it is already there \n");
+			printf("Not adding %s, as it is already there\n",
+                               loc->city);
 
 			return;
 		}
@@ -350,9 +351,6 @@ static void
 add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
-	const GWeatherLocation *location;
-	MnpClockTile *tile;
-	const GWeatherTimezone *tzone;
 
 	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), NULL);
 
@@ -552,7 +550,6 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	ClutterActor *box, *icon, *check_button, *text;
-	ClutterActor *div;
 	GConfClient *client = gconf_client_get_default ();
 	gboolean tfh;
 
@@ -676,7 +673,6 @@ mnp_wc_reverse_geocode_cb (GeoclueReverseGeocode *rev_geocode,
 			    GError                *error,
 			    gpointer               userdata)
 {
-	MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
  	char *city, *country;;
 	char *code;
 
@@ -738,7 +734,7 @@ mnp_wc_get_position_cb (GeocluePosition       *position,
 static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
-	ClutterActor *entry, *box, *stage, *div;
+	ClutterActor *entry, *box, *stage;
 	MxBoxLayout *table = (MxBoxLayout *)world_clock;
 	gfloat width, height;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
