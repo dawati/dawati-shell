@@ -69,5 +69,3 @@ test_xbacklight_LDADD = \
 test_xbacklight_SOURCES = \
 	test-xbacklight.c \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

@@ -31,5 +31,3 @@ uninstall-hook:
 endif
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
-
--include $(top_srcdir)/git.mk

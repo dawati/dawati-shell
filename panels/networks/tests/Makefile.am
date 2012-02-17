@@ -8,5 +8,3 @@ AM_CFLAGS = $(CARRICK_CFLAGS) -I$(top_srcdir)/carrick \
 test_model_SOURCES = test-model.c
 test_model_LDADD = $(top_builddir)/carrick/libcarrick.la \
 		   $(GTK_LIBS) $(DBUS_LIBS)
-
--include $(top_srcdir)/git.mk

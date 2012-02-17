@@ -64,5 +64,3 @@ dawati_panel_devices_SOURCES = \
 	mpd-volume-tile.c \
 	mpd-volume-tile.h \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

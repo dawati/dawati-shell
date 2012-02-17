@@ -16,5 +16,3 @@ libgpm_la_SOURCES = \
 	gpm-brightness-xrandr.c \
 	gpm-brightness-xrandr.h \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

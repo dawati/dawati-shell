@@ -31,6 +31,3 @@ libgvc_la_SOURCES = \
 	gvc-mixer-stream.c \
 	gvc-mixer-stream.h \
 	$(NULL)
-
-
--include $(top_srcdir)/git.mk

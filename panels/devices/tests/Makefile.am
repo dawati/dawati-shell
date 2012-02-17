@@ -88,5 +88,3 @@ test_storage_device_tile_SOURCES = \
 	$(top_srcdir)/panels/devices/src/mpd-storage-device.c \
 	$(top_srcdir)/panels/devices/src/mpd-storage-device-tile.c \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

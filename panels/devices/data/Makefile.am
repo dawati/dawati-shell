@@ -33,5 +33,3 @@ if GCONF_SCHEMAS_INSTALL
 endif
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
-
--include $(top_srcdir)/git.mk

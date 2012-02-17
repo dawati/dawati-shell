@@ -15,5 +15,3 @@ carrick_openconnect_dialog_LDADD = \
 	$(CALLOUTS_LIBS) \
 	$(OPENCONNECT_LIBS) \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

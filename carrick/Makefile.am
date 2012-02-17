@@ -67,5 +67,3 @@ EXTRA_DIST = \
 	connman-service.xml \
 	connman-technology.xml \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

@@ -131,5 +131,3 @@ if BUILD_GTK_DOC
 #TESTS_ENVIRONMENT = cd $(srcsrc) &&
 #TESTS = $(GTKDOC_CHECK)
 endif
-
--include $(top_srcdir)/git.mk

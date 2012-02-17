@@ -33,6 +33,3 @@ dist_battery_icon_plugged_DATA = \
 	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
-
--include $(top_srcdir)/git.mk
-

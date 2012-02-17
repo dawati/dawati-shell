@@ -20,5 +20,3 @@ carrick_3g_wizard_CFLAGS = \
 carrick_3g_wizard_LDADD = \
 	$(CALLOUTS_LIBS) \
 	$(NULL)
-
--include $(top_srcdir)/git.mk

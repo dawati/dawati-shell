@@ -25,5 +25,3 @@ DISTCLEANFILES = com.dawati.UX.Shell.Panels.switcher.service
 
 com.dawati.UX.Shell.Panels.switcher.service: com.dawati.UX.Shell.Panels.switcher.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-
--include $(top_srcdir)/git.mk

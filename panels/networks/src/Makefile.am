@@ -27,6 +27,3 @@ service_DATA = com.dawati.UX.Shell.Panels.network.service
 EXTRA_DIST = $(service_in_files)
 CLEANFILES = $(service_DATA)
 DISTCLEANFILES = $(service_DATA)
-
-
--include $(top_srcdir)/git.mk
