@@ -5,7 +5,7 @@ AM_CFLAGS = \
 	$(PENGE_CFLAGS) \
 	-I$(top_srcdir) \
 	\
-	-DMYZONETHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \
+	-DMYZONETHEMEDIR=\"$(PANEL_MYZONE_RUNTIME_THEMEDIR)\" \
 	-Wall -g3 -O0 -ggdb \
 	$(NULL)
 

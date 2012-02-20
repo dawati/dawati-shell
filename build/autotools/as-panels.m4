@@ -83,6 +83,7 @@ AC_DEFUN([AS_DAWATI_PANEL],
            [$PNAME_DEF[_LIBS]' $(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la'])
   AC_SUBST(PNAME_DEF[_THEMEDIR],'$(DAWATI_THEME_DIR)/$1')
   AC_SUBST(PNAME_DEF[_DATADIR],'$(pkgdatadir)/$1')
+  AC_SUBST(PNAME_DEF[_RUNTIME_THEMEDIR],'$(DAWATI_RUNTIME_THEME_DIR)/$1')
 
   dnl additionnal cflags/libs (themedir, localedir, datadir, pkgdatadir)
   AC_SUBST(PNAME_DEF[_CFLAGS],

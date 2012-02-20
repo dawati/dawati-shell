@@ -65,7 +65,7 @@ AM_CFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/libdawati-panel \
 	\
-	-DTHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \
+	-DTHEMEDIR=\"$(PANEL_MYZONE_RUNTIME_THEMEDIR)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	$(NULL)
 
