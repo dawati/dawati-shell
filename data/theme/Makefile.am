@@ -111,6 +111,7 @@ theme_alttabdir = $(DAWATI_THEME_DIR)/alttab
 dist_theme_alttab_DATA = \
 	alttab/application-normal.png \
 	alttab/application-active.png \
+	alttab/alttab-bkgd.png \
 	$(NULL)
 
 theme_cappletdir = $(DAWATI_THEME_DIR)/capplet

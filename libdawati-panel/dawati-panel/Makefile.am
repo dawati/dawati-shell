@@ -43,7 +43,8 @@ lib_LTLIBRARIES = libdawati-panel.la
 source_h = \
 		$(srcdir)/mpl-app-launch-context.h \
 		$(srcdir)/mpl-app-launches-query.h \
-		$(srcdir)/mpl-app-launches-store.h\
+		$(srcdir)/mpl-app-launches-store.h \
+		$(srcdir)/mpl-application-view.h \
 		$(srcdir)/mpl-audio-tile.h \
 		$(srcdir)/mpl-version.h	\
 		$(srcdir)/mpl-content-pane.h \
@@ -67,6 +68,7 @@ source_c = \
 		$(srcdir)/mpl-app-launch-context.c \
 		$(srcdir)/mpl-app-launches-query.c \
 		$(srcdir)/mpl-app-launches-store.c \
+		$(srcdir)/mpl-application-view.c \
 		$(srcdir)/mpl-audio-tile.c \
 		$(srcdir)/mnb-enum-types.c \
 		$(srcdir)/mpl-content-pane.c \

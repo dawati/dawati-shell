@@ -198,7 +198,6 @@ static gboolean
 mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 {
   MetaPlugin                *plugin = dawati_netbook_get_plugin_singleton ();
-  DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MnbAlttabOverlayPrivate   *priv = self->priv;
   GList                     *l, *filtered = NULL, *active = NULL;
 
@@ -215,7 +214,7 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
       MetaWindowActor     *m = l->data;
       MnbAlttabOverlayApp *app;
 
-      app = mnb_alttab_overlay_app_new (m, ppriv->desktop_tex);
+      app = mnb_alttab_overlay_app_new (m);
 
       if (!active)
         active = l->next;
@@ -230,7 +229,7 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
         }
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->grid),
-                                   (ClutterActor*) app);
+                                   (ClutterActor *) app);
     }
 
   g_list_free (filtered);
@@ -656,7 +655,7 @@ mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
         {
           next_is_active = TRUE;
           mnb_alttab_overlay_app_set_active (app, FALSE);
-          priv->active = FALSE;
+          priv->active = app;
         }
       else if (next_is_active)
         {

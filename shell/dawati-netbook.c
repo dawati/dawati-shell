@@ -817,15 +817,26 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
     meta_prefs_set_num_workspaces (1);
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-                                 THEMEDIR "/mx.cache");
+                               THEMEDIR "/mx.cache");
+
   mx_style_load_from_file (mx_style_get_default (),
-                             THEMEDIR "/mutter-dawati.css",
-                             &err);
+                           THEMEDIR "/mutter-dawati.css",
+                           &err);
   if (err)
     {
       g_warning ("%s", err->message);
       g_error_free (err);
     }
+
+  mx_style_load_from_file (mx_style_get_default (),
+                           THEMEDIR "/shared/shared.css",
+                           &err);
+  if (err)
+    {
+      g_warning ("%s", err->message);
+      g_error_free (err);
+    }
+
 
   g_signal_connect (screen,
                     "workareas-changed",

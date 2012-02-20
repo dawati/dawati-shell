@@ -14,6 +14,7 @@
 
 #include <dawati-panel/mpl-panel-clutter.h>
 #include <dawati-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-application-view.h>
 
 #include <glib/gi18n.h>
 #include <locale.h>
@@ -141,9 +142,8 @@ update_toolbar_icon (WnckScreen    *screen,
 }
 
 static gboolean
-app_tile_release_event (ClutterActor *actor,
-                        ClutterEvent *event,
-                        ZonePanelData *data)
+app_tile_activated (ClutterActor  *actor,
+                    ZonePanelData *data)
 {
   WnckWindow *window;
 
@@ -203,72 +203,36 @@ sw_create_app_tile (ZonePanelData   *data,
                     WnckWindow      *window,
                     WnckApplication *application)
 {
-  ClutterActor *tile, *frame, *label, *icon, *button, *thumbnail, *shadow;
+  ClutterActor *tile, *icon, *thumbnail;
 
-  /* tile */
-  tile = mx_table_new ();
+  tile = (ClutterActor *) g_object_new (MPL_TYPE_APPLICATION_VIEW,
+                                        "title",
+                                        wnck_application_get_name (application),
+                                        "subtitle",
+                                        wnck_window_get_name (window),
+                                        NULL);
+
   g_object_set_data (G_OBJECT (tile), "wnck-window", window);
-  clutter_actor_set_reactive (tile, TRUE);
-  mx_stylable_set_style_class (MX_STYLABLE (tile), "switcherTile");
-  clutter_actor_set_size (tile, 266, 212);
-  g_signal_connect (tile, "button-release-event",
-                    G_CALLBACK (app_tile_release_event), data);
+  g_signal_connect (tile, "activated",
+                    G_CALLBACK (app_tile_activated), data);
+  g_signal_connect (tile, "closed",
+                    G_CALLBACK (close_workspace_btn_clicked), data);
 
   /* icon */
   icon = gtk_clutter_texture_new ();
   gtk_clutter_texture_set_from_pixbuf (GTK_CLUTTER_TEXTURE (icon),
                                        wnck_window_get_icon (window),
                                        NULL);
-  mx_table_add_actor (MX_TABLE (tile), icon, 0, 0);
-  mx_table_child_set_y_expand (MX_TABLE (tile), icon, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (tile), icon, FALSE);
-  mx_table_child_set_y_fill (MX_TABLE (tile), icon, FALSE);
-  mx_table_child_set_row_span (MX_TABLE (tile), icon, 2);
-  clutter_actor_set_size (icon, 32, 32);
+  mpl_application_view_set_icon (MPL_APPLICATION_VIEW (tile), icon);
 
-  /* title */
-  label = mx_label_new_with_text (wnck_application_get_name (application));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "appTitle");
-  mx_table_add_actor (MX_TABLE (tile), label, 0, 1);
-  mx_table_child_set_y_expand (MX_TABLE (tile), label, FALSE);
-
-  /* subtitle */
-  label = mx_label_new_with_text (wnck_window_get_name (window));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "appSubTitle");
-  mx_table_add_actor (MX_TABLE (tile), label, 1, 1);
-  mx_table_child_set_y_expand (MX_TABLE (tile), label, FALSE);
-
-  /* close button */
-  button = mx_button_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (button), "appCloseButton");
-  mx_table_add_actor (MX_TABLE (tile), button, 0, 2);
-  mx_table_child_set_y_fill (MX_TABLE (tile), button, FALSE);
-  mx_table_child_set_x_fill (MX_TABLE (tile), button, FALSE);
-  mx_table_child_set_y_expand (MX_TABLE (tile), button, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (tile), button, FALSE);
-  clutter_actor_set_size (button, 22, 21);
-  g_signal_connect (button, "clicked", G_CALLBACK (close_workspace_btn_clicked),
-                    data);
-
-  /* frame */
-  frame = mx_frame_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (frame), "appBackground");
-  mx_table_add_actor (MX_TABLE (tile), frame, 2, 0);
-  mx_table_child_set_column_span (MX_TABLE (tile), frame, 3);
-  mx_table_child_set_x_expand (MX_TABLE (tile), frame, FALSE);
-
-  /* shadow */
-  shadow = mx_frame_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (shadow), "appShadow");
-  mx_bin_set_child (MX_BIN (frame), shadow);
-  mx_bin_set_fill (MX_BIN (frame), FALSE, FALSE);
 
   /* application thumbnail */
   thumbnail = clutter_glx_texture_pixmap_new_with_window (wnck_window_get_xid (window));
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (thumbnail),
                                             TRUE);
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
-  mx_bin_set_child (MX_BIN (shadow), thumbnail);
+  mpl_application_view_set_thumbnail (MPL_APPLICATION_VIEW (tile),
+                                      thumbnail);
 
   return tile;
 }

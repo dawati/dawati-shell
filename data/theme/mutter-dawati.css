@@ -295,22 +295,19 @@ MxTooltip.alttab {
   background-image: none;
 }
 
-MnbAlttabOverlay {
-  background-color: #44444444;
-  padding: 10;
-}
-
 /* switcher overlay */
-MnbAlttabOverlayApp {
-  background-color: #fff0;
-  padding: 6;
-  border-image: url('alttab/application-normal.png') 6;
+MnbAlttabOverlay {
+  border-image: url('alttab/alttab-bkgd.png') 26 25 31 24;
+  padding: 14 18 20 18;
 }
 
-MnbAlttabOverlayApp:active {
-  background-color: #fff0;
+MnbAlttabOverlayApp.switcherTile {
+  border-image: none;
+}
+
+MplApplicationView.switcherTile:active {
+  border-image: url("shared/application-view-tile.png") 15 13 15 13;
   padding: 6;
-  border-image: url('alttab/application-active.png') 6;
 }
 
 /* Must be identical to the style defintion for MplPanelBackground */

@@ -18,7 +18,7 @@ dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
 		$(srcdir)/$(DBUS_BINDINGS)
 
 source_h =	$(srcdir)/marshal.h			\
-		$(srcdir)/../libdawati-panel/dawati-panel/mpl-panel-common.h \
+		$(top_srcdir)/libdawati-panel/dawati-panel/mpl-panel-common.h \
 		$(srcdir)/dawati-netbook.h		\
 		$(srcdir)/dawati-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-spinner.h			\
@@ -119,7 +119,8 @@ dawati_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				effects/libeffects.la	\
 				alttab/libalttab.la	\
 				presence/libpresence.la	\
-				notifications/libnotifications.la
+				notifications/libnotifications.la \
+				$(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la
 
 pkglib_LTLIBRARIES = dawati-netbook.la
 

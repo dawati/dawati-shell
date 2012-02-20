@@ -25,7 +25,7 @@
 #ifndef _MNB_ALTTAB_OVERLAY_APP
 #define _MNB_ALTTAB_OVERLAY_APP
 
-#include <mx/mx.h>
+#include <dawati-panel/mpl-application-view.h>
 
 G_BEGIN_DECLS
 
@@ -47,7 +47,7 @@ typedef struct _MnbAlttabOverlayAppClass   MnbAlttabOverlayAppClass;
 struct _MnbAlttabOverlayApp
 {
   /*< private >*/
-  MxWidget parent;
+  MplApplicationView parent;
 
   MnbAlttabOverlayAppPrivate *priv;
 };
@@ -55,13 +55,12 @@ struct _MnbAlttabOverlayApp
 struct _MnbAlttabOverlayAppClass
 {
   /*< private >*/
-  MxWidgetClass parent_class;
+  MplApplicationViewClass parent_class;
 };
 
 GType mnb_alttab_overlay_app_get_type (void);
 
-MnbAlttabOverlayApp *mnb_alttab_overlay_app_new (MetaWindowActor *mw,
-                                                 ClutterActor    *background);
+MnbAlttabOverlayApp *mnb_alttab_overlay_app_new (MetaWindowActor *mcw);
 
 void             mnb_alttab_overlay_app_set_active (MnbAlttabOverlayApp *app,
                                                     gboolean             active);

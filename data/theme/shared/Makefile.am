@@ -1,5 +1,12 @@
 sharedstyledir = $(DAWATI_THEME_DIR)/shared
 dist_sharedstyle_DATA = \
+	application-view-texture.png \
+	application-view-tile.png \
+	application-view-shadow.png \
+	application-view-closebutton-normal.png \
+	application-view-closebutton-hover.png \
+	application-view-closebutton-pressed.png \
+	\
 	application-icon-mask.png \
 	application-icon-texture-bg.png \
 	application-mask.png \
