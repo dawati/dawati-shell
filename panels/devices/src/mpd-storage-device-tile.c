@@ -87,7 +87,6 @@ typedef struct
   ClutterActor              *meter;
   ClutterActor              *eject;
   ClutterActor              *open;
-  ClutterActor              *import;
   ClutterActor              *message;
 
   /* Data */
@@ -102,17 +101,6 @@ typedef struct
 } MpdStorageDeviceTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
-
-#define MPD_STORAGE_DEVICE_TILE_ERROR (mpd_storage_device_tile_error_quark ())
-
-static GQuark
-mpd_storage_device_tile_error_quark (void)
-{
-  static GQuark _quark = 0;
-  if (!_quark)
-    _quark = g_quark_from_static_string ("mpd-storage-device-tile-error");
-  return _quark;
-}
 
 static void
 update (MpdStorageDeviceTile *self)
@@ -154,110 +142,6 @@ _storage_size_notify_cb (MpdStorageDevice     *storage,
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
 
   update (self);
-}
-
-static bool
-launch_gthumb_import (MpdStorageDeviceTile  *self,
-                      GError               **error)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  GAppInfo *appinfo;
-  GList     uris = { NULL, };
-
-  appinfo = (GAppInfo *) g_desktop_app_info_new ("gthumb-import.desktop");
-  if (NULL == appinfo)
-  {
-    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
-                          0,
-                          "%s : Failed to open \"gthumb-import.desktop\"",
-                          G_STRLOC);
-    return false;
-  }
-
-  uris.data = priv->mount_point;
-  g_debug ("gthumb-imported.desktop %s", priv->mount_point);
-
-  return g_app_info_launch_uris (appinfo, &uris, NULL, error);
-}
-
-static bool
-launch_import (MpdStorageDeviceTile   *self,
-               char const             *program,
-               char const             *args,
-               GError                **error)
-{
-  char  *binary;
-  char  *command_line;
-  bool   ret;
-
-  binary = g_find_program_in_path (program);
-  if (NULL == binary)
-  {
-    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
-                          0,
-                          "%s : Failed to find \"%s\" in the path",
-                          G_STRLOC,
-                          program);
-    return false;
-  } else
-  {
-    g_free (binary);
-  }
-
-  command_line = g_strconcat (program, " ", args, NULL);
-  ret = g_spawn_command_line_async (command_line, error);
-  g_free (command_line);
-  return ret;
-}
-
-static void
-_import_clicked_cb (MxButton             *button,
-                    MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char const  *program = NULL;
-  GError      *error = NULL;
-
-  if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
-  {
-    /* Photo devices are handled by GThumb.
-     * + gphoto2 devices are launched through gthumb-import.desktop with
-     *   its Exec hack for exclusive device access.
-     * + others (USB cameras) don't work with that hack, so GThumb is
-     *   launched in import mode manually. */
-    char *scheme = g_uri_parse_scheme (priv->mount_point);
-    program = "gthumb";
-    if (0 == g_strcmp0 ("gphoto2", scheme))
-      launch_gthumb_import (self, &error);
-    else
-      launch_import (self, program, "--import-photos", &error);
-  } else
-  {
-    program = "banshee";
-    launch_import (self, program, "--show-import-media", &error);
-  }
-
-  if (error)
-  {
-    NotifyNotification *note;
-    char *message = g_strdup_printf (_("Could not run \"%s\""), program);
-
-#ifdef HAVE_NOTIFY_0_7
-    note = notify_notification_new (_("Import error"), message, NULL);
-#else
-    note = notify_notification_new (_("Import error"), message, NULL, NULL);
-#endif
-    notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
-
-    notify_notification_show (note, NULL);
-    g_signal_connect (note, "closed",
-                      G_CALLBACK (g_object_unref), NULL);
-
-    g_free (message);
-    g_clear_error (&error);
-  } else {
-    g_signal_emit_by_name (self, "request-hide");
-  }
 }
 
 static void
@@ -351,15 +235,6 @@ _constructor (GType                  type,
                 G_STRLOC,
                 "Invalid or no mount-point passed to constructor.");
     self = NULL;
-  }
-
-  /* FIXME: import button should only be active if the import app is available,
-   * otherwise show an error. */
-  if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
-  {
-    mx_button_set_label (MX_BUTTON (priv->import), _("Import photos"));
-  } else {
-    mx_button_set_label (MX_BUTTON (priv->import), _("Import media"));
   }
 
   return (GObject *) self;
@@ -576,9 +451,9 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 0 |      | Text              |
 1 | Icon | Progress          |
   +------+-------------------+
-2 |  Open  Eject  Import     |
+2 |     Open      Eject      |
   +------+-------------------+ VBox
-3 | <message> .. Import data |
+3 | <message> safely remove  |
   +--------------------------+
 */
 
@@ -664,19 +539,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                     G_CALLBACK (_eject_clicked_cb), self);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
                                            priv->eject,
-                                           -1,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "y-fill", FALSE,
-                                           NULL);
-
-  /* Import button */
-  priv->import = mx_button_new ();
-  clutter_actor_set_name (priv->import, "import");
-  g_signal_connect (priv->import, "clicked",
-                    G_CALLBACK (_import_clicked_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
-                                           priv->import,
                                            -1,
                                            "expand", TRUE,
                                            "x-fill", TRUE,
@@ -926,7 +788,6 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
   {
     mx_widget_set_disabled (MX_WIDGET (priv->open), true);
     mx_widget_set_disabled (MX_WIDGET (priv->eject), true);
-    clutter_container_remove_actor (CLUTTER_CONTAINER (self), priv->import);
   }
 
   mx_label_set_text (MX_LABEL (priv->message), message);
