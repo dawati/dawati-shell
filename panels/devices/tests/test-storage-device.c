@@ -42,7 +42,11 @@ main (int     argc,
   int64_t            size;
   int64_t            available_size;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Could not initialize Clutter");
+      return EXIT_FAILURE;
+    }
 
   if (argc > 1)
   {

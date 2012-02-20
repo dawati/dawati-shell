@@ -30,7 +30,11 @@ main (int     argc,
   ClutterActor *stage;
   ClutterActor *tile;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Could not initialize Clutter");
+      return EXIT_FAILURE;
+    }
 
   stage = clutter_stage_get_default ();
 

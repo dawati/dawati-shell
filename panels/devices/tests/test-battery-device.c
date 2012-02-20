@@ -69,7 +69,11 @@ main (int     argc,
   }
   g_option_context_free (context);
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Could not initialize Clutter");
+      return EXIT_FAILURE;
+    }
 
   battery = mpd_battery_device_new ();
   g_signal_connect (battery, "notify::percentage",

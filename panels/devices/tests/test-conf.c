@@ -95,7 +95,11 @@ main (int     argc,
 {
   MpdConf *conf;
 
-  clutter_init (&argc, &argv);
+  if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_critical ("Could not initialize Clutter");
+      return EXIT_FAILURE;
+    }
 
   conf = mpd_conf_new ();
 
