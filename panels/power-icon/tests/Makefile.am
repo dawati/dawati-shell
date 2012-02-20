@@ -15,7 +15,8 @@ tools = \
 	$(NULL)
 
 if INSTALL_TEST_TOOLS
-pkglib_PROGRAMS = $(tools)
+testsdir = $(libexecdir)/dawati-shell/tests
+tests_PROGRAMS = $(tools)
 else
 noinst_PROGRAMS = $(tools)
 endif
