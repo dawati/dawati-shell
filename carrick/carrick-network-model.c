@@ -364,7 +364,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       config_nameservers = get_boxed (properties, "Nameservers.Configuration");
       immutable = get_boolean (properties, "Immutable");
       login_required = get_boolean (properties, "LoginRequired");
-      strength = get_uint (properties, "Strength");
+      strength = 10 * ((get_uint (properties, "Strength") + 5) / 10);
 
       name = get_string (properties, "Name");
       if (!name)
@@ -616,9 +616,18 @@ network_model_service_changed_cb (DBusGProxy  *service,
     }
   else if (g_str_equal (property, "Strength"))
     {
-      gtk_list_store_set (store, &iter,
-                          CARRICK_COLUMN_STRENGTH, g_value_get_uchar (value),
+      guint current_strength;
+      /* This is the most common change, and fairly unimportant...
+       * Round to nearest ten, and avoid change notification */
+      guint strength = 10 * ((g_value_get_uchar (value) + 5) / 10);
+
+      gtk_tree_model_get (self, &iter,
+                          CARRICK_COLUMN_STRENGTH, &current_strength,
                           -1);
+      if (current_strength != strength)
+        gtk_list_store_set (store, &iter,
+                            CARRICK_COLUMN_STRENGTH, strength,
+                            -1);
     }
   else if (g_str_equal (property, "Name"))
     {
@@ -876,9 +885,14 @@ network_model_update_property (const gchar *property,
           /* else update it */
           else
             {
-              gtk_list_store_set (store, &iter,
-                                  CARRICK_COLUMN_INDEX, index,
+              guint current_index;
+              gtk_tree_model_get (self, &iter,
+                                  CARRICK_COLUMN_INDEX, &current_index,
                                   -1);
+              if (current_index != index)
+                gtk_list_store_set (store, &iter,
+                                    CARRICK_COLUMN_INDEX, index,
+                                    -1);
             }
 
 
