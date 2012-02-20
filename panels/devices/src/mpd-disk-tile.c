@@ -61,6 +61,11 @@ update (MpdDiskTile *self)
 
   percentage = 100 - (double) available_size / size * 100;
 
+
+  /* We don't want to display 0% used, we still have *something* installed */
+  if (percentage == 0)
+    percentage++;
+
   size_text = g_format_size_for_display (size);
   markup = g_strdup_printf (_("You are using %d%% of %s"),
                             percentage,
@@ -70,7 +75,10 @@ update (MpdDiskTile *self)
   g_free (markup);
   g_free (size_text);
 
-  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter), percentage / 100.);
+  /* The progress bar does not look good if the percentage < 3%. We cheat
+   * and always display a minimum of 3% */
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
+                                MAX (.03, percentage / 100.));
 }
 
 static void
