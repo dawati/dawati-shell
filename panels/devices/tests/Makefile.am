@@ -21,12 +21,6 @@ tools = \
 	test-storage-device-tile \
 	$(NULL)
 
-if INSTALL_TEST_TOOLS
-pkglib_PROGRAMS = $(tools)
-else
-noinst_PROGRAMS = $(tools)
-endif
-
 test_battery_device_SOURCES = \
 	test-battery-device.c \
 	$(top_srcdir)/panels/devices/src/mpd-battery-device.c \

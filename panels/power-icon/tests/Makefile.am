@@ -14,12 +14,6 @@ tools = \
 	test-xbacklight \
 	$(NULL)
 
-if INSTALL_TEST_TOOLS
-pkglib_PROGRAMS = $(tools)
-else
-noinst_PROGRAMS = $(tools)
-endif
-
 LDADD = \
 	$(PANEL_POWER_ICON_LIBS) \
 	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
