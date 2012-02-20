@@ -82,6 +82,9 @@ struct _CarrickListPrivate
   int ofono_connmans;
   GHashTable *cell_services;
   guint pin_requests;
+
+  GHashTable *updates_pending;
+  guint delayed_update;
 };
 
 enum {
@@ -664,6 +667,8 @@ _find_and_remove (GtkWidget *item,
       if (g_hash_table_remove (list->priv->cell_services, item))
         carrick_list_update_modem_service (list);
 
+      g_hash_table_remove (list->priv->updates_pending, item);
+
       gtk_widget_destroy (item);
     }
 }
@@ -693,6 +698,8 @@ _row_deleted_cb (GtkTreeModel *tree_model,
   /* If the model is empty, delete all widgets and show some fallback content */
   if (gtk_tree_model_get_iter_first (tree_model, &iter) == FALSE)
     {
+      g_hash_table_remove_all (self->priv->updates_pending);
+
       gtk_container_foreach (GTK_CONTAINER (priv->box),
                              (GtkCallback)gtk_widget_destroy,
                              NULL);
@@ -763,6 +770,37 @@ _rows_reordered_cb (GtkTreeModel *tree_model,
 }
 
 static void
+_update_service_item (CarrickServiceItem *item,
+                      gpointer value,
+                      gpointer userdata)
+{
+  carrick_service_item_update (item);
+}
+
+static gboolean
+_delayed_update (CarrickList *list)
+{
+  g_hash_table_foreach_remove (list->priv->updates_pending,
+                               (GHRFunc)_update_service_item,
+                               NULL);
+  list->priv->delayed_update = 0;
+  return FALSE;
+}
+
+static void
+carrick_list_add_pending_service_update (CarrickList *list,
+                                         CarrickServiceItem *item)
+{
+  /* wait a short time before running carrick_service_item_update()
+   * so subsequent changes don't trigger another call. */
+  g_hash_table_insert (list->priv->updates_pending, item, item);
+  if (list->priv->delayed_update == 0)
+    list->priv->delayed_update = g_timeout_add (100,
+                                                (GSourceFunc)_delayed_update,
+                                                list);
+}
+
+static void
 _row_changed_cb (GtkTreeModel *model,
                  GtkTreePath  *path,
                  GtkTreeIter  *iter,
@@ -781,11 +819,11 @@ _row_changed_cb (GtkTreeModel *model,
 
   /* Find widget for changed row, tell it to refresh
    * variables and update */
-  item = carrick_list_find_service_item (list,
-                                         proxy);
+  item = carrick_list_find_service_item (list, proxy);
   if (item)
     {
-      carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
+      carrick_list_add_pending_service_update (list,
+                                               CARRICK_SERVICE_ITEM (item));
 
       /* Check the order and, where neccesarry, reorder */
       gtk_container_child_get (GTK_CONTAINER (priv->box),
@@ -821,7 +859,8 @@ _row_changed_cb (GtkTreeModel *model,
       if (!g_strcmp0 (dbus_g_proxy_get_path (proxy),
                       dbus_g_proxy_get_path (drag_proxy)))
         {
-          carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
+          carrick_list_add_pending_service_update (list,
+                                                   CARRICK_SERVICE_ITEM (item));
           return;
         }
     }
@@ -1456,7 +1495,7 @@ carrick_list_init (CarrickList *self)
                     G_CALLBACK (_ofono_notify_required_pins_cb), self);
   _ofono_notify_required_pins_cb (priv->ofono, NULL, self);
 
-
+  priv->updates_pending = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
                                   GTK_POLICY_NEVER,
