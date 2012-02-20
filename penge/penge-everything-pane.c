@@ -126,11 +126,24 @@ penge_everything_pane_dispose (GObject *object)
     priv->client = NULL;
   }
 
-  if(priv->recent_log)
+
+  if (priv->recent_log)
     {
+      if (priv->recent_monitor)
+        /* remove the weak ref */
+        zeitgeist_log_remove_monitor (priv->recent_log,
+                                      priv->recent_monitor);
+
       g_object_unref (priv->recent_log);
       priv->recent_log = NULL;
     }
+
+  if (priv->recent_monitor)
+    {
+      g_object_unref (priv->recent_monitor);
+      priv->recent_monitor = NULL;
+    }
+
 
   if (priv->ratio_notify_id)
   {
@@ -938,6 +951,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     (GCallback)_zeitgeist_monitor_events_deleted_signal,
                     self);
 
+  /* the log holds a weak ref to the monitor */
   zeitgeist_log_install_monitor (priv->recent_log, priv->recent_monitor);
 
   penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
