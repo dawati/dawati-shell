@@ -510,6 +510,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   flow = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (flow),
                                  MX_ORIENTATION_HORIZONTAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (flow), 5.0);
   mx_table_add_actor_with_properties (MX_TABLE (priv->table), flow, 2, 0,
                                       "x-align", MX_ALIGN_START,
                                       "x-expand", FALSE,
