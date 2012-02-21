@@ -447,7 +447,7 @@ ___clutter_color_from_string (ClutterColor *color,
     {
       gint64 result;
 
-      if (sscanf (str + 1, "%"G_GINT64_FORMAT, &result))
+      if (sscanf (str + 1, "%"G_GINT64_MODIFIER"x", &result))
         {
           gsize length = strlen (str);
 
