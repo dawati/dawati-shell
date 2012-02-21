@@ -78,6 +78,8 @@ struct _MpdComputerTilePrivate
 
   /* Those structures are used by the notify::active handlers */
   ToggledData toggled_data[N_RADIO_TECHS + 1];
+
+  ClutterActor *battery_label, *battery_tile;
 };
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -241,6 +243,25 @@ _offline_mode_changed (CarrickConnmanManager *cm,
                                      &priv->toggled_data[OFFLINE_MODE]);
 }
 
+static void
+_show_me (ClutterActor    *tile,
+          gboolean         show_me,
+          MpdComputerTile *self)
+{
+  MpdComputerTilePrivate *priv = self->priv;
+
+  if (show_me)
+    {
+      clutter_actor_show (priv->battery_label);
+      clutter_actor_show (priv->battery_tile);
+    }
+  else
+    {
+      clutter_actor_hide (priv->battery_label);
+      clutter_actor_hide (priv->battery_tile);
+    }
+}
+
 /*
  * GObject implementation
  */
@@ -324,6 +345,7 @@ mpd_computer_tile_init (MpdComputerTile *self)
   ClutterActor      *tile, *label;
   MpdDisplayDevice  *display;
   bool               show_brightness_tile;
+  int                row;
 
   self->priv = priv = COMPUTER_TILE_PRIVATE (self);
 
@@ -341,7 +363,6 @@ mpd_computer_tile_init (MpdComputerTile *self)
    * Bluetooth (2)
    * 3G (3)
    * Air plane mode (4) */
-#define START_ROW 5
 
   create_network_row (self, _("Wifi"), RADIO_WIFI);
   create_network_row (self, _("Wimax"), RADIO_WIMAX);
@@ -355,23 +376,26 @@ mpd_computer_tile_init (MpdComputerTile *self)
   show_tech (self, RADIO_3G, FALSE);
   show_airplane_mode (self, FALSE);
 
+  row = 5;
+
   /* Volume */
   /* Note to translators, volume here is sound volume */
   label = mx_label_new_with_text (_("Volume"));
   mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      START_ROW, 0,
+                                      row, 0,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-fill", FALSE,
                                       NULL);
 
   tile = mpd_volume_tile_new ();
   mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                      START_ROW, 1,
+                                      row, 1,
                                       "y-expand", FALSE,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-fill", FALSE,
                                       "x-expand", TRUE,
                                       NULL);
+  row++;
 
   /* Brightness */
   display = mpd_display_device_new ();
@@ -380,22 +404,35 @@ mpd_computer_tile_init (MpdComputerTile *self)
     {
       label = mx_label_new_with_text (_("Brightness"));
       mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                          START_ROW + 1, 0,
+                                          row, 0,
                                           "y-align", MX_ALIGN_MIDDLE,
                                           "y-fill", FALSE,
                                           NULL);
 
       tile = mpd_brightness_tile_new ();
       mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                          START_ROW + 1, 1,
+                                          row, 1,
                                           "x-expand", TRUE,
                                           NULL);
+      row++;
     }
 
-#if 0
+  /* Battery */
+  label = mx_label_new_with_text (_("Battery"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label,
+                                      row, 0,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-fill", FALSE,
+                                      NULL);
   tile = mpd_battery_tile_new ();
-  mx_table_add_actor (MX_TABLE (self), tile, 2, 0);
-#endif
+  g_signal_connect (tile, "show-me", G_CALLBACK (_show_me), self);
+  mx_table_add_actor_with_properties (MX_TABLE (self), tile,
+                                      row, 1,
+                                      "x-expand", TRUE,
+                                      NULL);
+  priv->battery_label = label;
+  priv->battery_tile = tile;
+  row++;
 
   /* FIXME: Makes crash when unref'd.
    * GpmBrightnessXRandR doesn't remove filter from root window in ::finalize()

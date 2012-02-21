@@ -26,6 +26,16 @@ MxLabel.message {
   padding: 6 0 0 0;
 }
 
+MxIcon#battery-on {
+  border-image: none;
+  -mx-content-image: url('icon-slider-battery-on.png');
+}
+
+MxIcon#battery-off {
+  border-image: none;
+  -mx-content-image: url('icon-slider-battery-off.png');
+}
+
 MxIcon#brightness-on {
   border-image: none;
   -mx-content-image: url('icon-slider-brightness-on.png');

@@ -28,72 +28,58 @@
 #include "mpd-shell-defines.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_BATTERY_TILE, MpdBatteryTilePrivate))
 
+enum
+{
+  SHOW_ME,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
   /* Managed by Clutter. */
-  ClutterActor      *label;
-  ClutterActor      *icon;
+  ClutterActor      *progress_bar;
 
   /* Managed by man. */
   MpdBatteryDevice  *device;
 } MpdBatteryTilePrivate;
 
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
+
 static void
 update (MpdBatteryTile *self)
 {
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
-  char const            *icon_file = NULL;
-  char                  *description = NULL;
-  GError                *error = NULL;
   MpdBatteryDeviceState  state;
   int                    percentage;
+  gboolean               show_me;
 
   state = mpd_battery_device_get_state (priv->device);
   percentage = mpd_battery_device_get_percentage (priv->device);
-  description = mpd_battery_device_get_state_text (priv->device);
 
   switch (state)
   {
   case MPD_BATTERY_DEVICE_STATE_MISSING:
-    icon_file = PKGICONDIR "/battery-icon-missing.png";
-    break;
-  case MPD_BATTERY_DEVICE_STATE_CHARGING:
-    icon_file = PKGICONDIR "/battery-icon-plugged.png";
-    break;
-  case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
-    if (percentage < 0)
-      icon_file = PKGICONDIR "/battery-icon-missing.png";
-    else if (percentage < 10)
-      icon_file = PKGICONDIR "/battery-icon-0.png";
-    else if (percentage < 30)
-      icon_file = PKGICONDIR "/battery-icon-25.png";
-    else if (percentage < 60)
-      icon_file = PKGICONDIR "/battery-icon-50.png";
-    else if (percentage < 90)
-      icon_file = PKGICONDIR "/battery-icon-75.png";
-    else
-      icon_file = PKGICONDIR "/battery-icon-100.png";
+    show_me = FALSE;
     break;
   case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
-    icon_file = PKGICONDIR "/battery-icon-100.png";
+  case MPD_BATTERY_DEVICE_STATE_CHARGING:
+  case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
+    show_me = TRUE;
     break;
   default:
-    icon_file = PKGICONDIR "/battery-icon-missing.png";
+    show_me = FALSE;
   }
 
-  mx_label_set_text (MX_LABEL (priv->label), description);
-  g_free (description);
+  g_signal_emit (self, _signals[SHOW_ME], 0, show_me);
 
-  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                 icon_file, &error);
-  if (error)
-    g_warning ("%s : %s", G_STRLOC, error->message);
-  g_clear_error (&error);
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->progress_bar),
+                                percentage / 100.);
 }
 
 static void
@@ -122,33 +108,47 @@ mpd_battery_tile_class_init (MpdBatteryTileClass *klass)
   g_type_class_add_private (klass, sizeof (MpdBatteryTilePrivate));
 
   object_class->dispose = _dispose;
+
+  _signals[SHOW_ME] = g_signal_new ("show-me",
+                                    G_TYPE_FROM_CLASS (klass),
+                                    G_SIGNAL_RUN_LAST,
+                                    0, NULL, NULL,
+                                    g_cclosure_marshal_VOID__BOOLEAN,
+                                    G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
 }
 
 static void
 mpd_battery_tile_init (MpdBatteryTile *self)
 {
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor *text;
+  ClutterActor *icon;
 
-  mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_ICON_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_ICON_SPACING);
 
-  priv->icon = clutter_texture_new ();
-  /* I'd really like to know why that doesn't work here,
-   * is it because of the table around? 
-   * clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true); */
-  clutter_actor_set_height (priv->icon, 49.0);
-  clutter_actor_set_width (priv->icon, 55.0);
-  mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 0);
+  icon = mx_icon_new ();
+  clutter_actor_set_name (icon, "battery-off");
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           icon,
+                                           -1,
+                                           "y-fill", FALSE,
+                                           NULL);
 
-  priv->label = mx_label_new ();
-  text = mx_label_get_clutter_text (MX_LABEL (priv->label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (text), true);
-  mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
-                                      0, 1,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", false,
-                                      "y-fill", false,
-                                      NULL);
+  priv->progress_bar = mx_progress_bar_new ();
+  clutter_actor_set_height (priv->progress_bar, 12);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           priv->progress_bar,
+                                           -1,
+                                           "expand", TRUE,
+                                           "y-fill", FALSE,
+                                           NULL);
+
+  icon = mx_icon_new ();
+  clutter_actor_set_name (icon, "battery-on");
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
+                                           icon,
+                                           -1,
+                                           "y-fill", FALSE,
+                                           NULL);
 
   priv->device = mpd_battery_device_new ();
   g_signal_connect (priv->device, "notify::percentage",
@@ -164,5 +164,3 @@ mpd_battery_tile_new (void)
 {
   return g_object_new (MPD_TYPE_BATTERY_TILE, NULL);
 }
-
-
