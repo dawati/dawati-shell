@@ -48,6 +48,17 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 #define TILE_HEIGHT 170
 #define REFRESH_TIME (600) /* 10 minutes */
 
+static void _zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
+      ZeitgeistTimeRange *time_range,
+      GPtrArray *events,
+      gpointer          userdata);
+static void _zeitgeist_monitor_events_deleted_signal (ZeitgeistMonitor *m,
+    ZeitgeistTimeRange *time_range,
+    GArray *ids,
+    gpointer userdata);
+
+
+
 struct _PengeEverythingPanePrivate {
   SwClient *client;
   GList *views;
@@ -140,6 +151,14 @@ penge_everything_pane_dispose (GObject *object)
 
   if (priv->recent_monitor)
     {
+      g_signal_handlers_disconnect_by_func (priv->recent_monitor,
+          (GCallback)_zeitgeist_monitor_events_inserted_signal,
+          PENGE_EVERYTHING_PANE(object));
+
+      g_signal_handlers_disconnect_by_func (priv->recent_monitor,
+          (GCallback)_zeitgeist_monitor_events_deleted_signal,
+          PENGE_EVERYTHING_PANE(object));
+
       g_object_unref (priv->recent_monitor);
       priv->recent_monitor = NULL;
     }
