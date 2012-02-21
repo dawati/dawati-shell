@@ -48,26 +48,32 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-gchar *
-_pid_to_exe_name (gint pid)
-{
-  gchar *cmdline, *proc;
-
-  proc = g_strdup_printf ("/proc/%d/cmdline", pid);
-
-  g_file_get_contents (proc, &cmdline, NULL, NULL);
-
-  g_free (proc);
-
-  return cmdline;
-}
-
 GList *
 mnb_launcher_running_get_running (MnbLauncherRunning *self)
 {
   MnbLauncherRunningPrivate *priv = self->priv;
 
   return g_hash_table_get_values (priv->current_running_table);
+}
+
+static gchar *
+_window_group_name_to_desktop_file (WnckWindow *window)
+{
+  gchar *lowercase_name, *desktop_file;
+  const gchar *group_name;
+
+  group_name = wnck_window_get_class_group_name (window);
+
+  if (!group_name)
+    return NULL;
+
+  lowercase_name = g_utf8_strdown (group_name, -1);
+
+  desktop_file = g_strconcat (lowercase_name, ".desktop", NULL);
+
+  g_free (lowercase_name);
+
+  return desktop_file;
 }
 
 static void
@@ -82,47 +88,54 @@ _init_get_running (MnbLauncherRunning *self)
   for (iter = windows; iter; iter = iter->next)
     {
       WnckApplication *app;
-      gchar *cmdline;
+      gchar *desktop_file;
       gint pid;
 
       app = wnck_window_get_application (iter->data);
       pid = wnck_application_get_pid (app);
+      desktop_file = _window_group_name_to_desktop_file (iter->data);
 
-      cmdline = _pid_to_exe_name (pid);
-
-      g_hash_table_insert (priv->current_running_table,
-                           GINT_TO_POINTER (pid),
-                           cmdline);
+      if (desktop_file)
+        {
+          g_hash_table_insert (priv->current_running_table,
+                               GINT_TO_POINTER (pid),
+                               desktop_file);
+        }
     }
 }
 
 static void
-_application_opened_cb (WnckScreen *screen,
-                        WnckApplication *app,
-                        MnbLauncherRunning *self)
+_window_opened_cb (WnckScreen         *screen,
+                   WnckWindow         *window,
+                   MnbLauncherRunning *self)
 {
   MnbLauncherRunningPrivate *priv = self->priv;
-  gchar *exe_to_add;
-  gint pid = wnck_application_get_pid (app);
 
-  exe_to_add = _pid_to_exe_name (pid);
+  gchar *desktop_file;
+  gint pid;
 
-  g_hash_table_insert (priv->current_running_table,
-                       GINT_TO_POINTER (pid),
-                       exe_to_add);
+  pid = wnck_window_get_pid (window);
+  desktop_file = _window_group_name_to_desktop_file (window);
 
-  g_signal_emit (self, _signals[CHANGED], 0);
+  if (desktop_file)
+    {
+      g_hash_table_insert (priv->current_running_table,
+                           GINT_TO_POINTER (pid),
+                           desktop_file);
+
+      g_signal_emit (self, _signals[CHANGED], 0);
+    }
 }
 
 static void
-_application_closed_cb (WnckScreen *screen,
-                         WnckApplication *app,
-                         MnbLauncherRunning *self)
+_window_closed_cb (WnckScreen         *screen,
+                   WnckWindow         *window,
+                   MnbLauncherRunning *self)
 {
   MnbLauncherRunningPrivate *priv = self->priv;
 
   g_hash_table_remove (priv->current_running_table,
-                       GINT_TO_POINTER (wnck_application_get_pid (app)));
+                       GINT_TO_POINTER (wnck_window_get_pid (window)));
 
   g_signal_emit (self, _signals[CHANGED], 0);
 }
@@ -174,18 +187,17 @@ mnb_launcher_running_init (MnbLauncherRunning *self)
                                                        g_direct_equal,
                                                        NULL,
                                                        (GDestroyNotify)g_free);
-
   priv->screen = wnck_screen_get_default ();
   wnck_screen_force_update (priv->screen);
 
   _init_get_running (self);
 
-  g_signal_connect (priv->screen, "application-opened",
-                   G_CALLBACK (_application_opened_cb),
+  g_signal_connect (priv->screen, "window-opened",
+                   G_CALLBACK (_window_opened_cb),
                    self);
 
-  g_signal_connect (priv->screen, "application-closed",
-                   G_CALLBACK (_application_closed_cb),
+  g_signal_connect (priv->screen, "window-closed",
+                   G_CALLBACK (_window_closed_cb),
                    self);
 
 }

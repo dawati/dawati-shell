@@ -525,18 +525,24 @@ mnb_launcher_show_running (MnbLauncher *self, gboolean show)
       if (show)
         {
           MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-          const gchar *executable;
+          const gchar *desktop_file_path;
+          gchar *desktop_file;
           gboolean found = FALSE;
 
-          executable = mnb_launcher_button_get_executable (button);
+          desktop_file_path =
+            mnb_launcher_button_get_desktop_file_path (button);
+
+          desktop_file = g_filename_display_basename (desktop_file_path);
 
           for (current_iter = current;
                current_iter;
                current_iter = current_iter->next)
             {
-              if (g_strcmp0 (executable, (gchar *)current_iter->data) == 0)
+              if (g_strcmp0 (desktop_file, (gchar *)current_iter->data) == 0)
                 found = TRUE;
             }
+
+          g_free (desktop_file);
 
           if (found == TRUE)
             clutter_actor_show (CLUTTER_ACTOR (button));
