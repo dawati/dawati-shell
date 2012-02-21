@@ -40,8 +40,8 @@ mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
                                          const gchar *title)
 {
 
-  g_return_if_fail (executable != NULL && *executable != NULL);
-  g_return_if_fail (title != NULL && *title != NULL);
+  g_return_if_fail ((executable != NULL) && (*executable != '\0'));
+  g_return_if_fail ((title != NULL) && (*title != '\0'));
 
   if (zg_log == NULL)
     zg_log = zeitgeist_log_get_default ();
@@ -70,15 +70,15 @@ mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
 }
 
 static void
-mnb_launcher_zg_utils_get_most_used_apps_cb (ZeitgeistLog *zg_log,
+mnb_launcher_zg_utils_get_most_used_apps_cb (GObject      *object,
                                              GAsyncResult *res,
                                              gpointer      user_data)
 {
+  ZeitgeistLog *zg_log = (ZeitgeistLog *) object;
   ZeitgeistResultSet *events;
   MnbLauncherZgUtilsGetApps *cb_data;
   ZeitgeistEvent     *event;
   ZeitgeistSubject   *subject;
-  gint i;
 
   GList *apps = NULL;
   GError *error = NULL;
@@ -93,7 +93,7 @@ mnb_launcher_zg_utils_get_most_used_apps_cb (ZeitgeistLog *zg_log,
       while (zeitgeist_result_set_has_next (events))
         {
           event = zeitgeist_result_set_next (events);
-          
+
           g_assert(zeitgeist_event_num_subjects(event) == 1);
 
           /* Since this application is the one pushing the events into Zeitgeist,
@@ -127,9 +127,9 @@ mnb_launcher_zg_utils_get_most_used_apps_cb (ZeitgeistLog *zg_log,
 }
 
 void
-mnb_launcher_zg_utils_get_used_apps (MnbLauncherZgUtilsGetAppsCB cb,
-                                     gpointer                            user_data,
-                                     const gchar                         *category)
+mnb_launcher_zg_utils_get_used_apps (MnbLauncherZgUtilsGetAppsCB  cb,
+                                     gpointer                     user_data,
+                                     const gchar                 *category)
 {
 
   MnbLauncherZgUtilsGetApps *data;
@@ -145,15 +145,15 @@ mnb_launcher_zg_utils_get_used_apps (MnbLauncherZgUtilsGetAppsCB cb,
 
   if (zg_log == NULL)
     zg_log = zeitgeist_log_get_default ();
-  
-  
+
+
  /* Zeitgeist templates are handled in a strange way within libzeitgeist:
   * the GDestroyFunc is overriden with NULL and each item is unreferenced after
   * having been evaluated (taking the ownership of a floating ref if needed).
   *
   * To avoid problems it's safer and easier to create a new template each time
   * it is used, given a default configuration */
-  
+
   templates = g_ptr_array_new_full (0, g_object_unref);
   g_ptr_array_add (templates, zeitgeist_event_new_full (
                      ZEITGEIST_ZG_ACCESS_EVENT,
