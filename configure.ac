@@ -180,11 +180,12 @@ AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g3 -O0"])
 AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # zeitgeist
+PKG_CHECK_EXISTS([zeitgeist-1.0], [have_zeitgeist=yes], [have_zeitgeist=no])
 AC_ARG_ENABLE([zeitgeist],
               [AC_HELP_STRING([--enable-zeitgeist],
                               [Enable zeitgeist features])],
               [1],
-              [enable_zeitgeist=no])
+              [enable_zeitgeist=$have_zeitgeist])
 
 if test x"$enable_zeitgeist" = xyes; then
 	AC_DEFINE(WITH_ZEITGEIST, 1, [Use Zeitgeist features])
