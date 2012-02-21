@@ -79,9 +79,6 @@
           REAL_GET_PRIVATE(obj)
 #endif /* G_DISABLE_CHECKS */
 
-#define KEY_DIR "/desktop/dawati/panel-applications"
-#define KEY_SHOW_EXPANDERS KEY_DIR "/show_expanders"
-
 enum
 {
   PROP_0,
