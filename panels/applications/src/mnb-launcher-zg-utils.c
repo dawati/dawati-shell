@@ -77,15 +77,15 @@ mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
 }
 
 static void
-mnb_launcher_zg_utils_get_most_used_apps_cb (ZeitgeistLog *zg_log,
+mnb_launcher_zg_utils_get_most_used_apps_cb (GObject *obj,
                                              GAsyncResult *res,
                                              gpointer      user_data)
 {
+  ZeitgeistLog *zg_log = ZEITGEIST_LOG (obj);
   ZeitgeistResultSet *events;
   MnbLauncherZgUtilsGetApps *cb_data;
   ZeitgeistEvent     *event;
   ZeitgeistSubject   *subject;
-  gint i;
 
   GList *apps = NULL;
   GError *error = NULL;
