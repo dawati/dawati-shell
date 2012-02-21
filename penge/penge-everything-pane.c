@@ -432,7 +432,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
         */
 
 
-        /* Current priv->templates look for local files only, if it's not local,
+        /* Current detault template look for local files only, if it's not local,
          * it's probably a template error, log it and move on */
         if (!g_str_has_prefix (uri, "file:"))
           {
@@ -442,26 +442,9 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
 
         file = g_file_new_for_uri (uri);
 
-        /* if the file does not exist anymore we remove it (fire-and-forget)
-         * from the log and ignore the event for this round */
+        /* if the file does not exist anymore we ignore it and move on */
         if (!g_file_query_exists (file, NULL))
-            {
-              GArray *ids;
-              guint32 id;
-              
-              ids = g_array_sized_new (FALSE, FALSE,
-                  sizeof(guint32), 1);
-              id = zeitgeist_event_get_id (event);
-              g_array_append_val (ids, id);
-
-              zeitgeist_log_delete_events (priv->recent_log, ids,
-                  NULL, NULL, NULL);
-
-              g_array_unref (ids);
-              g_object_unref (file);
-
-              break; /* consider the next event */
-            }
+          break; /* consider the next event */
 
         thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
