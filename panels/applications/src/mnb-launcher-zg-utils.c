@@ -48,8 +48,8 @@ mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
                                          const gchar *title)
 {
 
-  g_return_if_fail (executable != NULL && *executable != NULL);
-  g_return_if_fail (title != NULL && *title != NULL);
+  g_return_if_fail (executable != NULL && *executable != '\0');
+  g_return_if_fail (title != NULL && *title != '\0');
 
   ensure_log ();
 
