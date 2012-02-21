@@ -189,6 +189,7 @@ AC_ARG_ENABLE([zeitgeist],
 if test x"$enable_zeitgeist" = xyes; then
 	AC_DEFINE(WITH_ZEITGEIST, 1, [Use Zeitgeist features])
 fi
+AM_CONDITIONAL([HAVE_ZEITGEIST], [test x"$enable_zeitgeist" = xyes])
 
 # control center capplet
 AC_ARG_ENABLE([capplet],

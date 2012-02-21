@@ -28,7 +28,9 @@ dawati_panel_applications_SOURCES = \
 	dawati-netbook-launcher.h \
 	dawati-panel-applications.c
 
+if HAVE_ZEITGEIST
 dawati_panel_applications_SOURCES += mnb-launcher-zg-utils.c mnb-launcher-zg-utils.h
+endif
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.applications.service.in
