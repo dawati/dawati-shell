@@ -35,6 +35,14 @@ typedef struct
 
 static ZeitgeistLog *zg_log = NULL;
 
+static void ensure_log (void)
+{
+  if (zg_log == NULL)
+    zg_log = g_object_new (ZEITGEIST_TYPE_LOG, NULL);
+
+  g_assert (ZEITGEIST_IS_LOG (zg_log));
+}
+
 void
 mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
                                          const gchar *title)
@@ -43,8 +51,7 @@ mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
   g_return_if_fail (executable != NULL && *executable != NULL);
   g_return_if_fail (title != NULL && *title != NULL);
 
-  if (zg_log == NULL)
-    zg_log = zeitgeist_log_get_default ();
+  ensure_log ();
 
   char *exec = g_strconcat ("application://", executable, NULL);
 
@@ -143,9 +150,7 @@ mnb_launcher_zg_utils_get_used_apps (MnbLauncherZgUtilsGetAppsCB cb,
   else
     return;
 
-  if (zg_log == NULL)
-    zg_log = zeitgeist_log_get_default ();
-  
+  ensure_log ();
   
  /* Zeitgeist templates are handled in a strange way within libzeitgeist:
   * the GDestroyFunc is overriden with NULL and each item is unreferenced after
