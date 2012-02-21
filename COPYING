@@ -1,5 +1,9 @@
-Following GPL and LGPL, refer to files' headers :
+dawati-shell is a mixture of GPLv2 and LGPLv2.  In general the source code is
+LGPL apart from when linkage requires GPL (for example, the panels are mostly
+LGPL, but the Mutter plugin is GPL).  For the source code each file has a header
+that states the license it is under.
 
+Files without license headers, in particular the artwork, are under the LGPL.
 
 ================================================================================
 
