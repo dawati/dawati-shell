@@ -46,20 +46,55 @@ enum
 {
   REQUEST_HIDE,
   REQUEST_SHOW,
+  EMPTY,
 
   LAST_SIGNAL
 };
 
-typedef struct
+struct _MpdDevicesTilePrivate
 {
   ClutterActor    *vbox;
 
   GVolumeMonitor  *monitor;
   GHashTable      *tiles;      /* key=GMount, value=MpdStorageTile */
   MplPanelClient  *panel_client;
-} MpdDevicesTilePrivate;
+
+  ClutterActor    *default_tile;
+};
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
+
+static void
+insert_storage_tile (MpdDevicesTile *self,
+		     GMount         *mount,
+		     ClutterActor   *tile)
+{
+  MpdDevicesTilePrivate *priv = self->priv;
+
+  g_hash_table_insert (priv->tiles, mount, tile);
+
+  /* empty emits FALSE when we just inserted the first item */
+  if (g_hash_table_size (priv->tiles) == 1)
+    {
+      clutter_actor_hide (priv->default_tile);
+      g_signal_emit (self, _signals[EMPTY], 0, FALSE);
+    }
+}
+
+static void
+remove_storage_tile (MpdDevicesTile *self,
+		     GMount         *mount)
+{
+  MpdDevicesTilePrivate *priv = self->priv;
+
+  g_hash_table_remove (priv->tiles, mount);
+
+  if (g_hash_table_size (priv->tiles) == 0)
+    {
+      clutter_actor_show (priv->default_tile);
+      g_signal_emit (self, _signals[EMPTY], 0, TRUE);
+    }
+}
 
 static char const *
 get_eject_failed_message (void)
@@ -456,7 +491,6 @@ add_tile_from_mount (MpdDevicesTile *self,
                                               MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                                               GTK_ICON_LOOKUP_NO_SVG);
   icon_file = gtk_icon_info_get_filename (icon_info);
-  g_debug ("%s() %s", __FUNCTION__, icon_file);
 
   tile = mpd_storage_device_tile_new (name,
                                       uri,
@@ -473,7 +507,7 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_device_tile_request_show_cb), self);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
 
-  g_hash_table_insert (priv->tiles, mount, tile);
+  insert_storage_tile (self, mount, tile);
 
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
@@ -523,7 +557,7 @@ _monitor_mount_changed_cb (GVolumeMonitor *monitor,
   {
     if (!_mount_is_wanted_device (mount))
     {
-      g_hash_table_remove (priv->tiles, mount);
+      remove_storage_tile (self, mount);
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
                                       CLUTTER_ACTOR (tile));
     }
@@ -548,7 +582,7 @@ _monitor_mount_removed_cb (GVolumeMonitor  *monitor,
   tile = g_hash_table_lookup (priv->tiles, mount);
   if (tile)
   {
-      g_hash_table_remove (priv->tiles, mount);
+      remove_storage_tile (self, mount);
       mpd_storage_device_tile_show_message_full (
                               MPD_STORAGE_DEVICE_TILE (tile),
                               _("It is safe to unplug this device now"),
@@ -598,14 +632,23 @@ mpd_devices_tile_class_init (MpdDevicesTileClass *klass)
                                          0, NULL, NULL,
                                          g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
+
+  _signals[EMPTY] = g_signal_new ("empty",
+				  G_TYPE_FROM_CLASS (klass),
+				  G_SIGNAL_RUN_LAST,
+				  0, NULL, NULL,
+				  g_cclosure_marshal_VOID__BOOLEAN,
+				  G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
 }
 
 static void
 mpd_devices_tile_init (MpdDevicesTile *self)
 {
-  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  MpdDevicesTilePrivate *priv;
   ClutterActor  *tile;
   GList *mounts;
+
+  self->priv = priv = GET_PRIVATE (self);
 
   priv->tiles = g_hash_table_new (g_direct_hash, g_direct_equal);
 
@@ -618,6 +661,7 @@ mpd_devices_tile_init (MpdDevicesTile *self)
 
   tile = mpd_default_device_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
+  priv->default_tile = tile;
 
   priv->monitor = g_volume_monitor_get ();
   g_signal_connect (priv->monitor, "mount-added",
@@ -644,4 +688,12 @@ mpd_devices_tile_set_client (MpdDevicesTile *self, MplPanelClient *client)
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
 
   priv->panel_client = client;
+}
+
+gboolean
+mpd_devices_tile_is_empty (MpdDevicesTile *self)
+{
+  g_return_val_if_fail (MPD_IS_DEVICES_TILE (self), TRUE);
+
+  return g_hash_table_size (self->priv->tiles) == 0;
 }

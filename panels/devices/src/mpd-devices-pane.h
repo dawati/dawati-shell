@@ -44,9 +44,12 @@ G_BEGIN_DECLS
 #define MPD_DEVICES_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_DEVICES_PANE, MpdDevicesPaneClass))
 
+typedef struct _MpdDevicesPanePrivate MpdDevicesPanePrivate;
+
 typedef struct
 {
   MxBoxLayout parent;
+  MpdDevicesPanePrivate *priv;
 } MpdDevicesPane;
 
 typedef struct

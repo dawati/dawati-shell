@@ -39,12 +39,13 @@ enum
   LAST_SIGNAL
 };
 
-typedef struct
+struct _MpdDevicesPanePrivate
 {
     int dummy;
     MplPanelClient *panel_client;
     MpdDevicesTile *devices_tile;
-} MpdDevicesPanePrivate;
+    ClutterActor *filigree; /* kept here as we need to toggle its visibility */
+};
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
@@ -66,6 +67,19 @@ static void
 _dispose (GObject *object)
 {
   G_OBJECT_CLASS (mpd_devices_pane_parent_class)->dispose (object);
+}
+
+static void
+_devices_empty_cb (MpdDevicesTile *devices,
+		   gboolean        empty,
+		   MpdDevicesPane *self)
+{
+  MpdDevicesPanePrivate *priv = self->priv;
+
+  if (empty)
+    clutter_actor_show (priv->filigree);
+  else
+    clutter_actor_hide (priv->filigree);
 }
 
 static void
@@ -97,8 +111,10 @@ mpd_devices_pane_class_init (MpdDevicesPaneClass *klass)
 static void
 mpd_devices_pane_init (MpdDevicesPane *self)
 {
-  MpdDevicesPanePrivate *priv = GET_PRIVATE (self);
+  MpdDevicesPanePrivate *priv;
   ClutterActor  *label, *tile, *stack, *filigree;
+
+  self->priv = priv = GET_PRIVATE (self);
 
   mx_stylable_set_style_class (MX_STYLABLE (self), "contentPanel");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -118,6 +134,7 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (stack), filigree);
   mx_stack_child_set_x_fill (MX_STACK (stack), filigree, FALSE);
   mx_stack_child_set_y_fill (MX_STACK (stack), filigree, FALSE);
+  priv->filigree = filigree;
 
   /* devices */
   tile = mpd_devices_tile_new ();
@@ -126,6 +143,8 @@ mpd_devices_pane_init (MpdDevicesPane *self)
                     G_CALLBACK (_tile_request_hide_cb), self);
   g_signal_connect (tile, "request-show",
                     G_CALLBACK (_tile_request_show_cb), self);
+  g_signal_connect (tile, "empty",
+		    G_CALLBACK (_devices_empty_cb), self);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stack), tile);
 
@@ -134,6 +153,9 @@ mpd_devices_pane_init (MpdDevicesPane *self)
                                            -1,
                                            "expand", TRUE,
                                            NULL);
+
+  if (!mpd_devices_tile_is_empty (MPD_DEVICES_TILE (tile)))
+    clutter_actor_hide (priv->filigree);
 }
 
 ClutterActor *

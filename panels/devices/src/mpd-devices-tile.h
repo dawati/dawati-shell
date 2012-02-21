@@ -44,9 +44,12 @@ G_BEGIN_DECLS
 #define MPD_DEVICES_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_DEVICES_TILE, MpdDevicesTileClass))
 
+typedef struct _MpdDevicesTilePrivate MpdDevicesTilePrivate;
+
 typedef struct
 {
   MxScrollView parent;
+  MpdDevicesTilePrivate *priv;
 } MpdDevicesTile;
 
 typedef struct
@@ -57,10 +60,10 @@ typedef struct
 GType
 mpd_devices_tile_get_type (void);
 
-ClutterActor *
-mpd_devices_tile_new (void);
-void
-mpd_devices_tile_set_client (MpdDevicesTile *self, MplPanelClient *client);
+ClutterActor *	mpd_devices_tile_new	      (void);
+void		mpd_devices_tile_set_client   (MpdDevicesTile *self,
+					       MplPanelClient *client);
+gboolean	mpd_devices_tile_is_empty     (MpdDevicesTile *self);
 
 G_END_DECLS
 
