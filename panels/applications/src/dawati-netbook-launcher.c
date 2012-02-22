@@ -170,8 +170,10 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
 
   g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
 #ifdef WITH_ZEITGEIST
-  mnb_launcher_zg_utils_send_launch_event(g_path_get_basename(desktop_file_path), 
+  desktop_file_path = g_path_get_basename (desktop_file_path);
+  mnb_launcher_zg_utils_send_launch_event (desktop_file_path, 
                                  mnb_launcher_button_get_title(launcher));
+  g_free (desktop_file_path);
 #endif /* WITH_ZEITGEIST */
 
 }
@@ -580,14 +582,14 @@ _running_changed_cb (MnbLauncherRunning *running,
 static void 
 mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
 {
+  GSList *iter;
   MnbLauncher *self = (MnbLauncher*) user_data;
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  GSList *iter;
   
   for (iter = priv->launchers; iter; iter = iter->next)
     {
       MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-      const char *exec = mnb_launcher_button_get_executable(button);
+      const char *exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
       if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
           clutter_actor_show (CLUTTER_ACTOR (button));
       else
