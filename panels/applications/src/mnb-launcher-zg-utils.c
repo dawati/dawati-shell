@@ -113,7 +113,7 @@ mnb_launcher_zg_utils_get_most_used_apps_cb (GObject      *object,
             {
               int len = strlen (app_uri);
               char *exec = g_strndup (app_uri + prefix_len,
-                                      len - prefix_len - suffix_len);
+                                      len - prefix_len);
               apps = g_list_append (apps, exec);
             }
         }
