@@ -581,17 +581,19 @@ static void
 mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
 {
   GSList *iter;
+  gchar *exec;
   MnbLauncher *self = (MnbLauncher*) user_data;
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   
   for (iter = priv->launchers; iter; iter = iter->next)
     {
       MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-      const char *exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
+      exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
       if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
           clutter_actor_show (CLUTTER_ACTOR (button));
       else
           clutter_actor_hide (CLUTTER_ACTOR (button));
+      g_free(exec);
     }
 }
 
