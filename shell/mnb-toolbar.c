@@ -1534,6 +1534,13 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
+  /*
+   * Don't touch the stacking/ordering of windows when a modal window
+   * is displayed on top of a panel.
+   */
+  if (mnb_panel_is_modal (panel))
+    return;
+
   if (CLUTTER_IS_ACTOR (panel))
     clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
   else if (MNB_IS_PANEL_OOP (panel))
