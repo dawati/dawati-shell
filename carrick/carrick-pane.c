@@ -2063,6 +2063,7 @@ carrick_pane_init (CarrickPane *self)
 
   offline_mode_label = gtk_label_new
           (_ ("This will disable all your connections"));
+  gtk_label_set_max_width_chars (GTK_LABEL (offline_mode_label), 20);
   gtk_label_set_line_wrap (GTK_LABEL (offline_mode_label),
                            TRUE);
   gtk_misc_set_alignment (GTK_MISC (offline_mode_label), 0.0, 0.5);
