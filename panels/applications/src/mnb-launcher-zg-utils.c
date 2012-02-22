@@ -90,7 +90,6 @@ mnb_launcher_zg_utils_get_most_used_apps_cb (GObject      *object,
   GList *apps = NULL;
   GError *error = NULL;
   int prefix_len = strlen ("application://");
-  int suffix_len = strlen (".desktop");
 
   events = zeitgeist_log_find_events_finish (zg_log, res, &error);
   cb_data = user_data;
