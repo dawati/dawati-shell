@@ -535,9 +535,7 @@ mnb_launcher_show_running (MnbLauncher *self, gboolean show)
 
           desktop_file = g_filename_display_basename (desktop_file_path);
 
-          for (current_iter = current;
-               current_iter;
-               current_iter = current_iter->next)
+          for (current_iter = current; current_iter; current_iter = current_iter->next)
             {
               if (g_strcmp0 (desktop_file, (gchar *)current_iter->data) == 0)
                 found = TRUE;
@@ -605,23 +603,23 @@ mnb_launcher_show_zg_category (MnbLauncher *self, gboolean show, const gchar *ca
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   GSList *iter = NULL;
   
-  if (show) {
-    
-    for (iter = priv->launchers; iter; iter = iter->next)
+  if (show)
     {
-      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-      clutter_actor_hide (CLUTTER_ACTOR (button));
+      for (iter = priv->launchers; iter; iter = iter->next)
+        {
+          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+          clutter_actor_hide (CLUTTER_ACTOR (button));
+        }
+      mnb_launcher_zg_utils_get_used_apps(mnb_launcher_show_zg_category_cb, self, category);
     }
-    mnb_launcher_zg_utils_get_used_apps(mnb_launcher_show_zg_category_cb, self, category);
-  }
-  else {
-    for (iter = priv->launchers; iter; iter = iter->next)
-      {
-        MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
-        clutter_actor_show (CLUTTER_ACTOR (button));
-      }
-  }
-  
+  else
+    {
+      for (iter = priv->launchers; iter; iter = iter->next)
+        {
+          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+          clutter_actor_show (CLUTTER_ACTOR (button));
+        }
+    }
 }
 #endif /* WITH_ZEITGEIST */
 
