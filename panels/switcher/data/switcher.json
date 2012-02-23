@@ -10,15 +10,25 @@
         "style-class": "titleBar"
       },
       {
-        "type": "MxScrollView",
+        "type": "MxStack",
         "child::expand": true,
         "children": [
           {
-            "type": "MxGrid",
-            "style-class": "contentPane",
-            "id": "grid",
-            "row-spacing": 29,
-            "column-spacing": 45
+            "id": "placeholder",
+            "type": "MxImage"
+          },
+          {
+            "type": "MxScrollView",
+            "children": [
+              {
+                "type": "MxGrid",
+                "style-class": "contentPane",
+                "id": "grid",
+                "visible": false,
+                "row-spacing": 29,
+                "column-spacing": 45
+              }
+            ]
           }
         ]
       }

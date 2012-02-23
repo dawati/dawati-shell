@@ -265,6 +265,21 @@ setup (ZonePanelData *data)
                                                               "toplevel");
   clutter_actor_set_size (data->toplevel, data->width, data->height);
 
+  /* placeholder */
+  data->placeholder = (ClutterActor*) clutter_script_get_object (script, "placeholder");
+
+  mx_image_set_from_file (MX_IMAGE (data->placeholder),
+                          THEMEDIR "/blank-page-message.png",
+                          &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": %s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  /* application grid */
   data->grid = (ClutterActor*) clutter_script_get_object (script, "grid");
 
   wnck_screen_force_update (data->screen);
@@ -306,27 +321,13 @@ setup (ZonePanelData *data)
 
   if (count == 0)
     {
-      GError *error = NULL;
-
-      data->placeholder = mx_image_new ();
-      mx_image_set_from_file (MX_IMAGE (data->placeholder),
-                              THEMEDIR "/blank-page-message.png",
-                              &error);
-
-      if (error)
-        {
-          g_warning (G_STRLOC ": %s", error->message);
-          g_clear_error (&error);
-          return;
-        }
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (data->toplevel),
-                                   data->placeholder);
-      clutter_container_child_set (CLUTTER_CONTAINER (data->toplevel),
-                                   data->placeholder, "expand", TRUE, NULL);
-
-      clutter_actor_hide (clutter_actor_get_parent (data->grid));
       clutter_actor_show (data->placeholder);
+      clutter_actor_hide (data->grid);
+    }
+  else
+    {
+      clutter_actor_hide (data->placeholder);
+      clutter_actor_show (data->grid);
     }
 }
 
