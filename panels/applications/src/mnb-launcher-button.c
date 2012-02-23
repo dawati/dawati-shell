@@ -374,8 +374,6 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   mx_label_set_x_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
-  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
-                          "mnb-launcher-button-title");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->title),
                                         1, 0,
