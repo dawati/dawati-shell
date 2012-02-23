@@ -6,10 +6,6 @@ MpdFolderButton {
   border-image: none;
 }
 
-MpdFolderButton:hover {
-  border-image: url('directory-highlight.png') 3;
-}
-
 MpdComputerTile > MxLabel {
   padding: 10 0 10 0;
 }
