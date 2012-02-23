@@ -993,15 +993,6 @@ mwb_ac_list_start_transition (MwbAcList *self)
 }
 
 static void
-mwb_ac_list_result_exception(void *context,
-                             int errno)
-{
-  //MwbAcList* self = (MwbAcList*)context;
-  //MwbAcListPrivate *priv = self->priv;
-  return;
-}
-
-static void
 mwb_ac_list_result_received(void       *context,
                             int         type,
                             const char *url,
