@@ -40,27 +40,10 @@ MnbLauncherButton > *#mnb-launcher-button-title {
   font-size: 12px;
 }
 
-MnbLauncherButton > *#mnb-launcher-button-launched {
-  color: #7e7e7e;
-  font-size: 11px;
-  padding: 0 0 2 0;
-}
-
-MnbLauncherButton > *#mnb-launcher-button-description {
-  color: #7e7e7e;
-  font-size: 14px;
-}
-
-MnbLauncherButton > *#mnb-launcher-button-comment {
-  color: #a2adb6;
-  font-size: 14px;
-}
-
 MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
   background-image: none;
   border-image: none;
 }
-
 
 MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle {
   background-image: url("launcher-button-fav-toggle.png");
