@@ -23,6 +23,8 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include <dawati-panel/mpl-shared-constants.h>
+
 #include "mpd-folder-button.h"
 #include "mpd-folder-tile.h"
 #include "mpd-shell-defines.h"
@@ -143,17 +145,17 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_MUSIC,
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
-  ClutterLayoutManager  *layout;
-  ClutterActor          *box;
+  //ClutterLayoutManager  *layout;
+  ClutterActor          *grid;
   ClutterActor          *button;
   unsigned int           i;
 
-  layout = clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL);
-  clutter_flow_layout_set_column_spacing (CLUTTER_FLOW_LAYOUT (layout), 11.0);
-  clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout), 11.0);
+  grid = mx_grid_new ();
+  mx_grid_set_row_spacing (MX_GRID (grid), 11.0);
+  mx_grid_set_column_spacing (MX_GRID (grid), 11.0);
+  mx_grid_set_max_stride (MX_GRID (grid), 2);
 
-  box = clutter_box_new (layout);
-  mx_bin_set_child (MX_BIN (self), box);
+  mx_bin_set_child (MX_BIN (self), grid);
   mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_MIDDLE, MX_ALIGN_START);
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
@@ -167,11 +169,13 @@ mpd_folder_tile_init (MpdFolderTile *self)
                            "label", label,
                            "icon-path", icon_path,
                            NULL);
-    clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
+    clutter_actor_set_size (button,
+			    DAWATI_CONTENT_TILE_WIDTH,
+			    DAWATI_CONTENT_TILE_HEIGHT);
     mx_stylable_set_style_class (MX_STYLABLE (button), "contentTile");
     g_signal_connect (button, "clicked",
                       G_CALLBACK (_button_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
+    clutter_container_add_actor (CLUTTER_CONTAINER (grid), button);
 
     g_free (icon_path);
     g_free (label);
@@ -184,11 +188,14 @@ mpd_folder_tile_init (MpdFolderTile *self)
                          "label", _("Trash"),
                          "icon-path", PKGICONDIR "/folder-trash.png",
                          NULL);
-  clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
+    clutter_actor_set_height (button, DAWATI_CONTENT_TILE_HEIGHT);
+  clutter_actor_set_size (button,
+			  DAWATI_CONTENT_TILE_WIDTH,
+			  DAWATI_CONTENT_TILE_HEIGHT);
   mx_stylable_set_style_class (MX_STYLABLE (button), "contentTile");
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_button_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
+  clutter_container_add_actor (CLUTTER_CONTAINER (grid), button);
 
 #if 0 /* Not showing gtk-bookmarks for now. */
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);

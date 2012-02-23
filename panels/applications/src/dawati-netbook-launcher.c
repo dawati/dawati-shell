@@ -39,6 +39,7 @@
 #include <dawati-panel/mpl-app-bookmark-manager.h>
 #include <dawati-panel/mpl-app-launches-store.h>
 #include <dawati-panel/mpl-content-pane.h>
+#include <dawati-panel/mpl-shared-constants.h>
 
 #include "dawati-netbook-launcher.h"
 #include "mnb-launcher-button.h"
@@ -59,8 +60,6 @@
 #define APPS_GRID_COLUMN_GAP   5
 #define APPS_GRID_ROW_GAP      5
 
-#define LAUNCHER_BUTTON_WIDTH     128
-#define LAUNCHER_BUTTON_HEIGHT     129
 /* This is the icon we request from the theme */
 #define LAUNCHER_BUTTON_ICON_SIZE  256
 /* This is the size we set the icon as */
@@ -298,8 +297,8 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
           mnb_launcher_button_set_favorite (MNB_LAUNCHER_BUTTON (button), TRUE);        }
 
       clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              LAUNCHER_BUTTON_WIDTH,
-                              LAUNCHER_BUTTON_HEIGHT);
+                              DAWATI_CONTENT_TILE_WIDTH,
+                              DAWATI_CONTENT_TILE_HEIGHT);
     }
 
   g_free (icon_file);

@@ -55,6 +55,7 @@ source_h = \
 		$(srcdir)/mpl-panel-common.h \
 		$(srcdir)/mpl-panel-gtk.h \
 		$(srcdir)/mpl-panel-windowless.h \
+		$(srcdir)/mpl-shared-constants.h \
 		$(srcdir)/mpl-app-bookmark-manager.h \
 		$(srcdir)/mpl-utils.h
 
