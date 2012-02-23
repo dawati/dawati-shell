@@ -155,20 +155,16 @@ app_tile_activated (ClutterActor  *actor,
 }
 
 static void
-close_workspace_btn_clicked (MxButton      *button,
-                             ZonePanelData *data)
+app_view_closed_cb (MplApplicationView *view,
+                    ZonePanelData      *data)
 {
   WnckScreen *screen = data->screen;
   WnckWindow *window;
   WnckWorkspace *workspace;
   GList *windows;
-  ClutterActor *table;
   GList *children;
 
-  table = clutter_actor_get_parent (CLUTTER_ACTOR (button));
-  g_assert (MX_IS_TABLE (table));
-
-  window = g_object_get_data (G_OBJECT (table), "wnck-window");
+  window = g_object_get_data (G_OBJECT (view), "wnck-window");
 
   workspace = wnck_window_get_workspace (window);
 
@@ -185,13 +181,13 @@ close_workspace_btn_clicked (MxButton      *button,
       windows = g_list_next (windows);
     }
 
-  clutter_actor_destroy (CLUTTER_ACTOR (table));
+  clutter_actor_destroy (CLUTTER_ACTOR (view));
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (data->grid));
   if (!children)
     {
       /* show the placeholder when no more workspaces are open */
-      clutter_actor_hide (clutter_actor_get_parent (data->grid));
+      clutter_actor_hide (data->grid);
       clutter_actor_show (data->placeholder);
     }
   else
@@ -215,8 +211,7 @@ sw_create_app_tile (ZonePanelData   *data,
   g_object_set_data (G_OBJECT (tile), "wnck-window", window);
   g_signal_connect (tile, "activated",
                     G_CALLBACK (app_tile_activated), data);
-  g_signal_connect (tile, "closed",
-                    G_CALLBACK (close_workspace_btn_clicked), data);
+  g_signal_connect (tile, "closed", G_CALLBACK (app_view_closed_cb), data);
 
   /* icon */
   icon = gtk_clutter_texture_new ();
