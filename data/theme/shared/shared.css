@@ -15,6 +15,10 @@ MxLabel.titleBar {
   padding: 7 15 10 15;
 }
 
+.contentTile MxLabel {
+  font-size: 12px;
+}
+
 .contentTile:hover {
   border-image: url("content-tile-bg.png") 8;
 }

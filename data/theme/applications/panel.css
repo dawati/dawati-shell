@@ -35,11 +35,6 @@ MnbLauncherButton {
   padding: 10;
 }
 
-MnbLauncherButton > *#mnb-launcher-button-title {
-  color: #3b3b3b;
-  font-size: 12px;
-}
-
 MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
   background-image: none;
   border-image: none;
