@@ -15,12 +15,8 @@ MxLabel.titleBar {
   padding: 7 15 10 15;
 }
 
-.contentTile {
-  border-image: url("content-tile-bg.png") 8;
-}
-
 .contentTile:hover {
-  border-image: url("content-tile-bg-highlight.png") 8;
+  border-image: url("content-tile-bg.png") 8;
 }
 
 .contentTile:active {
