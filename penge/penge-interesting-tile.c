@@ -120,6 +120,11 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       clutter_actor_hide (priv->header);
 
       logo = clutter_container_find_child_by_name (CLUTTER_CONTAINER (priv->header), "logo");
+
+      /* Safer, but it shouldn't be necessary as the social network does not
+       * change during the tile's like (once it's set, althogh the tile is
+       * created without a network specified and the property is set only in
+       * PengePeopleTile) */
       if (logo != NULL)
         {
           clutter_container_remove_actor (CLUTTER_CONTAINER (priv->header), logo);
@@ -153,8 +158,6 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       path = g_value_get_string (value);
       icon = clutter_container_find_child_by_name (
           CLUTTER_CONTAINER (priv->icon_container), DETAILS_ICON_ACTOR_NAME);
-      /* TODO remove the assert when ok */
-      g_assert (CLUTTER_IS_TEXTURE (icon));
 
       if (path && !clutter_texture_set_from_file (CLUTTER_TEXTURE (icon), 
                                           path,
