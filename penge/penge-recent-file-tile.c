@@ -47,7 +47,7 @@ enum
 {
   PROP_0,
   PROP_THUMBNAIL_PATH,
-  PROP_EVENT,
+  PROP_ZG_EVENT,
 };
 
 static void penge_recent_file_tile_update (PengeRecentFileTile *tile);
@@ -63,7 +63,7 @@ penge_recent_file_tile_get_property (GObject *object, guint property_id,
     case PROP_THUMBNAIL_PATH:
       g_value_set_string (value, priv->thumbnail_path);
       break;
-    case PROP_EVENT:
+    case PROP_ZG_EVENT:
       g_value_set_object (value, priv->event);
       break;
   default:
@@ -87,7 +87,7 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
       priv->thumbnail_path = g_value_dup_string (value);
       penge_recent_file_tile_update_thumbnail (tile);
       break;
-    case PROP_EVENT:
+    case PROP_ZG_EVENT:
       event = (ZeitgeistEvent*) g_value_get_object (value);
       if (event == priv->event)
         return;
@@ -159,7 +159,6 @@ penge_recent_file_tile_update_thumbnail (PengeRecentFileTile *tile)
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
   GError *error = NULL;
 
-  g_warning ("opening thumb %s", priv->thumbnail_path);
   if (!clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->tex),
                                       priv->thumbnail_path,
                                       &error))
@@ -263,7 +262,7 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
                               "file",
                               ZEITGEIST_TYPE_EVENT,
                               G_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_EVENT, pspec);
+  g_object_class_install_property (object_class, PROP_ZG_EVENT, pspec);
 }
 
 static void
