@@ -296,7 +296,7 @@ penge_task_tile_update (PengeTaskTile *tile)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (tile);
   gchar *summary_str, *details_str;
-  JanaTime *due;
+  JanaTime *due = NULL;
 
   if (!priv->task)
     return;
@@ -312,7 +312,9 @@ penge_task_tile_update (PengeTaskTile *tile)
     g_warning (G_STRLOC ": No summary string for task.");
   }
 
+  /* Leave it NULL, we do not want the due date
   due = jana_task_get_due_date (priv->task);
+  */
 
   if (due)
   {
