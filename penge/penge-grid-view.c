@@ -461,13 +461,16 @@ penge_grid_view_init (PengeGridView *self)
 
   self->priv = priv;
 
+  /* Currently not shown, remove the frame and its height to reenable it
   priv->header_label = mx_label_new_with_text ("Myzone");
+  */
+  priv->header_label = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->header_label), "titleBar");
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->header_label,
                                       0, 0,
                                       "x-expand", FALSE,
-                                      "y-expand", FALSE,
+                                      "y-expand", TRUE,
                                       "column-span", 2,
                                       NULL);
 

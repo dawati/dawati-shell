@@ -468,7 +468,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                "PengeEventsPaneHeader");
   priv->calendar_tex = clutter_texture_new ();
   /* Need to fix the size to avoid being squashed */
-  clutter_actor_set_size (priv->calendar_tex, 27, 28);
+  clutter_actor_set_size (priv->calendar_tex, 32, 33);
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
                                       priv->calendar_tex,

@@ -48,10 +48,20 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 #define TILE_HEIGHT 170
 #define REFRESH_TIME (600) /* 10 minutes */
 
+static void _zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
+      ZeitgeistTimeRange *time_range,
+      GPtrArray *events,
+      gpointer          userdata);
+static void _zeitgeist_monitor_events_deleted_signal (ZeitgeistMonitor *m,
+    ZeitgeistTimeRange *time_range,
+    GArray *ids,
+    gpointer userdata);
+
+
+
 struct _PengeEverythingPanePrivate {
   SwClient *client;
   GList *views;
-  GPtrArray *templates;
   ZeitgeistLog *recent_log;
   ZeitgeistMonitor *recent_monitor;
   GHashTable *pointer_to_actor;
@@ -126,11 +136,32 @@ penge_everything_pane_dispose (GObject *object)
     priv->client = NULL;
   }
 
-  if(priv->recent_log)
+
+  if (priv->recent_log)
     {
+      if (priv->recent_monitor)
+        /* remove the weak ref */
+        zeitgeist_log_remove_monitor (priv->recent_log,
+                                      priv->recent_monitor);
+
       g_object_unref (priv->recent_log);
       priv->recent_log = NULL;
     }
+
+  if (priv->recent_monitor)
+    {
+      g_signal_handlers_disconnect_by_func (priv->recent_monitor,
+          (GCallback)_zeitgeist_monitor_events_inserted_signal,
+          PENGE_EVERYTHING_PANE(object));
+
+      g_signal_handlers_disconnect_by_func (priv->recent_monitor,
+          (GCallback)_zeitgeist_monitor_events_deleted_signal,
+          PENGE_EVERYTHING_PANE(object));
+
+      g_object_unref (priv->recent_monitor);
+      priv->recent_monitor = NULL;
+    }
+
 
   if (priv->ratio_notify_id)
   {
@@ -401,8 +432,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
         */
 
 
-        file = g_file_new_for_uri (uri);
-        /* Current priv->templates look for local files only, if it's not local,
+        /* Current detault template look for local files only, if it's not local,
          * it's probably a template error, log it and move on */
         if (!g_str_has_prefix (uri, "file:"))
           {
@@ -410,25 +440,11 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
             continue;
           }
 
-        /* if the file does not exist anymore we remove it (fire-and-forget)
-         * from the log and ignore the event for this round */
+        file = g_file_new_for_uri (uri);
+
+        /* if the file does not exist anymore we ignore it and move on */
         if (!g_file_query_exists (file, NULL))
-            {
-              GArray *ids;
-              guint32 id;
-              
-              ids = g_array_sized_new (FALSE, FALSE,
-                  sizeof(guint32), 1);
-              id = zeitgeist_event_get_id (event);
-              g_array_append_val (ids, id);
-
-              zeitgeist_log_delete_events (priv->recent_log, ids,
-                  NULL, NULL, NULL);
-
-              g_array_unref (ids);
-
-              break; /* consider the next event */
-            }
+          break; /* consider the next event */
 
         thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
@@ -437,6 +453,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
           ret = g_list_prepend (ret, g_object_ref (event));
 
         g_free (thumbnail_path);
+        g_object_unref (file);
       }
   }
 
@@ -628,6 +645,36 @@ _zeitgeist_log_find_received (GObject *source_object,
 
 }
 
+/* Zeitgeist templates are handled in a strange way within libzeitgeist:
+ * the GDestroyFunc is overriden with NULL and each item is unreferenced after
+ * having been evaluated (taking the ownership of a floating ref if needed).
+ *
+ * To avoid problems it's safer and easier to create a new template each time
+ * it is used, given a default configuration */
+static GPtrArray *
+_default_template_factory (void)
+{
+  GPtrArray *ret = g_ptr_array_new ();
+
+  g_ptr_array_add (ret, zeitgeist_event_new_full (
+        NULL, /* interpretation */
+        ZEITGEIST_ZG_USER_ACTIVITY, /* manifestation */
+        "application:*", /* actor */
+        zeitgeist_subject_new_full (
+          "file:*", /* uri, just local files */
+          NULL, /* interpretation */
+          NULL, /* manifestation */
+          NULL, /* mime-type */
+          NULL, /* origin */
+          NULL, /* text */
+          NULL /* storage - auto-guess */
+          ),
+        NULL));
+
+  return ret;
+}
+
+
 static void
 penge_everything_pane_update (PengeEverythingPane *pane)
 {
@@ -636,11 +683,11 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   /* Get recent files and sort */
   zeitgeist_log_find_events (priv->recent_log,
                              zeitgeist_time_range_new_anytime (),
-                             g_ptr_array_ref (priv->templates),
+                             _default_template_factory (),
                              ZEITGEIST_STORAGE_STATE_ANY,
                              50, /* how many result should it return */
                              ZEITGEIST_RESULT_TYPE_MOST_RECENT_SUBJECTS,
-                             NULL,
+                             NULL, /* cancellable */
                              _zeitgeist_log_find_received,
                              pane);
 }
@@ -831,7 +878,7 @@ _zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
 
-  g_warning ("update");
+  g_warning ("event inserted, update");
   penge_everything_pane_queue_update (pane);
 }
 
@@ -844,7 +891,7 @@ _zeitgeist_monitor_events_deleted_signal (ZeitgeistMonitor *m,
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
 
-  g_warning ("update");
+  g_warning ("event deleted, update");
   penge_everything_pane_queue_update (pane);
 }
 
@@ -905,25 +952,10 @@ penge_everything_pane_init (PengeEverythingPane *self)
                           (SwClientGetServicesCallback)_client_get_services_cb,
                           self);
 
-  priv->templates = g_ptr_array_new ();
-  g_ptr_array_add (priv->templates, zeitgeist_event_new_full (
-        ZEITGEIST_ZG_ACCESS_EVENT,
-        ZEITGEIST_ZG_USER_ACTIVITY,
-        NULL,
-        zeitgeist_subject_new_full (
-          "file:*",
-          ZEITGEIST_NFO_IMAGE, // interpretation
-          ZEITGEIST_NFO_FILE_DATA_OBJECT, // manifestation
-          NULL, // mime-type
-          NULL,
-          NULL,
-          NULL // storage - auto-guess
-          ), NULL));
-
   priv->recent_log = g_object_new (ZEITGEIST_TYPE_LOG, NULL);
   priv->recent_monitor = zeitgeist_monitor_new (
                                             zeitgeist_time_range_new_anytime (),
-                                            g_ptr_array_ref (priv->templates));
+                                            _default_template_factory ());
 
   g_signal_connect (priv->recent_monitor,
                     "events-inserted",
@@ -935,6 +967,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     (GCallback)_zeitgeist_monitor_events_deleted_signal,
                     self);
 
+  /* the log holds a weak ref to the monitor */
   zeitgeist_log_install_monitor (priv->recent_log, priv->recent_monitor);
 
   penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
