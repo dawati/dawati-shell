@@ -452,6 +452,9 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_actor_set_size (priv->header,
       clutter_actor_get_width (CLUTTER_ACTOR (self)), HEADER_HEIGHT);
   clutter_actor_hide (priv->header);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->header),
+                               "PengeInterestingTileHeader");
+
 
   /* This gets added to ourself table after our body because of ordering */
   priv->details_margin = mx_frame_new ();
