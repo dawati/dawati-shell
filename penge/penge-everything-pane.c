@@ -431,7 +431,7 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
         g_assert (uri != NULL);
 
         /* Just a small debug help :)
-        g_warning ("%s: subj(%d): i=%s m=%s",
+        g_debug ("%s: subj(%d): i=%s m=%s",
             zeitgeist_subject_get_uri (s),
             i,
             zeitgeist_subject_get_interpretation (s),
@@ -885,7 +885,7 @@ _zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
 
-  g_warning ("event inserted, update");
+  g_debug ("event inserted, update");
   penge_everything_pane_queue_update (pane);
 }
 
@@ -898,7 +898,7 @@ _zeitgeist_monitor_events_deleted_signal (ZeitgeistMonitor *m,
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
 
-  g_warning ("event deleted, update");
+  g_debug ("event deleted, update");
   penge_everything_pane_queue_update (pane);
 }
 
