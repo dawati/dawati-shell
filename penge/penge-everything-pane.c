@@ -296,9 +296,9 @@ _zeitgeist_log_delete_events_received (GObject *source_object,
   ZeitgeistLog *log = ZEITGEIST_LOG (source_object);
   GError *error = NULL;
 
-  g_warning ("deleted events");
+  g_return_if_fail (user_data == NULL);
 
-  g_return_if_fail (PENGE_IS_INTERESTING_TILE (user_data));
+  g_debug ("deleted events");
 
   zeitgeist_log_delete_events_finish (log, res, &error);
   if (error != NULL)
@@ -320,9 +320,14 @@ _recent_file_tile_remove_clicked_cb (PengeInterestingTile *tile,
   GArray *event_ids;
   guint32 id;
 
+  g_return_if_fail (PENGE_IS_INTERESTING_TILE (tile));
+  g_return_if_fail (PENGE_IS_EVERYTHING_PANE (pane));
+
   g_object_get (tile,
                 "zg-event", &event,
                 NULL);
+
+  g_assert (ZEITGEIST_IS_EVENT (event));
 
 
   event_ids = g_array_sized_new (FALSE, FALSE, sizeof(guint32), 1);
@@ -331,11 +336,13 @@ _recent_file_tile_remove_clicked_cb (PengeInterestingTile *tile,
 
   zeitgeist_log_delete_events (priv->recent_log,
                                event_ids,
-                               NULL,
+                               NULL, /* cancellable */
                                _zeitgeist_log_delete_events_received,
-                               tile);
+                               NULL);
+  /* When the CB finished, a "removed" event will be raised by the ZG Monitor
+   * which will force an update of the pane, disposing @tile (among old
+   * actors) */
   g_array_unref (event_ids);
-
 }
 
 static ClutterActor *
