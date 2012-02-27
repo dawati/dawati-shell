@@ -46,7 +46,7 @@ enum
   PROP_BOOKMARK
 };
 
-#define ICON_SIZE 48
+#define ICON_SIZE 64
 
 void _icon_theme_changed_cb (GtkIconTheme *icon_theme,
                              gpointer      userdata);

@@ -237,7 +237,9 @@ penge_apps_pane_update (PengeAppsPane *pane)
       clutter_actor_set_size (overlay,
           clutter_actor_get_width (actor),
           clutter_actor_get_height (actor));
-      clutter_actor_set_size (stack, TILE_STACKED_SIZE, TILE_STACKED_SIZE);
+      clutter_actor_set_size (stack, 
+          clutter_actor_get_width (actor),
+          clutter_actor_get_height (actor));
 
       if (!priv->vertical)
       {
