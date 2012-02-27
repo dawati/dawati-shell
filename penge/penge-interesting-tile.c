@@ -36,7 +36,9 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 #define DETAILS_ICON_ACTOR_NAME "icon"
 
 #define HEADER_HEIGHT 30
-#define HEADER_WIDTH 335
+#define ICON_HEIGHT 28
+#define ICON_WIDTH 28
+#define FOOTER_HEIGHT 45
 
 struct _PengeInterestingTilePrivate {
   ClutterActor *inner_table;
@@ -425,12 +427,12 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   icon = clutter_texture_new ();
   clutter_actor_set_name (icon, DETAILS_ICON_ACTOR_NAME);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->icon_container), icon);
-  clutter_actor_set_size (icon, 28, 28);
+  clutter_actor_set_size (icon, ICON_WIDTH, ICON_HEIGHT);
 
   icon_overlay = mx_frame_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->icon_container),
       icon_overlay);
-  clutter_actor_set_size (icon_overlay, 28, 28);
+  clutter_actor_set_size (icon_overlay, ICON_WIDTH, ICON_HEIGHT);
   mx_stylable_set_style_class (MX_STYLABLE (icon_overlay),
                                "PengeInterestingTileMessageIconOverlay");
   clutter_actor_hide (priv->icon_container);
@@ -460,6 +462,13 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   priv->details_margin = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_margin),
                                "PengeInterestingTileDetailsMargin");
+  clutter_actor_set_size (priv->details_margin,
+                          clutter_actor_get_width (CLUTTER_ACTOR (self)),
+                          FOOTER_HEIGHT);
+
+
+  g_debug ("%s: tile width %f", G_STRLOC, clutter_actor_get_width (CLUTTER_ACTOR (self)));
+  g_debug ("%s: details width %f", G_STRLOC, clutter_actor_get_width (priv->details_margin));
 
   priv->details_overlay = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_overlay),
@@ -476,7 +485,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                (ClutterActor *) priv->details_margin,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
-                               "y-fill", FALSE,
+                               "y-fill", TRUE,
+                               "x-fill", TRUE,
                                "y-align", MX_ALIGN_END,
                                NULL);
   mx_bin_set_fill (MX_BIN (priv->details_margin), TRUE, FALSE);

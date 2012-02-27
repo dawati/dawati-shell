@@ -44,8 +44,8 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 #define DAWATI_MYZONE_MIN_TILE_HEIGHT "/desktop/dawati/myzone/min_tile_height"
 #define DAWATI_MYZONE_RATIO "/desktop/dawati/myzone/ratio"
 
-#define TILE_WIDTH 164
-#define TILE_HEIGHT 170
+#define TILE_WIDTH 165
+#define TILE_HEIGHT 171
 #define REFRESH_TIME (600) /* 10 minutes */
 
 static void _zeitgeist_monitor_events_inserted_signal (ZeitgeistMonitor *m,
@@ -977,7 +977,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
   /* the log holds a weak ref to the monitor */
   zeitgeist_log_install_monitor (priv->recent_log, priv->recent_monitor);
 
-  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 5);
+  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 1);
 
   priv->gconf_client = gconf_client_get_default ();
 

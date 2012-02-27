@@ -515,8 +515,7 @@ penge_grid_view_init (PengeGridView *self)
                                         NULL);
   mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 1);
 
-  mx_table_set_row_spacing (MX_TABLE (self), 6);
-  mx_table_set_column_spacing (MX_TABLE (self), 19);
+  mx_table_set_column_spacing (MX_TABLE (self), 14);
 
   /* 
    * Create a background and parent it to the grid. We paint and allocate this
