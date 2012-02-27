@@ -25,15 +25,13 @@
 
 G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
-#define PLACEHOLDER_TEXT _("When you’ve set up your web " \
-"accounts and used some files, they " \
-"will appear here on myzone " \
-"for easy access whenever you " \
-"want. ")
+#define PLACEHOLDER_IMAGE THEMEDIR "/default-message.png"
 
+/*
 #define TMP_PLACEHOLDER _("Play intro video")
 
 #define WELCOME_VIDEO_FILENAME "/usr/share/videos/dawati/dawati-intro.ogv"
+*/
 
 static void
 penge_welcome_tile_dispose (GObject *object)
@@ -56,6 +54,7 @@ penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
   object_class->finalize = penge_welcome_tile_finalize;
 }
 
+/*
 static void
 _welcome_launcher_clicked_cb (MxButton *button,
                               gpointer  userdata)
@@ -74,65 +73,55 @@ _welcome_launcher_clicked_cb (MxButton *button,
 
   g_free (uri);
 }
+*/
 
 static void
 penge_welcome_tile_init (PengeWelcomeTile *tile)
 {
-  ClutterActor *label;
-  ClutterActor *tmp_text;
+  ClutterActor *placeholder_image;
+  GError *error = NULL;
 
-  mx_stylable_set_style_class (MX_STYLABLE (tile),
-                               "PengeWelcomeTile");
-
-  label = mx_label_new_with_text (_("Welcome to Dawati"));
-  clutter_actor_set_name ((ClutterActor *)label,
-                          "penge-welcome-primary-text");
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
-                                   PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
-  mx_table_add_actor_with_properties (MX_TABLE (tile),
-                                      (ClutterActor *)label,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", TRUE,
-                                      NULL);
-  mx_table_set_row_spacing (MX_TABLE (tile), 12);
-
-  label = mx_label_new_with_text (PLACEHOLDER_TEXT);
-
-
-  clutter_actor_set_name ((ClutterActor *)label,
-                          "penge-welcome-secondary-text");
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
-                                   PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
-                              PANGO_ELLIPSIZE_NONE);
-  mx_table_add_actor_with_properties (MX_TABLE (tile),
-                                      (ClutterActor *)label,
-                                      1, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
-                                      NULL);
-
-  {
-    gchar *video_path;
-    ClutterActor *launcher;
-    ClutterActor *inner_table;
-    ClutterActor *icon;
-
-    video_path = WELCOME_VIDEO_FILENAME;
-
-    if (g_file_test (video_path, G_FILE_TEST_EXISTS))
+  placeholder_image = clutter_texture_new_from_file (PLACEHOLDER_IMAGE, &error);
+  if (error != NULL)
     {
+      g_warning ("Couldn't open the placeholder image %s", PLACEHOLDER_IMAGE);
+      g_clear_error (&error);
+    }
+  else
+    {
+      ClutterActor *bin;
+
+      bin = mx_frame_new ();
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (bin),
+          placeholder_image);
+
+      clutter_actor_set_name (bin,
+                              "penge-welcome-placeholder-margin");
+      clutter_actor_set_name (placeholder_image,
+                              "penge-welcome-placeholder");
+      clutter_actor_set_size (placeholder_image, 548, 247);
+
+      mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                          bin,
+                                          0, 0,
+                                          "x-expand", TRUE,
+                                          "y-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-fill", TRUE,
+                                          "x-align", MX_ALIGN_START,
+                                          NULL);
+      mx_bin_set_fill (MX_BIN (bin), TRUE, TRUE);
+    }
+
+
+  /* It's not to be shown
+  if (g_file_test (WELCOME_VIDEO_FILENAME, G_FILE_TEST_EXISTS))
+    {
+      ClutterActor *launcher;
+      ClutterActor *inner_table;
+      ClutterActor *icon;
+
       launcher = mx_button_new ();
       clutter_actor_set_name (launcher, "penge-welcome-launcher");
 
@@ -163,7 +152,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
 
       mx_table_add_actor_with_properties (MX_TABLE (tile),
                                           launcher,
-                                          2, 0,
+                                          1, 0,
                                           "x-expand", FALSE,
                                           "x-fill", FALSE,
                                           "y-expand", FALSE,
@@ -176,7 +165,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                         (GCallback)_welcome_launcher_clicked_cb,
                         NULL);
     }
-  }
+    */
 }
 
 ClutterActor *
