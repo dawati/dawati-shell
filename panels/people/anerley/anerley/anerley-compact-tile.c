@@ -390,7 +390,7 @@ anerley_compact_tile_init (AnerleyCompactTile *self)
                             CLUTTER_ACTOR (self));
 
   priv->close_button = mx_button_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "closeButton");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "appCloseButton");
   clutter_actor_set_parent (priv->close_button, CLUTTER_ACTOR (self));
   g_signal_connect (priv->close_button,
                     "clicked",
