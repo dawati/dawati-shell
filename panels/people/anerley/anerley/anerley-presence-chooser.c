@@ -242,6 +242,8 @@ anerley_presence_chooser_init (AnerleyPresenceChooser *self)
   MxComboBox *combo = MX_COMBO_BOX (self);
   AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (self);
 
+  mx_stylable_set_style_class (MX_STYLABLE (self), "Primary");
+
   priv->am = tp_account_manager_dup ();
 
   g_signal_connect (priv->am,
