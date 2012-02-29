@@ -158,7 +158,8 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MnbLauncher        *self)
 {
-  const gchar *desktop_file_path;
+  gchar *desktop_file;
+  const gchar *desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
   /* Disable button for some time to avoid launching multiple times. */
   clutter_actor_set_reactive (CLUTTER_ACTOR (launcher), FALSE);
@@ -166,16 +167,13 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
                          (GSourceFunc) launcher_button_set_reactive_cb,
                          launcher);
 
-  desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
-
   g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
 #ifdef WITH_ZEITGEIST
-  desktop_file_path = g_path_get_basename (desktop_file_path);
-  mnb_launcher_zg_utils_send_launch_event (desktop_file_path, 
+  desktop_file = g_path_get_basename (desktop_file_path);
+  mnb_launcher_zg_utils_send_launch_event (desktop_file, 
                                  mnb_launcher_button_get_title(launcher));
-  g_free (desktop_file_path);
+  g_free (desktop_file);
 #endif /* WITH_ZEITGEIST */
-
 }
 
 
@@ -577,6 +575,41 @@ _running_changed_cb (MnbLauncherRunning *running,
 }
 
 #ifdef WITH_ZEITGEIST
+static gint
+mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
+                          gconstpointer *other_pointer,
+                          gpointer      *user_data)
+{
+  gint i;
+  gint             index_a = -1;
+  gint             index_b = -1;
+  GList              *apps = (GList*) user_data;
+  MnbLauncherButton *self  = MNB_LAUNCHER_BUTTON (self_pointer);
+  MnbLauncherButton *other = MNB_LAUNCHER_BUTTON (other_pointer);
+
+  const gchar *file_path_a = mnb_launcher_button_get_desktop_file_path (self);
+  const gchar *file_path_b = mnb_launcher_button_get_desktop_file_path (other);
+  const gchar      *exec_a = g_path_get_basename (file_path_a);
+  const gchar      *exec_b = g_path_get_basename (file_path_b);
+  const gint   apps_length = g_list_length(apps);
+  
+  for (i = 0; i < apps_length; i++)
+    {
+      /* Try to find the index of exec_a and exec_b in apps and jump out of 
+       * the loop once both are set */
+      if (g_strcmp0(exec_a, g_list_nth_data(apps, i)) == 0)
+        index_a = i;
+      else if (g_strcmp0(exec_b, g_list_nth_data(apps, i)) == 0)
+        index_b = i;
+      if (index_a > -1 && index_b > -1)
+        return index_a - index_b;
+    }
+
+  if (index_a == -1)
+    return -1;
+  return 1;
+}
+
 static void 
 mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
 {
@@ -584,15 +617,27 @@ mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
   gchar *exec;
   MnbLauncher *self = (MnbLauncher*) user_data;
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  
+  priv->launchers = g_slist_sort_with_data(priv->launchers,
+                                  (GCompareDataFunc) mnb_launcher_sort_via_zg,
+                                  apps);
+
   for (iter = priv->launchers; iter; iter = iter->next)
     {
-      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+      /* Referencing the button since clutter_container takes over ownership */
+      MnbLauncherButton *button = g_object_ref (MNB_LAUNCHER_BUTTON (iter->data));
+      
+      /* Remove button from grid and append to the end of it */
       exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
       if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
+        {
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                      CLUTTER_ACTOR (button));
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                   CLUTTER_ACTOR (button));
           clutter_actor_show (CLUTTER_ACTOR (button));
+        }
       else
-          clutter_actor_hide (CLUTTER_ACTOR (button));
+        clutter_actor_hide (CLUTTER_ACTOR (button));
       g_free(exec);
     }
 }
@@ -614,9 +659,20 @@ mnb_launcher_show_zg_category (MnbLauncher *self, gboolean show, const gchar *ca
     }
   else
     {
+      /* Sort Alphabetically */
+      priv->launchers = g_slist_sort (priv->launchers,
+                                  (GCompareFunc) mnb_launcher_button_compare);
+
       for (iter = priv->launchers; iter; iter = iter->next)
         {
-          MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
+          /* Referencing the button since clutter_container takes over ownership */
+          MnbLauncherButton *button = g_object_ref (MNB_LAUNCHER_BUTTON (iter->data));
+          
+          /* Remove button from grid and append to the end of it */
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                          CLUTTER_ACTOR (button));
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                       CLUTTER_ACTOR (button));
           clutter_actor_show (CLUTTER_ACTOR (button));
         }
     }
