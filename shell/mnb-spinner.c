@@ -244,9 +244,9 @@ mnb_spinner_paint (ClutterActor *self)
   ClutterTexture    *background;
 
   /*
-   * Contrary to the name, this paints border-image, not background-image.
+   * This paints border-image.
    */
-  mx_widget_paint_background (widget);
+  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->paint (self);
 
   if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
     {

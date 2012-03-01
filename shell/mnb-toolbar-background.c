@@ -45,6 +45,7 @@ struct _MnbToolbarBackgroundPrivate
   gfloat          left;
 };
 
+#if TOOLBAR_CUT_OUT
 static void
 mnb_toolbar_background_paint_background (MxWidget           *self,
                                          ClutterActor       *background,
@@ -115,7 +116,6 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
   cogl_material_set_color4ub (cogl_material,
                               opacity, opacity, opacity, opacity);
 
-#if TOOLBAR_CUT_OUT
   selector_texture = mnb_toolbar_get_selector_texture (priv->toolbar);
 
   cogl_material_set_layer (cogl_material, 1, selector_texture);
@@ -130,7 +130,6 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
                  error->message);
       g_error_free (error);
     }
-#endif
 
   cogl_set_source (cogl_material);
 
@@ -138,7 +137,6 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
   if (priv->left == 0 && priv->right == 0 && priv->top == 0
       && priv->bottom == 0)
     {
-#if TOOLBAR_CUT_OUT
       float spot_width, spot_height;
       float coords[8] = {
         0, 0, 1, 1,
@@ -153,9 +151,6 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
       coords[6] = width / spot_width - (box.x1 / width) * (width / spot_width);
       coords[7] = height / spot_height - (box.y1 / height) * (height / spot_height);
       cogl_rectangle_with_multitexture_coords (0, 0, width, height, coords, 8);
-#else
-      cogl_rectangle (0, 0, width, height);
-#endif /* TOOLBAR_CUT_OUT */
       return;
     }
 
@@ -233,6 +228,7 @@ mnb_toolbar_background_paint_background (MxWidget           *self,
     cogl_rectangles_with_texture_coords (rectangles, 9);
   }
 }
+#endif /* TOOLBAR_CUT_OUT */
 
 static void
 mnb_toolbar_background_get_property (GObject    *object,
@@ -288,7 +284,9 @@ static void
 mnb_toolbar_background_class_init (MnbToolbarBackgroundClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+#if TOOLBAR_CUT_OUT
   MxWidgetClass *widget_class = MX_WIDGET_CLASS (klass);
+#endif /* TOOLBAR_CUT_OUT */
 
   g_type_class_add_private (klass, sizeof (MnbToolbarBackgroundPrivate));
 
@@ -297,7 +295,9 @@ mnb_toolbar_background_class_init (MnbToolbarBackgroundClass *klass)
   object_class->dispose = mnb_toolbar_background_dispose;
   object_class->finalize = mnb_toolbar_background_finalize;
 
+#if TOOLBAR_CUT_OUT
   widget_class->paint_background = mnb_toolbar_background_paint_background;
+#endif /* TOOLBAR_CUT_OUT */
 
   g_object_class_install_property (object_class,
                                    PROP_TOOLBAR,

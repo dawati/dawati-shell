@@ -382,13 +382,14 @@ mpl_panel_background_paint_border_image (MxTextureFrame *frame,
  * MxWidget::paint_background vfunction implementation.
  */
 static void
-mpl_panel_background_paint_background (MxWidget           *self,
-                                       ClutterActor       *background,
-                                       const ClutterColor *color)
+mpl_panel_background_paint (ClutterActor *self)
 {
-  MxPadding padding = { 0, };
+  MxWidget     *widget     = (MxWidget *) self;
+  ClutterColor *color      = mx_widget_get_background_color (widget);
+  ClutterActor *background = mx_widget_get_border_image (widget);
+  MxPadding     padding    = { 0, };
 
-  mx_widget_get_padding (self, &padding);
+  mx_widget_get_padding (widget, &padding);
 
   /*
    * Paint any solid background colour that is not completely transparent.
@@ -431,7 +432,6 @@ mpl_panel_background_class_init (MplPanelBackgroundClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
-  MxWidgetClass     *widget_class = MX_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MplPanelBackgroundPrivate));
 
@@ -443,8 +443,7 @@ mpl_panel_background_class_init (MplPanelBackgroundClass *klass)
   actor_class->get_preferred_width  = mpl_panel_background_get_preferred_width;
   actor_class->get_preferred_height = mpl_panel_background_get_preferred_height;
   actor_class->allocate             = mpl_panel_background_allocate;
-
-  widget_class->paint_background    = mpl_panel_background_paint_background;
+  actor_class->paint                = mpl_panel_background_paint;
 }
 
 static void
