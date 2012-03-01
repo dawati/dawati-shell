@@ -61,7 +61,7 @@
 #define APPS_GRID_ROW_GAP      5
 
 /* This is the icon we request from the theme */
-#define LAUNCHER_BUTTON_ICON_SIZE  256
+#define LAUNCHER_BUTTON_ICON_SIZE  48
 /* This is the size we set the icon as */
 #define LAUNCHER_BUTTON_ICON_TARGET_SIZE 48
 /* This is the spacing between the two main columns of the panel */
