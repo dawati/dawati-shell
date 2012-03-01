@@ -448,39 +448,6 @@ mnb_launcher_button_new (const gchar *icon_name,
   return MX_WIDGET (self);
 }
 
-MxWidget *
-mnb_launcher_button_create_favorite (MnbLauncherButton *self)
-{
-  MnbLauncherButton *fav_sibling;
-
-  g_return_val_if_fail (self, NULL);
-  fav_sibling = (MnbLauncherButton *) mnb_launcher_button_new (
-                                   self->priv->icon_name,
-                                   self->priv->icon_file,
-                                   self->priv->icon_size,
-                                   mx_label_get_text (self->priv->title),
-                                   self->priv->category,
-                                   self->priv->description,
-                                   self->priv->executable,
-                                   self->priv->desktop_file_path);
-
-  mnb_launcher_button_make_favorite (fav_sibling,
-                                     clutter_actor_get_height (CLUTTER_ACTOR (self)),
-                                     clutter_actor_get_height (CLUTTER_ACTOR (self)));
-
-  mnb_launcher_button_set_favorite (fav_sibling, TRUE);
-
-/*
-  g_object_add_weak_pointer (G_OBJECT (fav_sibling), (gpointer *) &(self->priv->fav_sibling));
-  g_object_add_weak_pointer (G_OBJECT (self), (gpointer *) &(fav_sibling->priv->plain_sibling));
-*/
-  /* Let's try without fancyness */
-  self->priv->fav_sibling = fav_sibling;
-  fav_sibling->priv->plain_sibling = self;
-
-  return MX_WIDGET (fav_sibling);
-}
-
 const char *
 mnb_launcher_button_get_title (MnbLauncherButton *self)
 {
@@ -603,25 +570,6 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
   }
 }
 
-void
-mnb_launcher_button_set_last_launched (MnbLauncherButton  *self,
-                                       time_t              last_launched)
-{
-  GTimeVal   time = { 0, };
-  char      *text;
-
-  if (last_launched == 0)
-    {
-      text = g_strdup (_("Never launched"));
-    }
-  else
-    {
-      time.tv_sec = last_launched;
-      text = mx_utils_format_time (&time);
-    }
-  g_free (text);
-}
-
 gint
 mnb_launcher_button_compare (MnbLauncherButton *self,
                              MnbLauncherButton *other)
@@ -687,40 +635,3 @@ mnb_launcher_button_match (MnbLauncherButton *self,
 
   return FALSE;
 }
-
-void
-mnb_launcher_button_sync_if_favorite (MnbLauncherButton *self,
-                                      MnbLauncherButton *plain_sibling)
-{
-  g_return_if_fail (self);
-  g_return_if_fail (plain_sibling);
-
-  if (0 == g_strcmp0 (self->priv->desktop_file_path,
-                      plain_sibling->priv->desktop_file_path))
-    {
-      mnb_launcher_button_set_favorite (plain_sibling, TRUE);
-      self->priv->category = g_strdup (plain_sibling->priv->category);
-/*
-      g_object_add_weak_pointer (G_OBJECT (self), (gpointer *) &(plain_sibling->priv->fav_sibling));
-      g_object_add_weak_pointer (G_OBJECT (plain_sibling), (gpointer *) &(self->priv->plain_sibling));
-*/
-      /* Let's try without fancyness */
-      self->priv->plain_sibling = plain_sibling;
-      plain_sibling->priv->fav_sibling = self;
-    }
-}
-
-void
-mnb_launcher_button_make_favorite (MnbLauncherButton *self,
-                                   gfloat             width,
-                                   gfloat             height)
-{
-  mx_widget_set_tooltip_text (MX_WIDGET (self),
-                              mx_label_get_text (self->priv->title));
-
-  clutter_actor_destroy ((ClutterActor *) self->priv->title);
-  self->priv->title = NULL;
-
-  clutter_actor_set_size (CLUTTER_ACTOR (self), width, height);
-}
-

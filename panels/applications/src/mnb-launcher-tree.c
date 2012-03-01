@@ -180,14 +180,6 @@ mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
   return self;
 }
 
-static gint
-mnb_launcher_application_compare (MnbLauncherApplication *self,
-                            MnbLauncherApplication *b)
-{
-  return g_utf8_collate (mnb_launcher_application_get_name (self),
-                         mnb_launcher_application_get_name (b));
-}
-
 /*
  * MnbLauncherDirectory.
  */
@@ -262,13 +254,6 @@ mnb_launcher_directory_compare (MnbLauncherDirectory *self,
                                 MnbLauncherDirectory *b)
 {
   return g_utf8_collate (self->name, b->name);
-}
-
-static void
-mnb_launcher_directory_sort_entries (MnbLauncherDirectory *self)
-{
-  self->entries = g_list_sort (self->entries,
-                                (GCompareFunc) mnb_launcher_application_compare);
 }
 
 static void
@@ -559,16 +544,6 @@ mnb_launcher_tree_list_categories_from_disk (MnbLauncherTree *self)
   tree = get_all_applications_from_dir (root, tree, TRUE);
   gmenu_tree_item_unref (root);
 #endif
-
-  /* Sort directories. */
-  tree = g_list_sort (tree, (GCompareFunc) mnb_launcher_directory_compare);
-
-  /* Sort entries inside directories. */
-  for (tree_iter = tree; tree_iter; tree_iter = tree_iter->next)
-    {
-      mnb_launcher_directory_sort_entries ((MnbLauncherDirectory *) tree_iter->data);
-    }
-
   return tree;
 }
 

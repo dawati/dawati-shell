@@ -111,13 +111,6 @@ standalone_launcher_activated_cb (MnbLauncher    *launcher,
 }
 
 static void
-panel_show_begin_cb (MplPanelClient *panel,
-                     MnbLauncher    *launcher)
-{
-  mnb_launcher_update_last_launched (launcher);
-}
-
-static void
 panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
@@ -248,12 +241,11 @@ main (int     argc,
       mpl_panel_client_set_size_request (panel, -1, 600);
 
       launcher = mnb_launcher_new ();
+
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (launcher_activated_cb), panel);
       g_signal_connect (launcher, "commandline-launch-activated",
                         G_CALLBACK (commandline_launch_activated_cb), panel);
-      g_signal_connect (panel, "show-begin",
-                        G_CALLBACK (panel_show_begin_cb), launcher);
       g_signal_connect (panel, "show-end",
                         G_CALLBACK (panel_show_end_cb), launcher);
       g_signal_connect (panel, "hide-end",
@@ -271,6 +263,7 @@ main (int     argc,
   mx_focusable_accept_focus (MX_FOCUSABLE (launcher), MX_FOCUS_HINT_FIRST);
 
   clutter_main ();
+
 
   return EXIT_SUCCESS;
 }

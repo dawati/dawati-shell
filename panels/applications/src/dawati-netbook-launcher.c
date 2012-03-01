@@ -369,44 +369,6 @@ mnb_launcher_reset (MnbLauncher     *self)
     }
 }
 
-void
-mnb_launcher_update_last_launched (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MplAppLaunchesQuery *query;
-  GSList  *iter;
-
-  query = mpl_app_launches_store_create_query (priv->app_launches);
-  for (iter = priv->launchers; iter; iter = iter->next)
-    {
-      time_t last_launched = 0;
-      char const *executable;
-      GError *error = NULL;
-
-      executable = mnb_launcher_button_get_executable ((MnbLauncherButton *) iter->data);
-
-      mpl_app_launches_query_lookup (query, executable, &last_launched, NULL, &error);
-      if (error)
-        {
-          g_warning ("%s : %s", G_STRLOC, error->message);
-          g_clear_error (&error);
-        }
-      else
-        {
-          mnb_launcher_button_set_last_launched ((MnbLauncherButton *) iter->data,
-                                                 last_launched);
-        }
-    }
-  g_object_unref (query);
-}
-
-static void
-_launches_changed_cb (MplAppLaunchesStore *store,
-                      MnbLauncher         *self)
-{
-  mnb_launcher_update_last_launched (self);
-}
-
 static gboolean
 mnb_launcher_filter_cb (MnbLauncher *self)
 {
@@ -940,6 +902,7 @@ mnb_launcher_fill (MnbLauncher  *self)
   g_slist_foreach (priv->launchers,
                    (GFunc)_add_launchers_to_grid,
                    priv->apps_grid);
+
 }
 
 static void
@@ -1318,10 +1281,6 @@ _constructor (GType                  gtype,
 
   priv->bookmarks_list = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
   priv->is_constructed = TRUE;
-
-  priv->app_launches = mpl_app_launches_store_new ();
-  g_signal_connect (priv->app_launches, "changed",
-                    G_CALLBACK (_launches_changed_cb), self);
 
   mnb_launcher_fill (self);
 
