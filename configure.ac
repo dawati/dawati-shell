@@ -77,7 +77,7 @@ AM_GLIB_GNU_GETTEXT
 GDK_DEPS="gdk-x11-3.0"
 GTK_DEPS="gtk+-3.0"
 CLUTTER_DEPS="clutter-1.0 >= 1.8"
-MX_DEPS="mx-2.0"
+MX_DEPS="mx-2.0 >= 1.99.4"
 CLUTTER_GTK_DEPS="clutter-gtk-1.0"
 MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
 ZEITGEIST_DEPS="zeitgeist-1.0 >= 0.3.12"
