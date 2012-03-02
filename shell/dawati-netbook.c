@@ -667,7 +667,9 @@ maybe_show_myzone (MetaPlugin *plugin)
       MetaWindowActor *m         = (MetaWindowActor *) l->data;
       MetaWindow      *mw        = meta_window_actor_get_meta_window (m);
       MetaWindowType   type      = meta_window_get_window_type (mw);
-      gboolean         minimized = mw && meta_window_is_skip_taskbar (mw);
+      gboolean         minimized = mw &&
+        meta_window_is_skip_taskbar (mw) &&
+        !meta_window_is_modal (mw);
 
       /*
        * Ignore desktop, docs,panel windows and minimized windows
