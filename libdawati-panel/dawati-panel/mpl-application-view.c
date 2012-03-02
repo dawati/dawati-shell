@@ -319,6 +319,8 @@ mpl_application_view_init (MplApplicationView *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->shadow), "appShadow");
   mx_bin_set_child (MX_BIN (frame), priv->shadow);
   mx_bin_set_fill (MX_BIN (frame), FALSE, FALSE);
+
+  clutter_actor_show_all (actor);
 }
 
 ClutterActor *
