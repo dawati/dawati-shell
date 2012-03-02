@@ -180,7 +180,7 @@ main (int    argc,
     ClutterActor  *base_pane;
     ClutterActor  *label;
 
-    stage = clutter_stage_get_default ();
+    stage = clutter_stage_new ();
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 

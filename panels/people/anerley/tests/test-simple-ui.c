@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -96,7 +96,7 @@ main (int    argc,
   aggregator = folks_individual_aggregator_new ();
   feed = anerley_tp_feed_new (aggregator);
   model = anerley_feed_model_new ((AnerleyFeed *) feed);
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
 
   table = mx_table_new ();

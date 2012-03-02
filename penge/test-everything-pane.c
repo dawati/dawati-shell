@@ -49,7 +49,7 @@ main (int    argc,
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 640, 480);
 

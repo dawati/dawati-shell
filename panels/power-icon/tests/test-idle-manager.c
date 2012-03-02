@@ -67,7 +67,7 @@ main (int     argc,
 
   idlr = mpd_idle_manager_new ();
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   box = mx_box_layout_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);

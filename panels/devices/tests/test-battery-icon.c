@@ -56,7 +56,7 @@ main (int     argc,
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   vbox = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), vbox);

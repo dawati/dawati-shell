@@ -167,7 +167,7 @@ main (int     argc,
 
   if (standalone)
   {
-    ClutterActor *stage = clutter_stage_get_default ();
+    ClutterActor *stage = clutter_stage_new ();
 
     if (geometry)
     {

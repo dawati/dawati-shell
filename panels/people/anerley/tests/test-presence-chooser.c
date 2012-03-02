@@ -3,7 +3,7 @@
  * Copyright (C) 2010, Intel Corporation.
  *
  * Authors: Danielle Madeley <danielle.madeley@collabora.co.uk>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -51,7 +51,7 @@ main (int    argc,
 
   g_free (path);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   chooser = anerley_presence_chooser_new ();
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), chooser);

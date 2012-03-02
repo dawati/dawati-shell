@@ -68,7 +68,7 @@ am_ready_cb (GObject      *source_object,
 
   feed = anerley_tp_feed_new (account);
   model = anerley_feed_model_new (ANERLEY_FEED (feed));
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
 
   scroll_view = mx_scroll_view_new ();

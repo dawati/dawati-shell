@@ -221,7 +221,7 @@ main (int     argc,
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   box = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
@@ -235,7 +235,7 @@ main (int     argc,
     {
       g_critical ("%s %s", G_STRLOC, error->message);
       g_clear_error (&error);
-      return EXIT_FAILURE;      
+      return EXIT_FAILURE;
     }
 
     add_tile_from_mount (MX_BOX_LAYOUT (box), mount);
@@ -251,13 +251,13 @@ main (int     argc,
                       G_CALLBACK (_mount_removed_cb), box);
 
     label = mx_label_new_with_text ("Plug in USB storage device ...");
-    clutter_container_add_actor (CLUTTER_CONTAINER (box), label);  
+    clutter_container_add_actor (CLUTTER_CONTAINER (box), label);
   }
 
   clutter_actor_show_all (stage);
   clutter_main ();
 
-  /* Leak this, who cares 
+  /* Leak this, who cares
   g_object_unref (monitor); */
 
   return EXIT_SUCCESS;

@@ -79,7 +79,7 @@ main (int     argc,
                            THEMEDIR "/panel.css", NULL);
 
   if (standalone) {
-    stage = clutter_stage_get_default ();
+    stage = clutter_stage_new ();
     shell = dawati_bt_shell_new (NULL);
     g_signal_connect (stage, "notify::width",
                       G_CALLBACK (stage_width_notify_cb), shell);

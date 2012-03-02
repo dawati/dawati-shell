@@ -76,7 +76,7 @@ main (int argc, char **argv)
 
   bin = mtp_bin_new ();
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   clutter_actor_set_size (stage, 1024.0, 400.0);
 

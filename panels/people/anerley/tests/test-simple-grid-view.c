@@ -64,7 +64,7 @@ am_ready_cb (GObject      *source_object,
 
   feed = anerley_tp_feed_new (account);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   grid = CLUTTER_ACTOR (anerley_simple_grid_view_new (ANERLEY_FEED (feed)));
   scroll_view = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),

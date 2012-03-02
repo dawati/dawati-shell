@@ -41,7 +41,7 @@ main (int     argc,
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/theme.css", NULL);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   pane = mpl_content_pane_new ("Foo");
   clutter_actor_set_size (pane, 480, 320);

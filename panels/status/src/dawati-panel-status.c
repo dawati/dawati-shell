@@ -131,7 +131,7 @@ setup_standalone (DawatiStatusPanel *status_panel)
   status = make_status (status_panel);
   clutter_actor_set_size (status, 1000, 600);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 1000, 600);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 

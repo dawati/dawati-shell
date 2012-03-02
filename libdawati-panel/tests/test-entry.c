@@ -29,7 +29,7 @@ main (int argc, char *argv[])
   mx_style_load_from_file (mx_style_get_default (),
                              "../theme/theme.css", NULL);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 200);
 
   entry = mpl_entry_new ("Foo");

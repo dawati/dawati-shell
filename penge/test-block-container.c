@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -50,7 +50,7 @@ main (int    argc,
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 640, 480);
 

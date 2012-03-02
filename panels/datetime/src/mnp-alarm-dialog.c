@@ -47,7 +47,7 @@ struct _MnpAlarmDialogPrivate
   ClutterActor *snooze;
   ClutterActor *sound;
   ClutterActor *delete;
-  
+
   gint id;
 };
 
@@ -124,7 +124,7 @@ update_conf(MnpAlarmDialog *dialog)
 		new_node = tmp;
 		break;
 	}
-		
+
   	tmp = tmp->next;
   }
 
@@ -142,7 +142,7 @@ update_conf(MnpAlarmDialog *dialog)
 	new_node->data = newdata;
   } else {
 	list = g_slist_append(list, newdata);
-  } 
+  }
 
   gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);
 
@@ -189,7 +189,7 @@ construct_title_header (MnpAlarmDialog *dialog)
                                	"AlarmDelIcon");
   mx_bin_set_child (MX_BIN (priv->close_button),
                       	(ClutterActor *)icon);
-  
+
   clutter_container_add_actor ((ClutterContainer *)box, priv->close_button);
   clutter_container_child_set ((ClutterContainer *)box, priv->close_button,
                                    "x-fill", FALSE,
@@ -224,8 +224,8 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  
- 
+
+
   txt = mx_label_new_with_text (_("ON"));
   clutter_container_add_actor ((ClutterContainer *)box, txt);
   clutter_container_child_set ((ClutterContainer *)box, txt,
@@ -245,7 +245,7 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
 				   "expand", FALSE,
 				   "x-fill", TRUE,
                                    NULL);
-  
+
 }
 
 static void
@@ -270,7 +270,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
   priv->am_pm = mx_toggle_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->am_pm),
                                	"AmPmToggle");
- 
+
   clutter_container_add_actor ((ClutterContainer *)box, priv->hour);
   clutter_container_child_set ((ClutterContainer *)box, priv->hour,
                                    "x-fill", FALSE,
@@ -278,7 +278,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
 				   "expand", FALSE,
                                    NULL);
 
-  
+
   clutter_container_add_actor ((ClutterContainer *)box, priv->minute);
   clutter_container_child_set ((ClutterContainer *)box, priv->minute,
                                    "x-fill", FALSE,
@@ -287,7 +287,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
                                    NULL);
 
 
-  
+
   clutter_container_add_actor ((ClutterContainer *)box, priv->am_pm);
   clutter_container_child_set ((ClutterContainer *)box, priv->am_pm,
                                    "x-fill", FALSE,
@@ -295,7 +295,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
 				   "expand", FALSE,
                                    NULL);
 
-  
+
   clutter_container_add_actor ((ClutterContainer *)dialog, box);
   clutter_container_child_set ((ClutterContainer *)dialog, box,
 				   "expand", FALSE,
@@ -338,14 +338,14 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  
+
 
   clutter_container_add_actor ((ClutterContainer *)dialog, box);
   clutter_container_child_set ((ClutterContainer *)dialog, box,
 				   "expand", FALSE,
 				   "x-fill", TRUE,
                                    NULL);
- 
+
   priv->snooze = mx_toggle_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->snooze), "SnoozeToggle");
 
@@ -367,14 +367,14 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  
+
 
   clutter_container_add_actor ((ClutterContainer *)dialog, box);
   clutter_container_child_set ((ClutterContainer *)dialog, box,
 				   "expand", FALSE,
 				   "x-fill", TRUE,
                                    NULL);
-  
+
 }
 
 static void
@@ -383,7 +383,7 @@ construct_sound_menu (MnpAlarmDialog *dialog)
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
   int i;
   ClutterActor *box, *label;
-  
+
   priv->sound = mx_combo_box_new ();
 
   for (i=0; i<G_N_ELEMENTS(alarm_sound_table); i++)
@@ -409,15 +409,15 @@ construct_sound_menu (MnpAlarmDialog *dialog)
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  
+
 
   clutter_container_add_actor ((ClutterContainer *)dialog, box);
   clutter_container_child_set ((ClutterContainer *)dialog, box,
 				   "expand", FALSE,
 				   "x-fill", TRUE,
                                    NULL);
- 
-  
+
+
 }
 
 static void
@@ -441,13 +441,13 @@ alarm_del (MxButton *btn, MnpAlarmDialog *dialog)
 		del_node = tmp;
 		break;
 	}
-		
+
   	tmp = tmp->next;
   }
 
   if (del_node) {
   	list = g_slist_remove_link (list, del_node);
-  	gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);	
+	gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);
 	g_free (del_node->data);
 	g_slist_free_1 (del_node);
   }
@@ -463,24 +463,24 @@ static void
 construct_alarm_delete (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
- 
+
   priv->delete = mx_button_new ();
   mx_button_set_label ((MxButton *)priv->delete, _("Delete alarm"));
-  
+
   g_signal_connect (priv->delete, "clicked", G_CALLBACK(alarm_del), dialog);
   clutter_container_add_actor ((ClutterContainer *)dialog, priv->delete);
   clutter_container_child_set ((ClutterContainer *)dialog, priv->delete,
 				   "expand", FALSE,
 				   "x-fill", TRUE,
                                    NULL);
- 
+
 }
 
 static void
 mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
-  
+
   clutter_actor_set_name ((ClutterActor *)dialog, "new-alarm-dialog");
   mx_box_layout_set_pack_start ((MxBoxLayout *)dialog, FALSE);
   mx_box_layout_set_orientation ((MxBoxLayout *)dialog, MX_ORIENTATION_VERTICAL);
@@ -497,7 +497,7 @@ mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
   clutter_actor_raise_top ((ClutterActor *)dialog);
   clutter_actor_set_position ((ClutterActor *)dialog, 300,105);
   clutter_actor_set_size ((ClutterActor *)dialog, 300, 300);
-  
+
   priv->id = g_random_int();
 }
 

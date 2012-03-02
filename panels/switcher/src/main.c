@@ -418,7 +418,7 @@ main (int argc, char **argv)
     {
       Window xwin;
 
-      data->stage = clutter_stage_get_default ();
+      data->stage = clutter_stage_new ();
       clutter_actor_realize (data->stage);
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (data->stage));
 

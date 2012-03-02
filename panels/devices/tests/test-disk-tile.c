@@ -36,7 +36,7 @@ main (int     argc,
       return EXIT_FAILURE;
     }
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
 
   tile = mpd_disk_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);

@@ -30,7 +30,7 @@ main (int argc, char *argv[])
   mx_style_load_from_file (mx_style_get_default (),
                            "../theme/panel.css", NULL);
 
-  stage = clutter_stage_get_default ();
+  stage = clutter_stage_new ();
   clutter_actor_set_size (stage, 400, 200);
 
   bar = mnb_launcher_searchbar_new ();
