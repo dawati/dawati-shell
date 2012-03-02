@@ -249,13 +249,6 @@ mnb_launcher_directory_free (MnbLauncherDirectory *self)
   g_free (self);
 }
 
-static gint
-mnb_launcher_directory_compare (MnbLauncherDirectory *self,
-                                MnbLauncherDirectory *b)
-{
-  return g_utf8_collate (self->name, b->name);
-}
-
 static void
 mnb_launcher_directory_write_xml (MnbLauncherDirectory const  *self,
                                   FILE                        *fp)
@@ -527,7 +520,6 @@ mnb_launcher_tree_list_categories_from_disk (MnbLauncherTree *self)
 {
   GMenuTreeDirectory  *root;
   GList               *tree;
-  GList               *tree_iter;
 
   g_return_val_if_fail (self, NULL);
 
