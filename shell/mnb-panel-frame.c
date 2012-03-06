@@ -128,60 +128,6 @@ mnb_panel_frame_get_preferred_height (ClutterActor *self,
 }
 
 static void
-mnb_panel_frame_allocate (ClutterActor          *actor,
-                          const ClutterActorBox *box,
-                          ClutterAllocationFlags flags)
-{
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (actor)->priv;
-  ClutterActor         *border = mx_widget_get_border_image (MX_WIDGET (actor));
-
-  /*
-   * We need to use different background asset based on the size allocated to
-   * us -- basically, the panel cannot be smaller than the size of the borders
-   * of its border image, so if it is smaller than the current asset allows,
-   * we change the style by naming the widget "too-small".
-   */
-  if (border)
-    {
-      const gchar *name = clutter_actor_get_name (actor);
-      gboolean     too_small = FALSE;
-
-      /*
-       * Get the dimensions of the base texture (we are guaranteed to be called
-       * first with name == NULL, so this works).
-       */
-      if (!priv->base_geom_known && !name)
-        {
-          mx_texture_frame_get_border_values (MX_TEXTURE_FRAME (border),
-                                              &priv->base_t,
-                                              &priv->base_r,
-                                              &priv->base_b,
-                                              &priv->base_l);
-
-          priv->base_geom_known = TRUE;
-        }
-
-      if (priv->base_l + priv->base_r > box->x2 - box->x1 ||
-          priv->base_t + priv->base_b > box->y2 - box->y1)
-        {
-          too_small = TRUE;
-        }
-
-      if (!name && too_small)
-        {
-          clutter_actor_set_name (actor, "too-small");
-        }
-      else if (name && !too_small)
-        {
-          clutter_actor_set_name (actor, NULL);
-        }
-    }
-
-  CLUTTER_ACTOR_CLASS (
-             mnb_panel_frame_parent_class)->allocate (actor, box, flags);
-}
-
-static void
 mnb_panel_frame_class_init (MnbPanelFrameClass *klass)
 {
   GObjectClass      *object_class  = G_OBJECT_CLASS (klass);
@@ -196,7 +142,6 @@ mnb_panel_frame_class_init (MnbPanelFrameClass *klass)
 
   actor_class->get_preferred_width  = mnb_panel_frame_get_preferred_width;
   actor_class->get_preferred_height = mnb_panel_frame_get_preferred_height;
-  actor_class->allocate             = mnb_panel_frame_allocate;
 }
 
 static void

@@ -309,6 +309,7 @@ mnb_toolbar_background_class_init (MnbToolbarBackgroundClass *klass)
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
+#if TOOLBAR_CUT_OUT
 static void
 mnb_toolbar_background_border_changed (MnbToolbarBackground *self,
                                        GParamSpec           *param,
@@ -329,15 +330,18 @@ mnb_toolbar_background_border_changed (MnbToolbarBackground *self,
                                       &priv->bottom,
                                       &priv->left);
 }
+#endif /* TOOLBAR_CUT_OUT */
 
 static void
 mnb_toolbar_background_init (MnbToolbarBackground *self)
 {
   self->priv = TOOLBAR_BACKGROUND_PRIVATE (self);
 
+#if TOOLBAR_CUT_OUT
   g_signal_connect (self, "notify",
                     G_CALLBACK (mnb_toolbar_background_border_changed),
                     NULL);
+#endif /* TOOLBAR_CUT_OUT */
 }
 
 ClutterActor *
