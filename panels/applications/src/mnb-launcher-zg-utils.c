@@ -47,19 +47,21 @@ void
 mnb_launcher_zg_utils_send_launch_event (const gchar *executable,
                                          const gchar *title)
 {
+  gchar *exec;
+  ZeitgeistEvent *event;
 
   g_return_if_fail ((executable != NULL) && (*executable != '\0'));
   g_return_if_fail ((title != NULL) && (*title != '\0'));
 
   ensure_log ();
 
-  char *exec = g_strconcat ("application://", executable, NULL);
+  exec = g_strconcat ("application://", executable, NULL);
 
  /* Zeitgeist event is handled in a strange way within libzeitgeist:
   * the GDestroyFunc is overriden with NULL and each item is unreferenced after
   * having been evaluated (taking the ownership of a floating ref if needed).*/
 
-  ZeitgeistEvent *event = zeitgeist_event_new_full (
+  event = zeitgeist_event_new_full (
     ZEITGEIST_ZG_ACCESS_EVENT,
     ZEITGEIST_ZG_USER_ACTIVITY,
     "application://launcher.desktop",

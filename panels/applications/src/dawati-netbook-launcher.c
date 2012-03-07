@@ -158,7 +158,6 @@ static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MnbLauncher        *self)
 {
-  gchar *desktop_file;
   const gchar *desktop_file_path = mnb_launcher_button_get_desktop_file_path (launcher);
 
   /* Disable button for some time to avoid launching multiple times. */
@@ -169,10 +168,14 @@ launcher_button_activated_cb (MnbLauncherButton  *launcher,
 
   g_signal_emit (self, _signals[LAUNCHER_ACTIVATED], 0, desktop_file_path);
 #ifdef WITH_ZEITGEIST
-  desktop_file = g_path_get_basename (desktop_file_path);
-  mnb_launcher_zg_utils_send_launch_event (desktop_file, 
-                                 mnb_launcher_button_get_title(launcher));
-  g_free (desktop_file);
+  {
+    gchar *base_name;
+
+    base_name = g_path_get_basename (desktop_file_path);
+    mnb_launcher_zg_utils_send_launch_event (base_name,
+                                   mnb_launcher_button_get_title (launcher));
+    g_free (base_name);
+  }
 #endif /* WITH_ZEITGEIST */
 }
 
@@ -563,7 +566,7 @@ mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
         index_a = i;
       else if (g_strcmp0 (exec_b, g_list_nth_data (apps, i)) == 0)
         index_b = i;
-      if (index_a > -1 && index_b > -1) 
+      if (index_a > -1 && index_b > -1)
         {
           result = index_a - index_b;
           break;
@@ -574,10 +577,10 @@ mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
     result = -1;
   if (index_b == -1)
     result = 1;
-  
+
   g_free (exec_a);
   g_free (exec_b);
-  
+
   return result;
 }
 
