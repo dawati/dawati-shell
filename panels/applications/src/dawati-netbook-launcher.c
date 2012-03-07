@@ -583,31 +583,40 @@ mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
   gint i;
   gint             index_a = -1;
   gint             index_b = -1;
+  gint              result = -1;
   GList              *apps = (GList*) user_data;
   MnbLauncherButton *self  = MNB_LAUNCHER_BUTTON (self_pointer);
   MnbLauncherButton *other = MNB_LAUNCHER_BUTTON (other_pointer);
-
   const gchar *file_path_a = mnb_launcher_button_get_desktop_file_path (self);
   const gchar *file_path_b = mnb_launcher_button_get_desktop_file_path (other);
-  const gchar      *exec_a = g_path_get_basename (file_path_a);
-  const gchar      *exec_b = g_path_get_basename (file_path_b);
-  const gint   apps_length = g_list_length(apps);
-  
+  gchar            *exec_a = g_path_get_basename (file_path_a);
+  gchar            *exec_b = g_path_get_basename (file_path_b);
+  const gint   apps_length = g_list_length (apps);
+
   for (i = 0; i < apps_length; i++)
     {
       /* Try to find the index of exec_a and exec_b in apps and jump out of 
        * the loop once both are set */
-      if (g_strcmp0(exec_a, g_list_nth_data(apps, i)) == 0)
+      if (g_strcmp0 (exec_a, g_list_nth_data (apps, i)) == 0)
         index_a = i;
-      else if (g_strcmp0(exec_b, g_list_nth_data(apps, i)) == 0)
+      else if (g_strcmp0 (exec_b, g_list_nth_data (apps, i)) == 0)
         index_b = i;
-      if (index_a > -1 && index_b > -1)
-        return index_a - index_b;
+      if (index_a > -1 && index_b > -1) 
+        {
+          result = index_a - index_b;
+          break;
+        }
     }
 
   if (index_a == -1)
-    return -1;
-  return 1;
+    result = -1;
+  if (index_b == -1)
+    result = 1;
+  
+  g_free (exec_a);
+  g_free (exec_b);
+  
+  return result;
 }
 
 static void 
