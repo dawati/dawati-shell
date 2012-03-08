@@ -12,6 +12,10 @@ if USE_PANEL_DEVICES
 SUBDIRS += devices
 endif
 
+if USE_PANEL_HOME
+SUBDIRS += home
+endif
+
 if USE_PANEL_MUSIC
 SUBDIRS += music
 endif

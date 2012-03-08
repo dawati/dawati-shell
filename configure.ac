@@ -262,7 +262,7 @@ AC_SUBST(GJS_CONSOLE)
 ###########################
 
 # Default list of panels to compile
-WITH_PANELS="applications,datetime,devices,music,myzone,networks,people,power-icon,status,web,switcher,bluetooth"
+WITH_PANELS="applications,datetime,devices,home,music,myzone,networks,people,power-icon,status,web,switcher,bluetooth"
 
 # Provide a --with-panels/--without-panels configure option
 AS_DAWATI_ARG_WITH_PANELS
@@ -307,6 +307,10 @@ AS_DAWATI_PANEL(devices, [glib-2.0
                           xext
                           libpulse-mainloop-glib >= 0.9.15,
                           libnotify])
+
+# Home
+AS_DAWATI_PANEL(home, [libpeas-1.0
+                       gobject-introspection-1.0])
 
 # Music
 AS_DAWATI_PANEL(music, [])
@@ -607,6 +611,10 @@ panels/devices/data/Makefile
 panels/devices/data/dawati-panel-devices.schemas
 panels/devices/src/Makefile
 panels/devices/tests/Makefile
+
+panels/home/Makefile
+panels/home/src/Makefile
+panels/home/data/Makefile
 
 panels/music/Makefile
 

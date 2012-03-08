@@ -124,6 +124,13 @@
 #define MPL_PANEL_POWER        "power"
 
 /**
+ * MPL_PANEL_HOME:
+ *
+ * Canonical name of the home panel.
+ */
+#define MPL_PANEL_HOME         "home"
+
+/**
  * MPL_PANEL_TEST:
  *
  * Canonical name for a test panel.

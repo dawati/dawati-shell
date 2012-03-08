@@ -98,6 +98,7 @@ data/org.dawati.shell.gschema.valid
 /panels/devices/tests/test-folder-tile
 /panels/devices/tests/test-storage-device
 /panels/devices/tests/test-storage-device-tile
+/panels/home/src/dawati-panel-home
 /panels/music/dawati-panel-music
 /panels/music/dawati-panel-music.desktop
 /panels/myzone/data/dawati-panel-myzone.desktop
