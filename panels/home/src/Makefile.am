@@ -22,6 +22,8 @@ dawati_panel_home_LDADD = \
 dawati_panel_home_SOURCES = \
 	mnb-home-panel.c \
 	mnb-home-panel.h \
+	mnb-home-widget.c \
+	mnb-home-widget.h \
 	dawati-panel-home.c \
 	$(BUILT_SOURCES) \
 	$(NULL)

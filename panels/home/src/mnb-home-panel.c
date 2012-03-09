@@ -18,6 +18,12 @@
  */
 
 #include "mnb-home-panel.h"
+#include "mnb-home-widget.h"
+
+#define WIDTH 3
+#define HEIGHT 2
+
+#define DEBUG g_message
 
 G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_TABLE);
 
@@ -106,13 +112,22 @@ mnb_home_panel_class_init (MnbHomePanelClass *klass)
 static void
 mnb_home_panel_init (MnbHomePanel *self)
 {
-  ClutterActor *label;
+  guint r, c;
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
       MnbHomePanelPrivate);
 
-  label = mx_label_new_with_text ("Badger badger badger");
-  mx_table_add_actor (MX_TABLE (self), label, 0, 0);
+  for (c = 0; c < WIDTH; c++)
+    {
+      for (r = 0; r < HEIGHT; r++)
+        {
+          ClutterActor *widget;
+
+          widget = mnb_home_widget_new (r, c);
+
+          mx_table_add_actor (MX_TABLE (self), widget, r, c);
+        }
+    }
 
   clutter_actor_show_all (CLUTTER_ACTOR (self));
 }

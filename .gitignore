@@ -25,7 +25,7 @@
 /carrick/connman-technology-bindings.h
 /config.rpath
 /configure.ac.orig
-data/org.dawati.shell.gschema.valid
+*.gschema.valid
 /gtk-doc.make
 /libdawati-panel/*.pc
 /libdawati-panel/dawati-panel/DawatiPanel-*.gir

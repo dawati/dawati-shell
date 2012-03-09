@@ -1,0 +1,20 @@
+<schemalist>
+  <schema id="org.dawati.shell.home.plugin">
+    <key name="module" type="s">
+      <default>''</default>
+      <summary>The plugin module providing this widget</summary>
+      <description>The module to load to provide this widget.</description>
+    </key>
+
+    <key name="type" type="s">
+      <default>'widget'</default>
+      <choices>
+        <choice value="feed"/>
+        <choice value="widget"/>
+      </choices>
+      <summary>The type of plugin</summary>
+      <description>The type of plugin to load from this module.</description>
+    </key>
+
+  </schema>
+</schemalist>
