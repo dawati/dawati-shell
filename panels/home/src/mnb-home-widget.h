@@ -50,6 +50,7 @@ struct _MnbHomeWidgetClass
 
 GType mnb_home_widget_get_type (void);
 ClutterActor *mnb_home_widget_new (guint row, guint column);
+void mnb_home_widget_set_edit_mode (MnbHomeWidget *self, gboolean edit_mode);
 
 G_END_DECLS
 

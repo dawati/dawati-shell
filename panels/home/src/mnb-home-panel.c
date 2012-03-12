@@ -17,6 +17,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <glib/gi18n.h>
+
 #include "mnb-home-panel.h"
 #include "mnb-home-widget.h"
 
@@ -112,10 +114,18 @@ mnb_home_panel_class_init (MnbHomePanelClass *klass)
 static void
 mnb_home_panel_init (MnbHomePanel *self)
 {
+  ClutterActor *edit;
   guint r, c;
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
       MnbHomePanelPrivate);
+
+  /* edit-mode */
+  edit = mx_button_new_with_label (_("Edit"));
+  mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
+  mx_table_add_actor (MX_TABLE (self), edit, HEIGHT + 1, WIDTH / 2);
+  mx_table_child_set_x_fill (MX_TABLE (self), edit, FALSE);
+  mx_table_child_set_y_fill (MX_TABLE (self), edit, FALSE);
 
   for (c = 0; c < WIDTH; c++)
     {
@@ -124,6 +134,7 @@ mnb_home_panel_init (MnbHomePanel *self)
           ClutterActor *widget;
 
           widget = mnb_home_widget_new (r, c);
+          g_object_bind_property (edit, "toggled", widget, "edit-mode", 0);
 
           mx_table_add_actor (MX_TABLE (self), widget, r, c);
         }

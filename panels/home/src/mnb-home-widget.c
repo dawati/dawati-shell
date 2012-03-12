@@ -17,6 +17,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <glib/gi18n.h>
+
 #include "mnb-home-plugins-engine.h"
 #include "mnb-home-widget.h"
 #include "utils.h"
@@ -42,6 +44,7 @@ enum /* properties */
 struct _MnbHomeWidgetPrivate
 {
   GSettings *settings;
+  MnbHomePluginsEngine *engine;
   DawatiHomePluginsApp *app;
 
   guint row;
@@ -96,7 +99,8 @@ mnb_home_widget_set_property (GObject *self,
         break;
 
       case PROP_EDIT_MODE:
-        priv->edit_mode = g_value_get_boolean (value);
+        mnb_home_widget_set_edit_mode (MNB_HOME_WIDGET (self),
+            g_value_get_boolean (value));
         break;
 
       default:
@@ -106,66 +110,38 @@ mnb_home_widget_set_property (GObject *self,
 }
 
 static void
-home_widget_add_module (MxButton *button,
-    MnbHomeWidget *self)
-{
-  /* FIXME: this is where we offer some widgets */
-  g_settings_set_string (self->priv->settings, "module", "example");
-}
-
-static void
 home_widget_module_changed (GSettings *settings,
     char *key,
     MnbHomeWidget *self)
 {
   char *module = g_settings_get_string (settings, key);
 
+  g_clear_object (&self->priv->app);
+
   if (STR_EMPTY (module))
     {
-      ClutterActor *button;
-
       DEBUG ("no module");
-
-      /* FIXME: only show this in edit-mode */
-      button = mx_button_new_with_label ("+");
-
-      g_signal_connect (button, "clicked",
-          G_CALLBACK (home_widget_add_module), self);
-
-      clutter_actor_show (button);
-      mx_bin_set_child (MX_BIN (self), button);
     }
   else
     {
-      MnbHomePluginsEngine *engine;
-      ClutterActor *widget;
       char *path;
 
       DEBUG ("module = '%s'", module);
 
-      engine = mnb_home_plugins_engine_dup ();
+      self->priv->engine = mnb_home_plugins_engine_dup ();
       path = g_strdup_printf (GSETTINGS_PLUGIN_PATH_PREFIX "%u_%u/settings/",
           self->priv->row, self->priv->column);
 
-      self->priv->app = mnb_home_plugins_engine_create_app (engine,
+      self->priv->app = mnb_home_plugins_engine_create_app (self->priv->engine,
           module, path);
 
-      if (self->priv->app == NULL)
-        goto finally;
-
-      widget = dawati_home_plugins_app_get_widget (self->priv->app);
-
-      if (widget == NULL)
-        goto finally;
-
-      mx_bin_set_child (MX_BIN (self), widget);
-
-finally:
-      g_object_unref (engine);
       g_free (path);
     }
 
   g_free (module);
+
+  /* reload the widget */
+  mnb_home_widget_set_edit_mode (self, self->priv->edit_mode);
 }
 
 static void
@@ -194,6 +170,7 @@ mnb_home_widget_dispose (GObject *self)
   MnbHomeWidgetPrivate *priv = MNB_HOME_WIDGET (self)->priv;
 
   g_object_unref (priv->settings);
+  g_object_unref (priv->engine);
   g_object_unref (priv->app);
 
   G_OBJECT_CLASS (mnb_home_widget_parent_class)->dispose (self);
@@ -253,4 +230,91 @@ mnb_home_widget_new (guint row,
       "row", row,
       "column", column,
       NULL);
+}
+
+static void
+home_widget_add_module (MxButton *button,
+    MnbHomeWidget *self)
+{
+  /* FIXME: this is where we offer some widgets */
+  g_settings_set_string (self->priv->settings, "module", "example");
+}
+
+static void
+home_widget_remove_module (MxButton *button,
+    MnbHomeWidget *self)
+{
+  char *path;
+
+  path = g_strdup_printf (GSETTINGS_PLUGIN_PATH_PREFIX "%u_%u/",
+      self->priv->row, self->priv->column);
+  dconf_recursive_unset (path, NULL);
+
+  g_free (path);
+}
+
+void
+mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
+    gboolean edit_mode)
+{
+  self->priv->edit_mode = edit_mode;
+
+  g_object_notify (G_OBJECT (self), "edit-mode");
+
+  /* FIXME: should hold refs to the actors rather than destroy/recreate them? */
+  mx_bin_set_child (MX_BIN (self), NULL);
+
+  /* FIXME: animate this */
+  if (edit_mode)
+    {
+      ClutterActor *table;
+
+      table = mx_table_new ();
+      mx_bin_set_child (MX_BIN (self), table);
+
+      if (self->priv->app != NULL)
+        {
+          ClutterActor *config, *remove;
+
+          remove = mx_button_new_with_label ("x");
+          mx_table_add_actor (MX_TABLE (table), remove, 0, 1);
+          mx_table_child_set_x_fill (MX_TABLE (table), remove, FALSE);
+          mx_table_child_set_y_fill (MX_TABLE (table), remove, FALSE);
+
+          g_signal_connect (remove, "clicked",
+              G_CALLBACK (home_widget_remove_module), self);
+
+          config = dawati_home_plugins_app_get_configuration (self->priv->app);
+
+          if (CLUTTER_IS_ACTOR (config))
+            mx_table_add_actor (MX_TABLE (table), config, 1, 0);
+        }
+      else
+        {
+          ClutterActor *button;
+
+          button = mx_button_new_with_label ("+");
+          mx_table_add_actor (MX_TABLE (table), button, 0, 0);
+
+          g_signal_connect (button, "clicked",
+              G_CALLBACK (home_widget_add_module), self);
+        }
+
+      clutter_actor_show_all (table);
+    }
+  else
+    {
+      if (self->priv->app != NULL)
+        {
+          ClutterActor *widget;
+
+          widget = dawati_home_plugins_app_get_widget (self->priv->app);
+
+          if (!CLUTTER_IS_ACTOR (widget))
+            /* FIXME: make this better */
+            widget = mx_label_new_with_text (_("Broken plugin"));
+
+          mx_bin_set_child (MX_BIN (self), widget);
+        }
+    }
 }
