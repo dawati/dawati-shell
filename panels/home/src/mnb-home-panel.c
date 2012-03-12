@@ -39,6 +39,7 @@ enum /* properties */
 struct _MnbHomePanelPrivate
 {
   MplPanelClient *panel_client;
+  ClutterActor *background;
 };
 
 static void
@@ -93,13 +94,68 @@ mnb_home_panel_dispose (GObject *self)
 }
 
 static void
+mnb_home_panel_paint (ClutterActor *self)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+
+  clutter_actor_paint (priv->background);
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->paint (self);
+}
+
+static void
+mnb_home_panel_map (ClutterActor *self)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->map (self);
+
+  clutter_actor_map (priv->background);
+}
+
+static void
+mnb_home_panel_unmap (ClutterActor *self)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->unmap (self);
+
+  clutter_actor_unmap (priv->background);
+}
+
+static void
+mnb_home_panel_allocate (ClutterActor *self,
+    const ClutterActorBox *box,
+    ClutterAllocationFlags flags)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+  ClutterActorBox child_box;
+
+  child_box.x1 = 0;
+  child_box.y1 = 0;
+  child_box.x2 = box->x2 - box->x1;
+  child_box.y2 = box->y2 - box->y1;
+
+  clutter_actor_allocate (priv->background, &child_box, flags);
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->allocate (self,
+      box, flags);
+}
+
+static void
 mnb_home_panel_class_init (MnbHomePanelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->get_property = mnb_home_panel_get_property;
   gobject_class->set_property = mnb_home_panel_set_property;
   gobject_class->dispose = mnb_home_panel_dispose;
+
+  actor_class->paint = mnb_home_panel_paint;
+  actor_class->allocate = mnb_home_panel_allocate;
+  actor_class->map = mnb_home_panel_map;
+  actor_class->unmap = mnb_home_panel_unmap;
 
   g_type_class_add_private (gobject_class, sizeof (MnbHomePanelPrivate));
 
@@ -119,6 +175,13 @@ mnb_home_panel_init (MnbHomePanel *self)
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
       MnbHomePanelPrivate);
+
+  /* background */
+  /* FIXME: make this awesomer */
+  self->priv->background = clutter_texture_new_from_file (
+      "/usr/share/backgrounds/gnome/Aqua.jpg",
+      NULL);
+  clutter_actor_set_parent (self->priv->background, CLUTTER_ACTOR (self));
 
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
