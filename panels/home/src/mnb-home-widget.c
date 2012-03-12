@@ -25,9 +25,6 @@
 
 #include "dawati-home-plugins-app.h"
 
-#define DEBUG g_message
-#define STR_EMPTY(s) ((s) == NULL || *(s) == '\0')
-
 #define GSETTINGS_PLUGIN_PATH_PREFIX "/org/dawati/shell/home/plugin/"
 
 G_DEFINE_TYPE (MnbHomeWidget, mnb_home_widget, MX_TYPE_FRAME);

@@ -21,11 +21,10 @@
 
 #include "mnb-home-panel.h"
 #include "mnb-home-widget.h"
+#include "utils.h"
 
 #define WIDTH 3
 #define HEIGHT 2
-
-#define DEBUG g_message
 
 G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_TABLE);
 

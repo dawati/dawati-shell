@@ -20,6 +20,7 @@
 #include <girepository.h>
 
 #include "mnb-home-plugins-engine.h"
+#include "utils.h"
 
 G_DEFINE_TYPE (MnbHomePluginsEngine, mnb_home_plugins_engine, PEAS_TYPE_ENGINE);
 

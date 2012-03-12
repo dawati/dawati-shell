@@ -22,6 +22,9 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#define DEBUG g_message
+#define STR_EMPTY(s) ((s) == NULL || *(s) == '\0')
+
 G_BEGIN_DECLS
 
 gboolean dconf_recursive_unset (const char *dir, GError **error);
