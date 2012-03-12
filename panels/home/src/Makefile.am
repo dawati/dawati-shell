@@ -15,13 +15,15 @@ dawati_panel_home_LDADD = \
 	$(NULL)
 
 dawati_panel_home_SOURCES = \
+	dawati-panel-home.c \
 	mnb-home-panel.c \
 	mnb-home-panel.h \
 	mnb-home-plugins-engine.c \
 	mnb-home-plugins-engine.h \
 	mnb-home-widget.c \
 	mnb-home-widget.h \
-	dawati-panel-home.c \
+	utils.c \
+	utils.h \
 	$(NULL)
 
 libdawati_home_plugins_la_SOURCES = \

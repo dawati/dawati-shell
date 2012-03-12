@@ -310,6 +310,7 @@ AS_DAWATI_PANEL(devices, [glib-2.0
 
 # Home
 AS_DAWATI_PANEL(home, [libpeas-1.0
+                       dconf
                        gobject-introspection-1.0])
 
 # Music
