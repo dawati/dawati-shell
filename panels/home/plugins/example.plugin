@@ -1,0 +1,6 @@
+[Plugin]
+Module=example
+Loader=gjs
+IAge=2
+Name=Example Plugin
+Authors=Danielle Madeley <danielle.madeley@collabora.co.uk>

@@ -99,6 +99,8 @@
 /panels/devices/tests/test-storage-device
 /panels/devices/tests/test-storage-device-tile
 /panels/home/src/dawati-panel-home
+/panels/home/src/DawatiHomePlugins-1.0.gir
+/panels/home/src/DawatiHomePlugins-1.0.typelib
 /panels/music/dawati-panel-music
 /panels/music/dawati-panel-music.desktop
 /panels/myzone/data/dawati-panel-myzone.desktop

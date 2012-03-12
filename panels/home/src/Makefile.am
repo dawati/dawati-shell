@@ -7,26 +7,40 @@ AM_CFLAGS = \
 
 libexec_PROGRAMS = dawati-panel-home
 
+noinst_LTLIBRARIES = libdawati-home-plugins.la
+
 dawati_panel_home_LDADD = \
 	$(PANEL_HOME_LIBS) \
+	libdawati-home-plugins.la \
 	$(NULL)
-
-# %.c: %.list Makefile.am
-# 	$(QUIET_GEN)glib-genmarshal --body --prefix=sw_marshal $< > $@
-#
-# %.h: %.list Makefile.am
-# 	$(QUIET_GEN)glib-genmarshal --header --prefix=sw_marshal $< > $@
-
-# BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
 dawati_panel_home_SOURCES = \
 	mnb-home-panel.c \
 	mnb-home-panel.h \
+	mnb-home-plugins-engine.c \
+	mnb-home-plugins-engine.h \
 	mnb-home-widget.c \
 	mnb-home-widget.h \
 	dawati-panel-home.c \
-	$(BUILT_SOURCES) \
 	$(NULL)
+
+libdawati_home_plugins_la_SOURCES = \
+	dawati-home-plugins-app.c \
+	dawati-home-plugins-app.h \
+	$(NULL)
+
+include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS = DawatiHomePlugins-1.0.gir
+
+DawatiHomePlugins-1.0.gir: libdawati-home-plugins.la Makefile.am
+DawatiHomePlugins_1_0_gir_NAMESPACE = DawatiHomePlugins
+DawatiHomePlugins_1_0_gir_VERSION = 1.0
+DawatiHomePlugins_1_0_gir_LIBS = libdawati-home-plugins.la
+DawatiHomePlugins_1_0_gir_FILES = $(libdawati_home_plugins_la_SOURCES)
+DawatiHomePlugins_1_0_gir_INCLUDES = Clutter-1.0
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 DISTCLEANFILES = \
 	$(BUILT_SOURCES) \

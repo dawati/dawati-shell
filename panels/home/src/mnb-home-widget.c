@@ -17,7 +17,10 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "mnb-home-plugins-engine.h"
 #include "mnb-home-widget.h"
+
+#include "dawati-home-plugins-app.h"
 
 #define DEBUG g_message
 #define STR_EMPTY(s) ((s) == NULL || *(s) == '\0')
@@ -38,6 +41,7 @@ enum /* properties */
 struct _MnbHomeWidgetPrivate
 {
   GSettings *settings;
+  DawatiHomePluginsApp *app;
 
   guint row;
   guint column;
@@ -132,15 +136,28 @@ home_widget_module_changed (GSettings *settings,
     }
   else
     {
-      ClutterActor *label;
+      MnbHomePluginsEngine *engine;
+      ClutterActor *widget;
 
       DEBUG ("module = '%s'", module);
 
-      /* FIXME: load the module */
-      label = mx_label_new_with_text (module);
+      engine = mnb_home_plugins_engine_dup ();
 
-      clutter_actor_show (label);
-      mx_bin_set_child (MX_BIN (self), label);
+      self->priv->app = mnb_home_plugins_engine_create_app (engine,
+          module, "/");
+
+      if (self->priv->app == NULL)
+        goto finally;
+
+      widget = dawati_home_plugins_app_get_widget (self->priv->app);
+
+      if (widget == NULL)
+        goto finally;
+
+      mx_bin_set_child (MX_BIN (self), widget);
+
+finally:
+      g_object_unref (engine);
     }
 
   g_free (module);
@@ -172,6 +189,7 @@ mnb_home_widget_dispose (GObject *self)
   MnbHomeWidgetPrivate *priv = MNB_HOME_WIDGET (self)->priv;
 
   g_object_unref (priv->settings);
+  g_object_unref (priv->app);
 
   G_OBJECT_CLASS (mnb_home_widget_parent_class)->dispose (self);
 }
