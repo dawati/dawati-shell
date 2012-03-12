@@ -19,6 +19,7 @@
 
 #include "mnb-home-plugins-engine.h"
 #include "mnb-home-widget.h"
+#include "utils.h"
 
 #include "dawati-home-plugins-app.h"
 
@@ -138,13 +139,16 @@ home_widget_module_changed (GSettings *settings,
     {
       MnbHomePluginsEngine *engine;
       ClutterActor *widget;
+      char *path;
 
       DEBUG ("module = '%s'", module);
 
       engine = mnb_home_plugins_engine_dup ();
+      path = g_strdup_printf (GSETTINGS_PLUGIN_PATH_PREFIX "%u_%u/settings/",
+          self->priv->row, self->priv->column);
 
       self->priv->app = mnb_home_plugins_engine_create_app (engine,
-          module, "/");
+          module, path);
 
       if (self->priv->app == NULL)
         goto finally;
@@ -158,6 +162,7 @@ home_widget_module_changed (GSettings *settings,
 
 finally:
       g_object_unref (engine);
+      g_free (path);
     }
 
   g_free (module);
