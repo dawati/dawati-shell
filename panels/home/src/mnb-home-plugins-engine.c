@@ -64,6 +64,7 @@ mnb_home_plugins_engine_class_init (MnbHomePluginsEngineClass *klass)
 static void
 mnb_home_plugins_engine_init (MnbHomePluginsEngine *self)
 {
+  const char *plugins_dir;
   GError *error = NULL;
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
@@ -71,8 +72,15 @@ mnb_home_plugins_engine_init (MnbHomePluginsEngine *self)
 
   peas_engine_enable_loader (PEAS_ENGINE (self), "gjs");
 
-  /* FIXME -- use sensible paths */
-  peas_engine_add_search_path (PEAS_ENGINE (self), "../plugins/", NULL);
+  plugins_dir = g_getenv ("DAWATI_HOME_PLUGINS_DIR");
+
+  if (STR_EMPTY (plugins_dir))
+    plugins_dir = PLUGINS_DIR;
+
+  DEBUG ("Loading plugins from '%s'", plugins_dir);
+
+  peas_engine_add_search_path (PEAS_ENGINE (self), plugins_dir, NULL);
+
   g_irepository_prepend_search_path (".");
 
   if (!g_irepository_require (g_irepository_get_default (),

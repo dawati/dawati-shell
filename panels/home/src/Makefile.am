@@ -3,6 +3,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 AM_CFLAGS = \
 	$(PANEL_HOME_CFLAGS) \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
+	-DPLUGINS_DIR=\"$(datadir)/dawati-shell/plugins/\" \
 	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-home
