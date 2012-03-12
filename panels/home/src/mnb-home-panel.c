@@ -123,9 +123,13 @@ mnb_home_panel_init (MnbHomePanel *self)
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
   mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
-  mx_table_add_actor (MX_TABLE (self), edit, HEIGHT + 1, WIDTH / 2);
-  mx_table_child_set_x_fill (MX_TABLE (self), edit, FALSE);
-  mx_table_child_set_y_fill (MX_TABLE (self), edit, FALSE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), edit,
+      HEIGHT + 1, WIDTH / 2,
+      "x-expand", FALSE,
+      "y-expand", FALSE,
+      "x-fill", FALSE,
+      "y-fill", FALSE,
+      NULL);
 
   for (c = 0; c < WIDTH; c++)
     {
@@ -136,7 +140,12 @@ mnb_home_panel_init (MnbHomePanel *self)
           widget = mnb_home_widget_new (r, c);
           g_object_bind_property (edit, "toggled", widget, "edit-mode", 0);
 
-          mx_table_add_actor (MX_TABLE (self), widget, r, c);
+          mx_table_add_actor_with_properties (MX_TABLE (self), widget, r, c,
+              "x-expand", TRUE,
+              "y-expand", TRUE,
+              "x-fill", TRUE,
+              "y-fill", TRUE,
+              NULL);
         }
     }
 

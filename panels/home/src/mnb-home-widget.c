@@ -277,9 +277,12 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
           ClutterActor *config, *remove;
 
           remove = mx_button_new_with_label ("x");
-          mx_table_add_actor (MX_TABLE (table), remove, 0, 1);
-          mx_table_child_set_x_fill (MX_TABLE (table), remove, FALSE);
-          mx_table_child_set_y_fill (MX_TABLE (table), remove, FALSE);
+          mx_table_add_actor_with_properties (MX_TABLE (table), remove, 0, 1,
+              "x-expand", FALSE,
+              "y-expand", FALSE,
+              "x-fill", FALSE,
+              "y-fill", FALSE,
+              NULL);
 
           g_signal_connect (remove, "clicked",
               G_CALLBACK (home_widget_remove_module), self);
@@ -287,7 +290,12 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
           config = dawati_home_plugins_app_get_configuration (self->priv->app);
 
           if (CLUTTER_IS_ACTOR (config))
-            mx_table_add_actor (MX_TABLE (table), config, 1, 0);
+            mx_table_add_actor_with_properties (MX_TABLE (table), config, 1, 0,
+                "x-expand", TRUE,
+                "y-expand", TRUE,
+                "x-fill", TRUE,
+                "y-fill", TRUE,
+                NULL);
         }
       else
         {
