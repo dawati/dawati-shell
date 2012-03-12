@@ -47,6 +47,7 @@ struct _MnbHomeWidgetPrivate
   guint row;
   guint column;
   gboolean edit_mode;
+  char *module;
 };
 
 static void
@@ -111,14 +112,15 @@ home_widget_module_changed (GSettings *settings,
     char *key,
     MnbHomeWidget *self)
 {
-  char *module = g_settings_get_string (settings, key);
+  g_free (self->priv->module);
+  self->priv->module = g_settings_get_string (settings, key);
 
   if (self->priv->app != NULL)
     dawati_home_plugins_app_deinit (self->priv->app);
 
   g_clear_object (&self->priv->app);
 
-  if (STR_EMPTY (module))
+  if (STR_EMPTY (self->priv->module))
     {
       DEBUG ("no module");
     }
@@ -126,20 +128,20 @@ home_widget_module_changed (GSettings *settings,
     {
       char *path;
 
-      DEBUG ("module = '%s'", module);
+      DEBUG ("module = '%s'", self->priv->module);
 
       self->priv->engine = mnb_home_plugins_engine_dup ();
       path = g_strdup_printf (GSETTINGS_PLUGIN_PATH_PREFIX "%u_%u/settings/",
           self->priv->row, self->priv->column);
 
       self->priv->app = mnb_home_plugins_engine_create_app (self->priv->engine,
-          module, path);
-      dawati_home_plugins_app_init (self->priv->app);
+          self->priv->module, path);
+
+      if (self->priv->app != NULL)
+        dawati_home_plugins_app_init (self->priv->app);
 
       g_free (path);
     }
-
-  g_free (module);
 
   /* reload the widget */
   mnb_home_widget_set_edit_mode (self, self->priv->edit_mode);
@@ -178,6 +180,16 @@ mnb_home_widget_dispose (GObject *self)
 }
 
 static void
+mnb_home_widget_finalize (GObject *self)
+{
+  MnbHomeWidgetPrivate *priv = MNB_HOME_WIDGET (self)->priv;
+
+  g_free (priv->module);
+
+  G_OBJECT_CLASS (mnb_home_widget_parent_class)->finalize (self);
+}
+
+static void
 mnb_home_widget_class_init (MnbHomeWidgetClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -186,6 +198,7 @@ mnb_home_widget_class_init (MnbHomeWidgetClass *klass)
   gobject_class->set_property = mnb_home_widget_set_property;
   gobject_class->constructed = mnb_home_widget_constructed;
   gobject_class->dispose = mnb_home_widget_dispose;
+  gobject_class->finalize = mnb_home_widget_finalize;
 
   g_type_class_add_private (gobject_class, sizeof (MnbHomeWidgetPrivate));
 
@@ -273,7 +286,7 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
       table = mx_table_new ();
       mx_bin_set_child (MX_BIN (self), table);
 
-      if (self->priv->app != NULL)
+      if (!STR_EMPTY (self->priv->module))
         {
           ClutterActor *config, *remove;
 
@@ -288,7 +301,11 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
           g_signal_connect (remove, "clicked",
               G_CALLBACK (home_widget_remove_module), self);
 
-          config = dawati_home_plugins_app_get_configuration (self->priv->app);
+          if (self->priv->app != NULL)
+            config = dawati_home_plugins_app_get_configuration (
+                self->priv->app);
+          else
+            config = mx_label_new_with_text (_("Plugin missing"));
 
           if (CLUTTER_IS_ACTOR (config))
             mx_table_add_actor_with_properties (MX_TABLE (table), config, 1, 0,
@@ -313,9 +330,10 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
     }
   else
     {
+      ClutterActor *widget = NULL;
+
       if (self->priv->app != NULL)
         {
-          ClutterActor *widget;
 
           widget = dawati_home_plugins_app_get_widget (self->priv->app);
 
@@ -323,7 +341,13 @@ mnb_home_widget_set_edit_mode (MnbHomeWidget *self,
             /* FIXME: make this better */
             widget = mx_label_new_with_text (_("Broken plugin"));
 
-          mx_bin_set_child (MX_BIN (self), widget);
         }
+      else if (!STR_EMPTY (self->priv->module))
+        {
+          widget = mx_label_new_with_text (_("Plugin missing"));
+        }
+
+      if (widget != NULL)
+        mx_bin_set_child (MX_BIN (self), widget);
     }
 }
