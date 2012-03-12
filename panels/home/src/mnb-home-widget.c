@@ -116,6 +116,9 @@ home_widget_module_changed (GSettings *settings,
 {
   char *module = g_settings_get_string (settings, key);
 
+  if (self->priv->app != NULL)
+    dawati_home_plugins_app_deinit (self->priv->app);
+
   g_clear_object (&self->priv->app);
 
   if (STR_EMPTY (module))
@@ -134,6 +137,7 @@ home_widget_module_changed (GSettings *settings,
 
       self->priv->app = mnb_home_plugins_engine_create_app (self->priv->engine,
           module, path);
+      dawati_home_plugins_app_init (self->priv->app);
 
       g_free (path);
     }

@@ -42,12 +42,16 @@ struct _DawatiHomePluginsAppInterface
 {
   GTypeInterface parent_iface;
 
+  void (* init) (DawatiHomePluginsApp *self);
+  void (* deinit) (DawatiHomePluginsApp *self);
   ClutterActor * (* get_widget) (DawatiHomePluginsApp *self);
   ClutterActor * (* get_configuration) (DawatiHomePluginsApp *self);
 };
 
 GType dawati_home_plugins_app_get_type (void) G_GNUC_CONST;
 
+void dawati_home_plugins_app_init (DawatiHomePluginsApp *self);
+void dawati_home_plugins_app_deinit (DawatiHomePluginsApp *self);
 ClutterActor *dawati_home_plugins_app_get_widget (DawatiHomePluginsApp *self);
 ClutterActor *dawati_home_plugins_app_get_configuration (DawatiHomePluginsApp *self);
 

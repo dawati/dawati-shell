@@ -1,0 +1,10 @@
+<schemalist>
+  <schema id="org.dawati.shell.home.plugin.example">
+    <key name="picture" type="s">
+      <default>'/usr/share/backgrounds/gnome/FreshFlower.jpg'</default>
+      <summary>Picture filename</summary>
+      <description>Filename of a picture to load for this plugin.</description>
+    </key>
+
+  </schema>
+</schemalist>

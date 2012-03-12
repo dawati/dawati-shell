@@ -34,6 +34,40 @@ dawati_home_plugins_app_default_init (DawatiHomePluginsAppInterface *iface)
 }
 
 /**
+ * dawati_home_plugins_app_init:
+ * @self: ourselves
+ */
+void
+dawati_home_plugins_app_init (DawatiHomePluginsApp *self)
+{
+  DawatiHomePluginsAppInterface *iface;
+
+  g_return_if_fail (DAWATI_IS_HOME_APP_PLUGIN (self));
+
+  iface = DAWATI_HOME_APP_PLUGIN_GET_IFACE (self);
+
+  if (iface->init != NULL)
+    iface->init (self);
+}
+
+/**
+ * dawati_home_plugins_app_deinit:
+ * @self: ourselves
+ */
+void
+dawati_home_plugins_app_deinit (DawatiHomePluginsApp *self)
+{
+  DawatiHomePluginsAppInterface *iface;
+
+  g_return_if_fail (DAWATI_IS_HOME_APP_PLUGIN (self));
+
+  iface = DAWATI_HOME_APP_PLUGIN_GET_IFACE (self);
+
+  if (iface->deinit != NULL)
+    iface->deinit (self);
+}
+
+/**
  * dawati_home_plugins_app_get_widget:
  * @self: ourselves
  *
