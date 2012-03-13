@@ -248,7 +248,7 @@ launch_cal (ClutterActor *actor, MnpDatetime *dtime)
 
 	if (priv->panel_client) {
 		mpl_panel_client_hide (priv->panel_client);
-		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/evolution  --express -c calendar");
+		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/evolution  -c calendar");
 	}
 }
 
