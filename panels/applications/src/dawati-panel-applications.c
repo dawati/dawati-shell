@@ -166,7 +166,7 @@ main (int     argc,
     }
   g_option_context_free (context);
 
-  mpl_panel_clutter_init_with_gtk (&argc, &argv);
+  mpl_panel_clutter_init_lib (&argc, &argv);
 
   if (_dpi)
     {
@@ -191,13 +191,8 @@ main (int     argc,
 
   if (_standalone)
     {
-      Window xwin;
-
       stage = clutter_stage_get_default ();
       clutter_actor_realize (stage);
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-      mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
 
       if (_geometry)
         {
@@ -236,7 +231,6 @@ main (int     argc,
                                      TRUE);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-      mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (panel));
 
       mpl_panel_client_set_size_request (panel, -1, 600);
 
