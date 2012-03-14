@@ -2785,7 +2785,6 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *lowlight, *panel_stub;
   ClutterTexture    *sh_texture;
-  gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
   MetaScreen        *screen = meta_plugin_get_screen (plugin);
@@ -2808,8 +2807,8 @@ mnb_toolbar_constructed (GObject *self)
     }
 
   meta_plugin_query_screen_size (plugin,
-                                   &priv->old_screen_width,
-                                   &priv->old_screen_height);
+                                 &priv->old_screen_width,
+                                 &priv->old_screen_height);
 
   clutter_actor_set_reactive (actor, TRUE);
 
@@ -2833,7 +2832,8 @@ mnb_toolbar_constructed (GObject *self)
                                              0, /* right */
                                              0, /* bottom */
                                              0  /* left */);
-      clutter_actor_set_size (priv->shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
+      clutter_actor_set_size (priv->shadow,
+                              priv->old_screen_width, TOOLBAR_SHADOW_EXTRA);
       clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
       clutter_actor_lower (priv->shadow, priv->hbox_main);
       clutter_actor_set_y (priv->shadow, TOOLBAR_HEIGHT - 10);
@@ -2860,31 +2860,15 @@ mnb_toolbar_constructed (GObject *self)
                 "show-on-set-parent", FALSE,
                 NULL);
 
-  {
-    MetaWorkspace *workspace = meta_screen_get_active_workspace (screen);
+  priv->max_panels = MAX_PANELS (priv->old_screen_width);
 
-    meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-    if (workspace)
-      {
-        MetaRectangle  r;
-
-        meta_workspace_get_work_area_all_monitors (workspace, &r);
-
-        screen_height = r.y + r.height;
-      }
-  }
-
-  priv->old_screen_width  = screen_width;
-  priv->old_screen_height = screen_height;
-
-  priv->max_panels = MAX_PANELS (screen_width);
-
-  clutter_actor_set_size (priv->hbox_main, screen_width, TOOLBAR_HEIGHT);
+  clutter_actor_set_size (priv->hbox_main,
+                          priv->old_screen_width, TOOLBAR_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
 
-  clutter_actor_set_size (lowlight, screen_width, screen_height);
+  clutter_actor_set_size (lowlight,
+                          priv->old_screen_width, priv->old_screen_height);
   clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
   clutter_actor_hide (lowlight);
   clutter_actor_set_reactive (lowlight, TRUE);
@@ -2903,7 +2887,7 @@ mnb_toolbar_constructed (GObject *self)
 
     clutter_actor_set_size (panel_stub,
                             1024,
-                            screen_height / 3);
+                            priv->old_screen_height / 3);
     clutter_actor_set_position (panel_stub,
                                 priv->old_screen_width / 2 - 512,
                                 STATUSBAR_HEIGHT);
