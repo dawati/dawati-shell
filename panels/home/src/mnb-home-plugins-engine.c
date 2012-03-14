@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Intel Corp.
+ * Copyright (c) 2012 Intel Corp.
  *
  * Author: Danielle Madeley <danielle.madeley@collabora.co.uk>
  *
