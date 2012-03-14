@@ -48,23 +48,15 @@
 #include <config.h>
 
 static void
-stage_width_notify_cb (ClutterActor  *stage,
-                       GParamSpec    *pspec,
-                       ClutterActor  *launcher)
+stage_size_notify_cb (ClutterActor  *actor,
+                      GParamSpec    *pspec,
+                      ClutterActor  *launcher)
 {
-  guint width = clutter_actor_get_width (stage);
+  ClutterActor *stage = clutter_actor_get_stage (launcher);
 
-  clutter_actor_set_width (launcher, width);
-}
-
-static void
-stage_height_notify_cb (ClutterActor  *stage,
-                        GParamSpec    *pspec,
-                        ClutterActor  *launcher)
-{
-  guint height = clutter_actor_get_height (stage);
-
-  clutter_actor_set_height (launcher, height);
+  clutter_actor_set_size (launcher,
+                          clutter_actor_get_width (stage),
+                          clutter_actor_get_height (stage));
 }
 
 static void
@@ -121,19 +113,13 @@ main (int    argc,
                                     "datetime-button",
                                     TRUE);
 
-    stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
-
     mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
+    mpl_panel_client_set_size_request (client, -1, 530);
+
+    stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
     datetime = mnp_shell_new (stage);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
-
-    g_signal_connect (stage, "notify::width",
-                      G_CALLBACK (stage_width_notify_cb), datetime);
-    g_signal_connect (stage, "notify::height",
-                      G_CALLBACK (stage_height_notify_cb), datetime);
-
-    mpl_panel_client_set_size_request (client, -1, 530);
 
     g_signal_connect (datetime,
 		      "activated",
@@ -150,15 +136,17 @@ main (int    argc,
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     datetime = mnp_shell_new (stage);
 
-    g_signal_connect (stage, "notify::width",
-                      G_CALLBACK (stage_width_notify_cb), datetime);
-    g_signal_connect (stage, "notify::height",
-                      G_CALLBACK (stage_height_notify_cb), datetime);
-
     clutter_actor_set_size (stage, 1016, 530);
 
     clutter_actor_show (stage);
   }
+
+  g_signal_connect (datetime, "parent-set",
+                    G_CALLBACK (stage_size_notify_cb), datetime);
+  g_signal_connect (stage, "notify::width",
+                    G_CALLBACK (stage_size_notify_cb), datetime);
+  g_signal_connect (stage, "notify::height",
+                    G_CALLBACK (stage_size_notify_cb), datetime);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                (ClutterActor *)datetime);
