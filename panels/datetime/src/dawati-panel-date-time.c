@@ -112,10 +112,13 @@ main (int    argc,
 
     mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
-    mpl_panel_client_set_size_request (client, -1, 530);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_shell_new ();
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                 (ClutterActor *)datetime);
+
+    mpl_panel_client_set_size_request (client, -1, 530);
     g_signal_connect (client, "size-changed",
                       G_CALLBACK (_client_set_size_cb), datetime);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
@@ -137,11 +140,12 @@ main (int    argc,
     clutter_actor_set_size (datetime, 1016, 530);
 
     clutter_actor_show (stage);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                 (ClutterActor *)datetime);
+
   }
 
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)datetime);
 
   clutter_main ();
 

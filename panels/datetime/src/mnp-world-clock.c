@@ -511,7 +511,7 @@ construct_completion (MnpWorldClock *world_clock)
         mx_bin_set_child (MX_BIN (frame), scroll);
 	clutter_container_add_actor ((ClutterContainer *)stage, frame);
       	clutter_actor_raise_top((ClutterActor *) frame);
-	clutter_actor_set_position (frame, 19, 147);
+	clutter_actor_set_position (frame, 14, 167);
 	clutter_actor_hide (frame);
 
 	priv->completion = frame;
