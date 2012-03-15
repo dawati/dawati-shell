@@ -56,6 +56,7 @@ static gboolean update_date (MnpDatetime *datetime);
 
 struct _MnpDatetimePrivate {
 	MplPanelClient *panel_client;
+	ClutterActor *stage;
 
 	ClutterActor *world_clock;
 
@@ -689,7 +690,7 @@ mnp_datetime_construct (MnpDatetime *time)
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)time, 4);
 
-	priv->world_clock = mnp_world_clock_new ();
+	priv->world_clock = mnp_world_clock_new (priv->stage);
 	g_signal_connect (priv->world_clock, "time-changed", G_CALLBACK(time_changed_now), time);
 
 	mx_box_layout_add_actor ((MxBoxLayout *) time, priv->world_clock, 0);
@@ -716,10 +717,12 @@ mnp_datetime_construct (MnpDatetime *time)
 }
 
 ClutterActor *
-mnp_datetime_new (void)
+mnp_datetime_new (ClutterActor *stage)
 {
   MnpDatetime *panel = g_object_new (MNP_TYPE_DATETIME, NULL);
+  MnpDatetimePrivate *priv = GET_PRIVATE (panel); 
 
+  priv->stage = stage;
   mnp_datetime_construct (panel);
 
   return (ClutterActor *)panel;

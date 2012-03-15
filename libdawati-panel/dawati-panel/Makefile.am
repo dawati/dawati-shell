@@ -168,23 +168,4 @@ EXTRA_DIST= $(private_h)
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 
-if HAVE_INTROSPECTION
-DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir: libdawati-panel.la
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_INCLUDES = Gdk-3.0 GdkX11-3.0 Gtk-3.0 Clutter-1.0 Mx-2.0
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_CFLAGS = $(libdawati_panel_la_CPPFLAGS) -I $(top_srcdir)/libdawati-panel -I $(srcdir) --accept-unprefixed --warn-all
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_LIBS = libdawati-panel.la
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_FILES = $(source_c) $(source_h)
-DawatiPanel_@DAWATI_PANEL_MAJOR_VERSION@_@DAWATI_PANEL_MINOR_VERSION@_gir_SCANNERFLAGS = --add-include-path=$(MUTTER_GIR_DIR)
-INTROSPECTION_GIRS += DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir
-CLEANFILES += DawatiPanel-@DAWATI_PANEL_MAJOR_VERSION@.@DAWATI_PANEL_MINOR_VERSION@.gir
 
-# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
-# install anything - we need to install inside our prefix.
-girdir = $(datadir)/gir-1.0
-gir_DATA = $(INTROSPECTION_GIRS)
-
-typelibdir = $(libdir)/girepository-1.0
-typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
-
-CLEANFILES += $(gir_DATA) $(typelib_DATA)
-endif # HAVE_INTROSPECTION

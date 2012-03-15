@@ -125,7 +125,7 @@ main (int    argc,
 
     mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
-    datetime = mnp_shell_new ();
+    datetime = mnp_shell_new (stage);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
 
     g_signal_connect (stage, "notify::width",
@@ -148,7 +148,7 @@ main (int    argc,
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
-    datetime = mnp_shell_new ();
+    datetime = mnp_shell_new (stage);
 
     g_signal_connect (stage, "notify::width",
                       G_CALLBACK (stage_width_notify_cb), datetime);

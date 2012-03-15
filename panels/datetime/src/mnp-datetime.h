@@ -60,7 +60,7 @@ typedef struct {
 
 GType mnp_datetime_get_type (void);
 
-ClutterActor *mnp_datetime_new (void);
+ClutterActor *mnp_datetime_new (ClutterActor *stage);
 void mnp_datetime_set_panel_client (MnpDatetime *datetime,
                                         MplPanelClient *panel_client);
 void

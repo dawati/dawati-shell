@@ -38,6 +38,7 @@ G_DEFINE_TYPE (MnpShell, mnp_shell, MX_TYPE_BOX_LAYOUT)
 
 struct _MnpShellPrivate {
 	MplPanelClient *panel_client;
+	ClutterActor *stage;
 
 	ClutterActor *label;
 	ClutterActor *datetime;
@@ -159,7 +160,7 @@ mnp_shell_construct (MnpShell *shell)
   clutter_actor_set_name ((ClutterActor *)shell, "datetime-panel");
   mx_box_layout_set_enable_animations ((MxBoxLayout *)shell, TRUE);
 
-  priv->datetime = mnp_datetime_new ();
+  priv->datetime = mnp_datetime_new (priv->stage);
 
   priv->label = mx_label_new_with_text (_("Time and Date"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->label), "titleBar");
@@ -183,10 +184,12 @@ mnp_shell_construct (MnpShell *shell)
 }
 
 ClutterActor *
-mnp_shell_new (void)
+mnp_shell_new (ClutterActor *stage)
 {
   MnpShell *panel = g_object_new (MNP_TYPE_SHELL, NULL);
+  MnpShellPrivate *priv = GET_PRIVATE (panel);
 
+  priv->stage = stage;
   mnp_shell_construct (panel);
 
   return (ClutterActor *)panel;

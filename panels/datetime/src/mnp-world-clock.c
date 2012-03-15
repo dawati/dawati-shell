@@ -85,6 +85,7 @@ struct _MnpWorldClockPrivate {
 	gboolean completion_inited;
 
 	MplPanelClient *panel_client;
+	ClutterActor *stage;
 
 	/* Geo Clue */
 	GeocluePosition *geo_position;
@@ -475,7 +476,7 @@ construct_completion (MnpWorldClock *world_clock)
 	ClutterModel *model;
 	MnpButtonItem *button_item;
 
-	stage = clutter_stage_get_default ();
+	stage = priv->stage;
 
         /* Create an event-box to capture input when the completion list
          * displays.
@@ -511,7 +512,7 @@ construct_completion (MnpWorldClock *world_clock)
         mx_bin_set_child (MX_BIN (frame), scroll);
 	clutter_container_add_actor ((ClutterContainer *)stage, frame);
       	clutter_actor_raise_top((ClutterActor *) frame);
-	clutter_actor_set_position (frame, 19, 147);
+	clutter_actor_set_position (frame, 14, 167);
 	clutter_actor_hide (frame);
 
 	priv->completion = frame;
@@ -739,7 +740,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	gfloat width, height;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
-	stage = clutter_stage_get_default ();
+	stage = priv->stage;
 	priv->location_tile = FALSE;
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_ORIENTATION_VERTICAL);
@@ -893,10 +894,12 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 }
 
 ClutterActor *
-mnp_world_clock_new (void)
+mnp_world_clock_new (ClutterActor *stage)
 {
   MnpWorldClock *panel = g_object_new (MNP_TYPE_WORLD_CLOCK, NULL);
+  MnpWorldClockPrivate *priv = GET_PRIVATE (panel);
 
+  priv->stage = stage;
   mnp_world_clock_construct (panel);
 
   return (ClutterActor *)panel;

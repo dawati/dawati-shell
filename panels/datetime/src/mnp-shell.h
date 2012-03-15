@@ -60,7 +60,7 @@ typedef struct {
 
 GType mnp_shell_get_type (void);
 
-ClutterActor *mnp_shell_new (void);
+ClutterActor *mnp_shell_new (ClutterActor *stage);
 void mnp_shell_set_panel_client (MnpShell *shell,
                                         MplPanelClient *panel_client);
 
