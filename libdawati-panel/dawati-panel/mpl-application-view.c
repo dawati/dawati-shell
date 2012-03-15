@@ -21,6 +21,8 @@
 
 #include "mpl-application-view.h"
 
+#include <string.h>
+
 G_DEFINE_TYPE (MplApplicationView, mpl_application_view, MX_TYPE_TABLE)
 
 #define APPLICATION_VIEW_PRIVATE(o) \
@@ -273,7 +275,7 @@ mpl_application_view_init (MplApplicationView *self)
 {
   MplApplicationViewPrivate *priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
-  ClutterActor *frame;
+  ClutterActor *frame, *titles;
 
   priv = self->priv = APPLICATION_VIEW_PRIVATE (self);
 
@@ -284,23 +286,32 @@ mpl_application_view_init (MplApplicationView *self)
   g_signal_connect (self, "button-release-event",
                     G_CALLBACK (activate_clicked), NULL);
 
+  titles = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
+  mx_table_add_actor (MX_TABLE (actor), titles, 0, 1);
+  mx_table_child_set_y_expand (MX_TABLE (actor), titles, TRUE);
+  mx_table_child_set_y_fill (MX_TABLE (actor), titles, TRUE);
+  mx_table_child_set_y_align (MX_TABLE (actor), titles, MX_ALIGN_END);
+
   /* title */
   priv->title = mx_label_new ();
+  mx_label_set_y_align (MX_LABEL (priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "appTitle");
-  mx_table_add_actor (MX_TABLE (actor), priv->title, 0, 1);
-  mx_table_child_set_y_expand (MX_TABLE (actor), priv->title, FALSE);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->title, 0);
+  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
+                                  priv->title, TRUE);
 
   /* subtitle */
   priv->subtitle = mx_label_new ();
+  mx_label_set_y_align (MX_LABEL (priv->subtitle), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->subtitle), "appSubTitle");
-  mx_table_add_actor (MX_TABLE (actor), priv->subtitle, 1, 1);
-  mx_table_child_set_y_expand (MX_TABLE (actor), priv->subtitle, FALSE);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->subtitle, 1);
+  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
+                                  priv->subtitle, TRUE);
 
   /* close button */
   priv->close_button = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "appCloseButton");
   mx_table_add_actor (MX_TABLE (actor), priv->close_button, 0, 2);
-  mx_table_child_set_y_fill (MX_TABLE (actor), priv->close_button, FALSE);
   mx_table_child_set_x_fill (MX_TABLE (actor), priv->close_button, FALSE);
   mx_table_child_set_y_expand (MX_TABLE (actor), priv->close_button, FALSE);
   mx_table_child_set_x_expand (MX_TABLE (actor), priv->close_button, FALSE);
@@ -309,8 +320,9 @@ mpl_application_view_init (MplApplicationView *self)
 
   /* frame */
   frame = mx_frame_new ();
+  clutter_actor_set_size (frame, 250, 160);
   mx_stylable_set_style_class (MX_STYLABLE (frame), "appBackground");
-  mx_table_add_actor (MX_TABLE (actor), frame, 2, 0);
+  mx_table_add_actor (MX_TABLE (actor), frame, 1, 0);
   mx_table_child_set_column_span (MX_TABLE (actor), frame, 3);
   mx_table_child_set_x_expand (MX_TABLE (actor), frame, FALSE);
 
@@ -353,7 +365,7 @@ mpl_application_view_set_icon (MplApplicationView *view,
   mx_table_child_set_y_expand (MX_TABLE (table), icon, FALSE);
   mx_table_child_set_x_expand (MX_TABLE (table), icon, FALSE);
   mx_table_child_set_y_fill (MX_TABLE (table), icon, FALSE);
-  mx_table_child_set_row_span (MX_TABLE (table), icon, 2);
+  mx_table_child_set_row_span (MX_TABLE (table), icon, 1);
   clutter_actor_set_size (icon, 32, 32);
 }
 
