@@ -100,7 +100,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 10:25+0000\n"
+"POT-Creation-Date: 2012-03-15 20:25+0000\n"
 "PO-Revision-Date: 2010-07-01 14:38-0800\n"
 "Last-Translator: Yun Nie\n"
 "Language-Team: Chinese (simplified)\n"
@@ -159,21 +159,21 @@ msgid "Applications panel preferences"
 msgstr "应用程序面板"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "设置您工具栏的选择"
-
-#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "工具栏设置"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "设置您系统托盘的选项"
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Set your toolbar preferences"
+msgstr "设置您工具栏的选择"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "系统托盘"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+msgid "Set your system-tray preferences"
+msgstr "设置您系统托盘的选项"
 
 #: ../capplet/src/app-cc-panel.c:83
 #, fuzzy
@@ -1124,13 +1124,13 @@ msgid "applications"
 msgstr "应用程序"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:1
-#, fuzzy
-msgid "Bluetooth panel"
+#: ../panels/bluetooth/src/dawati-panel-bt.c:93
+msgid "bluetooth"
 msgstr "蓝牙"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
-#: ../panels/bluetooth/src/dawati-panel-bt.c:93
-msgid "bluetooth"
+#, fuzzy
+msgid "Bluetooth panel"
 msgstr "蓝牙"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
@@ -1473,28 +1473,28 @@ msgstr "%b %-d"
 msgid "Date/Time"
 msgstr "日期/时间"
 
-#: ../panels/datetime/src/mnp-world-clock.c:578
+#: ../panels/datetime/src/mnp-world-clock.c:579
 msgid "Time"
 msgstr "时间"
 
-#: ../panels/datetime/src/mnp-world-clock.c:631
+#: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
 msgstr "24 小时制"
 
-#: ../panels/datetime/src/mnp-world-clock.c:767
+#: ../panels/datetime/src/mnp-world-clock.c:768
 msgid "Enter a country or city"
 msgstr "输入一个国家或城市"
 
-#: ../panels/datetime/src/mnp-world-clock.c:790
+#: ../panels/datetime/src/mnp-world-clock.c:791
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "添加"
 
-#: ../panels/datetime/src/mnp-world-clock.c:879
+#: ../panels/datetime/src/mnp-world-clock.c:880
 msgid "Set Time & Date"
 msgstr "设置时间 & 日期"
 
-#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../panels/datetime/src/mnp-datetime.c:325
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "约会"
@@ -1510,39 +1510,39 @@ msgstr "约会"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../panels/datetime/src/mnp-datetime.c:373
-#: ../panels/datetime/src/mnp-datetime.c:584
+#: ../panels/datetime/src/mnp-datetime.c:374
+#: ../panels/datetime/src/mnp-datetime.c:585
 msgid "Today"
 msgstr "今天"
 
-#: ../panels/datetime/src/mnp-datetime.c:474
+#: ../panels/datetime/src/mnp-datetime.c:475
 msgid "Open Appointments"
 msgstr "打开约会"
 
-#: ../panels/datetime/src/mnp-datetime.c:553
+#: ../panels/datetime/src/mnp-datetime.c:554
 #: ../penge/penge-calendar-pane.c:528
 msgid "Tasks"
 msgstr "任务"
 
-#: ../panels/datetime/src/mnp-datetime.c:659
+#: ../panels/datetime/src/mnp-datetime.c:660
 msgid "Open Tasks"
 msgstr "打开任务"
 
-#: ../panels/datetime/src/mnp-shell.c:164
+#: ../panels/datetime/src/mnp-shell.c:165
 msgid "Time and Date"
 msgstr "时间 & 日期"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "24 小时制或 12 小时制"
+msgid "List of alarms in short encoded form"
+msgstr "短编码形式的闹钟列表"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "由闹钟通知使用的编码形式储存的闹钟。"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:3
-msgid "List of alarms in short encoded form"
-msgstr "短编码形式的闹钟列表"
+msgid "24 hour clock or 12 hour clock"
+msgstr "24 小时制或 12 小时制"
 
 #: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices"
@@ -1778,25 +1778,25 @@ msgid "Myzone panel"
 msgstr "区面板"
 
 #: ../panels/myzone/data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
-#: ../panels/myzone/data/myzone.desktop.in.in.h:2
 #: ../panels/myzone/capplet/myzone-cc-panel.c:169
 #, fuzzy
 msgid "Myzone"
 msgstr "首页"
 
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+msgid "Change the Myzone background and content"
+msgstr ""
+
 #: ../panels/myzone/data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
+msgid "Calendar and tasks:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
+msgid "Email alerts:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:3
-msgid "Calendar and tasks:"
+msgid "Clear recent documents"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:4
@@ -1804,19 +1804,19 @@ msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:5
-msgid "Choose your wallpaper"
+msgid "<b>Change what is shown in your Myzone</b>"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:6
-msgid "Clear recent documents"
+msgid "Choose your wallpaper"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:7
-msgid "Email alerts:"
+msgid "Reset to default"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:8
-msgid "Reset to default"
+msgid "<b>Myzone Wallpaper</b>"
 msgstr ""
 
 #: ../panels/myzone/capplet/gconf-bridge.c:1220

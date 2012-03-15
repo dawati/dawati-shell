@@ -94,7 +94,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 10:25+0000\n"
+"POT-Creation-Date: 2012-03-15 20:25+0000\n"
 "PO-Revision-Date: 2010-08-12 01:19+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
@@ -163,21 +163,21 @@ msgid "Applications panel preferences"
 msgstr "قاب برنامه ها"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "تنظیم ترجیحات نوار ابزار خود"
-
-#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "تنظیمات نوار ابزار"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "تنظیم ترجیحات سینی-سیستم خودتان"
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Set your toolbar preferences"
+msgstr "تنظیم ترجیحات نوار ابزار خود"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "سینی سیستم"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+msgid "Set your system-tray preferences"
+msgstr "تنظیم ترجیحات سینی-سیستم خودتان"
 
 #: ../capplet/src/app-cc-panel.c:83
 #, fuzzy
@@ -1115,14 +1115,14 @@ msgid "applications"
 msgstr "برنامه ها"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:1
-#, fuzzy
-msgid "Bluetooth panel"
-msgstr "بلوتوث"
-
-#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
 #: ../panels/bluetooth/src/dawati-panel-bt.c:93
 #, fuzzy
 msgid "bluetooth"
+msgstr "بلوتوث"
+
+#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
+#, fuzzy
+msgid "Bluetooth panel"
 msgstr "بلوتوث"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
@@ -1464,28 +1464,28 @@ msgstr "%b %-d"
 msgid "Date/Time"
 msgstr "تاریخ/زمان"
 
-#: ../panels/datetime/src/mnp-world-clock.c:578
+#: ../panels/datetime/src/mnp-world-clock.c:579
 msgid "Time"
 msgstr "زمان"
 
-#: ../panels/datetime/src/mnp-world-clock.c:631
+#: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
 msgstr "۲۴ ساعت"
 
-#: ../panels/datetime/src/mnp-world-clock.c:767
+#: ../panels/datetime/src/mnp-world-clock.c:768
 msgid "Enter a country or city"
 msgstr "یک کشور یا شهر وارد کنید"
 
-#: ../panels/datetime/src/mnp-world-clock.c:790
+#: ../panels/datetime/src/mnp-world-clock.c:791
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "افزودن"
 
-#: ../panels/datetime/src/mnp-world-clock.c:879
+#: ../panels/datetime/src/mnp-world-clock.c:880
 msgid "Set Time & Date"
 msgstr "تنظیم ساعت و تاریخ"
 
-#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../panels/datetime/src/mnp-datetime.c:325
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "قرار ملاقات ها"
@@ -1501,39 +1501,39 @@ msgstr "قرار ملاقات ها"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../panels/datetime/src/mnp-datetime.c:373
-#: ../panels/datetime/src/mnp-datetime.c:584
+#: ../panels/datetime/src/mnp-datetime.c:374
+#: ../panels/datetime/src/mnp-datetime.c:585
 msgid "Today"
 msgstr "امروز"
 
-#: ../panels/datetime/src/mnp-datetime.c:474
+#: ../panels/datetime/src/mnp-datetime.c:475
 msgid "Open Appointments"
 msgstr "باز کردن قرار ملاقات ها"
 
-#: ../panels/datetime/src/mnp-datetime.c:553
+#: ../panels/datetime/src/mnp-datetime.c:554
 #: ../penge/penge-calendar-pane.c:528
 msgid "Tasks"
 msgstr "وظایف"
 
-#: ../panels/datetime/src/mnp-datetime.c:659
+#: ../panels/datetime/src/mnp-datetime.c:660
 msgid "Open Tasks"
 msgstr "باز کردن وظایف"
 
-#: ../panels/datetime/src/mnp-shell.c:164
+#: ../panels/datetime/src/mnp-shell.c:165
 msgid "Time and Date"
 msgstr "زمان و تاریخ"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "۲۴ ساعت یا ۱۲ ساعت"
+msgid "List of alarms in short encoded form"
+msgstr "لیست اعلان ها به حالت کوتاه شده"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "اعلان های ذخیره شده به شکل کد شده برای استفاده در اعلان گر"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:3
-msgid "List of alarms in short encoded form"
-msgstr "لیست اعلان ها به حالت کوتاه شده"
+msgid "24 hour clock or 12 hour clock"
+msgstr "۲۴ ساعت یا ۱۲ ساعت"
 
 #: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices"
@@ -1761,25 +1761,25 @@ msgid "Myzone panel"
 msgstr "قاب مناطق"
 
 #: ../panels/myzone/data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
-#: ../panels/myzone/data/myzone.desktop.in.in.h:2
 #: ../panels/myzone/capplet/myzone-cc-panel.c:169
 #, fuzzy
 msgid "Myzone"
 msgstr "مناطق"
 
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+msgid "Change the Myzone background and content"
+msgstr ""
+
 #: ../panels/myzone/data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
+msgid "Calendar and tasks:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
+msgid "Email alerts:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:3
-msgid "Calendar and tasks:"
+msgid "Clear recent documents"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:4
@@ -1787,19 +1787,19 @@ msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:5
-msgid "Choose your wallpaper"
+msgid "<b>Change what is shown in your Myzone</b>"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:6
-msgid "Clear recent documents"
+msgid "Choose your wallpaper"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:7
-msgid "Email alerts:"
+msgid "Reset to default"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:8
-msgid "Reset to default"
+msgid "<b>Myzone Wallpaper</b>"
 msgstr ""
 
 #: ../panels/myzone/capplet/gconf-bridge.c:1220
@@ -2481,8 +2481,8 @@ msgstr "فعال"
 #~ "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of "
 #~ "%s</span>"
 #~ msgstr ""
-#~ "<span font-weight='bold'>شما در حال استفاده از</span> <span color='%s'>%d"
-#~ "%% of %s</span>"
+#~ "<span font-weight='bold'>شما در حال استفاده از</span> <span color='%s'>%d%"
+#~ "% of %s</span>"
 
 #~ msgid "Could not run \"%s\""
 #~ msgstr "نمی تواند  \"%s\" را اجرا کند"

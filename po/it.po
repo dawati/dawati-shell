@@ -73,7 +73,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 10:25+0000\n"
+"POT-Creation-Date: 2012-03-15 20:25+0000\n"
 "PO-Revision-Date: 2010-08-26 11:17-0800\n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -140,21 +140,21 @@ msgid "Applications panel preferences"
 msgstr "Pannello applicazioni"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Imposta le preferenze della barra degli strumenti"
-
-#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Impostazioni della barra degli strumenti"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Set your toolbar preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "Barra degli strumenti del sistema"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+msgid "Set your system-tray preferences"
+msgstr "Imposta le preferenze della barra degli strumenti"
 
 #: ../capplet/src/app-cc-panel.c:83
 #, fuzzy
@@ -1127,14 +1127,14 @@ msgid "applications"
 msgstr "applicazioni"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:1
-#, fuzzy
-msgid "Bluetooth panel"
-msgstr "Bluetooth"
-
-#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
 #: ../panels/bluetooth/src/dawati-panel-bt.c:93
 msgid "bluetooth"
 msgstr "bluetooth"
+
+#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
+#, fuzzy
+msgid "Bluetooth panel"
+msgstr "Bluetooth"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy
@@ -1476,28 +1476,28 @@ msgstr "%b %-d"
 msgid "Date/Time"
 msgstr "Data/Ora"
 
-#: ../panels/datetime/src/mnp-world-clock.c:578
+#: ../panels/datetime/src/mnp-world-clock.c:579
 msgid "Time"
 msgstr "Ora"
 
-#: ../panels/datetime/src/mnp-world-clock.c:631
+#: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
 msgstr "Orologio 24 ore"
 
-#: ../panels/datetime/src/mnp-world-clock.c:767
+#: ../panels/datetime/src/mnp-world-clock.c:768
 msgid "Enter a country or city"
 msgstr "Inserisci un paese o una città"
 
-#: ../panels/datetime/src/mnp-world-clock.c:790
+#: ../panels/datetime/src/mnp-world-clock.c:791
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../panels/datetime/src/mnp-world-clock.c:879
+#: ../panels/datetime/src/mnp-world-clock.c:880
 msgid "Set Time & Date"
 msgstr "Imposta ora e data"
 
-#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../panels/datetime/src/mnp-datetime.c:325
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Appuntamenti"
@@ -1513,31 +1513,31 @@ msgstr "Appuntamenti"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../panels/datetime/src/mnp-datetime.c:373
-#: ../panels/datetime/src/mnp-datetime.c:584
+#: ../panels/datetime/src/mnp-datetime.c:374
+#: ../panels/datetime/src/mnp-datetime.c:585
 msgid "Today"
 msgstr "Oggi"
 
-#: ../panels/datetime/src/mnp-datetime.c:474
+#: ../panels/datetime/src/mnp-datetime.c:475
 msgid "Open Appointments"
 msgstr "Appuntamenti aperti"
 
-#: ../panels/datetime/src/mnp-datetime.c:553
+#: ../panels/datetime/src/mnp-datetime.c:554
 #: ../penge/penge-calendar-pane.c:528
 msgid "Tasks"
 msgstr "Compiti"
 
-#: ../panels/datetime/src/mnp-datetime.c:659
+#: ../panels/datetime/src/mnp-datetime.c:660
 msgid "Open Tasks"
 msgstr "Compiti aperti"
 
-#: ../panels/datetime/src/mnp-shell.c:164
+#: ../panels/datetime/src/mnp-shell.c:165
 msgid "Time and Date"
 msgstr "Ora e data"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "Orologio 24 o 12 ore"
+msgid "List of alarms in short encoded form"
+msgstr "Elenco degli allarmi in forma codificata breve"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -1546,8 +1546,8 @@ msgstr ""
 "di notifica."
 
 #: ../panels/datetime/src/date-time.schemas.in.h:3
-msgid "List of alarms in short encoded form"
-msgstr "Elenco degli allarmi in forma codificata breve"
+msgid "24 hour clock or 12 hour clock"
+msgstr "Orologio 24 o 12 ore"
 
 #: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices"
@@ -1781,25 +1781,25 @@ msgid "Myzone panel"
 msgstr "Pannello zone"
 
 #: ../panels/myzone/data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
-#: ../panels/myzone/data/myzone.desktop.in.in.h:2
 #: ../panels/myzone/capplet/myzone-cc-panel.c:169
 #, fuzzy
 msgid "Myzone"
 msgstr "zone"
 
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+msgid "Change the Myzone background and content"
+msgstr ""
+
 #: ../panels/myzone/data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
+msgid "Calendar and tasks:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
+msgid "Email alerts:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:3
-msgid "Calendar and tasks:"
+msgid "Clear recent documents"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:4
@@ -1807,19 +1807,19 @@ msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:5
-msgid "Choose your wallpaper"
+msgid "<b>Change what is shown in your Myzone</b>"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:6
-msgid "Clear recent documents"
+msgid "Choose your wallpaper"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:7
-msgid "Email alerts:"
+msgid "Reset to default"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:8
-msgid "Reset to default"
+msgid "<b>Myzone Wallpaper</b>"
 msgstr ""
 
 #: ../panels/myzone/capplet/gconf-bridge.c:1220

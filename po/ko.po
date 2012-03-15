@@ -56,7 +56,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 10:25+0000\n"
+"POT-Creation-Date: 2012-03-15 20:25+0000\n"
 "PO-Revision-Date: 2010-07-10 05:17+0900\n"
 "Last-Translator: Park Shinjo <peremen@gmail.com>\n"
 "Language-Team: Korean <peremen@gmail.com>\n"
@@ -137,21 +137,21 @@ msgid "Applications panel preferences"
 msgstr "프로그램 패널"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "도구 모음 설정"
-
-#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "도구 모음 설정"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "시스템 트레이 설정"
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Set your toolbar preferences"
+msgstr "도구 모음 설정"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "시스템 트레이"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+msgid "Set your system-tray preferences"
+msgstr "시스템 트레이 설정"
 
 #: ../capplet/src/app-cc-panel.c:83
 #, fuzzy
@@ -1126,13 +1126,13 @@ msgstr ""
 "응용 프로그램"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:1
-#, fuzzy
-msgid "Bluetooth panel"
+#: ../panels/bluetooth/src/dawati-panel-bt.c:93
+msgid "bluetooth"
 msgstr "블루투스"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
-#: ../panels/bluetooth/src/dawati-panel-bt.c:93
-msgid "bluetooth"
+#, fuzzy
+msgid "Bluetooth panel"
 msgstr "블루투스"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
@@ -1479,28 +1479,28 @@ msgstr "%b %-d"
 msgid "Date/Time"
 msgstr "날짜 및 시간"
 
-#: ../panels/datetime/src/mnp-world-clock.c:578
+#: ../panels/datetime/src/mnp-world-clock.c:579
 msgid "Time"
 msgstr "시간"
 
-#: ../panels/datetime/src/mnp-world-clock.c:631
+#: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
 msgstr "24시간제 사용"
 
-#: ../panels/datetime/src/mnp-world-clock.c:767
+#: ../panels/datetime/src/mnp-world-clock.c:768
 msgid "Enter a country or city"
 msgstr "국가 또는 도시 입력"
 
-#: ../panels/datetime/src/mnp-world-clock.c:790
+#: ../panels/datetime/src/mnp-world-clock.c:791
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "추가"
 
-#: ../panels/datetime/src/mnp-world-clock.c:879
+#: ../panels/datetime/src/mnp-world-clock.c:880
 msgid "Set Time & Date"
 msgstr "시간 및 날짜 설정"
 
-#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../panels/datetime/src/mnp-datetime.c:325
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "약속"
@@ -1516,39 +1516,39 @@ msgstr "약속"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../panels/datetime/src/mnp-datetime.c:373
-#: ../panels/datetime/src/mnp-datetime.c:584
+#: ../panels/datetime/src/mnp-datetime.c:374
+#: ../panels/datetime/src/mnp-datetime.c:585
 msgid "Today"
 msgstr "오늘"
 
-#: ../panels/datetime/src/mnp-datetime.c:474
+#: ../panels/datetime/src/mnp-datetime.c:475
 msgid "Open Appointments"
 msgstr "약속 열기"
 
-#: ../panels/datetime/src/mnp-datetime.c:553
+#: ../panels/datetime/src/mnp-datetime.c:554
 #: ../penge/penge-calendar-pane.c:528
 msgid "Tasks"
 msgstr "작업"
 
-#: ../panels/datetime/src/mnp-datetime.c:659
+#: ../panels/datetime/src/mnp-datetime.c:660
 msgid "Open Tasks"
 msgstr "작업 열기"
 
-#: ../panels/datetime/src/mnp-shell.c:164
+#: ../panels/datetime/src/mnp-shell.c:165
 msgid "Time and Date"
 msgstr "시간 및 날짜 "
 
 #: ../panels/datetime/src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "24시간제 및 12시간제 시계"
+msgid "List of alarms in short encoded form"
+msgstr "짧은 인코딩된 형식으로 저장된 알람 목록"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "알람 알림이가 사용할 수 있도록 인코딩된 형태로 알람을 저장합니다."
 
 #: ../panels/datetime/src/date-time.schemas.in.h:3
-msgid "List of alarms in short encoded form"
-msgstr "짧은 인코딩된 형식으로 저장된 알람 목록"
+msgid "24 hour clock or 12 hour clock"
+msgstr "24시간제 및 12시간제 시계"
 
 #: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices"
@@ -1786,25 +1786,25 @@ msgid "Myzone panel"
 msgstr "구역 패널"
 
 #: ../panels/myzone/data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
-#: ../panels/myzone/data/myzone.desktop.in.in.h:2
 #: ../panels/myzone/capplet/myzone-cc-panel.c:169
 #, fuzzy
 msgid "Myzone"
 msgstr "마이 존"
 
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+msgid "Change the Myzone background and content"
+msgstr ""
+
 #: ../panels/myzone/data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
+msgid "Calendar and tasks:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
+msgid "Email alerts:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:3
-msgid "Calendar and tasks:"
+msgid "Clear recent documents"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:4
@@ -1812,19 +1812,19 @@ msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:5
-msgid "Choose your wallpaper"
+msgid "<b>Change what is shown in your Myzone</b>"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:6
-msgid "Clear recent documents"
+msgid "Choose your wallpaper"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:7
-msgid "Email alerts:"
+msgid "Reset to default"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:8
-msgid "Reset to default"
+msgid "<b>Myzone Wallpaper</b>"
 msgstr ""
 
 #: ../panels/myzone/capplet/gconf-bridge.c:1220

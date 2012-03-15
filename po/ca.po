@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutter 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 10:25+0000\n"
+"POT-Creation-Date: 2012-03-15 20:25+0000\n"
 "PO-Revision-Date: 2009-08-21 14:54+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -149,21 +149,21 @@ msgid "Applications panel preferences"
 msgstr "Tauler d'aplicacions"
 
 #: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Establiu les preferències de la barra d'eines"
-
-#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Paràmetres de la barra d'eines"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "Establiu les preferències de la safata del sistema"
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Set your toolbar preferences"
+msgstr "Establiu les preferències de la barra d'eines"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "Safata del sistema"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+msgid "Set your system-tray preferences"
+msgstr "Establiu les preferències de la safata del sistema"
 
 #: ../capplet/src/app-cc-panel.c:83
 #, fuzzy
@@ -1123,14 +1123,14 @@ msgid "applications"
 msgstr "aplicacions"
 
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:1
-#, fuzzy
-msgid "Bluetooth panel"
-msgstr "Bluetooth"
-
-#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
 #: ../panels/bluetooth/src/dawati-panel-bt.c:93
 msgid "bluetooth"
 msgstr "bluetooth"
+
+#: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
+#, fuzzy
+msgid "Bluetooth panel"
+msgstr "Bluetooth"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy
@@ -1471,28 +1471,28 @@ msgstr "%b %-d"
 msgid "Date/Time"
 msgstr "Data/Hora"
 
-#: ../panels/datetime/src/mnp-world-clock.c:578
+#: ../panels/datetime/src/mnp-world-clock.c:579
 msgid "Time"
 msgstr "Hora"
 
-#: ../panels/datetime/src/mnp-world-clock.c:631
+#: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
 msgstr "Rellotge en format de 24 hores"
 
-#: ../panels/datetime/src/mnp-world-clock.c:767
+#: ../panels/datetime/src/mnp-world-clock.c:768
 msgid "Enter a country or city"
 msgstr "Introduïu un país o una ciutat"
 
-#: ../panels/datetime/src/mnp-world-clock.c:790
+#: ../panels/datetime/src/mnp-world-clock.c:791
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Afegeix"
 
-#: ../panels/datetime/src/mnp-world-clock.c:879
+#: ../panels/datetime/src/mnp-world-clock.c:880
 msgid "Set Time & Date"
 msgstr "Defineix l'hora i la data"
 
-#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../panels/datetime/src/mnp-datetime.c:325
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Cites"
@@ -1508,31 +1508,31 @@ msgstr "Cites"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../panels/datetime/src/mnp-datetime.c:373
-#: ../panels/datetime/src/mnp-datetime.c:584
+#: ../panels/datetime/src/mnp-datetime.c:374
+#: ../panels/datetime/src/mnp-datetime.c:585
 msgid "Today"
 msgstr "Avui"
 
-#: ../panels/datetime/src/mnp-datetime.c:474
+#: ../panels/datetime/src/mnp-datetime.c:475
 msgid "Open Appointments"
 msgstr "Obre les cites"
 
-#: ../panels/datetime/src/mnp-datetime.c:553
+#: ../panels/datetime/src/mnp-datetime.c:554
 #: ../penge/penge-calendar-pane.c:528
 msgid "Tasks"
 msgstr "Tasques"
 
-#: ../panels/datetime/src/mnp-datetime.c:659
+#: ../panels/datetime/src/mnp-datetime.c:660
 msgid "Open Tasks"
 msgstr "Obre les tasques"
 
-#: ../panels/datetime/src/mnp-shell.c:164
+#: ../panels/datetime/src/mnp-shell.c:165
 msgid "Time and Date"
 msgstr "Hora i data"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "Rellotge en format de 24 hores o en format de 12 hores"
+msgid "List of alarms in short encoded form"
+msgstr "Llista d'alarmes en format codificat curt"
 
 #: ../panels/datetime/src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -1541,8 +1541,8 @@ msgstr ""
 "notificador d'alarmes."
 
 #: ../panels/datetime/src/date-time.schemas.in.h:3
-msgid "List of alarms in short encoded form"
-msgstr "Llista d'alarmes en format codificat curt"
+msgid "24 hour clock or 12 hour clock"
+msgstr "Rellotge en format de 24 hores o en format de 12 hores"
 
 #: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices"
@@ -1772,25 +1772,25 @@ msgid "Myzone panel"
 msgstr "Tauler de zones"
 
 #: ../panels/myzone/data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
-#: ../panels/myzone/data/myzone.desktop.in.in.h:2
 #: ../panels/myzone/capplet/myzone-cc-panel.c:169
 #, fuzzy
 msgid "Myzone"
 msgstr "zones"
 
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+msgid "Change the Myzone background and content"
+msgstr ""
+
 #: ../panels/myzone/data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
+msgid "Calendar and tasks:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
+msgid "Email alerts:"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:3
-msgid "Calendar and tasks:"
+msgid "Clear recent documents"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:4
@@ -1798,19 +1798,19 @@ msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:5
-msgid "Choose your wallpaper"
+msgid "<b>Change what is shown in your Myzone</b>"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:6
-msgid "Clear recent documents"
+msgid "Choose your wallpaper"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:7
-msgid "Email alerts:"
+msgid "Reset to default"
 msgstr ""
 
 #: ../panels/myzone/data/capplet.ui.h:8
-msgid "Reset to default"
+msgid "<b>Myzone Wallpaper</b>"
 msgstr ""
 
 #: ../panels/myzone/capplet/gconf-bridge.c:1220
