@@ -368,6 +368,12 @@ mpl_application_view_set_title (MplApplicationView *view,
   priv = view->priv;
 
   mx_label_set_text (MX_LABEL (priv->title), text);
+
+  if (!strcmp (mx_label_get_text (MX_LABEL (priv->title)),
+               mx_label_get_text (MX_LABEL (priv->subtitle))))
+    clutter_actor_hide (priv->subtitle);
+  else
+    clutter_actor_show (priv->subtitle);
 }
 
 void
@@ -381,6 +387,12 @@ mpl_application_view_set_subtitle (MplApplicationView *view,
   priv = view->priv;
 
   mx_label_set_text (MX_LABEL (priv->subtitle), text);
+
+  if (!strcmp (mx_label_get_text (MX_LABEL (priv->title)),
+               mx_label_get_text (MX_LABEL (priv->subtitle))))
+    clutter_actor_hide (priv->subtitle);
+  else
+    clutter_actor_show (priv->subtitle);
 }
 
 void
