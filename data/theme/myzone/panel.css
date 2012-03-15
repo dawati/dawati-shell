@@ -1,3 +1,4 @@
+/* Currently not shown, MxFrame.titleBar is used instead
 MxLabel.titleBar
 {
   color: #2a3c4a;
@@ -5,11 +6,17 @@ MxLabel.titleBar
   font-size: 16px;
   padding: 7 0 3;
 }
+*/
+
+MxFrame.titleBar
+{
+  padding: 5 0 5 0;
+}
 
 PengeGridView
 {
   border-image: url('myzone-default-background.png') 5 5 5 5;
-  padding: 0 15 15 15;
+  padding: 0 13 0 13;
 }
 
 PengeCalendarPane
@@ -17,110 +24,151 @@ PengeCalendarPane
   padding: 3;
 }
 
+*.PengeCalendarPaneSeparatorMiddle,
+*.PengeCalendarPaneSeparatorLower
+{
+  padding: 12 5 12;
+  border-image: url('event-task-tile-bg.png');
+}
+
 *.PengeGridViewTopContainer
 {
-  border-image: url('../shared/content-panel-bg.png') 5;
+  border-image: url('content-panel-bg.png') 10;
+  padding: 0 0 10;
 }
 
 PengeAppsPane
 {
   padding: 6 0 15;
-/*
-  border-image: url('../shared/content-panel-bg.png') 5;
-*/
 }
 
-*.PengeEventsPaneHeader, *.PengeTasksPaneHeader
+*.PengeEventsPaneHeader
 {
-  padding: 6;
+  padding: 7 9 0;
+}
+
+*.PengeTasksPaneHeader
+{
+  padding: 20 9 0;
 }
 
 
 MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
 {
-  font-size: 16px;
-  color: #616261ff;
+  font-size: 14px;
+  color: #fefffa;
 }
 
-PengeEventTile.FirstTile, PengeTaskTile.FirstTile,
-PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover,
-PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active,
 PengeEventTile, PengeTaskTile,
 PengeEventTile:hover, PengeTaskTile:hover,
 PengeEventTile:active, PengeTaskTile:active
 {
   border-image: none;
-  padding: 3 12;
+  padding: 7 15 0 11;
+}
+
+PengeEventTile.FirstTile, PengeTaskTile.FirstTile,
+PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover,
+PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
+{
+  border-image: none;
+  padding: 9 15 0 11;
 }
 
 PengeAppTile,
 PengeAppTile:hover,
 PengeAppTile:active
 {
-  border-image: url('../shared/application-icon-mask.png') 8 9;
+  border-image: url('transparent_pixel.png') 0;
+  padding: 1;
 }
 
 PengeAppsPane *.PengeAppTileOverlay
 {
-  border-image: url('../shared/application-mask.png');
 }
 
 PengeRecentFileTile
 {
-  border-image: url('../shared/content-panel-bg.png') 5;
-  padding: 8;
+  border-image: url('content-panel-bg.png') 5;
+  padding: 0;
 }
 
 PengeRecentFileTile:hover,
 PengeRecentFileTile:active
 {
-  border-image: url('content-panel-background-highlight.png') 5;
-  padding: 8;
+  border-image: url('content-panel-bg-focus.png') 5;
+  padding: 0;
 }
 
 PengePeopleTile
 {
-  border-image: url('../shared/content-panel-bg.png') 5;
+  border-image: url('content-panel-bg.png') 5 5 5 5;
   padding: 0;
 }
 
 PengePeopleTile:hover,
 PengePeopleTile:active
 {
-  border-image: url('content-panel-background-highlight.png') 5;
+  border-image: url('content-panel-bg-focus.png') 5 5 5 5;
   padding: 0;
 }
 
-PengeCountTile
-{
-  border-image: none;
-  padding: 12;
-}
-
+PengeCountTile,
 PengeCountTile:hover,
 PengeCountTile:active
 {
-  border-image: url('content-panel-background-highlight.png') 5;
+  border-image: none;
   padding: 12;
 }
 
 MxLabel.PengeEventTimeLabel
 {
   font-weight: bold;
+  color: #fefffa;
+  padding: 0 0 0 5;
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
   font-weight: bold;
+  color: #e4e5df;
+  padding: 0 0 0 5;
 }
 
 MxLabel.PengeEventSummary
 {
+  color: #fefffa;
+}
+
+MxLabel.PengeEventSummary:past
+{
+  color: #e4e5df;
+}
+
+
+MxLabel.PengeTaskSummaryLabel
+{
+  color: #fefffa;
+}
+
+MxLabel.PengeTaskDetail
+{
+  color: #fefffa;
+}
+
+*#check-box
+{
+ padding: 100;
+}
+
+MxLabel.PengeTaskDetail:past
+{
+  color: #e4e5df;
 }
 
 *.PengePeopleTileOuterMargin
 {
-  padding: 2 2 0 2;
+  padding: 0;
 }
 
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
@@ -140,24 +188,32 @@ PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 PengePeopleTile *.PengePeopleTileContentLabel
 {
   font-size: 14px;
+  color: #fefffa;
+}
+
+*.PengeInterestingTileBody
+{
+}
+
+PengePeopleTile *.PengeInterestingTileHeader
+{
+  padding: 3 0 0 0;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackgroundWithoutHeader
 {
-  border-image: url('../shared/content-tile-bg.png') 45 51 46 52;
-  padding: 8;
+  padding: 12;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackgroundWithHeader
 {
-  border-image: url('../shared/content-tile-bg.png') 45 51 46 52;
-  padding: 8;
+  padding: 12;
 }
 
 PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
   font-size: 14px;
-  color: #2c2c2cff;
+  color: #fefffa;
 }
 
 MxTable.PengeInterestingTileDetails
@@ -167,11 +223,12 @@ MxTable.PengeInterestingTileDetails
 MxFrame.PengeInterestingTileDetailsMargin
 {
   padding: 0 8 5;
-
+  border-image: url('content-footer-bg.png') 0 10 10 10;
 }
 
 MxTable.PengeInterestingTileDetails *.PengeInterestingTileMessageIconOverlay
 {
+  padding: 5;
   border-image: url("avatar-mask.png");
 }
 
@@ -201,6 +258,7 @@ PengePeoplePlaceholderTile:hover
 
 PengeWelcomeTile
 {
+  padding: 132 0 0 69;
 }
 
 *#penge-welcome-primary-text
@@ -218,14 +276,14 @@ PengeWelcomeTile
 
 *#penge-welcome-launcher
 {
-  border-image: url('../shared/content-panel-bg.png') 5;
+  border-image: url('content-panel-bg.png') 5;
   padding: 4 4 4 4;
 }
 
 *#penge-welcome-launcher:hover,
 *#penge-welcome-launcher:active
 {
-  border-image: url('content-panel-background-highlight.png') 5;
+  border-image: url('content-panel-bg-focus.png') 5;
   padding: 4 4 4 4;
 }
 
@@ -245,7 +303,7 @@ PengeWelcomeTile
 *.PengeInterestingTileRemoveButton:active
 {
   border-image: none;
-  padding:0;
+  padding: 0 3 0 0;
 }
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon

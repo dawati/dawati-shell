@@ -66,14 +66,3 @@ AnerleyCompactTile:hover
   border-image: url('unread-message-bubble-bg.png') 7;
   padding: 3 7 3 7;
 }
-
-.closeButton {
-    -mx-content-image: url("../switcher/closebutton-normal.png");
-}
-.closeButton:hover {
-    -mx-content-image: url("../switcher/closebutton-hover.png");
-}
-.closeButton:active {
-    -mx-content-image: url("../switcher/closebutton-pressed.png");
-}
-

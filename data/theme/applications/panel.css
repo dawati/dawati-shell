@@ -18,8 +18,8 @@ MnbLauncher {
 
 /* Fav category */
 MxBoxLayout.static-categories-section {
-  padding: 10 0 10 5;
-  border-image: url("../shared/divider.png") 0 0 2 0;
+  padding: 10 0 10 3;
+  border-image: url("../shared/divider.png") 0 15 1;
 }
 
 MxBoxLayout.category-section {
