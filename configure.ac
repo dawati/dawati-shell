@@ -367,7 +367,7 @@ if test x$dawati_use_networks_panel = xyes  || \
                     AC_MSG_ERROR([Cannot find iso-codes]))
 
 fi
-AM_CONDITIONAL([USE_CARRICK_CALLOUTS], [test "$dawati_use_networks_panel" = "yes" || test "$dawati_use_bluetooth_panel" = "yes"])
+AM_CONDITIONAL([USE_CARRICK_CALLOUTS], [test "$dawati_use_networks_panel" = "yes" || test "$dawati_use_bluetooth_panel" = "yes" || test x"$dawati_use_devices_panel" = xyes])
 AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 
 
