@@ -3547,14 +3547,15 @@ mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 gboolean
 mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw)
 {
-  MnbToolbarPanel   *tp   =
-    (MnbToolbarPanel *) mnb_toolbar_get_active_panel (toolbar);
+  MnbPanel *panel;
 
   if (!mcw)
     return FALSE;
 
-  if (tp && tp->panel && MNB_IS_PANEL_OOP (tp->panel))
-    if (mnb_panel_oop_owns_window ((MnbPanelOop*)tp->panel, mcw))
+  panel = mnb_toolbar_get_active_panel (toolbar);
+
+  if (panel && MNB_IS_PANEL_OOP (panel))
+    if (mnb_panel_oop_owns_window ((MnbPanelOop*) panel, mcw))
       return TRUE;
 
   return FALSE;
