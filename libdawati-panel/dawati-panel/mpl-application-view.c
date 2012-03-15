@@ -173,6 +173,12 @@ mpl_application_view_get_preferred_height (ClutterActor *actor,
 }
 
 static void
+mpl_application_view_paint (ClutterActor *actor)
+{
+  CLUTTER_ACTOR_CLASS (mpl_application_view_parent_class)->paint (actor);
+}
+
+static void
 mpl_application_view_class_init (MplApplicationViewClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -186,6 +192,7 @@ mpl_application_view_class_init (MplApplicationViewClass *klass)
   object_class->dispose = mpl_application_view_dispose;
   object_class->finalize = mpl_application_view_finalize;
 
+  actor_class->paint = mpl_application_view_paint;
   actor_class->get_preferred_width = mpl_application_view_get_preferred_width;
   actor_class->get_preferred_height = mpl_application_view_get_preferred_height;
 
@@ -298,7 +305,7 @@ mpl_application_view_init (MplApplicationView *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "appTitle");
   mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->title, 0);
   mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
-                                  priv->title, TRUE);
+                                  priv->title, FALSE);
 
   /* subtitle */
   priv->subtitle = mx_label_new ();
@@ -306,13 +313,17 @@ mpl_application_view_init (MplApplicationView *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->subtitle), "appSubTitle");
   mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->subtitle, 1);
   mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
-                                  priv->subtitle, TRUE);
+                                  priv->subtitle, FALSE);
 
   /* close button */
   priv->close_button = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "appCloseButton");
+  clutter_actor_set_size (priv->close_button, 22, 21);
   mx_table_add_actor (MX_TABLE (actor), priv->close_button, 0, 2);
   mx_table_child_set_x_fill (MX_TABLE (actor), priv->close_button, FALSE);
+  mx_table_child_set_y_fill (MX_TABLE (actor), priv->close_button, FALSE);
+  mx_table_child_set_x_align (MX_TABLE (actor), priv->close_button, MX_ALIGN_END);
+  mx_table_child_set_y_align (MX_TABLE (actor), priv->close_button, MX_ALIGN_START);
   mx_table_child_set_y_expand (MX_TABLE (actor), priv->close_button, FALSE);
   mx_table_child_set_x_expand (MX_TABLE (actor), priv->close_button, FALSE);
   g_signal_connect (priv->close_button, "clicked",
