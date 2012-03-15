@@ -305,7 +305,7 @@ mpl_application_view_init (MplApplicationView *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "appTitle");
   mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->title, 0);
   mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
-                                  priv->title, FALSE);
+                                  priv->title, TRUE);
 
   /* subtitle */
   priv->subtitle = mx_label_new ();
