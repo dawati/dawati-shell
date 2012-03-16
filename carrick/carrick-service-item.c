@@ -758,14 +758,14 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
                * there are less than three retries,
                * Placeholder is pin type, usually "PIN" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
-                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card. You can try once more before the code is locked.",
-                                                 "Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
+                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %1$s code. A %2$s code is still required to unlock the SIM card. You can try once more before the code is locked.",
+                                                 "Sorry, that does not look like a valid %1$s code. A %2$s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
                                                  retries),
                                      carrick_ofono_prettify_pin (priv->entered_pin_type),
                                      carrick_ofono_prettify_pin (priv->required_pin_type));
               if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
-                msg = g_strdup_printf (ngettext ("Sorry, the %s code is incorrect. A %s code is still required to unlock the SIM card. You can try once more before the code is locked.",
-                                                 "Sorry, the %s code is incorrect. A %s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
+                msg = g_strdup_printf (ngettext ("Sorry, the %1$s code is incorrect. A %2$s code is still required to unlock the SIM card. You can try once more before the code is locked.",
+                                                 "Sorry, the %1$s code is incorrect. A %2$s code is still required to unlock the SIM card. You can try two more times before the code is locked.",
                                                  retries),
                                      carrick_ofono_prettify_pin (priv->entered_pin_type),
                                      carrick_ofono_prettify_pin (priv->required_pin_type));
@@ -781,7 +781,7 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
               /* TRANSLATORS: info message when pin entry is required,
                * Placeholders are pin types, usually "PIN" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
-                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is still required to unlock the SIM card."),
+                msg = g_strdup_printf (_("Sorry, that does not look like a valid %1$s code. A %2$s code is still required to unlock the SIM card."),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type));
               else
@@ -806,24 +806,24 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
                * Placeholder 1 & 2 are puk type, usually "PUK"
                * Placeholder 3 is pin type, usually "PIN" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
-                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code. You can try once more before the code is permanently locked.",
-                                                 "Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                msg = g_strdup_printf (ngettext ("Sorry, that does not look like a valid %1$s code. A %2$s code is still required to reset the %3$s code. You can try once more before the code is permanently locked.",
+                                                 "Sorry, that does not look like a valid %1$s code. A %2$s code is still required to reset the %3$s code. You can try %4$d more times before the code is permanently locked.",
                                                  retries),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
                                        retries);
               else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
-                msg = g_strdup_printf (ngettext ("Sorry, the %s code is incorrect. A %s code is still required to reset the %s code. You can try once more before the code is permanently locked.",
-                                                 "Sorry, the %s code is incorrect. A %s code is still required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                msg = g_strdup_printf (ngettext ("Sorry, the %1$s code is incorrect. A %2$s code is still required to reset the %3$s code. You can try once more before the code is permanently locked.",
+                                                 "Sorry, the %1$s code is incorrect. A %2$s code is still required to reset the %3$s code. You can try %4$d more times before the code is permanently locked.",
                                                  retries),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
                                        retries);
               else
-                msg = g_strdup_printf (ngettext ("A %s code is required to reset the %s code. You can try once more before the code is permanently locked.",
-                                                 "A %s code is required to reset the %s code. You can try %d more times before the code is permanently locked.",
+                msg = g_strdup_printf (ngettext ("A %1$s code is required to reset the %2$s code. You can try once more before the code is permanently locked.",
+                                                 "A %1$s code is required to reset the %2$s code. You can try %3$d more times before the code is permanently locked.",
                                                  retries),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)),
@@ -835,17 +835,17 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
                * Placeholder 1 & 3 are pin type, usually "PIN"
                * Placeholder 2 is puk type, usually "PUK" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
-                msg = g_strdup_printf (_("Sorry, that does not look like a valid %s code. A %s code is still required to reset the %s code."),
+                msg = g_strdup_printf (_("Sorry, that does not look like a valid %1$s code. A %2$s code is still required to reset the %3$s code."),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
               else if (g_strcmp0 (err_name, "org.ofono.Error.Failed") == 0)
-                msg = g_strdup_printf (_("Sorry, that %s code is incorrect. A %s code is required to reset the %s code."),
+                msg = g_strdup_printf (_("Sorry, that %1$s code is incorrect. A %2$s code is required to reset the %3$s code."),
                                        carrick_ofono_prettify_pin (priv->entered_pin_type),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
               else
-                msg = g_strdup_printf (_("A %s code is required to reset the %s code."),
+                msg = g_strdup_printf (_("A %1$s code is required to reset the %2$s code."),
                                        carrick_ofono_prettify_pin (priv->required_pin_type),
                                        carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (priv->required_pin_type)));
             }

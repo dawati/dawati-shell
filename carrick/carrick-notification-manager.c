@@ -173,7 +173,7 @@ _tell_online (CarrickNotificationManager *self,
 
       if (name && name[0] != '\0')
         {
-          message = g_strdup_printf (_ ("You're now connected to %s, a %s network"),
+          message = g_strdup_printf (_ ("You're now connected to %1$s, a %2$s network"),
                                      name,
                                      util_get_service_type_for_display (type));
         }
@@ -208,7 +208,7 @@ _tell_offline (CarrickNotificationManager *self,
     }
   else if (priv->last_name)
     {
-      message = g_strdup_printf (_ ("Sorry we've lost your %s connection to %s"),
+      message = g_strdup_printf (_ ("Sorry we've lost your %1$s connection to %2$s"),
                                  util_get_service_type_for_display (priv->last_type),
                                  priv->last_name);
     }
@@ -257,16 +257,16 @@ _tell_changed (CarrickNotificationManager *self,
         }
       else if (name)
         {
-          message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. So "
-                                        "we've connected you to %s, a %s network"),
+          message = g_strdup_printf (_ ("Sorry, your connection to %1$s was lost. So "
+                                        "we've connected you to %2$s, a %3$s network"),
                                      priv->last_name,
                                      name,
                                      util_get_service_type_for_display (type));
         }
       else
         {
-          message = g_strdup_printf (_ ("Sorry, your connection to %s was lost. "
-                                        "So we've connected you to a %s network"),
+          message = g_strdup_printf (_ ("Sorry, your connection to %1$s was lost. "
+                                        "So we've connected you to a %2$s network"),
                                      priv->last_name,
                                      util_get_service_type_for_display (type));
         }
@@ -282,8 +282,8 @@ _tell_changed (CarrickNotificationManager *self,
         }
       else if (name)
         {
-          message = g_strdup_printf (_ ("Sorry, your %s connection was lost. "
-                                        "So we've connected you to %s, a %s "
+          message = g_strdup_printf (_ ("Sorry, your %1$s connection was lost. "
+                                        "So we've connected you to %2$s, a %3$s "
                                         "network"),
                                      util_get_service_type_for_display (priv->last_type),
                                      name,
@@ -291,8 +291,8 @@ _tell_changed (CarrickNotificationManager *self,
         }
       else
         {
-          message = g_strdup_printf (_ ("Sorry, your %s connection was lost. So "
-                                        "we've connected you to a %s network"),
+          message = g_strdup_printf (_ ("Sorry, your %1$s connection was lost. So "
+                                        "we've connected you to a %2$s network"),
                                      util_get_service_type_for_display (priv->last_type),
                                      util_get_service_type_for_display (type));
         }
