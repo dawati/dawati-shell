@@ -488,6 +488,115 @@ mpl_panel_clutter_init_lib (gint *argc, gchar ***argv)
     }
 }
 
+static GdkFilterReturn
+gdk_to_clutter_event_pump__ (GdkXEvent *xevent,
+                             GdkEvent  *event,
+                             gpointer   data)
+{
+  GdkDisplay *display = gdk_display_get_default ();
+  GdkWindow *gdk_win;
+
+  XEvent *xev = (XEvent*) xevent;
+  guint32 timestamp = 0;
+
+  gdk_win = gdk_x11_window_foreign_new_for_display (display, xev->xany.window);
+
+  if (!gdk_win)
+    gdk_win = gdk_x11_window_foreign_new_for_display (display,
+                                                      GPOINTER_TO_INT (data));
+
+  /*
+   * Ensure we update the user time on this window if the event
+   * implies user action.
+   */
+  switch (event->type)
+    {
+    case GDK_BUTTON_PRESS:
+    case GDK_2BUTTON_PRESS:
+      case GDK_3BUTTON_PRESS:
+    case GDK_BUTTON_RELEASE:
+      timestamp = event->button.time;
+      break;
+    case GDK_MOTION_NOTIFY:
+      timestamp = event->motion.time;
+      break;
+    case GDK_KEY_PRESS:
+    case GDK_KEY_RELEASE:
+      timestamp = event->key.time;
+      break;
+    default: ;
+    }
+
+  if (timestamp && gdk_win)
+    gdk_x11_window_set_user_time (gdk_win, timestamp);
+
+  switch (clutter_x11_handle_event (xev))
+    {
+    default:
+    case CLUTTER_X11_FILTER_CONTINUE:
+      return GDK_FILTER_CONTINUE;
+    case CLUTTER_X11_FILTER_TRANSLATE:
+      return GDK_FILTER_TRANSLATE;
+    case CLUTTER_X11_FILTER_REMOVE:
+      return GDK_FILTER_REMOVE;
+    }
+};
+
+static void
+_stage_realized (ClutterStage        *stage,
+                 gpointer             data)
+{
+  Window xid = clutter_x11_get_stage_window (stage);
+
+  if (xid != None)
+    {
+      XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                    xid,
+                    StructureNotifyMask |
+                    ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
+                    FocusChangeMask |
+                    ExposureMask |
+                    KeyPressMask | KeyReleaseMask |
+                    EnterWindowMask | LeaveWindowMask |
+                    PropertyChangeMask);
+
+      gdk_window_add_filter (NULL,
+                             gdk_to_clutter_event_pump__,
+                             GINT_TO_POINTER (xid));
+    }
+}
+
+static void
+_stage_added (ClutterStageManager *manager,
+              ClutterStage        *stage,
+              gpointer             data)
+{
+  Window xid = clutter_x11_get_stage_window (stage);
+
+  if (xid != None)
+    {
+      XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                    xid,
+                    StructureNotifyMask |
+                    ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
+                    FocusChangeMask |
+                    ExposureMask |
+                    KeyPressMask | KeyReleaseMask |
+                    EnterWindowMask | LeaveWindowMask |
+                    PropertyChangeMask);
+
+      gdk_window_add_filter (NULL,
+                             gdk_to_clutter_event_pump__,
+                             GINT_TO_POINTER (xid));
+    }
+  else
+    {
+      g_signal_connect_after (stage, "realize",
+                              G_CALLBACK (_stage_realized),
+                              NULL);
+    }
+}
+
 /**
  * mpl_panel_clutter_init_with_gtk:
  * @argc: (inout): a pointer to the number of command line arguments
@@ -503,6 +612,8 @@ mpl_panel_clutter_init_lib (gint *argc, gchar ***argv)
 void
 mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
 {
+  ClutterStageManager *manager;
+
   gtk_init (argc, argv);
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   clutter_x11_disable_event_retrieval ();
@@ -511,6 +622,11 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
     {
       g_error ("Unable to initialize Clutter.\n");
     }
+
+  manager = clutter_stage_manager_get_default ();
+  g_signal_connect_after (manager, "stage-added",
+                          G_CALLBACK (_stage_added),
+                          NULL);
 
   mpl_panel_clutter_load_base_style ();
 }
@@ -531,57 +647,6 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
 void
 mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
 {
-  GdkFilterReturn
-    gdk_to_clutter_event_pump__ (GdkXEvent *xevent,
-                                 GdkEvent  *event,
-                                 gpointer   data)
-  {
-    static GdkWindow *gdk_win = NULL;
-
-    XEvent *xev = (XEvent*)xevent;
-    guint32 timestamp = 0;
-
-    if (!gdk_win)
-      gdk_win = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                                                        GPOINTER_TO_INT (data));
-
-    /*
-     * Ensure we update the user time on this window if the event implies user
-     * action.
-     */
-    switch (event->type)
-      {
-      case GDK_BUTTON_PRESS:
-      case GDK_2BUTTON_PRESS:
-      case GDK_3BUTTON_PRESS:
-      case GDK_BUTTON_RELEASE:
-        timestamp = event->button.time;
-        break;
-      case GDK_MOTION_NOTIFY:
-        timestamp = event->motion.time;
-        break;
-      case GDK_KEY_PRESS:
-      case GDK_KEY_RELEASE:
-        timestamp = event->key.time;
-        break;
-      default: ;
-      }
-
-    if (timestamp && gdk_win)
-      gdk_x11_window_set_user_time (gdk_win, timestamp);
-
-    switch (clutter_x11_handle_event (xev))
-      {
-      default:
-      case CLUTTER_X11_FILTER_CONTINUE:
-        return GDK_FILTER_CONTINUE;
-      case CLUTTER_X11_FILTER_TRANSLATE:
-        return GDK_FILTER_TRANSLATE;
-      case CLUTTER_X11_FILTER_REMOVE:
-        return GDK_FILTER_REMOVE;
-      }
-  };
-
   XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                 xid,
                 StructureNotifyMask |
