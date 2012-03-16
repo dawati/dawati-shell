@@ -23,7 +23,7 @@
 
 #include <string.h>
 
-G_DEFINE_TYPE (MplApplicationView, mpl_application_view, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MplApplicationView, mpl_application_view, MX_TYPE_WIDGET)
 
 #define APPLICATION_VIEW_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_APPLICATION_VIEW, MplApplicationViewPrivate))
@@ -34,9 +34,14 @@ G_DEFINE_TYPE (MplApplicationView, mpl_application_view, MX_TYPE_TABLE)
 struct _MplApplicationViewPrivate
 {
   ClutterActor *icon;
+
+  ClutterActor *title_box;
   ClutterActor *title;
   ClutterActor *subtitle;
+
   ClutterActor *close_button;
+
+  ClutterActor *app_frame;
   ClutterActor *shadow;
   ClutterActor *thumbnail;
 };
@@ -173,9 +178,86 @@ mpl_application_view_get_preferred_height (ClutterActor *actor,
 }
 
 static void
+mpl_application_view_allocate (ClutterActor          *actor,
+                               const ClutterActorBox *box,
+                               ClutterAllocationFlags flags)
+{
+  MplApplicationViewPrivate *priv = ((MplApplicationView *) actor)->priv;
+  MxPadding padding;
+  ClutterActorBox child_box;
+  gfloat icon_width = 0, icon_height = 0, button_width, button_height;
+
+  CLUTTER_ACTOR_CLASS (mpl_application_view_parent_class)->allocate (actor,
+                                                                     box,
+                                                                     flags);
+
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+  /* Icon */
+  child_box.x1 = padding.left;
+  child_box.y1 = padding.top;
+
+  if (priv->icon)
+    {
+      clutter_actor_get_preferred_width (priv->icon, -1, NULL, &icon_width);
+      clutter_actor_get_preferred_height (priv->icon, -1, NULL, &icon_height);
+
+      child_box.x2 = child_box.x1 + icon_width;
+      child_box.y2 = child_box.y1 + icon_height;
+
+      clutter_actor_allocate (priv->icon, &child_box, flags);
+    }
+
+  /* Close button */
+  clutter_actor_get_preferred_width (priv->close_button, -1, NULL, &button_width);
+  clutter_actor_get_preferred_height (priv->close_button, -1, NULL, &button_height);
+
+  child_box.x2 = box->x2 - box->x1 - padding.right;
+  child_box.y2 = child_box.y1 + button_height;
+  child_box.x1 = child_box.x2 - button_width;
+
+  clutter_actor_allocate (priv->close_button, &child_box, flags);
+
+  /* Titles */
+  child_box.x1 = padding.left + icon_width;
+  child_box.x2 = box->x2 - box->x1 - padding.right - button_width;
+  child_box.y2 = padding.top + icon_height;
+
+  clutter_actor_allocate (priv->title_box, &child_box, flags);
+
+  /* App frame */
+  child_box.x1 = padding.left;
+  child_box.x2 = box->x2 - box->x1 - padding.right;
+  child_box.y1 = padding.top + icon_width;
+  child_box.y2 = box->y2 - box->y1 - padding.bottom;
+
+  clutter_actor_allocate (priv->app_frame, &child_box, flags);
+}
+
+static void
 mpl_application_view_paint (ClutterActor *actor)
 {
+  MplApplicationViewPrivate *priv = ((MplApplicationView *) actor)->priv;
+
   CLUTTER_ACTOR_CLASS (mpl_application_view_parent_class)->paint (actor);
+
+  clutter_actor_paint (priv->icon);
+  clutter_actor_paint (priv->title_box);
+  clutter_actor_paint (priv->close_button);
+  clutter_actor_paint (priv->app_frame);
+}
+
+static void
+mpl_application_view_pick (ClutterActor *actor, const ClutterColor *color)
+{
+  MplApplicationViewPrivate *priv = ((MplApplicationView *) actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mpl_application_view_parent_class)->pick (actor, color);
+
+  clutter_actor_paint (priv->icon);
+  clutter_actor_paint (priv->title_box);
+  clutter_actor_paint (priv->close_button);
+  clutter_actor_paint (priv->app_frame);
 }
 
 static void
@@ -192,7 +274,9 @@ mpl_application_view_class_init (MplApplicationViewClass *klass)
   object_class->dispose = mpl_application_view_dispose;
   object_class->finalize = mpl_application_view_finalize;
 
+  actor_class->allocate = mpl_application_view_allocate;
   actor_class->paint = mpl_application_view_paint;
+  actor_class->pick = mpl_application_view_pick;
   actor_class->get_preferred_width = mpl_application_view_get_preferred_width;
   actor_class->get_preferred_height = mpl_application_view_get_preferred_height;
 
@@ -282,7 +366,6 @@ mpl_application_view_init (MplApplicationView *self)
 {
   MplApplicationViewPrivate *priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
-  ClutterActor *frame, *titles;
 
   priv = self->priv = APPLICATION_VIEW_PRIVATE (self);
 
@@ -293,55 +376,43 @@ mpl_application_view_init (MplApplicationView *self)
   g_signal_connect (self, "button-release-event",
                     G_CALLBACK (activate_clicked), NULL);
 
-  titles = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
-  mx_table_add_actor (MX_TABLE (actor), titles, 0, 1);
-  mx_table_child_set_y_expand (MX_TABLE (actor), titles, TRUE);
-  mx_table_child_set_y_fill (MX_TABLE (actor), titles, TRUE);
-  mx_table_child_set_y_align (MX_TABLE (actor), titles, MX_ALIGN_END);
+  priv->title_box = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
+  clutter_actor_set_parent (priv->title_box, actor);
 
   /* title */
   priv->title = mx_label_new ();
   mx_label_set_y_align (MX_LABEL (priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "appTitle");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->title, 0);
-  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->title_box), priv->title, 0);
+  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (priv->title_box),
                                   priv->title, TRUE);
 
   /* subtitle */
   priv->subtitle = mx_label_new ();
   mx_label_set_y_align (MX_LABEL (priv->subtitle), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->subtitle), "appSubTitle");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (titles), priv->subtitle, 1);
-  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (titles),
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->title_box), priv->subtitle, 1);
+  mx_box_layout_child_set_expand (MX_BOX_LAYOUT (priv->title_box),
                                   priv->subtitle, FALSE);
 
   /* close button */
   priv->close_button = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "appCloseButton");
-  clutter_actor_set_size (priv->close_button, 22, 21);
-  mx_table_add_actor (MX_TABLE (actor), priv->close_button, 0, 2);
-  mx_table_child_set_x_fill (MX_TABLE (actor), priv->close_button, FALSE);
-  mx_table_child_set_y_fill (MX_TABLE (actor), priv->close_button, FALSE);
-  mx_table_child_set_x_align (MX_TABLE (actor), priv->close_button, MX_ALIGN_END);
-  mx_table_child_set_y_align (MX_TABLE (actor), priv->close_button, MX_ALIGN_START);
-  mx_table_child_set_y_expand (MX_TABLE (actor), priv->close_button, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (actor), priv->close_button, FALSE);
+  clutter_actor_set_parent (priv->close_button, actor);
   g_signal_connect (priv->close_button, "clicked",
                     G_CALLBACK (close_btn_clicked), self);
 
   /* frame */
-  frame = mx_frame_new ();
-  clutter_actor_set_size (frame, 250, 160);
-  mx_stylable_set_style_class (MX_STYLABLE (frame), "appBackground");
-  mx_table_add_actor (MX_TABLE (actor), frame, 1, 0);
-  mx_table_child_set_column_span (MX_TABLE (actor), frame, 3);
-  mx_table_child_set_x_expand (MX_TABLE (actor), frame, FALSE);
+  priv->app_frame = mx_frame_new ();
+  clutter_actor_set_size (priv->app_frame, 250, 100);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->app_frame), "appBackground");
+  clutter_actor_set_parent (priv->app_frame, actor);
 
   /* shadow */
   priv->shadow = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->shadow), "appShadow");
-  mx_bin_set_child (MX_BIN (frame), priv->shadow);
-  mx_bin_set_fill (MX_BIN (frame), FALSE, FALSE);
+  mx_bin_set_child (MX_BIN (priv->app_frame), priv->shadow);
+  mx_bin_set_fill (MX_BIN (priv->app_frame), FALSE, FALSE);
 
   clutter_actor_show_all (actor);
 }
@@ -357,12 +428,10 @@ mpl_application_view_set_icon (MplApplicationView *view,
                                ClutterActor       *icon)
 {
   MplApplicationViewPrivate *priv;
-  MxTable *table;
 
   g_return_if_fail (MPL_IS_APPLICATION_VIEW (view));
   g_return_if_fail (CLUTTER_IS_ACTOR (icon));
 
-  table = MX_TABLE (view);
   priv = view->priv;
 
   if (priv->icon)
@@ -372,12 +441,7 @@ mpl_application_view_set_icon (MplApplicationView *view,
     }
 
   priv->icon = icon;
-  mx_table_add_actor (MX_TABLE (table), icon, 0, 0);
-  mx_table_child_set_y_expand (MX_TABLE (table), icon, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (table), icon, FALSE);
-  mx_table_child_set_y_fill (MX_TABLE (table), icon, FALSE);
-  mx_table_child_set_row_span (MX_TABLE (table), icon, 1);
-  clutter_actor_set_size (icon, 32, 32);
+  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (view));
 }
 
 void

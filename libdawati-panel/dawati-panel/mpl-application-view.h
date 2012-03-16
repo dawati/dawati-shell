@@ -56,14 +56,14 @@ typedef struct _MplApplicationViewPrivate MplApplicationViewPrivate;
 
 struct _MplApplicationView
 {
-  MxTable parent;
+  MxWidget parent;
 
   MplApplicationViewPrivate *priv;
 };
 
 struct _MplApplicationViewClass
 {
-  MxTableClass parent_class;
+  MxWidgetClass parent_class;
 };
 
 GType mpl_application_view_get_type (void) G_GNUC_CONST;
