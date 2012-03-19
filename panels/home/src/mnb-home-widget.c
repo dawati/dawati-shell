@@ -19,6 +19,7 @@
 
 #include <glib/gi18n.h>
 
+#include "mnb-home-new-widget-dialog.h"
 #include "mnb-home-plugins-engine.h"
 #include "mnb-home-widget.h"
 #include "utils.h"
@@ -247,11 +248,35 @@ mnb_home_widget_new (guint row,
 }
 
 static void
+home_widget_add_module_response (ClutterActor *dialog,
+    const char *module,
+    MnbHomeWidget *self)
+{
+  if (!STR_EMPTY (module))
+    {
+      DEBUG ("Adding widget '%s'", module);
+
+      g_settings_set_string (self->priv->settings, "module", module);
+    }
+
+  clutter_actor_destroy (dialog);
+  /* FIXME: why do I need this */
+  clutter_actor_queue_redraw (clutter_actor_get_stage (CLUTTER_ACTOR (self)));
+}
+
+static void
 home_widget_add_module (MxButton *button,
     MnbHomeWidget *self)
 {
-  /* FIXME: this is where we offer some widgets */
-  g_settings_set_string (self->priv->settings, "module", "example");
+  ClutterActor *dialog;
+
+  dialog = mnb_home_new_widget_dialog_new (
+      clutter_actor_get_stage (CLUTTER_ACTOR (button)));
+
+  g_signal_connect (dialog, "response",
+      G_CALLBACK (home_widget_add_module_response), self);
+
+  clutter_actor_show (dialog);
 }
 
 static void

@@ -104,8 +104,12 @@ mnb_home_plugins_engine_init (MnbHomePluginsEngine *self)
 MnbHomePluginsEngine *
 mnb_home_plugins_engine_dup (void)
 {
-  return g_object_new (MNB_TYPE_HOME_PLUGINS_ENGINE,
+  MnbHomePluginsEngine *self = g_object_new (MNB_TYPE_HOME_PLUGINS_ENGINE,
       NULL);
+
+  peas_engine_rescan_plugins (PEAS_ENGINE (self));
+
+  return self;
 }
 
 DawatiHomePluginsApp *

@@ -17,12 +17,16 @@ dawati_panel_home_LDADD = \
 
 dawati_panel_home_SOURCES = \
 	dawati-panel-home.c \
+	mnb-home-new-widget-dialog.c \
+	mnb-home-new-widget-dialog.h \
 	mnb-home-panel.c \
 	mnb-home-panel.h \
 	mnb-home-plugins-engine.c \
 	mnb-home-plugins-engine.h \
 	mnb-home-widget.c \
 	mnb-home-widget.h \
+	mnb-home-widget-preview.c \
+	mnb-home-widget-preview.h \
 	utils.c \
 	utils.h \
 	$(NULL)
