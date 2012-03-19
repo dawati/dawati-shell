@@ -4,6 +4,7 @@ pluginsdir = $(datadir)/dawati-shell/plugins/
 plugins_DATA = \
 	example.js \
 	example.plugin \
+	example.png \
 	$(NULL)
 
 gsettings_SCHEMAS = \

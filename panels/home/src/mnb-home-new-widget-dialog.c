@@ -149,15 +149,23 @@ mnb_home_new_widget_dialog_init (MnbHomeNewWidgetDialog *self)
        l = g_list_next (l))
     {
       PeasPluginInfo *info = l->data;
+      char *icon;
 
       if (!peas_plugin_info_is_available (info, NULL))
         continue;
 
+      icon = g_build_filename (
+          peas_plugin_info_get_module_dir (info),
+          peas_plugin_info_get_icon_name (info),
+          NULL);
+
       clutter_model_append (self->priv->items,
           ITEMS_MODULE, peas_plugin_info_get_module_name (info),
           ITEMS_NAME, peas_plugin_info_get_name (info),
-          ITEMS_ICON, peas_plugin_info_get_icon_name (info),
+          ITEMS_ICON, icon,
           -1);
+
+      g_free (icon);
     }
 
   /* add actions */
