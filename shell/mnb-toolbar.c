@@ -652,8 +652,6 @@ mnb_toolbar_real_show (ClutterActor *actor)
    * Call the parent show(); this must be done before we do anything else.
    */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
-
-  dawati_netbook_stash_window_focus (priv->plugin, CurrentTime);
 }
 
 static void
@@ -694,8 +692,6 @@ mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
   priv->panel_input_only = FALSE;
   priv->reason_for_hide = _MNB_SHOW_HIDE_UNSET;
   priv->is_visible = FALSE;
-
-  dawati_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
 
@@ -1682,8 +1678,6 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
   MnbToolbarPrivate *priv = toolbar->priv;
   MetaPlugin        *plugin = priv->plugin;
   MnbPanel          *active;
-
-  dawati_netbook_unstash_window_focus (plugin, CurrentTime);
 
   if (!priv->waiting_for_panel_show &&
       (!(active = mnb_toolbar_get_active_panel (toolbar)) ||
