@@ -44,11 +44,6 @@ panels/bluetooth/src/dawati-bt-shell.c
 panels/bluetooth/src/dawati-panel-bt.c
 
 panels/datetime/data/dawati-panel-datetime.desktop.in.in
-panels/datetime/src/dawati-alarm-notify.c
-panels/datetime/src/mnp-alarm-dialog.c
-panels/datetime/src/mnp-alarm-instance.c
-panels/datetime/src/mnp-alarm-tile.c
-panels/datetime/src/mnp-alarms.c
 panels/datetime/src/mnp-clock-area.c
 panels/datetime/src/mnp-utils.c
 panels/datetime/src/dawati-panel-date-time.c
