@@ -66,7 +66,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-15 20:25+0000\n"
+"POT-Creation-Date: 2012-03-20 15:00+0000\n"
 "PO-Revision-Date: 2011-11-03 19:07+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -442,8 +442,8 @@ msgid "You're now connected to a wired network"
 msgstr "Uspešno ste povezani v ožičeno omrežje"
 
 #: ../carrick/carrick-notification-manager.c:176
-#, c-format
-msgid "You're now connected to %s, a %s network"
+#, fuzzy, c-format
+msgid "You're now connected to %1$s, a %2$s network"
 msgstr "Uspešno ste povezani z %s, omrežje %s"
 
 #: ../carrick/carrick-notification-manager.c:182
@@ -461,8 +461,8 @@ msgid "Sorry, we've lost your wired connection"
 msgstr "Vaša ožičena povezava je bila prekinjena"
 
 #: ../carrick/carrick-notification-manager.c:211
-#, c-format
-msgid "Sorry we've lost your %s connection to %s"
+#, fuzzy, c-format
+msgid "Sorry we've lost your %1$s connection to %2$s"
 msgstr "Vaša povezava %s s %s je bila prekinjena"
 
 #: ../carrick/carrick-notification-manager.c:217
@@ -483,18 +483,19 @@ msgstr ""
 "Vaša povezava z %s je bila prekinjena, sedaj ste povezani v ožičeno omrežje"
 
 #: ../carrick/carrick-notification-manager.c:260
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
+"Sorry, your connection to %1$s was lost. So we've connected you to %2$s, a "
+"%3$s network"
 msgstr ""
 "Vaša povezava z %s je bila prekinjena, sedaj ste povezani z %s, ki je "
 "omrežje %s"
 
 #: ../carrick/carrick-notification-manager.c:268
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+"Sorry, your connection to %1$s was lost. So we've connected you to a %2$s "
+"network"
 msgstr "Vaša povezava z %s je bila prekinjena, sedaj ste povezani v omrežje %s"
 
 #: ../carrick/carrick-notification-manager.c:278
@@ -505,18 +506,19 @@ msgstr ""
 "Vaša povezava %s je bila prekinjena, sedaj ste povezani v ožičeno omrežje"
 
 #: ../carrick/carrick-notification-manager.c:285
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"Sorry, your %1$s connection was lost. So we've connected you to %2$s, a %3$s "
 "network"
 msgstr ""
 "Vaša povezava %s je bila prekinjena, sedaj ste povezani z %s, ki je omrežje "
 "%s"
 
 #: ../carrick/carrick-notification-manager.c:294
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
+"Sorry, your %1$s connection was lost. So we've connected you to a %2$s "
+"network"
 msgstr "Vaša povezava %s je bila prekinjena, sedaj ste povezani v omrežje %s"
 
 #: ../carrick/carrick-pane.c:685
@@ -612,11 +614,13 @@ msgstr ""
 #: ../carrick/carrick-service-item.c:761
 #, c-format
 msgid ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to unlock the SIM card. You can try once more before the code is locked."
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to unlock the SIM card. You can try once more before the code is "
+"locked."
 msgid_plural ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to unlock the SIM card. You can try two more times before the code is locked."
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to unlock the SIM card. You can try two more times before the code "
+"is locked."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -625,11 +629,11 @@ msgstr[3] ""
 #: ../carrick/carrick-service-item.c:767
 #, c-format
 msgid ""
-"Sorry, the %s code is incorrect. A %s code is still required to unlock the "
-"SIM card. You can try once more before the code is locked."
+"Sorry, the %1$s code is incorrect. A %2$s code is still required to unlock "
+"the SIM card. You can try once more before the code is locked."
 msgid_plural ""
-"Sorry, the %s code is incorrect. A %s code is still required to unlock the "
-"SIM card. You can try two more times before the code is locked."
+"Sorry, the %1$s code is incorrect. A %2$s code is still required to unlock "
+"the SIM card. You can try two more times before the code is locked."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -651,8 +655,8 @@ msgstr[3] ""
 #: ../carrick/carrick-service-item.c:784
 #, c-format
 msgid ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to unlock the SIM card."
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to unlock the SIM card."
 msgstr ""
 
 #: ../carrick/carrick-service-item.c:788
@@ -670,13 +674,13 @@ msgstr ""
 #: ../carrick/carrick-service-item.c:809
 #, c-format
 msgid ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to reset the %s code. You can try once more before the code is permanently "
-"locked."
-msgid_plural ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to reset the %s code. You can try %d more times before the code is "
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to reset the %3$s code. You can try once more before the code is "
 "permanently locked."
+msgid_plural ""
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to reset the %3$s code. You can try %4$d more times before the code "
+"is permanently locked."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -685,11 +689,12 @@ msgstr[3] ""
 #: ../carrick/carrick-service-item.c:817
 #, c-format
 msgid ""
-"Sorry, the %s code is incorrect. A %s code is still required to reset the %s "
-"code. You can try once more before the code is permanently locked."
+"Sorry, the %1$s code is incorrect. A %2$s code is still required to reset "
+"the %3$s code. You can try once more before the code is permanently locked."
 msgid_plural ""
-"Sorry, the %s code is incorrect. A %s code is still required to reset the %s "
-"code. You can try %d more times before the code is permanently locked."
+"Sorry, the %1$s code is incorrect. A %2$s code is still required to reset "
+"the %3$s code. You can try %4$d more times before the code is permanently "
+"locked."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -698,11 +703,11 @@ msgstr[3] ""
 #: ../carrick/carrick-service-item.c:825
 #, c-format
 msgid ""
-"A %s code is required to reset the %s code. You can try once more before the "
-"code is permanently locked."
-msgid_plural ""
-"A %s code is required to reset the %s code. You can try %d more times before "
+"A %1$s code is required to reset the %2$s code. You can try once more before "
 "the code is permanently locked."
+msgid_plural ""
+"A %1$s code is required to reset the %2$s code. You can try %3$d more times "
+"before the code is permanently locked."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -711,19 +716,20 @@ msgstr[3] ""
 #: ../carrick/carrick-service-item.c:838
 #, c-format
 msgid ""
-"Sorry, that does not look like a valid %s code. A %s code is still required "
-"to reset the %s code."
+"Sorry, that does not look like a valid %1$s code. A %2$s code is still "
+"required to reset the %3$s code."
 msgstr ""
 
 #: ../carrick/carrick-service-item.c:843
 #, c-format
 msgid ""
-"Sorry, that %s code is incorrect. A %s code is required to reset the %s code."
+"Sorry, that %1$s code is incorrect. A %2$s code is required to reset the "
+"%3$s code."
 msgstr ""
 
 #: ../carrick/carrick-service-item.c:848
 #, c-format
-msgid "A %s code is required to reset the %s code."
+msgid "A %1$s code is required to reset the %2$s code."
 msgstr ""
 
 #. TRANSLATORS: text is used as a hint in the passphrase entry and
@@ -1284,163 +1290,6 @@ msgstr "datum in čas"
 msgid "Date and Time panel"
 msgstr "Pult datuma in časa"
 
-#: ../panels/datetime/src/dawati-alarm-notify.c:43
-msgid "Dawati alarm notify"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:59
-msgid "Beep"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:60 ../panels/music/main.js:561
-msgid "Music"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:67
-#: ../panels/datetime/src/mnp-alarm-instance.c:53
-msgid "Never"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:68
-#: ../panels/datetime/src/mnp-alarm-instance.c:54
-#: ../panels/datetime/src/mnp-alarm-tile.c:36
-msgid "Everyday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:69
-#: ../panels/datetime/src/mnp-alarm-instance.c:55
-msgid "Monday - Friday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:70
-#: ../panels/datetime/src/mnp-alarm-instance.c:56
-msgid "Monday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:71
-#: ../panels/datetime/src/mnp-alarm-instance.c:57
-msgid "Tuesday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:72
-#: ../panels/datetime/src/mnp-alarm-instance.c:58
-msgid "Wednesday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:73
-#: ../panels/datetime/src/mnp-alarm-instance.c:59
-msgid "Thursday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:74
-#: ../panels/datetime/src/mnp-alarm-instance.c:60
-msgid "Friday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:75
-#: ../panels/datetime/src/mnp-alarm-instance.c:61
-msgid "Saturday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:76
-#: ../panels/datetime/src/mnp-alarm-instance.c:62
-msgid "Sunday"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:175
-#, fuzzy
-msgid "Alarm settings"
-msgstr "Vse nastavitve"
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:322
-msgid "Repeat"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:291
-msgid "Alarm Notify"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:294
-#, c-format
-msgid "Alarm at %d:%.2d %s"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:294
-msgid "am"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:294
-msgid "pm"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:296
-#: ../panels/datetime/src/mnp-alarm-instance.c:298
-msgid "Dawati Alarm Notify"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-instance.c:301
-#, fuzzy
-msgid "AlarmNotifications"
-msgstr "Programi"
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:39
-msgid "TUESDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:41
-msgid "THURSDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr ""
-
-#: ../panels/datetime/src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
-
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am), when the local
@@ -1700,42 +1549,6 @@ msgstr ""
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
 
-#: ../panels/devices/src/mpd-volume-tile.c:105
-msgid "Turned up to 11"
-msgstr "Ekstremno glasno"
-
-#: ../panels/devices/src/mpd-volume-tile.c:107
-msgid "Very loud"
-msgstr "Zelo glasno"
-
-#: ../panels/devices/src/mpd-volume-tile.c:109
-msgid "Loud"
-msgstr "Glasno"
-
-#: ../panels/devices/src/mpd-volume-tile.c:111
-msgid "Fairly loud"
-msgstr "Malo glasnejše"
-
-#: ../panels/devices/src/mpd-volume-tile.c:113
-msgid "Middle of the road"
-msgstr "Srednje glasno"
-
-#: ../panels/devices/src/mpd-volume-tile.c:115
-msgid "Fairly quiet"
-msgstr "Malo tišje"
-
-#: ../panels/devices/src/mpd-volume-tile.c:117
-msgid "Quiet"
-msgstr "Tiho"
-
-#: ../panels/devices/src/mpd-volume-tile.c:119
-msgid "Very quiet"
-msgstr "Zelo tiho"
-
-#: ../panels/devices/src/mpd-volume-tile.c:121
-msgid "Silent"
-msgstr "Ekstremno tiho"
-
 #: ../panels/music/dawati-panel-music.desktop.in.in.h:1
 #, fuzzy
 msgid "Music panel"
@@ -1760,6 +1573,10 @@ msgstr ""
 
 #: ../panels/music/main.js:54
 msgid "Open Audio Player"
+msgstr ""
+
+#: ../panels/music/main.js:561
+msgid "Music"
 msgstr ""
 
 #: ../panels/music/main.js:570
@@ -2264,6 +2081,11 @@ msgstr "Pult z napravami"
 msgid "switcher"
 msgstr ""
 
+#: ../panels/switcher/src/main.c:266
+#, fuzzy
+msgid "Application Switcher"
+msgstr "Programi"
+
 #. Translators: This string ends up in the autocomplete list and
 #. is used for searching. '%%s' is the string that the user
 #. typed in to the entry box and '%s' is the name of the search
@@ -2398,7 +2220,7 @@ msgstr ""
 msgid "Effects for Dawati Netbooks"
 msgstr ""
 
-#: ../shell/mnb-toolbar.c:1137
+#: ../shell/mnb-toolbar.c:1133
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Oprostite, %s je poškodovana"
@@ -2450,6 +2272,41 @@ msgstr "zahteva vašo pozornost."
 #: ../shell/notifications/ntf-wm.c:124
 msgid "Activate"
 msgstr "Vklopi"
+
+#, fuzzy
+#~ msgid "Alarm settings"
+#~ msgstr "Vse nastavitve"
+
+#, fuzzy
+#~ msgid "AlarmNotifications"
+#~ msgstr "Programi"
+
+#~ msgid "Turned up to 11"
+#~ msgstr "Ekstremno glasno"
+
+#~ msgid "Very loud"
+#~ msgstr "Zelo glasno"
+
+#~ msgid "Loud"
+#~ msgstr "Glasno"
+
+#~ msgid "Fairly loud"
+#~ msgstr "Malo glasnejše"
+
+#~ msgid "Middle of the road"
+#~ msgstr "Srednje glasno"
+
+#~ msgid "Fairly quiet"
+#~ msgstr "Malo tišje"
+
+#~ msgid "Quiet"
+#~ msgstr "Tiho"
+
+#~ msgid "Very quiet"
+#~ msgstr "Zelo tiho"
+
+#~ msgid "Silent"
+#~ msgstr "Ekstremno tiho"
 
 #~ msgid "%s (Roaming)"
 #~ msgstr "%s (gostovanje)"
