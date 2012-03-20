@@ -5,8 +5,9 @@
     "id": "toplevel",
     "children": [
       {
+        "id": "panel-title",
         "type": "MxLabel",
-        "text": "Application Switcher",
+        "text": "Check your code dude.",
         "style-class": "titleBar"
       },
       {

@@ -236,6 +236,7 @@ static void
 setup (ZonePanelData *data)
 {
   ClutterScript *script;
+  MxLabel *title;
   GError *error = NULL;
   GList *workspaces, *l, *windows, *list;
   gint count;
@@ -260,6 +261,9 @@ setup (ZonePanelData *data)
       g_clear_error (&error);
       return;
     }
+
+  title = MX_LABEL (clutter_script_get_object (script, "panel-title"));
+  mx_label_set_text (title, _("Application Switcher"));
 
   data->toplevel = (ClutterActor*) clutter_script_get_object (script,
                                                               "toplevel");
