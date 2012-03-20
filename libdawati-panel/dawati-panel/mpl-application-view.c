@@ -522,3 +522,9 @@ mpl_application_view_set_thumbnail (MplApplicationView *view,
       clutter_actor_show_all (priv->shadow);
     }
 }
+
+gfloat
+mpl_application_get_tile_width (void)
+{
+  return TILE_WIDTH;
+}

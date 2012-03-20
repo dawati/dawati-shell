@@ -34,9 +34,13 @@ struct _MnbAlttabOverlayPrivate
 {
   MnbAlttabOverlayApp *active;
   ClutterActor        *grid;
+  ClutterActor        *scrollview;
 
-  gfloat               viewport_height;
-  gfloat               scroll_y;
+  gint                 screen_width;
+  gint                 screen_height;
+
+  /* gfloat               viewport_height; */
+  /* gfloat               scroll_y; */
   guint                current_row;
 
   gboolean disposed            : 1;

@@ -67,6 +67,10 @@ void             mnb_alttab_overlay_app_set_active (MnbAlttabOverlayApp *app,
 gboolean         mnb_alttab_overlay_app_get_active (MnbAlttabOverlayApp *app);
 MetaWindowActor *mnb_alttab_overlay_app_get_mcw    (MnbAlttabOverlayApp *app);
 
+
+
+gfloat           mpl_application_get_tile_width    (void);
+
 G_END_DECLS
 
 #endif /* _MNB_ALTTAB_OVERLAY_APP */
