@@ -61,7 +61,7 @@ dawati_bt_device_set_name (DawatiBtDevice *device, const char *name)
   g_free (priv->name);
   priv->name = g_strdup (name);
 
-  label = g_strdup_printf ("Connected to %s", priv->name);
+  label = g_strdup_printf (_("Connected to %s"), priv->name);
   mx_label_set_text (MX_LABEL (priv->label), label);
   g_free (label);
 }

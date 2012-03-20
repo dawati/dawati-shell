@@ -129,7 +129,7 @@ ggg_plan_dialog_init (GggPlanDialog *self)
 
   gtk_dialog_add_buttons (GTK_DIALOG (self),
                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                          "Manual Configuration", GTK_RESPONSE_REJECT,
+                          _("Manual Configuration"), GTK_RESPONSE_REJECT,
                           GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                           NULL);
 

@@ -228,7 +228,7 @@ mtp_clock_update_time_date (MtpClock *clock)
         }
     }
   else
-    snprintf (time_str, 64, "Time");
+    snprintf (time_str, 64, _("Time"));
 
   /*
    * Strip leading space
@@ -248,7 +248,7 @@ mtp_clock_update_time_date (MtpClock *clock)
      */
     strftime (time_str, 64, _("%B %e, %Y"), tmp);
   else
-    snprintf (time_str, 64, "Date");
+    snprintf (time_str, 64, _("Date"));
 
   mx_widget_set_tooltip_text (MX_WIDGET (clock), time_str);
 #endif
