@@ -444,7 +444,6 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
       if (event->xkey.state & ShiftMask)
         backward = !backward;
 
-      mnb_alttab_reset_autoscroll (overlay, backward);
       mnb_alttab_overlay_advance (overlay, backward);
     }
 }

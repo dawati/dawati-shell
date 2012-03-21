@@ -85,8 +85,6 @@ void     mnb_alttab_overlay_hide (MnbAlttabOverlay *overlay);
 void     mnb_alttab_overlay_activate_window (MnbAlttabOverlay *overlay,
                                              MetaWindowActor  *activate,
                                              guint             timestamp);
-void     mnb_alttab_reset_autoscroll (MnbAlttabOverlay *overlay,
-                                      gboolean          backward);
 
 G_END_DECLS
 

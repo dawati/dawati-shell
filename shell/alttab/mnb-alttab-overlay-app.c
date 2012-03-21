@@ -154,7 +154,7 @@ mnb_alttab_overlay_app_new (MetaWindowActor *mcw)
 {
   MetaWindow   *mw;
   GdkPixbuf    *pixbuf = NULL;
-  ClutterActor *icon, *texture, *thumbnail;
+  ClutterActor *icon = NULL, *texture, *thumbnail;
 
   g_return_val_if_fail (META_IS_WINDOW_ACTOR (mcw), NULL);
 
