@@ -31,6 +31,8 @@
 #include <X11/keysym.h>
 #include <clutter/x11/clutter-x11.h>
 
+#include <math.h>
+
 #define PADDING 10
 
 /* static void mnb_alttab_stop_autoscroll (MnbAlttabOverlay *overlay); */
@@ -797,8 +799,8 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
   /* So bad... */
   tile_width = mpl_application_get_tile_width ();
 
-  max_nb_tiles = ((priv->screen_width - padding.left - padding.right)
-                  + spacing) / (tile_width + spacing);
+  max_nb_tiles = floorf (((priv->screen_width - padding.left - padding.right)
+                          + spacing) / (tile_width + spacing));
 
   if (max_nb_tiles < 0)
     max_nb_tiles = 1;

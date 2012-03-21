@@ -144,6 +144,11 @@ mpl_application_view_set_property (GObject      *object,
 static void
 mpl_application_view_dispose (GObject *object)
 {
+  MplApplicationView *self = (MplApplicationView *) object;
+
+  mpl_application_view_set_icon (self, NULL);
+  mpl_application_view_set_thumbnail (self, NULL);
+
   G_OBJECT_CLASS (mpl_application_view_parent_class)->dispose (object);
 }
 
@@ -430,18 +435,20 @@ mpl_application_view_set_icon (MplApplicationView *view,
   MplApplicationViewPrivate *priv;
 
   g_return_if_fail (MPL_IS_APPLICATION_VIEW (view));
-  g_return_if_fail (CLUTTER_IS_ACTOR (icon));
 
   priv = view->priv;
 
   if (priv->icon)
     {
-      clutter_actor_destroy (priv->icon);
+      clutter_actor_unparent (priv->icon);
       priv->icon = NULL;
     }
 
-  priv->icon = icon;
-  clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (view));
+  if (icon)
+    {
+      priv->icon = icon;
+      clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (view));
+    }
 }
 
 void
@@ -510,7 +517,7 @@ mpl_application_view_set_thumbnail (MplApplicationView *view,
 
   if (priv->thumbnail)
     {
-      clutter_actor_destroy (priv->thumbnail);
+      clutter_actor_unparent (priv->thumbnail);
       priv->thumbnail = NULL;
       clutter_actor_hide (priv->shadow);
     }
