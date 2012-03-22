@@ -2365,7 +2365,7 @@ dawati_netbook_unstash_window_focus (MetaPlugin *plugin, guint32 timestamp)
    */
   focus = meta_display_get_focus_window (display);
 
-  if (!focus)
+  if (!focus || (meta_window_get_xwindow (focus) == priv->focus_xwin))
     focus = priv->last_focused;
 
   /*
