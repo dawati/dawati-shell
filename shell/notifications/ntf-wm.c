@@ -91,7 +91,7 @@ ntf_wm_update_notification (NtfNotification *ntf, MetaWindow *window)
   NtfSource    *src;
   const gchar  *title;
   const gchar  *summary;
-  const gchar  *body;
+  gchar        *body;
 
   g_return_if_fail (ntf && window);
 
@@ -113,7 +113,8 @@ ntf_wm_update_notification (NtfNotification *ntf, MetaWindow *window)
 
   ntf_notification_set_summary (ntf, summary);
 
-  body = _("is asking for your attention.");
+  body = g_strdup_printf (_("The application '%s' is asking for your attention."),
+                          title);
 
   ntf_notification_set_body (ntf, body);
 
@@ -128,6 +129,8 @@ ntf_wm_update_notification (NtfNotification *ntf, MetaWindow *window)
                     window);
 
   ntf_notification_add_button (ntf, button, "activate", 0);
+
+  g_free (body);
 }
 
 static void
