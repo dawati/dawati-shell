@@ -1860,9 +1860,9 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
       dawati_netbook_window_is_modal_for_panel (active_panel, mw))
     {
       mnb_panel_oop_set_auto_modal ((MnbPanelOop*)active_panel, TRUE);
-      g_signal_connect (mw, "unmanaged",
-                        G_CALLBACK (dawati_netbook_panel_modal_destroyed_cb),
-                        active_panel);
+          g_signal_connect (mw, "unmanaged",
+                            G_CALLBACK (dawati_netbook_panel_modal_destroyed_cb),
+                            active_panel);
     }
 
   g_object_get (mw, "fullscreen", &fullscreen, NULL);
@@ -1966,7 +1966,10 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
 
       /* Hide toolbar etc in presence of modal window */
       if (meta_window_is_blessed_window (mw))
-        mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_POLICY);
+        {
+          mnb_panel_hide_with_toolbar (MNB_PANEL (active_panel),
+                                       MNB_SHOW_HIDE_POLICY);
+        }
 
       /*
        * Move application window to a new workspace, if appropriate.
