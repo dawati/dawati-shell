@@ -199,7 +199,7 @@ _handle_eject_error (MpdStorageDeviceTile *tile,
       pid = g_array_index (processes, GPid, 0);
       process_name = get_name_for_pid (pid);
       msg = g_strdup_printf (get_eject_failed_busy_message (),
-			     process_name ? : _("Unknown");
+			     process_name ? : _("Unknown"));
       mpd_storage_device_tile_show_message (tile, msg, false);
 
       g_free (process_name);
