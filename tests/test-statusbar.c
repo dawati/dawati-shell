@@ -55,7 +55,8 @@ main (int argc, char *argv[])
   ClutterActor *stage, *statusbar;
   MxStyle *style;
 
-  clutter_init (&argc, &argv);
+  if (!clutter_init (&argc, &argv))
+    return -1;
 
   style = mx_style_get_default ();
   mx_style_load_from_file (style,
