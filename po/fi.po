@@ -51,7 +51,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 15:00+0000\n"
+"POT-Creation-Date: 2012-03-22 10:50+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -212,6 +212,12 @@ msgstr ""
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
+#: ../capplet/src/mtp-clock.c:231 ../panels/datetime/src/mnp-world-clock.c:579
+#: ../shell/mnb-toolbar-clock.c:130
+#, c-format
+msgid "Time"
+msgstr "Aika"
+
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
@@ -219,6 +225,11 @@ msgstr "%l:%M %P"
 #: ../capplet/src/mtp-clock.c:249 ../shell/mnb-toolbar-clock.c:147
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
+
+#: ../capplet/src/mtp-clock.c:251 ../shell/mnb-toolbar-clock.c:149
+#, fuzzy, c-format
+msgid "Date"
+msgstr "Pvm/Aika"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
@@ -243,6 +254,12 @@ msgstr ""
 msgid "Cellular Data Connection Wizard"
 msgstr "Ohjattu matkapuhelinverkkoyhteyden luominen"
 
+#: ../callouts/3g/ggg-country-dialog.c:79
+#: ../callouts/3g/ggg-manual-dialog.c:120 ../callouts/3g/ggg-plan-dialog.c:132
+#: ../callouts/3g/ggg-provider-dialog.c:112
+msgid "Manual Configuration"
+msgstr "Määritys käsin"
+
 #: ../callouts/3g/ggg-country-dialog.c:95
 msgid "Select Country"
 msgstr "Valitse maa"
@@ -255,10 +272,6 @@ msgstr ""
 #: ../callouts/3g/ggg-manual-dialog.c:118
 #, fuzzy
 msgid "Modify configuration"
-msgstr "Määritys käsin"
-
-#: ../callouts/3g/ggg-manual-dialog.c:120
-msgid "Manual Configuration"
 msgstr "Määritys käsin"
 
 #: ../callouts/3g/ggg-manual-dialog.c:205
@@ -312,6 +325,18 @@ msgstr "Valitse palveluntarjoaja"
 #: ../callouts/3g/ggg-sim-dialog.c:126
 msgid "Select the SIM to setup"
 msgstr ""
+
+#: ../callouts/openconnect/main.c:629
+#, fuzzy, c-format
+msgid "Connect to VPN '%s'"
+msgstr "Yhdistä VPN-verkkoon"
+
+#. TRANSLATORS: Button
+#. * There will be a combobox of VPN networks to the left of the
+#. * button
+#: ../callouts/openconnect/main.c:631 ../carrick/carrick-pane.c:2148
+msgid "Connect to VPN"
+msgstr "Yhdistä VPN-verkkoon"
 
 #: ../callouts/openconnect/main.c:660
 #, c-format
@@ -590,13 +615,6 @@ msgstr "Verkot"
 #: ../carrick/carrick-pane.c:2108
 msgid "Add new connection"
 msgstr "Lisää uusi yhteys"
-
-#. TRANSLATORS: Button
-#. * There will be a combobox of VPN networks to the left of the
-#. * button
-#: ../carrick/carrick-pane.c:2148
-msgid "Connect to VPN"
-msgstr "Yhdistä VPN-verkkoon"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
@@ -1005,7 +1023,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Hyväksy"
 
-#: ../carrick/carrick-util.c:38
+#: ../carrick/carrick-util.c:38 ../panels/devices/src/mpd-devices-tile.c:202
 #: ../panels/people/anerley/anerley/anerley-presence-chooser.c:49
 #: ../libdawati-panel/dawati-panel/mpl-utils.c:145
 #: ../libdawati-panel/dawati-panel/mpl-utils.c:146
@@ -1322,10 +1340,6 @@ msgstr "%b %-d"
 #: ../panels/datetime/src/dawati-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Pvm/Aika"
-
-#: ../panels/datetime/src/mnp-world-clock.c:579
-msgid "Time"
-msgstr "Aika"
 
 #: ../panels/datetime/src/mnp-world-clock.c:632
 msgid "24 hour clock"
@@ -2241,11 +2255,11 @@ msgid_plural "Opening %d Items"
 msgstr[0] "Avataan %d kohde"
 msgstr[1] "Avataan %d kohdetta"
 
-#: ../shell/dawati-netbook.c:962
+#: ../shell/dawati-netbook.c:983
 msgid "Dawati Netbook Effects"
 msgstr "Dawati -kannettavan tehosteet"
 
-#: ../shell/dawati-netbook.c:966
+#: ../shell/dawati-netbook.c:987
 msgid "Effects for Dawati Netbooks"
 msgstr "Dawati -kannettavien tehosteet"
 
@@ -2259,7 +2273,7 @@ msgstr "Pahoittelut, %s on rikki."
 #. * available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../shell/mnb-statusbar.c:209
+#: ../shell/mnb-statusbar.c:183
 #, fuzzy
 msgid "%A %B %e, %Y - %H:%M"
 msgstr "%B %e, %Y"
@@ -2269,7 +2283,7 @@ msgstr "%B %e, %Y"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../shell/mnb-statusbar.c:218
+#: ../shell/mnb-statusbar.c:192
 msgid "%A %B %e, %Y - %l:%M %P"
 msgstr ""
 
@@ -2295,10 +2309,11 @@ msgid "Unknown window"
 msgstr "Tuntematon ikkuna"
 
 #: ../shell/notifications/ntf-wm.c:116
-msgid "is asking for your attention."
+#, fuzzy, c-format
+msgid "The application '%s' is asking for your attention."
 msgstr "pyytää huomiotasi."
 
-#: ../shell/notifications/ntf-wm.c:124
+#: ../shell/notifications/ntf-wm.c:125
 msgid "Activate"
 msgstr "Aktivoi"
 
