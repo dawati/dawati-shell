@@ -539,11 +539,31 @@ dawati_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
 }
 
 static void
+dawati_netbook_reposition_statusbar (MetaPlugin *plugin)
+{
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  gfloat                      statusbar_height;
+  gint                        screen_width, screen_height;
+
+  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  /* Statusbar positioning */
+  clutter_actor_get_preferred_height (priv->statusbar, -1,
+                                      NULL, &statusbar_height);
+
+  clutter_actor_set_position (priv->statusbar, 0, 0);
+  clutter_actor_set_size (priv->statusbar,
+                          screen_width, statusbar_height);
+  mnb_input_manager_push_actor (priv->statusbar, MNB_INPUT_LAYER_TOP);
+  dawati_netbook_set_struts (plugin, -1, -1, statusbar_height, -1);
+}
+
+static void
 dawati_netbook_handle_screen_size (MetaPlugin *plugin,
                                   gint       *screen_width,
                                   gint       *screen_height)
 {
-  DawatiNetbookPluginPrivate *priv   = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
   MnbToolbar   *toolbar   = (MnbToolbar*)priv->toolbar;
   MetaScreen   *screen    = meta_plugin_get_screen (META_PLUGIN (plugin));
@@ -640,8 +660,9 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
 
       meta_error_trap_pop (display);
     }
-}
 
+  dawati_netbook_reposition_statusbar (plugin);
+}
 /*
  * Shows the myzone if no applications are running.
  *
@@ -872,7 +893,7 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
    */
   priv->toolbar = mnb_toolbar_new (plugin);
 
-  priv->statusbar = mnb_statusbar_new (plugin, MNB_TOOLBAR (priv->toolbar));
+  priv->statusbar = mnb_statusbar_new (MNB_TOOLBAR (priv->toolbar));
 
   switcher_overlay = priv->switcher_overlay =
     CLUTTER_ACTOR (mnb_alttab_overlay_new ());

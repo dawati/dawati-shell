@@ -75,7 +75,7 @@ struct _MnbStatusbarClass
 
 GType mnb_statusbar_get_type (void) G_GNUC_CONST;
 
-ClutterActor *mnb_statusbar_new (MetaPlugin *plugin, MnbToolbar *toolbar);
+ClutterActor *mnb_statusbar_new (MnbToolbar *toolbar);
 
 G_END_DECLS
 

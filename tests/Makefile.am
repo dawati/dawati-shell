@@ -1,12 +1,12 @@
 
 AM_CPPFLAGS = \
-  $(MUTTER_PLUGIN_CFLAGS) \
-  -I$(top_srcdir)/penge \
-  -I$(top_srcdir)/src \
-  -I$(top_builddir)/src \
-  -DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\"
-
-AM_CFLAGS = \
+	$(MUTTER_PLUGIN_CFLAGS) \
+	-I$(top_srcdir)/penge \
+	-I$(top_srcdir)/shell \
+	-I$(top_builddir)/shell \
+	-DPLUGIN_PKGDATADIR=\"$(pkgdatadir)\" \
+	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" \
+	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" \
 	$(PENGE_CFLAGS) \
 	-fPIC \
 	-Werror=missing-prototypes
@@ -22,8 +22,15 @@ LDADD = \
 	$(MUTTER_PLUGIN_LIBS)
 
 noinst_PROGRAMS = \
-       test-screensized
+	test-screensized \
+	test-statusbar
 
 test_screensized_SOURCES = \
 	test-screensized.c
 
+test_statusbar_SOURCES = \
+	test-statusbar.c \
+	$(top_srcdir)/shell/mnb-statusbar.c
+test_statusbar_CFLAGS = \
+	-I$(top_srcdir)/shell \
+	-I$(top_srcdir)/libdawati-panel

@@ -39,13 +39,11 @@ G_DEFINE_TYPE (MnbStatusbar, mnb_statusbar, MX_TYPE_BOX_LAYOUT)
 enum
 {
   PROP_0,
-  PROP_MUTTER_PLUGIN,
   PROP_TOOLBAR
 };
 
 struct _MnbStatusbarPrivate
 {
-  MetaPlugin *plugin;
   MnbToolbar *toolbar;
 
   guint trigger_timeout_id;
@@ -56,30 +54,6 @@ struct _MnbStatusbarPrivate
   guint timeout_id;
   ClutterActor *datetime;
 };
-
-static void
-mnb_statusbar_stage_allocation_cb (ClutterActor *stage,
-                                   GParamSpec   *pspec,
-                                   MnbStatusbar *self)
-{
-  MnbStatusbarPrivate *priv = self->priv;
-  ClutterActorBox      box;
-
-  clutter_actor_get_allocation_box (stage, &box);
-  clutter_actor_set_size (CLUTTER_ACTOR (self),
-                          box.x2 - box.x1, STATUSBAR_HEIGHT);
-  mnb_input_manager_push_actor (CLUTTER_ACTOR (self), MNB_INPUT_LAYER_TOP);
-  dawati_netbook_set_struts (priv->plugin, -1, -1, STATUSBAR_HEIGHT, -1);
-}
-
-static void
-mnb_statusbar_stage_show_cb (ClutterActor *stage,
-                             MnbStatusbar *self)
-{
-  g_signal_connect (stage, "notify::allocation",
-                    G_CALLBACK (mnb_statusbar_stage_allocation_cb),
-                    self);
-}
 
 static gboolean
 mnb_statusbar_trigger_toolbar_timeout_cb (gpointer data)
@@ -138,11 +112,11 @@ mnb_statusbar_event_cb (MnbStatusbar *self,
       if (!mnb_toolbar_is_visible (priv->toolbar) &&
           !mnb_toolbar_in_show_transition (priv->toolbar))
         {
-          /*
-           * If any fullscreen apps are present, then bail out.
-           */
-          if (dawati_netbook_fullscreen_apps_present (priv->plugin))
-            return FALSE;
+          /* /\* */
+          /*  * If any fullscreen apps are present, then bail out. */
+          /*  *\/ */
+          /* if (dawati_netbook_fullscreen_apps_present (priv->plugin)) */
+          /*   return FALSE; */
 
           /*
            * Only do this once; if the timeout is already installed,
@@ -246,6 +220,18 @@ mnb_statusbar_initial_timeout_cb (MnbStatusbar *self)
 }
 
 static void
+mnb_statusbar_get_preferred_height (ClutterActor *actor,
+                                    gfloat        for_width,
+                                    gfloat       *min_height,
+                                    gfloat       *nat_height)
+{
+  if (min_height)
+    *min_height = STATUSBAR_HEIGHT;
+  if (nat_height)
+    *nat_height = STATUSBAR_HEIGHT;
+}
+
+static void
 mnb_statusbar_allocate (ClutterActor           *actor,
                         const ClutterActorBox  *box,
                         ClutterAllocationFlags  flags)
@@ -277,6 +263,16 @@ mnb_statusbar_paint (ClutterActor *actor)
 }
 
 static void
+mnb_statusbar_pick (ClutterActor *actor, const ClutterColor *color)
+{
+  MnbStatusbarPrivate *priv = MNB_STATUSBAR (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_statusbar_parent_class)->pick (actor, color);
+
+  clutter_actor_paint (CLUTTER_ACTOR (priv->datetime));
+}
+
+static void
 mnb_statusbar_get_property (GObject    *object,
                             guint       property_id,
                             GValue     *value,
@@ -286,10 +282,6 @@ mnb_statusbar_get_property (GObject    *object,
 
   switch (property_id)
     {
-    case PROP_MUTTER_PLUGIN:
-      g_value_set_object (value, priv->plugin);
-      break;
-
     case PROP_TOOLBAR:
       g_value_set_object (value, priv->toolbar);
       break;
@@ -309,10 +301,6 @@ mnb_statusbar_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_MUTTER_PLUGIN:
-      priv->plugin = g_value_get_object (value);
-      break;
-
     case PROP_TOOLBAR:
       priv->toolbar = g_value_get_object (value);
       break;
@@ -357,14 +345,8 @@ mnb_statusbar_finalize (GObject *object)
 static void
 mnb_statusbar_constructed (GObject *object)
 {
-  MnbStatusbarPrivate *priv   = MNB_STATUSBAR (object)->priv;
-
   if (G_OBJECT_CLASS (mnb_statusbar_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_statusbar_parent_class)->finalize (object);
-
-  g_signal_connect (meta_plugin_get_stage (priv->plugin),
-                    "show", G_CALLBACK (mnb_statusbar_stage_show_cb),
-                    object);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (object), TRUE);
 }
@@ -383,24 +365,17 @@ mnb_statusbar_class_init (MnbStatusbarClass *klass)
   object_class->dispose = mnb_statusbar_dispose;
   object_class->finalize = mnb_statusbar_finalize;
 
+  actor_class->get_preferred_height = mnb_statusbar_get_preferred_height;
   actor_class->allocate = mnb_statusbar_allocate;
   actor_class->paint = mnb_statusbar_paint;
-
-  g_object_class_install_property (object_class,
-                                   PROP_MUTTER_PLUGIN,
-                                   g_param_spec_object ("mutter-plugin",
-                                                        "Mutter Plugin",
-                                                        "Mutter Plugin",
-                                                        META_TYPE_PLUGIN,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY));
+  actor_class->pick = mnb_statusbar_pick;
 
   g_object_class_install_property (object_class,
                                    PROP_TOOLBAR,
                                    g_param_spec_object ("toolbar",
                                                         "Toolbar",
                                                         "Toolbar",
-                                                        MNB_TYPE_TOOLBAR,
+                                                        CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
@@ -413,10 +388,8 @@ mnb_statusbar_init (MnbStatusbar *self)
 
   priv = self->priv = STATUSBAR_PRIVATE (self);
 
-  g_signal_connect (self,
-                    "event",
-                    G_CALLBACK (mnb_statusbar_event_cb),
-                    NULL);
+  g_signal_connect (self, "event",
+                    G_CALLBACK (mnb_statusbar_event_cb), NULL);
 
   priv->datetime = mx_button_new ();
   clutter_actor_set_name (priv->datetime, "statusbar-date-button");
@@ -432,10 +405,9 @@ mnb_statusbar_init (MnbStatusbar *self)
 }
 
 ClutterActor *
-mnb_statusbar_new (MetaPlugin *plugin, MnbToolbar *toolbar)
+mnb_statusbar_new (MnbToolbar *toolbar)
 {
   return g_object_new (MNB_TYPE_STATUSBAR,
-                       "mutter-plugin", plugin,
                        "toolbar", toolbar,
                        /* FIXME: Why does this crashes gobject???
                         *        64bits weirdness??
