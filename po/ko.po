@@ -56,7 +56,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2010-07-10 05:17+0900\n"
 "Last-Translator: Park Shinjo <peremen@gmail.com>\n"
 "Language-Team: Korean <peremen@gmail.com>\n"
@@ -1158,6 +1158,11 @@ msgstr "블루투스"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "블루투스"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "VPN에 연결"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

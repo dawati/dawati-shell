@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dawati UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -1160,6 +1160,11 @@ msgstr "Bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Conectarse a VPN"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

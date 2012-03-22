@@ -86,7 +86,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2010-01-22 10:50+0100\n"
 "Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
 "Language-Team: Hungarian <aleph@mandriva.org>\n"
@@ -1172,6 +1172,11 @@ msgstr "Bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Kapcsolódás VPN-hez"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

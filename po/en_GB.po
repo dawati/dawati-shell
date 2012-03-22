@@ -60,7 +60,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dawati\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2010-10-25 15:50-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -1158,6 +1158,11 @@ msgstr "Bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Connect to VPN"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

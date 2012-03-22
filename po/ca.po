@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutter 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2009-08-21 14:54+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -1155,6 +1155,11 @@ msgstr "bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Connecta a VPN"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

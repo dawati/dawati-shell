@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2009-08-05 13:54+0700\n"
 "Last-Translator: Anousak Souphavanh <anousak@gmail.com>\n"
 "Language-Team: Lao <lo@li.org>\n"
@@ -1077,6 +1077,11 @@ msgstr ""
 #: ../panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in.h:2
 msgid "Bluetooth panel"
 msgstr ""
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "ໄປຫາ %s"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

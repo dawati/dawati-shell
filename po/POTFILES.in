@@ -39,6 +39,7 @@ panels/applications/src/mnb-launcher-button.c
 panels/applications/data/dawati-panel-applications.desktop.in.in
 
 panels/bluetooth/data/dawati-panel-bluetooth.desktop.in.in
+panels/bluetooth/src/dawati-bt-device.c
 panels/bluetooth/src/dawati-bt-request.c
 panels/bluetooth/src/dawati-bt-shell.c
 panels/bluetooth/src/dawati-panel-bt.c

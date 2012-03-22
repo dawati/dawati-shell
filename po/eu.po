@@ -92,7 +92,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2009-10-13 22:40+0100\n"
 "Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
 "Language-Team: \n"
@@ -1128,6 +1128,11 @@ msgstr "Bluetooth-a"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth-a"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Konektatu"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

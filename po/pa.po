@@ -80,7 +80,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-dawati.Dawati2-UI.mutter-dawati-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2010-10-31 07:37+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -1167,6 +1167,11 @@ msgstr "ਬਲਿਊਟੁੱਥ"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "ਬਲਿਊਟੁੱਥ"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "VPN ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

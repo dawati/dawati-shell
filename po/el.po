@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dawati-panel-apps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2011-11-03 18:59+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
 "Language-Team: Greek (http://www.transifex.net/projects/p/dawati/team/el/)\n"
@@ -1089,6 +1089,11 @@ msgstr "Bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "Bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Σύνδεση με VPN"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 msgid "Dial-up network"

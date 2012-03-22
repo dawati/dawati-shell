@@ -64,7 +64,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2009-09-14 14:18+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
 "Language-Team: Dawati Romania <live@dawati.ro>\n"
@@ -1109,6 +1109,11 @@ msgstr "bluetooth"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "bluetooth"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "Dute la %s"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy

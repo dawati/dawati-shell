@@ -94,7 +94,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 10:50+0000\n"
+"POT-Creation-Date: 2012-03-22 16:23+0000\n"
 "PO-Revision-Date: 2010-08-12 01:19+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
@@ -1148,6 +1148,11 @@ msgstr "بلوتوث"
 #, fuzzy
 msgid "Bluetooth panel"
 msgstr "بلوتوث"
+
+#: ../panels/bluetooth/src/dawati-bt-device.c:64
+#, fuzzy, c-format
+msgid "Connected to %s"
+msgstr "اتصال به شبکه اختصاصی مجازی"
 
 #: ../panels/bluetooth/src/dawati-bt-request.c:33
 #, fuzzy
