@@ -1,10 +1,8 @@
 
 
 # List of source files containing translatable strings.
-capplet/data/dawati-applications-panel-properties.desktop.in
 capplet/data/dawati-toolbar-properties.desktop.in
 capplet/data/system-tray-properties.desktop.in
-capplet/src/app-cc-panel.c
 capplet/src/dawati-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
