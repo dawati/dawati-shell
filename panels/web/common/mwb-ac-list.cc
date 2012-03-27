@@ -430,7 +430,7 @@ mwb_ac_list_paint (ClutterActor *actor)
           int y = ((int) ypos + priv->tallest_entry / 2
                    - MWB_AC_LIST_ICON_SIZE / 2);
 
-          cogl_set_source_texture (entry->texture);
+          cogl_set_source (entry->texture);
           cogl_rectangle (padding.left,
                           y,
                           padding.left + MWB_AC_LIST_ICON_SIZE,

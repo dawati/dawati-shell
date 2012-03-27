@@ -222,7 +222,7 @@ sw_create_app_tile (ZonePanelData   *data,
 
 
   /* application thumbnail */
-  thumbnail = clutter_glx_texture_pixmap_new_with_window (wnck_window_get_xid (window));
+  thumbnail = clutter_x11_texture_pixmap_new_with_window (wnck_window_get_xid (window));
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (thumbnail),
                                             TRUE);
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);

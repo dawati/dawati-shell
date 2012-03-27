@@ -28,7 +28,7 @@ static void
 penge_magic_texture_paint (ClutterActor *actor)
 {
   ClutterActorBox box;
-  CoglHandle *tex;
+  CoglHandle tex;
   float bw, bh;
   float aw, ah;
   float v;
