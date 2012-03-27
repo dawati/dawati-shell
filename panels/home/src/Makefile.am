@@ -17,6 +17,11 @@ dawati_panel_home_LDADD = \
 
 dawati_panel_home_SOURCES = \
 	dawati-panel-home.c \
+	mnb-home-grid.c \
+	mnb-home-grid.h \
+	mnb-home-grid-child.c \
+	mnb-home-grid-child.h \
+	mnb-home-grid-private.h \
 	mnb-home-new-widget-dialog.c \
 	mnb-home-new-widget-dialog.h \
 	mnb-home-panel.c \

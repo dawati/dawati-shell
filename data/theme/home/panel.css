@@ -1,0 +1,9 @@
+.HomeGridHint {
+  background-image: url("selector.png");
+}
+
+.HomeGridBackgroundTile {
+  background-image: url("selector-empty.png");
+  opacity: 0.5;
+}
+

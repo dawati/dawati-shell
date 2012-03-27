@@ -19,6 +19,7 @@
 
 #include <glib/gi18n.h>
 
+#include "mnb-home-grid.h"
 #include "mnb-home-panel.h"
 #include "mnb-home-widget.h"
 #include "utils.h"
@@ -26,7 +27,7 @@
 #define WIDTH 3
 #define HEIGHT 2
 
-G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_TABLE);
+G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_BOX_LAYOUT);
 
 enum /* properties */
 {
@@ -38,8 +39,20 @@ enum /* properties */
 struct _MnbHomePanelPrivate
 {
   MplPanelClient *panel_client;
-  ClutterActor *background;
+  ClutterActor   *background;
+  ClutterActor   *grid;
 };
+
+static void
+toggle_edit_mode (MxButton *button, MnbHomePanel *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+
+  mnb_home_grid_set_edit_mode (MNB_HOME_GRID (priv->grid),
+                               mx_button_get_toggled (button));
+}
+
+/* Object implementation */
 
 static void
 mnb_home_panel_get_property (GObject *self,
@@ -169,11 +182,14 @@ mnb_home_panel_class_init (MnbHomePanelClass *klass)
 static void
 mnb_home_panel_init (MnbHomePanel *self)
 {
-  ClutterActor *edit;
-  guint r, c;
+  MnbHomePanelPrivate *priv;
+  ClutterActor *edit, *item;
+  ClutterColor *color;
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
-      MnbHomePanelPrivate);
+  self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
+                                                   MnbHomePanelPrivate);
+
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
   /* background */
   /* FIXME: make this awesomer */
@@ -182,34 +198,58 @@ mnb_home_panel_init (MnbHomePanel *self)
       NULL);
   clutter_actor_set_parent (self->priv->background, CLUTTER_ACTOR (self));
 
+  /* Grid */
+  priv->grid = mnb_home_grid_new ();
+  mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 14, 7); /* TODO: auto! */
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->grid,
+                                           0,
+                                           "expand", TRUE,
+                                           "x-fill", TRUE,
+                                           "y-fill", TRUE,
+                                           NULL);
+
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
   mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
-  mx_table_add_actor_with_properties (MX_TABLE (self), edit,
-      HEIGHT + 1, WIDTH / 2,
-      "x-expand", FALSE,
-      "y-expand", FALSE,
-      "x-fill", FALSE,
-      "y-fill", FALSE,
-      NULL);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), edit,
+                                           1,
+                                           "expand", FALSE,
+                                           "x-fill", FALSE,
+                                           "y-fill", FALSE,
+                                           NULL);
 
-  for (c = 0; c < WIDTH; c++)
-    {
-      for (r = 0; r < HEIGHT; r++)
-        {
-          ClutterActor *widget;
+  g_signal_connect (edit, "clicked",
+                    G_CALLBACK (toggle_edit_mode),
+                    self);
 
-          widget = mnb_home_widget_new (r, c);
-          g_object_bind_property (edit, "toggled", widget, "edit-mode", 0);
+  /* TODO: Demo, to remove when we have actual tiles */
+  color = clutter_color_new (0x0, 0, 0, 0xff);
 
-          mx_table_add_actor_with_properties (MX_TABLE (self), widget, r, c,
-              "x-expand", TRUE,
-              "y-expand", TRUE,
-              "x-fill", TRUE,
-              "y-fill", TRUE,
-              NULL);
-        }
-    }
+  /**/
+  clutter_color_from_string (color, "red");
+  item = clutter_rectangle_new_with_color (color);
+  clutter_actor_set_size (item, 64, 64);
+  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 0, 0);
+
+  /**/
+  clutter_color_from_string (color, "green");
+  item = clutter_rectangle_new_with_color (color);
+  clutter_actor_set_size (item, 64, 64);
+  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 3, 0);
+
+  /**/
+  clutter_color_from_string (color, "black");
+  item = clutter_rectangle_new_with_color (color);
+  clutter_actor_set_size (item, 50, 50);
+  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 3, 3);
+
+  /**/
+  clutter_color_from_string (color, "grey");
+  item = clutter_rectangle_new_with_color (color);
+  clutter_actor_set_size (item, 138, 138);
+  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 5, 3);
+
+  clutter_color_free (color);
 
   clutter_actor_show_all (CLUTTER_ACTOR (self));
 }
@@ -218,6 +258,6 @@ ClutterActor *
 mnb_home_panel_new (MplPanelClient *client)
 {
   return g_object_new (MNB_TYPE_HOME_PANEL,
-      "panel-client", client,
-      NULL);
+                       "panel-client", client,
+                       NULL);
 }

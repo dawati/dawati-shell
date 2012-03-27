@@ -550,6 +550,7 @@ data/theme/common/Makefile
 data/theme/datetime/Makefile
 data/theme/devices/Makefile
 data/theme/devices/icons/Makefile
+data/theme/home/Makefile
 data/theme/music/Makefile
 data/theme/myzone/Makefile
 data/theme/networks/Makefile

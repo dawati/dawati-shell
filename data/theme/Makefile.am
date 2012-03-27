@@ -4,6 +4,7 @@ SUBDIRS = \
 	common \
 	datetime \
 	devices \
+	home \
 	music \
 	myzone \
 	networks \
