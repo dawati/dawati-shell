@@ -598,6 +598,7 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
 {
   MnbAlttabOverlayPrivate *priv   = overlay->priv;
   MetaPlugin              *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaScreen              *screen = meta_plugin_get_screen (plugin);
   MxPadding                padding = { 0, };
   gfloat                   w, h;
   gint                     max_nb_tiles;
@@ -607,9 +608,7 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
   if (!mnb_alttab_overlay_populate (overlay))
     return FALSE;
 
-  meta_plugin_query_screen_size (plugin,
-                                 &priv->screen_width,
-                                 &priv->screen_height);
+  meta_screen_get_size (screen, &priv->screen_width, &priv->screen_height);
 
   /*
    * Must ensure size, otherewise the reported actor size is not acurate.

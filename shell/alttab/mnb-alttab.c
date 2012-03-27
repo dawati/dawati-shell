@@ -335,7 +335,7 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
         return;
 
       if (!mnb_alttab_overlay_establish_keyboard_grab (overlay, display, screen,
-                                                       binding->mask,
+                                                       meta_key_binding_get_mask (binding),
                                                        event->xkey.time))
         {
           /*

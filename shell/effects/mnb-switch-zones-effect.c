@@ -107,7 +107,7 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
                         G_CALLBACK (mnb_switch_zones_completed_cb), plugin);
     }
 
-  meta_plugin_query_screen_size (plugin, &width, &height);
+  meta_screen_get_size (screen, &width, &height);
   g_object_set (G_OBJECT (zones_preview),
                 "workspace-width", (guint)width,
                 "workspace-height", (guint)height,
@@ -118,7 +118,7 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
                                       meta_screen_get_n_workspaces (screen));
 
   /* Add windows to zone preview actor */
-  for (w = meta_plugin_get_window_actors (plugin); w; w = w->next)
+  for (w = meta_get_window_actors (screen); w; w = w->next)
     {
       MetaWindowActor *window_actor = w->data;
       gint workspace = meta_window_actor_get_workspace (window_actor);
@@ -140,7 +140,7 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
     }
 
   /* Make sure it's on top */
-  window_group = meta_plugin_get_window_group (plugin);
+  window_group = meta_get_window_group_for_screen (screen);
   clutter_actor_raise (zones_preview, window_group);
 
   /* Initiate animation */

@@ -219,10 +219,11 @@ ntf_overlay_get_preferred_width (ClutterActor *actor,
                                  gfloat       *natural_width)
 {
   MetaPlugin   *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaScreen   *screen = meta_plugin_get_screen (plugin);
   gint          screen_width;
   gint          screen_height;
 
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   *min_width     = screen_width;
   *natural_width = screen_width;
@@ -235,10 +236,11 @@ ntf_overlay_get_preferred_height (ClutterActor *actor,
                                gfloat       *natural_height)
 {
   MetaPlugin   *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaScreen   *screen = meta_plugin_get_screen (plugin);
   gint          screen_width;
   gint          screen_height;
 
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   *min_height     = screen_height;
   *natural_height = screen_height;

@@ -127,8 +127,8 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   [gio-unix-2.0
                    dbus-glib-1
                    gconf-2.0
-                   mutter-plugins >= 3.2
-                   libmutter >= 3.2
+                   mutter-plugins >= 3.4
+                   libmutter >= 3.4
                    libstartup-notification-1.0
                    $GTK_DEPS
                    $MX_DEPS

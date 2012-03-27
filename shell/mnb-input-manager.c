@@ -24,6 +24,8 @@
 
 #include "mnb-input-manager.h"
 
+#include <meta/display.h>
+
 static MnbInputManager *mgr_singleton = NULL;
 static GQuark           quark_mir;
 
@@ -110,13 +112,17 @@ mnb_input_manager_create (MetaPlugin *plugin)
 void
 mnb_input_manager_destroy ()
 {
-  GList   *l, *o;
-  gint     i;
-  Display *xdpy;
+  GList       *l, *o;
+  gint         i;
+  MetaScreen  *screen;
+  MetaDisplay *display;
+  Display     *xdpy;
 
   g_assert (mgr_singleton);
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   for (i = 0; i <= MNB_INPUT_LAYER_TOP; ++i)
     {
@@ -169,11 +175,15 @@ mnb_input_manager_push_region (gint          x,
                                MnbInputLayer layer)
 {
   MnbInputRegion *mir  = g_slice_alloc (sizeof (MnbInputRegion));
+  MetaScreen     *screen;
+  MetaDisplay    *display;
   Display        *xdpy;
 
   g_assert (mgr_singleton && layer >= 0 && layer <= MNB_INPUT_LAYER_TOP);
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   mir->rect.x       = x;
   mir->rect.y       = y;
@@ -219,11 +229,15 @@ mnb_input_manager_remove_region (MnbInputRegion  *mir)
 void
 mnb_input_manager_remove_region_without_update (MnbInputRegion *mir)
 {
-  Display *xdpy;
+  MetaScreen  *screen;
+  MetaDisplay *display;
+  Display     *xdpy;
 
   g_assert (mgr_singleton);
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   if (mir->region)
     XFixesDestroyRegion (xdpy, mir->region);
@@ -242,6 +256,8 @@ mnb_input_manager_remove_region_without_update (MnbInputRegion *mir)
 static void
 mnb_input_manager_apply_stack (void)
 {
+  MetaScreen    *screen;
+  MetaDisplay   *display;
   Display       *xdpy;
   GList         *l;
   gint           i;
@@ -249,7 +265,9 @@ mnb_input_manager_apply_stack (void)
 
   g_assert (mgr_singleton);
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   if (mgr_singleton->current_region)
     XFixesDestroyRegion (xdpy, mgr_singleton->current_region);
@@ -276,7 +294,7 @@ mnb_input_manager_apply_stack (void)
         }
     }
 
-  meta_plugin_set_stage_input_region (mgr_singleton->plugin, result);
+  meta_set_stage_input_region (screen, result);
 }
 
 static void
@@ -285,6 +303,8 @@ actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   ClutterActorBox  box;
   MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
   XRectangle       rect;
+  MetaScreen      *screen;
+  MetaDisplay     *display;
   Display         *xdpy;
 
   g_assert (mgr_singleton);
@@ -292,7 +312,9 @@ actor_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   if (!mir)
     return;
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   clutter_actor_get_allocation_box (actor, &box);
 
@@ -315,6 +337,7 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   Display         *xdpy;
   gint             screen_width, screen_height;
   MetaScreen      *screen;
+  MetaDisplay     *display;
   MetaWorkspace   *workspace;
 
   g_assert (mgr_singleton);
@@ -323,10 +346,10 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
     return;
 
   screen    = meta_plugin_get_screen (mgr_singleton->plugin);
+  display   = meta_screen_get_display (screen);
   workspace = meta_screen_get_active_workspace (screen);
 
-  meta_plugin_query_screen_size (mgr_singleton->plugin,
-                                   &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   if (workspace)
     {
@@ -337,7 +360,7 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
       screen_height = r.y + r.height;
     }
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  xdpy = meta_display_get_xdisplay (display);
 
   clutter_actor_get_geometry (actor, &geom);
 
@@ -369,11 +392,15 @@ actor_show_cb (ClutterActor *actor, MnbInputLayer layer)
 {
   ClutterActorBox  box;
   MnbInputRegion  *mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
+  MetaScreen      *screen;
+  MetaDisplay     *display;
   Display         *xdpy;
 
   g_assert (mgr_singleton);
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  screen = meta_plugin_get_screen (mgr_singleton->plugin);
+  display = meta_screen_get_display (screen);
+  xdpy = meta_display_get_xdisplay (display);
 
   clutter_actor_get_allocation_box (actor, &box);
 
@@ -408,15 +435,16 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
   Display         *xdpy;
   gint             screen_width, screen_height;
   MetaScreen      *screen;
+  MetaDisplay     *display;
   MetaWorkspace   *workspace;
 
   g_assert (mgr_singleton);
 
   screen    = meta_plugin_get_screen (mgr_singleton->plugin);
+  display   = meta_screen_get_display (screen);
   workspace = meta_screen_get_active_workspace (screen);
 
-  meta_plugin_query_screen_size (mgr_singleton->plugin,
-                                   &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   if (workspace)
     {
@@ -427,7 +455,7 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
       screen_height = r.y + r.height;
     }
 
-  xdpy = meta_plugin_get_xdisplay (mgr_singleton->plugin);
+  xdpy = meta_display_get_xdisplay (display);
 
   clutter_actor_get_geometry (actor, &geom);
 
@@ -544,8 +572,7 @@ mnb_input_manager_push_oop_panel (MetaWindowActor *mcw)
   screen    = meta_plugin_get_screen (mgr_singleton->plugin);
   workspace = meta_screen_get_active_workspace (screen);
 
-  meta_plugin_query_screen_size (mgr_singleton->plugin,
-                                   &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   if (workspace)
     {

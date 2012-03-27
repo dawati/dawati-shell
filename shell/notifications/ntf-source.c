@@ -455,10 +455,12 @@ ntf_source_get_icon (NtfSource *src)
   if (klass && (icon = klass->get_icon (src)))
     {
       MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+      MetaScreen *screen = meta_plugin_get_screen (plugin);
+
       priv->icon = icon;
 
       clutter_container_add_actor (CLUTTER_CONTAINER (
-                                   meta_plugin_get_stage (plugin)),
+                                   meta_get_stage_for_screen (screen)),
                                    icon);
       clutter_actor_hide (icon);
     }

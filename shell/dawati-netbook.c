@@ -542,10 +542,11 @@ static void
 dawati_netbook_reposition_statusbar (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
   gfloat                      statusbar_height;
   gint                        screen_width, screen_height;
 
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   /* Statusbar positioning */
   clutter_actor_get_preferred_height (priv->statusbar, -1,
@@ -560,8 +561,8 @@ dawati_netbook_reposition_statusbar (MetaPlugin *plugin)
 
 static void
 dawati_netbook_handle_screen_size (MetaPlugin *plugin,
-                                  gint       *screen_width,
-                                  gint       *screen_height)
+                                   gint       *screen_width,
+                                   gint       *screen_height)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -583,7 +584,7 @@ dawati_netbook_handle_screen_size (MetaPlugin *plugin,
    * and the second time if/when the Toolbar adusts it's struts. So do a check
    * here that the 'new' state is different from the old one.
    */
-  meta_plugin_query_screen_size (plugin, screen_width, screen_height);
+  meta_screen_get_size (screen, screen_width, screen_height);
 
   if (old_screen_width == *screen_width && old_screen_height == *screen_height)
     return;
@@ -881,7 +882,7 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
                     G_CALLBACK (dawati_netbook_display_focus_window_notify_cb),
                     plugin);
 
-  overlay = meta_plugin_get_overlay_group (plugin);
+  overlay = meta_get_overlay_group_for_screen (screen);
 
   mnb_input_manager_create (plugin);
 
@@ -900,7 +901,7 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
 
   dawati_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_set_motion_events_enabled (TRUE);
+  clutter_stage_set_motion_events_enabled (CLUTTER_STAGE (stage), TRUE);
 
   /*
    * Get background actor from mutter.
@@ -1675,6 +1676,7 @@ dawati_netbook_toggle_compositor (MetaPlugin *plugin, gboolean on)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen;
+  MetaDisplay                *display;
   Display                    *xdpy;
   Window                      xroot;
   Window                      overlay;
@@ -1686,7 +1688,8 @@ dawati_netbook_toggle_compositor (MetaPlugin *plugin, gboolean on)
     return;
 
   screen  = meta_plugin_get_screen (plugin);
-  xdpy    = meta_plugin_get_xdisplay (plugin);
+  display = meta_screen_get_display (screen);
+  xdpy    = meta_display_get_xdisplay (display);
   xroot   = meta_screen_get_xroot (screen);
   overlay = meta_get_overlay_window (screen);
 
@@ -2028,7 +2031,7 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
        * Only animate windows that are smaller than the screen size
        * (see MB#5273)
        */
-      meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+      meta_screen_get_size (screen, &screen_width, &screen_height);
       clutter_actor_get_size (actor, &actor_width, &actor_height);
 
       if ((gint)actor_width  < screen_width ||
@@ -2239,9 +2242,9 @@ setup_focus_window (MetaPlugin *plugin)
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   Window                      xwin;
   XSetWindowAttributes        attr;
-  Display                    *xdpy    = meta_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = meta_display_get_xdisplay (display);
   Atom                        type_atom;
 
   type_atom = meta_display_get_atom (display,
@@ -2277,9 +2280,9 @@ static void
 setup_screen_saver (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = meta_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
+  Display                    *xdpy    = meta_display_get_xdisplay (display);
   Window                      xroot;
 
   xroot = RootWindow (xdpy, meta_screen_get_screen_number (screen));

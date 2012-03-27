@@ -931,9 +931,10 @@ mnb_toolbar_get_preferred_width (ClutterActor *self,
                                  gfloat       *nat_width_p)
 {
   MnbToolbarPrivate *priv = ((MnbToolbar *)self)->priv;
+  MetaScreen        *screen = meta_plugin_get_screen (priv->plugin);
   gint screen_width, screen_height;
 
-  meta_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   if (min_width_p)
     *min_width_p = screen_width;
@@ -1150,10 +1151,10 @@ static void
 mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
+  MetaScreen        *screen = meta_plugin_get_screen (priv->plugin);
   gint               screen_width, screen_height;
 
-  meta_plugin_query_screen_size (priv->plugin,
-                                 &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   clutter_actor_set_size (priv->panel_stub, 1024, screen_height / 3);
 
@@ -1676,7 +1677,6 @@ static void
 mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
-  MetaPlugin        *plugin = priv->plugin;
   MnbPanel          *active;
 
   if (!priv->waiting_for_panel_show &&
@@ -1697,6 +1697,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
+  MetaScreen        *screen = meta_plugin_get_screen (plugin);
   MnbPanel          *panel = NULL;
   gint               screen_width, screen_height;
 
@@ -1713,7 +1714,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
       return;
     }
 
-  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   {
 #if 0
@@ -2800,9 +2801,9 @@ mnb_toolbar_constructed (GObject *self)
       g_warning (G_STRLOC " DBus connection not available !!!");
     }
 
-  meta_plugin_query_screen_size (plugin,
-                                 &priv->old_screen_width,
-                                 &priv->old_screen_height);
+  meta_screen_get_size (screen,
+                        &priv->old_screen_width,
+                        &priv->old_screen_height);
 
   clutter_actor_set_reactive (actor, TRUE);
 
@@ -2905,7 +2906,7 @@ mnb_toolbar_constructed (GObject *self)
                     G_CALLBACK (mnb_toolbar_event_cb),
                     NULL);
 
-  g_signal_connect (meta_plugin_get_stage (plugin),
+  g_signal_connect (meta_get_stage_for_screen (screen),
                     "button-press-event",
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
@@ -2917,7 +2918,7 @@ mnb_toolbar_constructed (GObject *self)
    * (We cannot set up the stage here, because the overlay window, etc.,
    * is not in place until the stage is shown.)
    */
-  g_signal_connect (meta_plugin_get_stage (META_PLUGIN (plugin)),
+  g_signal_connect (meta_get_stage_for_screen (screen),
                     "show", G_CALLBACK (mnb_toolbar_stage_show_cb),
                     self);
 
@@ -3231,7 +3232,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   gint               width = priv->old_screen_width;
   GList             *panel;
 
-  meta_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+  meta_screen_get_size (screen, &screen_width, &screen_height);
 
   if (workspace)
     {
@@ -3368,13 +3369,15 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   long               event_mask;
   Window             xwin;
   MetaScreen        *screen;
+  MetaDisplay       *display;
   Display           *xdpy;
   ClutterStage      *stg;
   MnbPanel          *myzone;
 
-  xdpy   = meta_plugin_get_xdisplay (plugin);
-  stg    = CLUTTER_STAGE (meta_plugin_get_stage (plugin));
-  screen = meta_plugin_get_screen (plugin);
+  screen  = meta_plugin_get_screen (plugin);
+  stg     = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
+  display = meta_screen_get_display (screen);
+  xdpy    = meta_display_get_xdisplay (display);
 
   /*
    * Set up the stage input region
