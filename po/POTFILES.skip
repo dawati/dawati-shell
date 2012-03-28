@@ -1,3 +1,5 @@
+capplet/data/dawati-applications-panel-properties.desktop.in
+capplet/src/app-cc-panel.c
 panels/datetime/src/dawati-alarm-notify.c
 panels/datetime/src/mnp-alarm-dialog.c
 panels/datetime/src/mnp-alarm-instance.c
