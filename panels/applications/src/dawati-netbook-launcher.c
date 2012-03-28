@@ -811,6 +811,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
       /* First invocation. */
       priv->tree = mnb_launcher_tree_create ();
       priv->directories = mnb_launcher_tree_list_entries (priv->tree);
+      priv->directories = g_list_reverse (priv->directories);
       priv->directory_iter = priv->directories;
     }
   else
@@ -905,10 +906,6 @@ mnb_launcher_fill (MnbLauncher  *self)
 
   while (mnb_launcher_fill_category (self))
         ;
-
-  /* Sort Alphabetically */
-  priv->launchers = g_slist_sort (priv->launchers,
-                                  (GCompareFunc) mnb_launcher_button_compare);
 
   /* Add to grid */
   g_slist_foreach (priv->launchers,
