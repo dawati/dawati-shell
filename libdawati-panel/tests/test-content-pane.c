@@ -45,13 +45,13 @@ main (int     argc,
 
   pane = mpl_content_pane_new ("Foo");
   clutter_actor_set_size (pane, 480, 320);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), pane);
+  clutter_actor_add_child (stage, pane);
 
   button = mx_button_new_with_label ("Bar");
   mpl_content_pane_set_header_actor (MPL_CONTENT_PANE (pane), button);
 
   button = mx_button_new_with_label ("Baz");
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), button);
+  clutter_actor_add_child (pane, button);
 
   clutter_actor_show_all (stage);
   clutter_main ();

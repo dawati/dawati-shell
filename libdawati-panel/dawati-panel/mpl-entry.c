@@ -252,31 +252,6 @@ mpl_entry_pick (ClutterActor       *actor,
 }
 
 static void
-mpl_entry_style_changed (MxWidget            *widget,
-                         MxStyleChangedFlags  flags)
-{
-  MplEntryPrivate *priv = MPL_ENTRY (widget)->priv;
-
-  /* this is needed to propagate the ::style-changed signal to
-   * the internal children on MplEntry, otherwise the style changes
-   * will not reach them
-   */
-  mx_stylable_style_changed (MX_STYLABLE (priv->entry), flags);
-  mx_stylable_style_changed (MX_STYLABLE (priv->table), flags);
-}
-
-static void
-mpl_entry_finalize (GObject *gobject)
-{
-  MplEntryPrivate *priv = MPL_ENTRY (gobject)->priv;
-
-  clutter_actor_destroy (priv->entry), priv->entry = NULL;
-  clutter_actor_destroy (priv->table), priv->table = NULL;
-
-  G_OBJECT_CLASS (mpl_entry_parent_class)->finalize (gobject);
-}
-
-static void
 mpl_entry_set_property (GObject      *gobject,
                         guint         prop_id,
                         const GValue *value,
@@ -347,7 +322,6 @@ mpl_entry_class_init (MplEntryClass *klass)
   gobject_class->constructed = mpl_entry_constructed;
   gobject_class->set_property = mpl_entry_set_property;
   gobject_class->get_property = mpl_entry_get_property;
-  gobject_class->finalize = mpl_entry_finalize;
 
   actor_class->get_preferred_width = mpl_entry_get_preferred_width;
   actor_class->get_preferred_height = mpl_entry_get_preferred_height;
@@ -447,11 +421,8 @@ mpl_entry_init (MplEntry *self)
 
   self->priv = priv = MPL_ENTRY_GET_PRIVATE (self);
 
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (mpl_entry_style_changed), NULL);
-
   priv->entry = mx_entry_new ();
-  clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->entry);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
                                "MplEntryEntry");
   text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
@@ -461,7 +432,7 @@ mpl_entry_init (MplEntry *self)
                     self);
 
   priv->table = CLUTTER_ACTOR (mx_table_new ());
-  clutter_actor_set_parent (priv->table, CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->table);
 
   priv->clear_button = CLUTTER_ACTOR (mx_button_new ());
   clutter_actor_hide (priv->clear_button);

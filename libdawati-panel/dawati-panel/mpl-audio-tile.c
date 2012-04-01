@@ -169,30 +169,6 @@ mpl_audio_tile_dispose (GObject *object)
   g_free (priv->uri);
   priv->uri = NULL;
 
-  if (priv->cover_art)
-    {
-      clutter_actor_destroy (priv->cover_art);
-      priv->cover_art = NULL;
-    }
-
-  if (priv->song_title)
-    {
-      clutter_actor_destroy (priv->song_title);
-      priv->song_title = NULL;
-    }
-
-  if (priv->song_title)
-    {
-      clutter_actor_destroy (priv->song_title);
-      priv->song_title = NULL;
-    }
-
-  if (priv->song_title)
-    {
-      clutter_actor_destroy (priv->song_title);
-      priv->song_title = NULL;
-    }
-
   G_OBJECT_CLASS (mpl_audio_tile_parent_class)->dispose (object);
 }
 
@@ -347,18 +323,18 @@ mpl_audio_tile_init (MplAudioTile *self)
   mx_image_set_from_cogl_texture (MX_IMAGE (priv->cover_art),
                                   cogl_texture_new_with_size (1, 1, COGL_TEXTURE_NO_SLICING,
                                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE));
-  clutter_actor_set_parent (priv->cover_art, actor);
+  clutter_actor_add_child (actor, priv->cover_art);
 
   priv->song_title = mx_label_new ();
-  clutter_actor_set_parent (priv->song_title, actor);
+  clutter_actor_add_child (actor, priv->song_title);
   clutter_actor_set_name (priv->song_title, "dawati-audio-tile-title");
 
   priv->artist_name = mx_label_new ();
-  clutter_actor_set_parent (priv->artist_name, actor);
+  clutter_actor_add_child (actor, priv->artist_name);
   clutter_actor_set_name (priv->song_title, "dawati-audio-tile-artist");
 
   priv->album_title = mx_label_new ();
-  clutter_actor_set_parent (priv->album_title, actor);
+  clutter_actor_add_child (actor, priv->album_title);
   clutter_actor_set_name (priv->song_title, "dawati-audio-tile-album");
 }
 
