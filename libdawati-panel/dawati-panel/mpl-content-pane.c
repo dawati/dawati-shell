@@ -196,8 +196,8 @@ mpl_content_pane_init (MplContentPane *self)
   mx_box_layout_set_spacing (priv->header, 12);
   mx_stylable_set_style_class (MX_STYLABLE (priv->header), "header");
   clutter_actor_set_height ((ClutterActor *) priv->header, 36);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (self),
-                           CLUTTER_ACTOR (priv->header), 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (self),
+                              CLUTTER_ACTOR (priv->header), 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                (ClutterActor *) priv->header,
                                "expand", FALSE,
@@ -207,7 +207,7 @@ mpl_content_pane_init (MplContentPane *self)
 
   priv->title = (MxLabel *) mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "title");
-  mx_box_layout_add_actor (priv->header, (ClutterActor *) priv->title, 0);
+  mx_box_layout_insert_actor (priv->header, (ClutterActor *) priv->title, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->header),
                                (ClutterActor *) priv->title,
                                "expand", TRUE,

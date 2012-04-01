@@ -308,23 +308,23 @@ create_network_row (MpdComputerTile *tile,
   ClutterActor *label, *toggle, *frame;
 
   label = mx_label_new_with_text (label_text);
-  mx_table_add_actor_with_properties (MX_TABLE (tile), label,
-                                      row, 0,
-                                      "x-expand", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (tile), label,
+                                         row, 0,
+                                         "x-expand", FALSE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
   frame = mx_frame_new ();
   toggle = mx_toggle_new ();
 
   mx_bin_set_child (MX_BIN (frame), toggle);
-  mx_table_add_actor_with_properties (MX_TABLE (tile), frame,
-                                      row, 1,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (tile), frame,
+                                         row, 1,
+                                         "x-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "x-align", MX_ALIGN_START,
+                                         NULL);
 
   priv->toggled_data[row].tile = tile;
   priv->toggled_data[row].row = row;
@@ -381,20 +381,20 @@ mpd_computer_tile_init (MpdComputerTile *self)
   /* Volume */
   /* Note to translators, volume here is sound volume */
   label = mx_label_new_with_text (_("Volume"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      row, 0,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self), label,
+                                         row, 0,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
   tile = mpd_volume_tile_new ();
-  mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                      row, 1,
-                                      "y-expand", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self), tile,
+                                         row, 1,
+                                         "y-expand", FALSE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-fill", FALSE,
+                                         "x-expand", TRUE,
+                                         NULL);
   row++;
 
   /* Brightness */
@@ -403,33 +403,33 @@ mpd_computer_tile_init (MpdComputerTile *self)
   if (show_brightness_tile)
     {
       label = mx_label_new_with_text (_("Brightness"));
-      mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                          row, 0,
-                                          "y-align", MX_ALIGN_MIDDLE,
-                                          "y-fill", FALSE,
-                                          NULL);
+      mx_table_insert_actor_with_properties (MX_TABLE (self), label,
+                                             row, 0,
+                                             "y-align", MX_ALIGN_MIDDLE,
+                                             "y-fill", FALSE,
+                                             NULL);
 
       tile = mpd_brightness_tile_new ();
-      mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                          row, 1,
-                                          "x-expand", TRUE,
-                                          NULL);
+      mx_table_insert_actor_with_properties (MX_TABLE (self), tile,
+                                             row, 1,
+                                             "x-expand", TRUE,
+                                             NULL);
       row++;
     }
 
   /* Battery */
   label = mx_label_new_with_text (_("Battery"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label,
-                                      row, 0,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self), label,
+                                         row, 0,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-fill", FALSE,
+                                         NULL);
   tile = mpd_battery_tile_new ();
   g_signal_connect (tile, "show-me", G_CALLBACK (_show_me), self);
-  mx_table_add_actor_with_properties (MX_TABLE (self), tile,
-                                      row, 1,
-                                      "x-expand", TRUE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self), tile,
+                                         row, 1,
+                                         "x-expand", TRUE,
+                                         NULL);
   priv->battery_label = label;
   priv->battery_tile = tile;
   row++;

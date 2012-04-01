@@ -27,7 +27,7 @@
 /* This is by far not a complete list. See
  * http://www.bluetooth.org/Technical/AssignedNumbers/service_discovery.htm */
 
-/* TRANSLATORS: these are names of Bluetooth services. They will be used in 
+/* TRANSLATORS: these are names of Bluetooth services. They will be used in
  * messages like "nokiaE72 wants access to %s service" */
 static const char *uuids[][2] = {
   {"00001103-0000-1000-8000-00805f9b34fb", N_("Dial-up network")},
@@ -349,24 +349,26 @@ dawati_bt_request_init (DawatiBtRequest *request)
   priv->uuid_strings = _new_uiid_strings ();
 
   title_box = mx_box_layout_new ();
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), title_box, -1,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "x-align", MX_ALIGN_START,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (request),
+                                              title_box, -1,
+                                              "expand", TRUE,
+                                              "x-fill", TRUE,
+                                              "x-align", MX_ALIGN_START,
+                                              NULL);
 
   priv->title = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "BtTitle");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (title_box), priv->title, -1,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "x-align", MX_ALIGN_START,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (title_box),
+                                              priv->title, -1,
+                                              "expand", TRUE,
+                                              "x-fill", TRUE,
+                                              "x-align", MX_ALIGN_START,
+                                              NULL);
 
   close_btn = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (close_btn), "BtCloseButton");
   mx_bin_set_child (MX_BIN (close_btn), mx_icon_new ());
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (title_box), close_btn, -1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (title_box), close_btn, -1);
   g_signal_connect (close_btn, "clicked",
                     G_CALLBACK (_close_clicked_cb), request);
 
@@ -374,32 +376,34 @@ dawati_bt_request_init (DawatiBtRequest *request)
   priv->request_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->request_label), "BtLabel");
   mx_label_set_line_wrap (MX_LABEL (priv->request_label), TRUE);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), priv->request_label, -1,
-                                           "expand", TRUE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_START,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (request),
+                                              priv->request_label, -1,
+                                              "expand", TRUE,
+                                              "x-fill", FALSE,
+                                              "x-align", MX_ALIGN_START,
+                                              NULL);
 
   btn_box = mx_box_layout_new ();
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (request), btn_box, -1,
-                                           "expand", TRUE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_END,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (request),
+                                              btn_box, -1,
+                                              "expand", TRUE,
+                                              "x-fill", FALSE,
+                                              "x-align", MX_ALIGN_END,
+                                              NULL);
 
   priv->request_entry = mx_entry_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_entry, -1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (btn_box), priv->request_entry, -1);
 
   priv->request_always_btn = mx_button_new ();
   /* TRANSLATORS: request button label */
   mx_button_set_label (MX_BUTTON (priv->request_always_btn),
                        _("Always grant"));
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_always_btn, -1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (btn_box), priv->request_always_btn, -1);
   g_signal_connect (priv->request_always_btn, "clicked",
                     G_CALLBACK (_always_clicked_cb), request);
 
   priv->request_yes_btn = mx_button_new ();
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (btn_box), priv->request_yes_btn, -1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (btn_box), priv->request_yes_btn, -1);
   g_signal_connect (priv->request_yes_btn, "clicked",
                     G_CALLBACK (_yes_clicked_cb), request);
 }

@@ -183,28 +183,28 @@ mpd_volume_tile_init (MpdVolumeTile *self)
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "volume-off");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   priv->volume_slider = mx_slider_new ();
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           priv->volume_slider,
-                                           -1,
-                                           "expand", TRUE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              priv->volume_slider,
+                                              -1,
+                                              "expand", TRUE,
+                                              NULL);
   g_signal_connect (priv->volume_slider, "notify::value",
                     G_CALLBACK (_volume_slider_value_notify_cb), self);
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "volume-on");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   /* Control */
   priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);

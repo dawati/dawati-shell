@@ -269,7 +269,7 @@ penge_event_tile_init (PengeEventTile *self)
   priv->calendar_indicator = clutter_cairo_texture_new (20, 20);
   clutter_actor_set_size (priv->calendar_indicator, 20, 20);
 
-  indicator_overlay = clutter_texture_new_from_file (CALENDAR_INDICATOR_OVERLAY_MASK, &error); 
+  indicator_overlay = clutter_texture_new_from_file (CALENDAR_INDICATOR_OVERLAY_MASK, &error);
   if (error != NULL)
     {
       g_critical (G_STRLOC ": Loading calendar colour overlay failed: %s",
@@ -299,18 +299,18 @@ penge_event_tile_init (PengeEventTile *self)
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      indicator_container,
-                      0,
-                      0);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->time_label,
-                      0,
-                      1);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->summary_label,
-                      0,
-                      2);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         indicator_container,
+                         0,
+                         0);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         priv->time_label,
+                         0,
+                         1);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         priv->summary_label,
+                         0,
+                         2);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                indicator_container,
@@ -511,7 +511,7 @@ ___clutter_color_from_string (ClutterColor *color,
             }
         }
     }
-  
+
   /* Fall back to pango for named colors */
   if (pango_color_parse (&pango_color, str))
     {

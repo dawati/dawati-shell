@@ -566,7 +566,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
   	mx_stylable_set_style_class (MX_STYLABLE (icon),
         	                       	"ClockIcon");
   	clutter_actor_set_size (icon, 36, 36);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), icon, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(box), icon, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                icon,
 			       "expand", FALSE,
@@ -579,7 +579,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	text = mx_label_new_with_text (_("Time"));
 	/* clutter_actor_set_name (text, "TimeTitle"); */
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), text, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(box), text, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
 			       "expand", TRUE,
@@ -589,7 +589,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 			       "x-align", MX_ALIGN_START,
                                NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), box, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(world_clock), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (world_clock),
                                box,
                                "expand", FALSE,
@@ -621,7 +621,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	mx_stylable_set_style_class (MX_STYLABLE (check_button),
                                		"check-box");
 	clutter_actor_set_size ((ClutterActor *)check_button, 21, 21);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), check_button, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(box), check_button, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                check_button,
                                "expand", FALSE,
@@ -632,7 +632,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	text = mx_label_new_with_text (_("24 hour clock"));
 
 	clutter_actor_set_name (text, "HourClockLabel");
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), text, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(box), text, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
                                "expand", TRUE,
@@ -640,7 +640,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 			       "x-fill", TRUE,
                                NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->widget_box),
                                box,
                                "expand", FALSE,
@@ -648,7 +648,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 			       "x-fill", TRUE,
                                NULL);
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), priv->widget_box, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(world_clock), priv->widget_box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (world_clock),
                                box,
                                "expand", FALSE,
@@ -657,7 +657,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
                                NULL);
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(world_clock), div, -1);
 */
 }
 
@@ -777,7 +777,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_get_size (entry, &width, &height);
 	clutter_actor_set_size (entry, width+10, -1);
 
-	mx_box_layout_add_actor ((MxBoxLayout *)box, entry, 0);
+	mx_box_layout_insert_actor ((MxBoxLayout *)box, entry, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                entry,
                                "expand", FALSE,
@@ -791,7 +791,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "ZoneSearchEntryAddButton");
 
-	/* mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1); */
+	/* mx_box_layout_insert_actor ((MxBoxLayout *)box, priv->add_location, 1); */
   	/* g_signal_connect (priv->add_location, "clicked",
                     	G_CALLBACK (add_location_clicked_cb), world_clock); */
 	/*clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -802,7 +802,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
                                NULL);*/
 
 
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->widget_box),
                                box,
                                "expand", FALSE,
@@ -840,7 +840,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_droppable_enable ((MxDroppable *)priv->area);
 	g_object_ref ((GObject *)priv->area);
 	clutter_container_remove_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
-	mx_box_layout_add_actor ((MxBoxLayout *) table, (ClutterActor *)priv->area, -1);
+	mx_box_layout_insert_actor ((MxBoxLayout *) table, (ClutterActor *)priv->area, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                (ClutterActor *)priv->area,
                                "expand", TRUE,
@@ -868,7 +868,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	}
 
 /*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);
+	mx_box_layout_insert_actor (MX_BOX_LAYOUT(world_clock), div, -1);
 */
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "DateTimeLauncherBox");
@@ -880,7 +880,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_button_set_label ((MxButton *) priv->launcher, _("Set Time & Date"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->launcher), "DateTimeLauncherButton");
 
-	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->launcher, -1);
+	mx_box_layout_insert_actor ((MxBoxLayout *)box, priv->launcher, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                (ClutterActor *)priv->launcher,
                                "expand", FALSE,
@@ -890,7 +890,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
                                NULL);
 
 
-	mx_box_layout_add_actor ((MxBoxLayout *)world_clock, box, -1);
+	mx_box_layout_insert_actor ((MxBoxLayout *)world_clock, box, -1);
 }
 
 ClutterActor *

@@ -302,7 +302,7 @@ ntf_notification_constructed (GObject *object)
 
   priv->title_box = mx_table_new ();
   mx_table_set_column_spacing (MX_TABLE (priv->title_box), 4);
-  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
+  mx_table_insert_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->title_box),
                                "y-expand", FALSE,
@@ -316,7 +316,7 @@ ntf_notification_constructed (GObject *object)
   clutter_text_set_line_wrap (txt, TRUE);
   clutter_text_set_line_wrap_mode (txt, PANGO_WRAP_WORD_CHAR);
 
-  mx_table_add_actor (MX_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
+  mx_table_insert_actor (MX_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
@@ -328,7 +328,7 @@ ntf_notification_constructed (GObject *object)
                                NULL);
 
   priv->body = mx_label_new ();
-  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
+  mx_table_insert_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->body)));
   clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_NONE);
@@ -348,7 +348,7 @@ ntf_notification_constructed (GObject *object)
   priv->button_box = mx_grid_new ();
   mx_grid_set_line_alignment (MX_GRID (priv->button_box), MX_ALIGN_END);
   mx_grid_set_column_spacing (MX_GRID (priv->button_box), 7);
-  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->button_box),
+  mx_table_insert_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
 
   if (priv->dismiss_button)
@@ -839,7 +839,7 @@ ntf_notification_set_icon (NtfNotification *ntf, ClutterActor *icon)
                                    "column", 1,
                                    NULL);
 
-      mx_table_add_actor (MX_TABLE (priv->title_box), icon, 0, 0);
+      mx_table_insert_actor (MX_TABLE (priv->title_box), icon, 0, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                    CLUTTER_ACTOR (icon),
                                    "y-expand", FALSE,

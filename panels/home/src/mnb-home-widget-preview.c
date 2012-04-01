@@ -152,11 +152,11 @@ mnb_home_widget_preview_init (MnbHomeWidgetPreview *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   self->priv->image = clutter_texture_new ();
-  mx_table_add_actor (MX_TABLE (self), self->priv->image, 0, 0);
+  mx_table_insert_actor (MX_TABLE (self), self->priv->image, 0, 0);
   clutter_actor_show (self->priv->image);
 
   self->priv->label = mx_label_new ();
-  mx_table_add_actor (MX_TABLE (self), self->priv->label, 1, 0);
+  mx_table_insert_actor (MX_TABLE (self), self->priv->label, 1, 0);
   clutter_actor_show (self->priv->label);
 }
 

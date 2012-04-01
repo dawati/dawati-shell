@@ -1590,31 +1590,31 @@ dawati_netbook_netpanel_init (DawatiNetbookNetpanel *self)
 
   label = MX_WIDGET(mx_label_new_with_text (_("Your pages")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-label");
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                        CLUTTER_ACTOR (label),
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", MX_ALIGN_START,
-                                        "y-align", MX_ALIGN_MIDDLE,
-                                        NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         CLUTTER_ACTOR (label),
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "y-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-fill", FALSE,
+                                         "x-align", MX_ALIGN_START,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         NULL);
 
   priv->entry = mnb_netpanel_bar_new (_("Search"));
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "netpanel-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 500);
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                        CLUTTER_ACTOR (priv->entry),
-                                        0, 1,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", MX_ALIGN_END,
-                                        "y-align", MX_ALIGN_MIDDLE,
-                                        NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         CLUTTER_ACTOR (priv->entry),
+                                         0, 1,
+                                         "x-expand", TRUE,
+                                         "y-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-fill", FALSE,
+                                         "x-align", MX_ALIGN_END,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         NULL);
 
   g_signal_connect (priv->entry, "go",
                     G_CALLBACK (netpanel_bar_go_cb), self);

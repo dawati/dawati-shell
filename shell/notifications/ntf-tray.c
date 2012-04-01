@@ -392,14 +392,14 @@ ntf_tray_constructed (GObject *object)
 
   button = mx_button_new ();
   mx_button_set_label (MX_BUTTON (button), _("Dismiss All"));
-  mx_table_add_actor (MX_TABLE (priv->control), button, 0, 1);
+  mx_table_insert_actor (MX_TABLE (priv->control), button, 0, 1);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (ntf_tray_dismiss_all_cb), self);
 
   priv->control_text = mx_label_new ();
-  mx_table_add_actor (MX_TABLE (priv->control),
-                        CLUTTER_ACTOR (priv->control_text), 0, 0);
+  mx_table_insert_actor (MX_TABLE (priv->control),
+                         CLUTTER_ACTOR (priv->control_text), 0, 0);
 
   clutter_actor_set_parent (priv->control, actor);
 

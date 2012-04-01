@@ -94,22 +94,22 @@ make_status (DawatiStatusPanel *status_panel)
   clutter_actor_set_name (table, "status-panel");
   label = mx_label_new_with_text (_("Status"));
   clutter_actor_set_name (label, "status-panel-header-label");
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                      label,
-                      0, 0,
-                      "x-expand", FALSE,
-                      "y-expand", FALSE,
-                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         label,
+                                         0, 0,
+                                         "x-expand", FALSE,
+                                         "y-expand", FALSE,
+                                         NULL);
 
   pane = mps_feed_switcher_new (status_panel->client);
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                      pane,
-                      1, 0,
-                      "x-expand", TRUE,
-                      "y-expand", TRUE,
-                      "x-fill", TRUE,
-                      "y-fill", TRUE,
-                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         pane,
+                                         1, 0,
+                                         "x-expand", TRUE,
+                                         "y-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-fill", TRUE,
+                                         NULL);
   return table;
 }
 

@@ -582,32 +582,32 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   priv->placeholder_header = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_header),
                                "mps-switcher-placeholder-header");
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->placeholder_header,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->placeholder_header,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->button_box,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->button_box,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->notebook,
-                                      1, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->notebook,
+                                         1, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", TRUE,
+                                         "y-fill", TRUE,
+                                         NULL);
 
   priv->services = g_hash_table_new_full (g_str_hash,
                                           g_str_equal,

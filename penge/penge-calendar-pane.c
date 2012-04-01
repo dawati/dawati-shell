@@ -470,43 +470,43 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   /* Need to fix the size to avoid being squashed */
   clutter_actor_set_size (priv->calendar_tex, 32, 33);
 
-  mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
-                                      priv->calendar_tex,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->events_header_table),
+                                         priv->calendar_tex,
+                                         0, 0,
+                                         "x-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
   penge_calendar_pane_update_calendar_icon (self, now);
 
   label = mx_label_new_with_text (_("Appointments"));
   mx_stylable_set_style_class (MX_STYLABLE (label),
                                "PengeEventsPaneTitle");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
-                                      label,
-                                      0, 1,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->events_header_table),
+                                         label,
+                                         0, 1,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         "x-expand", TRUE,
+                                         "x-fill", FALSE,
+                                         "x-align", MX_ALIGN_START,
+                                         NULL);
   button = mx_button_new_with_label (_("Open"));
   mx_stylable_set_style_class (MX_STYLABLE (button), "Primary");
   g_signal_connect (button,
                     "clicked",
                     (GCallback)_events_open_button_clicked_cb,
                     NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
-                                      button,
-                                      0, 2,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "x-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->events_header_table),
+                                         button,
+                                         0, 2,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "x-expand", FALSE,
+                                         NULL);
   /* Tasks header */
   priv->tasks_header_table = mx_table_new ();
   mx_table_set_column_spacing (MX_TABLE (priv->tasks_header_table), 8);
@@ -516,41 +516,41 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   tasks_icon = mx_icon_new ();
   clutter_actor_set_name (tasks_icon, "tasks-icon");
 
-  mx_table_add_actor_with_properties (MX_TABLE (priv->tasks_header_table),
-                                      tasks_icon,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->tasks_header_table),
+                                         tasks_icon,
+                                         0, 0,
+                                         "x-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
   label = mx_label_new_with_text (_("Tasks"));
   mx_stylable_set_style_class (MX_STYLABLE (label),
                                "PengeTasksPaneTitle");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->tasks_header_table),
-                                      label,
-                                      0, 1,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "x-align", MX_ALIGN_START,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->tasks_header_table),
+                                         label,
+                                         0, 1,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         "x-expand", TRUE,
+                                         "x-fill", FALSE,
+                                         "x-align", MX_ALIGN_START,
+                                         NULL);
   button = mx_button_new_with_label (_("Open"));
   mx_stylable_set_style_class (MX_STYLABLE (button), "Primary");
   g_signal_connect (button,
                     "clicked",
                     (GCallback)_tasks_open_button_clicked_cb,
                     NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->tasks_header_table),
-                                      button,
-                                      0, 2,
-                                      "y-expand", TRUE,
-                                      "y-fill", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "x-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->tasks_header_table),
+                                         button,
+                                         0, 2,
+                                         "y-expand", TRUE,
+                                         "y-fill", FALSE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "x-expand", FALSE,
+                                         NULL);
 
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
                                     "time",

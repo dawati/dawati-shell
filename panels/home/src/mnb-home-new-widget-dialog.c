@@ -130,7 +130,7 @@ mnb_home_new_widget_dialog_init (MnbHomeNewWidgetDialog *self)
   factory->dialog = self;
 
   itemview = mx_item_view_new ();
-  mx_table_add_actor (MX_TABLE (table), itemview, 0, 1);
+  mx_table_insert_actor (MX_TABLE (table), itemview, 0, 1);
   mx_item_view_set_model (MX_ITEM_VIEW (itemview), self->priv->items);
   mx_item_view_set_factory (MX_ITEM_VIEW (itemview), MX_ITEM_FACTORY (factory));
 

@@ -201,22 +201,24 @@ mnb_home_panel_init (MnbHomePanel *self)
   /* Grid */
   priv->grid = mnb_home_grid_new ();
   mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 14, 7); /* TODO: auto! */
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->grid,
-                                           0,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "y-fill", TRUE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              priv->grid,
+                                              0,
+                                              "expand", TRUE,
+                                              "x-fill", TRUE,
+                                              "y-fill", TRUE,
+                                              NULL);
 
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
   mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), edit,
-                                           1,
-                                           "expand", FALSE,
-                                           "x-fill", FALSE,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              edit,
+                                              1,
+                                              "expand", FALSE,
+                                              "x-fill", FALSE,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   g_signal_connect (edit, "clicked",
                     G_CALLBACK (toggle_edit_mode),

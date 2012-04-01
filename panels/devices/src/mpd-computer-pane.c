@@ -126,23 +126,23 @@ mpd_computer_pane_init (MpdComputerPane *self)
   tile = mpd_computer_tile_new ();
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           tile,
-                                           1,
-                                           "expand", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              tile,
+                                              1,
+                                              "expand", FALSE,
+                                              NULL);
 
   button = mx_button_new_with_label (_("All settings"));
   mx_stylable_set_style_class (MX_STYLABLE (button), "Primary");
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           button,
-                                           2,
-                                           "expand", false,
-                                           "x-fill", false,
-                                           "y-fill", false,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              button,
+                                              2,
+                                              "expand", false,
+                                              "x-fill", false,
+                                              "y-fill", false,
+                                              NULL);
 }
 
 ClutterActor *

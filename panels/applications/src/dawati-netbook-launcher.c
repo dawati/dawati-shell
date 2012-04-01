@@ -560,7 +560,7 @@ mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
 
   for (i = 0; i < apps_length; i++)
     {
-      /* Try to find the index of exec_a and exec_b in apps and jump out of 
+      /* Try to find the index of exec_a and exec_b in apps and jump out of
        * the loop once both are set */
       if (g_strcmp0 (exec_a, g_list_nth_data (apps, i)) == 0)
         index_a = i;
@@ -584,7 +584,7 @@ mnb_launcher_sort_via_zg (gconstpointer *self_pointer,
   return result;
 }
 
-static void 
+static void
 mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
 {
   GSList *iter;
@@ -599,7 +599,7 @@ mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
     {
       /* Referencing the button since clutter_container takes over ownership */
       MnbLauncherButton *button = g_object_ref (MNB_LAUNCHER_BUTTON (iter->data));
-      
+
       /* Remove button from grid and append to the end of it */
       exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
       if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
@@ -616,12 +616,12 @@ mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
     }
 }
 
-static void 
+static void
 mnb_launcher_show_zg_category (MnbLauncher *self, gboolean show, const gchar *category)
-{ 
+{
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   GSList *iter = NULL;
-  
+
   if (show)
     {
       for (iter = priv->launchers; iter; iter = iter->next)
@@ -641,7 +641,7 @@ mnb_launcher_show_zg_category (MnbLauncher *self, gboolean show, const gchar *ca
         {
           /* Referencing the button since clutter_container takes over ownership */
           MnbLauncherButton *button = g_object_ref (MNB_LAUNCHER_BUTTON (iter->data));
-          
+
           /* Remove button from grid and append to the end of it */
           clutter_container_remove_actor (CLUTTER_CONTAINER (priv->apps_grid),
                                           CLUTTER_ACTOR (button));
@@ -791,8 +791,8 @@ mnb_launcher_category_button_new (MnbLauncher *self, const gchar *text)
                     G_CALLBACK (_category_button_label_clicked_cb),
                     button);
 
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), button, 0);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), label, 1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (box), button, 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (box), label, 1);
 
   return box;
 }
@@ -1235,7 +1235,7 @@ _constructor (GType                  gtype,
 #ifdef WITH_ZEITGEIST
   clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
                                mnb_launcher_category_button_new (self, "most"));
-  
+
   clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
                                mnb_launcher_category_button_new (self, "recent"));
 #endif /* WITH_ZEITGEIST */

@@ -465,7 +465,7 @@ mpl_entry_init (MplEntry *self)
 
   priv->clear_button = CLUTTER_ACTOR (mx_button_new ());
   clutter_actor_hide (priv->clear_button);
-  mx_table_add_actor (MX_TABLE (priv->table), priv->clear_button, 0, 0);
+  mx_table_insert_actor (MX_TABLE (priv->table), priv->clear_button, 0, 0);
   mx_stylable_set_style_class (MX_STYLABLE (priv->clear_button),
                                "MplEntryClearButton");
   set_clear_button_size (priv->clear_button);
@@ -474,7 +474,7 @@ mpl_entry_init (MplEntry *self)
                     self);
 
   priv->search_button = CLUTTER_ACTOR (mx_button_new ());
-  mx_table_add_actor (MX_TABLE (priv->table), priv->search_button, 0, 1);
+  mx_table_insert_actor (MX_TABLE (priv->table), priv->search_button, 0, 1);
   mx_stylable_set_style_class (MX_STYLABLE (priv->search_button),
                                "MplEntryButton");
   g_signal_connect (priv->search_button, "clicked",

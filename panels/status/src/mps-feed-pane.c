@@ -177,7 +177,7 @@ mps_feed_pane_finalize (GObject *object)
 static void
 _client_view_opened_cb (SwClientService  *client,
                         SwClientItemView *view,
-                        gpointer          userdata) 
+                        gpointer          userdata)
 {
   MpsFeedPane *pane = MPS_FEED_PANE (userdata);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
@@ -626,74 +626,74 @@ mps_feed_pane_init (MpsFeedPane *self)
   priv->location_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->location_label),
                                "mps-feed-location-label");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
-                                      priv->location_label,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->location_hbox),
+                                         priv->location_label,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         NULL);
 
   priv->location_button = mx_button_new_with_label (_("Change"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->location_button),
                                "mps-feed-location-change-button");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
-                                      priv->location_button,
-                                      0, 1,
-                                      "x-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->location_hbox),
+                                         priv->location_button,
+                                         0, 1,
+                                         "x-expand", FALSE,
+                                         NULL);
 
   /* Container population */
 
-  mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
-                                      priv->entry,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->update_hbox),
+                                         priv->entry,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->update_hbox,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->something_wrong_frame,
-                                      0, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->update_hbox,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->something_wrong_frame,
+                                         0, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->location_hbox,
-                                      1, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->location_hbox,
+                                         1, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->scroll_view,
-                                      2, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
-                                      NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->geotag_pane,
-                                      2, 0,
-                                      "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->scroll_view,
+                                         2, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", TRUE,
+                                         "y-fill", TRUE,
+                                         NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->geotag_pane,
+                                         2, 0,
+                                         "x-expand", TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", TRUE,
+                                         "y-fill", TRUE,
+                                         NULL);
 
   clutter_actor_hide (priv->geotag_pane);
 

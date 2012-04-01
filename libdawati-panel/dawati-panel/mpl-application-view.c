@@ -388,7 +388,7 @@ mpl_application_view_init (MplApplicationView *self)
   priv->title = mx_label_new ();
   mx_label_set_y_align (MX_LABEL (priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->title), "appTitle");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->title_box), priv->title, 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->title_box), priv->title, 0);
   mx_box_layout_child_set_expand (MX_BOX_LAYOUT (priv->title_box),
                                   priv->title, TRUE);
 
@@ -396,7 +396,7 @@ mpl_application_view_init (MplApplicationView *self)
   priv->subtitle = mx_label_new ();
   mx_label_set_y_align (MX_LABEL (priv->subtitle), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->subtitle), "appSubTitle");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->title_box), priv->subtitle, 1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->title_box), priv->subtitle, 1);
   mx_box_layout_child_set_expand (MX_BOX_LAYOUT (priv->title_box),
                                   priv->subtitle, FALSE);
 

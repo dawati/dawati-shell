@@ -241,18 +241,18 @@ penge_task_tile_init (PengeTaskTile *self)
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      (ClutterActor *)priv->check_button,
-                      0,
-                      0);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      (ClutterActor *)priv->summary_label,
-                      0,
-                      1);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      (ClutterActor *)priv->details_label,
-                      1,
-                      1);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         (ClutterActor *)priv->check_button,
+                         0,
+                         0);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         (ClutterActor *)priv->summary_label,
+                         0,
+                         1);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         (ClutterActor *)priv->details_label,
+                         1,
+                         1);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->check_button,
@@ -322,7 +322,7 @@ penge_task_tile_update (PengeTaskTile *tile)
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
   } else {
-    /* 
+    /*
      * If we fail to get some kind of description make the summary text
      * cover both rows in the tile
      */
