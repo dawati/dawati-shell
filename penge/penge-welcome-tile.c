@@ -102,15 +102,15 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                               "penge-welcome-placeholder");
       clutter_actor_set_size (placeholder_image, 548, 247);
 
-      mx_table_add_actor_with_properties (MX_TABLE (tile),
-                                          bin,
-                                          0, 0,
-                                          "x-expand", TRUE,
-                                          "y-expand", TRUE,
-                                          "x-fill", TRUE,
-                                          "y-fill", TRUE,
-                                          "x-align", MX_ALIGN_START,
-                                          NULL);
+      mx_table_insert_actor_with_properties (MX_TABLE (tile),
+                                             bin,
+                                             0, 0,
+                                             "x-expand", TRUE,
+                                             "y-expand", TRUE,
+                                             "x-fill", TRUE,
+                                             "y-fill", TRUE,
+                                             "x-align", MX_ALIGN_START,
+                                             NULL);
       mx_bin_set_fill (MX_BIN (bin), TRUE, TRUE);
     }
 
@@ -130,7 +130,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
 
       icon = mx_icon_new ();
       clutter_actor_set_name (icon, "penge-welcome-launcher-thumbnail");
-      mx_table_add_actor_with_properties (MX_TABLE (inner_table),
+      mx_table_insert_actor_with_properties (MX_TABLE (inner_table),
                                           icon,
                                           0, 0,
                                           "x-expand", TRUE,
@@ -141,7 +141,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
 
       icon = mx_icon_new ();
       clutter_actor_set_name (icon, "penge-welcome-launcher-play-button");
-      mx_table_add_actor_with_properties (MX_TABLE (inner_table),
+      mx_table_insert_actor_with_properties (MX_TABLE (inner_table),
                                           icon,
                                           0, 0,
                                           "x-expand", TRUE,
@@ -150,7 +150,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                           "y-fill", FALSE,
                                           NULL);
 
-      mx_table_add_actor_with_properties (MX_TABLE (tile),
+      mx_table_insert_actor_with_properties (MX_TABLE (tile),
                                           launcher,
                                           1, 0,
                                           "x-expand", FALSE,

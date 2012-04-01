@@ -166,14 +166,14 @@ mnp_shell_construct (MnpShell *shell)
   mx_stylable_set_style_class (MX_STYLABLE (priv->label), "titleBar");
   mnp_date_time_set_date_label ((MnpDatetime *)priv->datetime, priv->label);
 
-  mx_box_layout_add_actor ((MxBoxLayout *)shell, priv->label, 1);
+  mx_box_layout_insert_actor ((MxBoxLayout *)shell, priv->label, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (shell),
                                (ClutterActor *)priv->label,
                                "expand", FALSE,
 			       "y-fill", FALSE,
 			       "x-fill", TRUE,
                                NULL);
-  mx_box_layout_add_actor ((MxBoxLayout *)shell, priv->datetime, 2);
+  mx_box_layout_insert_actor ((MxBoxLayout *)shell, priv->datetime, 2);
   clutter_container_child_set (CLUTTER_CONTAINER (shell),
                                (ClutterActor *)priv->datetime,
                                "expand", TRUE,

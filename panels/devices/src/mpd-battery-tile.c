@@ -127,28 +127,28 @@ mpd_battery_tile_init (MpdBatteryTile *self)
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "battery-off");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   priv->progress_bar = mx_progress_bar_new ();
   clutter_actor_set_height (priv->progress_bar, 12);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           priv->progress_bar,
-                                           -1,
-                                           "expand", TRUE,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              priv->progress_bar,
+                                              -1,
+                                              "expand", TRUE,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "battery-on");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   priv->device = mpd_battery_device_new ();
   g_signal_connect (priv->device, "notify::percentage",

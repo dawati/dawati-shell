@@ -107,14 +107,14 @@ main (int    argc,
                     G_CALLBACK (_entry_text_changed_cb),
                     model);
 
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      CLUTTER_ACTOR (entry),
-                                      0,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         CLUTTER_ACTOR (entry),
+                                         0,
+                                         0,
+                                         "x-fill", TRUE,
+                                         "x-expand", TRUE,
+                                         "y-expand", FALSE,
+                                         NULL);
 
   toggle = mx_toggle_new ();
   g_signal_connect (toggle,
@@ -122,14 +122,14 @@ main (int    argc,
                     G_CALLBACK (_show_offline_changed_cb),
                     model);
 
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      CLUTTER_ACTOR (toggle),
-                                      0,
-                                      1,
-                                      "x-fill", TRUE,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         CLUTTER_ACTOR (toggle),
+                                         0,
+                                         1,
+                                         "x-fill", TRUE,
+                                         "x-expand", TRUE,
+                                         "y-expand", FALSE,
+                                         NULL);
 
   scroll_view = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
@@ -137,15 +137,15 @@ main (int    argc,
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                CLUTTER_ACTOR (icon_view));
   clutter_actor_show_all (stage);
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                        CLUTTER_ACTOR (scroll_view),
-                                        1,
-                                        0,
-                                        "x-fill", TRUE,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (table),
+                                         CLUTTER_ACTOR (scroll_view),
+                                         1,
+                                         0,
+                                         "x-fill", TRUE,
+                                         "x-expand", TRUE,
+                                         "y-expand", TRUE,
+                                         "y-fill", TRUE,
+                                         NULL);
 
   clutter_actor_set_size (CLUTTER_ACTOR (table), 640, 480);
 

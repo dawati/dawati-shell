@@ -104,68 +104,68 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       if (!priv->body)
         return;
 
-      mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
-                                          priv->body,
-                                          1, 0,
-                                          "y-align", MX_ALIGN_START,
-                                          "x-align", MX_ALIGN_START,
-                                          "y-fill", TRUE,
-                                          "y-expand", TRUE,
-                                          NULL);
+      mx_table_insert_actor_with_properties (MX_TABLE (priv->inner_table),
+                                             priv->body,
+                                             1, 0,
+                                             "y-align", MX_ALIGN_START,
+                                             "x-align", MX_ALIGN_START,
+                                             "y-fill", TRUE,
+                                             "y-expand", TRUE,
+                                             NULL);
       break;
 
-    case PROP_SOCIAL_NETWORK:
-      priv->social_network = g_value_get_uint (value);
+  case PROP_SOCIAL_NETWORK:
+    priv->social_network = g_value_get_uint (value);
 
-      clutter_actor_hide (priv->header);
+    clutter_actor_hide (priv->header);
 
-      logo = clutter_container_find_child_by_name (CLUTTER_CONTAINER (priv->header), "logo");
-      if (logo != NULL)
-        {
-          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->header), logo);
-          logo = NULL;
-        }
+    logo = clutter_container_find_child_by_name (CLUTTER_CONTAINER (priv->header), "logo");
+    if (logo != NULL)
+      {
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->header), logo);
+        logo = NULL;
+      }
 
-      switch (priv->social_network)
-        {
-          case SOCIAL_NETWORK_FACEBOOK:
-            logo = clutter_texture_new_from_file (SOCIAL_NETWORK_FACEBOOK_LOGO_PATH, NULL);
-            clutter_actor_set_name (logo, "logo");
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
-            clutter_actor_show (priv->header);
-            break;
+    switch (priv->social_network)
+      {
+      case SOCIAL_NETWORK_FACEBOOK:
+        logo = clutter_texture_new_from_file (SOCIAL_NETWORK_FACEBOOK_LOGO_PATH, NULL);
+        clutter_actor_set_name (logo, "logo");
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
+        clutter_actor_show (priv->header);
+        break;
 
-          case SOCIAL_NETWORK_TWITTER:
-            logo = clutter_texture_new_from_file (SOCIAL_NETWORK_TWITTER_LOGO_PATH, NULL);
-            clutter_actor_set_name (logo, "logo");
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
-            clutter_actor_show (priv->header);
-            break;
+      case SOCIAL_NETWORK_TWITTER:
+        logo = clutter_texture_new_from_file (SOCIAL_NETWORK_TWITTER_LOGO_PATH, NULL);
+        clutter_actor_set_name (logo, "logo");
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), logo);
+        clutter_actor_show (priv->header);
+        break;
 
-          case SOCIAL_NETWORK_UNKNOWN:
-          default:
-            /* keep the actor hidden */
-            break;
-        }
-      break;
+      case SOCIAL_NETWORK_UNKNOWN:
+      default:
+        /* keep the actor hidden */
+        break;
+      }
+    break;
 
-    case PROP_ICON_PATH:
-      path = g_value_get_string (value);
-      icon = clutter_container_find_child_by_name (
-          CLUTTER_CONTAINER (priv->icon_container), DETAILS_ICON_ACTOR_NAME);
-      /* TODO remove the assert when ok */
-      g_assert (CLUTTER_IS_TEXTURE (icon));
+  case PROP_ICON_PATH:
+    path = g_value_get_string (value);
+    icon = clutter_container_find_child_by_name (
+                                                 CLUTTER_CONTAINER (priv->icon_container), DETAILS_ICON_ACTOR_NAME);
+    /* TODO remove the assert when ok */
+    g_assert (CLUTTER_IS_TEXTURE (icon));
 
-      if (path && !clutter_texture_set_from_file (CLUTTER_TEXTURE (icon), 
-                                          path,
-                                          &error))
+    if (path && !clutter_texture_set_from_file (CLUTTER_TEXTURE (icon),
+                                                path,
+                                                &error))
       {
         g_critical (G_STRLOC ": error setting icon texture from file: %s",
                     error->message);
         g_clear_error (&error);
       }
 
-      if (path)
+    if (path)
       {
         clutter_actor_show (priv->icon_container);
         clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
@@ -177,26 +177,26 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
                                      "column", 1,
                                      NULL);
       } else {
-        clutter_actor_hide (priv->icon_container);
-        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
-                                     priv->primary_text,
-                                     "column", 0,
-                                     NULL);
-        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
-                                     priv->secondary_text,
-                                     "column", 0,
-                                     NULL);
-      }
+      clutter_actor_hide (priv->icon_container);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
+                                   priv->primary_text,
+                                   "column", 0,
+                                   NULL);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
+                                   priv->secondary_text,
+                                   "column", 0,
+                                   NULL);
+    }
 
-      break;
-    case PROP_PRIMARY_TEXT:
-      mx_label_set_text (MX_LABEL (priv->primary_text),
-                         g_value_get_string (value));
-      break;
-    case PROP_SECONDARY_TEXT:
-      mx_label_set_text (MX_LABEL (priv->secondary_text),
-                         g_value_get_string (value));
-      break;
+    break;
+  case PROP_PRIMARY_TEXT:
+    mx_label_set_text (MX_LABEL (priv->primary_text),
+                       g_value_get_string (value));
+    break;
+  case PROP_SECONDARY_TEXT:
+    mx_label_set_text (MX_LABEL (priv->secondary_text),
+                       g_value_get_string (value));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -208,10 +208,10 @@ penge_interesting_tile_dispose (GObject *object)
   PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
 
   if (priv->tooltip_idle_id)
-  {
-    g_source_remove (priv->tooltip_idle_id);
-    priv->tooltip_idle_id = 0;
-  }
+    {
+      g_source_remove (priv->tooltip_idle_id);
+      priv->tooltip_idle_id = 0;
+    }
 
   G_OBJECT_CLASS (penge_interesting_tile_parent_class)->dispose (object);
 }
@@ -229,9 +229,9 @@ penge_interesting_tile_enter_event (ClutterActor         *actor,
   /* If we are just entering from a child then don't set the hover */
   if (event->related &&
       clutter_actor_get_parent (event->related) == actor)
-  {
-    return FALSE;
-  }
+    {
+      return FALSE;
+    }
 
   mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "hover");
 
@@ -245,9 +245,9 @@ penge_interesting_tile_leave_event (ClutterActor         *actor,
   /* If we are just leaving to a child then don't unset the hover */
   if (event->related &&
       clutter_actor_get_parent (event->related) == actor)
-  {
-    return FALSE;
-  }
+    {
+      return FALSE;
+    }
 
   mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "");
 
@@ -288,11 +288,11 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
   /* FIXME we are using uint for simplicity here, use enum instead, here and
    * in get_property! */
   pspec = g_param_spec_uint ("social-network",
-                               "Social Network",
-                               "The Social Network origin of the tile",
-                               0, SOCIAL_NETWORK_LAST,
-                               SOCIAL_NETWORK_UNKNOWN,
-                               G_PARAM_WRITABLE);
+                             "Social Network",
+                             "The Social Network origin of the tile",
+                             0, SOCIAL_NETWORK_LAST,
+                             SOCIAL_NETWORK_UNKNOWN,
+                             G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_SOCIAL_NETWORK, pspec);
 
 
@@ -310,7 +310,7 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
                                G_PARAM_WRITABLE);
   g_object_class_install_property (object_class, PROP_SECONDARY_TEXT, pspec);
 
-  signals[REMOVE_CLICKED_SIGNAL] = 
+  signals[REMOVE_CLICKED_SIGNAL] =
     g_signal_new ("remove-clicked",
                   PENGE_TYPE_INTERESTING_TILE,
                   G_SIGNAL_RUN_FIRST,
@@ -392,12 +392,12 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
   priv->primary_text = mx_label_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (priv->primary_text), 
+  mx_stylable_set_style_class (MX_STYLABLE (priv->primary_text),
                                "PengeInterestingTilePrimaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
   g_signal_connect (priv->primary_text,
                     "notify::allocation",
@@ -405,12 +405,12 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                     self);
 
   priv->secondary_text = mx_label_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_text), 
+  mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_text),
                                "PengeInterestingTileSecondaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->secondary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_END);
   g_signal_connect (priv->secondary_text,
                     "notify::allocation",
@@ -426,7 +426,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   icon_overlay = mx_frame_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->icon_container),
-      icon_overlay);
+                               icon_overlay);
   clutter_actor_set_size (icon_overlay, 28, 28);
   mx_stylable_set_style_class (MX_STYLABLE (icon_overlay),
                                "PengeInterestingTileMessageIconOverlay");
@@ -435,19 +435,19 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
 
   priv->header = mx_frame_new ();
-  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
-                      priv->header,
-                      0,
-                      0,
-                      "x-expand", TRUE,
-                      "y-expand", FALSE,
-                      "x-fill", TRUE,
-                      "y-fill", FALSE,
-                      "x-align", MX_ALIGN_START,
-                      "y-align", MX_ALIGN_START,
-                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->inner_table),
+                                         priv->header,
+                                         0,
+                                         0,
+                                         "x-expand", TRUE,
+                                         "y-expand", FALSE,
+                                         "x-fill", TRUE,
+                                         "y-fill", FALSE,
+                                         "x-align", MX_ALIGN_START,
+                                         "y-align", MX_ALIGN_START,
+                                         NULL);
   clutter_actor_set_size (priv->header,
-      clutter_actor_get_width (CLUTTER_ACTOR (self)), HEADER_HEIGHT);
+                          clutter_actor_get_width (CLUTTER_ACTOR (self)), HEADER_HEIGHT);
   clutter_actor_hide (priv->header);
 
   /* This gets added to ourself table after our body because of ordering */
@@ -461,10 +461,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->details_margin),
                                priv->details_overlay);
 
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->details_margin,
-                      2,
-                      0);
+  mx_table_insert_actor (MX_TABLE (priv->inner_table),
+                         priv->details_margin,
+                         2,
+                         0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *) priv->details_margin,
@@ -476,10 +476,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_bin_set_fill (MX_BIN (priv->details_margin), TRUE, FALSE);
   mx_bin_set_alignment (MX_BIN (priv->details_margin), MX_ALIGN_START, MX_ALIGN_END);
 
-  mx_table_add_actor (MX_TABLE (priv->details_overlay),
-                      priv->primary_text,
-                      0,
-                      1);
+  mx_table_insert_actor (MX_TABLE (priv->details_overlay),
+                         priv->primary_text,
+                         0,
+                         1);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->primary_text,
@@ -487,10 +487,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                "y-expand", FALSE,
                                NULL);
 
-  mx_table_add_actor (MX_TABLE (priv->details_overlay),
-                      priv->secondary_text,
-                      1,
-                      1);
+  mx_table_insert_actor (MX_TABLE (priv->details_overlay),
+                         priv->secondary_text,
+                         1,
+                         1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->secondary_text,
                                "x-expand",
@@ -499,10 +499,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                FALSE,
                                NULL);
 
-  mx_table_add_actor (MX_TABLE (priv->details_overlay),
-                      priv->icon_container,
-                      0,
-                      0);
+  mx_table_insert_actor (MX_TABLE (priv->details_overlay),
+                         priv->icon_container,
+                         0,
+                         0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->icon_container,
                                "row-span", 2,
@@ -519,8 +519,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_stylable_set_style_class (MX_STYLABLE (icon),
                                "PengeInterestingTileIcon");
   mx_bin_set_child (MX_BIN (priv->remove_button),
-                      (ClutterActor *)icon);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->details_overlay),
+                    (ClutterActor *)icon);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->details_overlay),
                                       priv->remove_button,
                                       0, 2,
                                       "row-span", 2,

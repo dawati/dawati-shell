@@ -119,7 +119,7 @@ add_tile_from_mount (MxBoxLayout  *box,
   tile = mpd_storage_device_tile_new (name, uri, NULL, icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (box), tile, 0);
   clutter_actor_set_width (tile, 480.0);
 
   gtk_icon_info_free (icon_info);
@@ -183,7 +183,7 @@ _mount_removed_cb (GVolumeMonitor  *monitor,
   }
 
   actor = mx_label_new_with_text ("Plug in USB storage device ...");
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), actor, 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (box), actor, 0);
 }
 
 int

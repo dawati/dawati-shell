@@ -442,9 +442,10 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 
   priv->table = mx_table_new ();
   mx_table_set_row_spacing (MX_TABLE (priv->table), 4);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->table, -1,
-                                           "x-fill", true,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              priv->table, -1,
+                                              "x-fill", true,
+                                              NULL);
 /*
    0      1
   +--------------------------+ Table
@@ -465,14 +466,14 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   clutter_actor_set_size (priv->icon,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->icon, 0, 0,
-                                      "x-align", MX_ALIGN_MIDDLE,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->table), priv->icon, 0, 0,
+                                         "x-align", MX_ALIGN_MIDDLE,
+                                         "x-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
   /*
    * Column 1
@@ -486,65 +487,65 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
   clutter_text_set_single_line_mode (text, false);
   clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_END);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->label, 0, 1,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", true,
-                                      "x-fill", true,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", false,
-                                      "y-fill", false,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->table), priv->label, 0, 1,
+                                         "x-align", MX_ALIGN_START,
+                                         "x-expand", true,
+                                         "x-fill", true,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-expand", false,
+                                         "y-fill", false,
+                                         NULL);
 
   /* Progress */
   priv->meter = mx_progress_bar_new ();
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->meter, 1, 1,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", true,
-                                      "x-fill", true,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", false,
-                                      "y-fill", false,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->table), priv->meter, 1, 1,
+                                         "x-align", MX_ALIGN_START,
+                                         "x-expand", true,
+                                         "x-fill", true,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-expand", false,
+                                         "y-fill", false,
+                                         NULL);
 
   /* Buttons */
   flow = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (flow),
                                  MX_ORIENTATION_HORIZONTAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (flow), 5.0);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), flow, 2, 0,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", FALSE,
-                                      "x-fill", TRUE,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", true,
-                                      "y-fill", true,
-                                      "column-span", 2,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->table), flow, 2, 0,
+                                         "x-align", MX_ALIGN_START,
+                                         "x-expand", FALSE,
+                                         "x-fill", TRUE,
+                                         "y-align", MX_ALIGN_MIDDLE,
+                                         "y-expand", true,
+                                         "y-fill", true,
+                                         "column-span", 2,
+                                         NULL);
 
   /* Open button */
   priv->open = mx_button_new_with_label (_("Open"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->open), "Primary");
   g_signal_connect (priv->open, "clicked",
                     G_CALLBACK (_open_clicked_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
-                                           priv->open,
-                                           -1,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (flow),
+                                              priv->open,
+                                              -1,
+                                              "expand", TRUE,
+                                              "x-fill", TRUE,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   /* Eject button */
   priv->eject = mx_button_new_with_label (_("Eject"));
   g_signal_connect (priv->eject, "clicked",
                     G_CALLBACK (_eject_clicked_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (flow),
-                                           priv->eject,
-                                           -1,
-                                           "expand", TRUE,
-                                           "x-fill", TRUE,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (flow),
+                                              priv->eject,
+                                              -1,
+                                              "expand", TRUE,
+                                              "x-fill", TRUE,
+                                              "y-fill", FALSE,
+                                              NULL);
 }
 
 ClutterActor *
@@ -779,10 +780,11 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
     clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
     clutter_text_set_single_line_mode (text, false);
     clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
-    mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->message,
-                                             2,
-                                             "x-align", MX_ALIGN_MIDDLE,
-                                             NULL);
+    mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                                priv->message,
+                                                2,
+                                                "x-align", MX_ALIGN_MIDDLE,
+                                                NULL);
   }
 
   if (replace_buttons)

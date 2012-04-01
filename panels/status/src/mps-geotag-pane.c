@@ -579,42 +579,42 @@ mps_geotag_pane_init (MpsGeotagPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                priv->use_location_button);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->entry,
-                                      1, 0,
-                                      "x-expand",TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->guess_location_button,
-                                      1, 1,
-                                      "x-expand", FALSE,
-                                      "x-fill", FALSE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->entry,
+                                         1, 0,
+                                         "x-expand",TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->guess_location_button,
+                                         1, 1,
+                                         "x-expand", FALSE,
+                                         "x-fill", FALSE,
+                                         "y-expand", FALSE,
+                                         "y-fill", FALSE,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->map_view,
-                                      2, 0,
-                                      "x-expand",TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
-                                      "column-span", 2,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->map_view,
+                                         2, 0,
+                                         "x-expand",TRUE,
+                                         "x-fill", TRUE,
+                                         "y-expand", TRUE,
+                                         "y-fill", TRUE,
+                                         "column-span", 2,
+                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->button_box,
-                                      3, 0,
-                                      "x-expand", TRUE,
-                                      "x-align", MX_ALIGN_END,
-                                      "x-fill", FALSE,
-                                      "column-span", 2,
-                                      "y-expand", FALSE,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->button_box,
+                                         3, 0,
+                                         "x-expand", TRUE,
+                                         "x-align", MX_ALIGN_END,
+                                         "x-fill", FALSE,
+                                         "column-span", 2,
+                                         "y-expand", FALSE,
+                                         NULL);
 
   mx_table_set_column_spacing (MX_TABLE (self), 6);
   mx_table_set_row_spacing (MX_TABLE (self), 6);

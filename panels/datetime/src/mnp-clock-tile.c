@@ -100,12 +100,12 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	gfloat width, height;
 	MnpClockTilePriv *priv = tile->priv;
 	clutter_actor_get_size (self, &width, &height);
-	
+
 	g_object_ref (self);
 
 	if (priv->clone)
 		clutter_actor_destroy (priv->clone);
-	
+
 	priv->clone = clutter_clone_new (self);
 
 	tile->priv->depth = clutter_actor_get_depth (self);
@@ -114,11 +114,11 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	//clutter_actor_set_size (self, width, -1);
 	//clutter_actor_raise_top (self);
 	//clutter_actor_set_position (self, orig_x, orig_y);
-	
+
 	clutter_container_add_actor (CLUTTER_CONTAINER (stage), priv->clone);
 	clutter_actor_set_position (priv->clone, orig_x, orig_y);
 	clutter_actor_set_size (priv->clone, width, height);
-	
+
 	g_object_unref (self);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
@@ -138,10 +138,10 @@ mnp_clock_tile_drag_motion (MxDraggable *draggable, gfloat delta_x, gfloat delta
 
 	clutter_actor_set_position (CLUTTER_ACTOR (priv->clone), orig_x + delta_x,
                               	      orig_y + delta_y);
-	
+
 	g_signal_emit (G_OBJECT (draggable), signals[DRAG_Y_POS], 0, (int)orig_y+(int)delta_y);
-		
-	//clutter_actor_move_by (CLUTTER_ACTOR (draggable), delta_x, delta_y);	
+
+	//clutter_actor_move_by (CLUTTER_ACTOR (draggable), delta_x, delta_y);
 }
 
 static void
@@ -157,12 +157,12 @@ mnp_clock_tile_drag_end (MxDraggable *draggable, gfloat event_x, gfloat event_y)
 
 	clutter_actor_get_size (CLUTTER_ACTOR (draggable), &width, &height);
 	clutter_actor_get_transformed_position (CLUTTER_ACTOR (draggable), &x, &y);
-	
+
 	clutter_actor_set_opacity (CLUTTER_ACTOR (draggable), 0xff);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
                          	"opacity", 255,
-                         	NULL);	
+                         	NULL);
 	tile->priv->depth = 0.0;
 }
 
@@ -300,7 +300,7 @@ mnp_clock_tile_class_init (MnpClockTileClass *klass)
 	object_class->finalize = mnp_clock_tile_finalize;
   	object_class->set_property = draggable_rectangle_set_property;
 	object_class->get_property = draggable_rectangle_get_property;
-	
+
 	actor_class->parent_set = mnp_draggable_rectangle_parent_set;
 
 	g_object_class_override_property (object_class,
@@ -320,7 +320,7 @@ mnp_clock_tile_class_init (MnpClockTileClass *klass)
                                     "drag-enabled");
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_ACTOR,
-                                    "drag-actor");	
+                                    "drag-actor");
 
 	signals[DRAG_Y_POS] = g_signal_new ("drag-y-pos",
 			G_TYPE_FROM_CLASS (klass),
@@ -338,7 +338,7 @@ mnp_clock_tile_get_type (void)
 	static GType type = 0;
 	if (G_UNLIKELY(type == 0))
 	{
-		static const GTypeInfo info = 
+		static const GTypeInfo info =
 		{
 			sizeof (MnpClockTileClass),
 			NULL,   /* base_init */
@@ -353,7 +353,7 @@ mnp_clock_tile_get_type (void)
 		};
 
 
-		static const GInterfaceInfo mx_draggable_info = 
+		static const GInterfaceInfo mx_draggable_info =
 		{
 			(GInterfaceInitFunc) mx_draggable_init, /* interface_init */
 			NULL,         /* interface_finalize */
@@ -395,7 +395,7 @@ mnp_clock_construct (MnpClockTile *tile)
 	MnpClockTilePriv *priv = tile->priv;
 	GConfClient *client = gconf_client_get_default();
 
-	fmt = mnp_format_time_from_location (tile->priv->loc, 
+	fmt = mnp_format_time_from_location (tile->priv->loc,
 					     tile->priv->time_now,
 					     gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL),
 					     tile->priority
@@ -419,14 +419,14 @@ mnp_clock_construct (MnpClockTile *tile)
 	clutter_actor_set_name (box1, "ClockTileDateCityBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_ORIENTATION_VERTICAL);
 
-	mx_box_layout_add_actor ((MxBoxLayout *)box1, label3, 0);
+	mx_box_layout_insert_actor ((MxBoxLayout *)box1, label3, 0);
 	clutter_container_child_set ((ClutterContainer *)box1, label3,
 				   	"expand", FALSE,
 					"y-fill", FALSE,
 					"y-align", MX_ALIGN_END,
                                    	NULL);
-	
-	mx_box_layout_add_actor ((MxBoxLayout *)box1, label1, 1);
+
+	mx_box_layout_insert_actor ((MxBoxLayout *)box1, label1, 1);
 	clutter_container_child_set ((ClutterContainer *)box1, label1,
 				   	"expand", TRUE,
 					"y-fill", FALSE,
@@ -434,31 +434,32 @@ mnp_clock_construct (MnpClockTile *tile)
                                    	NULL);
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)tile, box1, 0);
+	mx_box_layout_insert_actor ((MxBoxLayout *)tile, box1, 0);
 	clutter_container_child_set ((ClutterContainer *)tile, box1,
 				   	"expand", TRUE,
 					"x-fill", TRUE,
 					"y-fill", FALSE,
                                    	NULL);
 
-	mx_box_layout_add_actor ((MxBoxLayout *)tile, label2, 1);
+	mx_box_layout_insert_actor ((MxBoxLayout *)tile, label2, 1);
 	clutter_container_child_set ((ClutterContainer *)tile, label2,
 				   	"expand", TRUE,
 					"x-fill", FALSE,
 					"y-fill", FALSE,
 					"y-align", MX_ALIGN_MIDDLE,
-					"x-align", MX_ALIGN_END,					
+					"x-align", MX_ALIGN_END,
                                    	NULL);
 	FREE_DFMT(fmt);
 
- 	
+
 	priv->remove_button = (MxButton *)mx_button_new ();
 	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
-	mx_box_layout_add_actor ((MxBoxLayout *)tile, (ClutterActor *)priv->remove_button, 2);
+	mx_box_layout_insert_actor ((MxBoxLayout *)tile,
+                                    (ClutterActor *)priv->remove_button, 2);
   	clutter_container_child_set ((ClutterContainer *)tile, (ClutterActor *)priv->remove_button,
 				   	"expand", FALSE,
 					"x-fill", FALSE,
-					"y-fill", FALSE,					
+					"y-fill", FALSE,
 					"y-align", MX_ALIGN_MIDDLE,
 					"x-align", MX_ALIGN_END,
                                    	NULL);
@@ -509,7 +510,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now, gboolean tfh)
 	FREE_DFMT(fmt);
 }
 
-MnpZoneLocation * 
+MnpZoneLocation *
 mnp_clock_tile_get_location (MnpClockTile *tile)
 {
 	return tile->priv->loc;

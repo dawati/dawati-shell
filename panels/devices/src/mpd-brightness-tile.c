@@ -131,28 +131,28 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "brightness-off");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   priv->slider = (MxSlider *) mx_slider_new ();
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           (ClutterActor *) priv->slider,
-                                           -1,
-                                           "expand", TRUE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              (ClutterActor *) priv->slider,
+                                              -1,
+                                              "expand", TRUE,
+                                              NULL);
   g_signal_connect (priv->slider, "notify::value",
                     G_CALLBACK (_brightness_slider_value_notify_cb), self);
 
   icon = mx_icon_new ();
   clutter_actor_set_name (icon, "brightness-on");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           icon,
-                                           -1,
-                                           "y-fill", FALSE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              icon,
+                                              -1,
+                                              "y-fill", FALSE,
+                                              NULL);
 
   /* Hook the logic */
   priv->display = mpd_display_device_new ();

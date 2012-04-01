@@ -135,14 +135,14 @@ mpd_shell_init (MpdShell *self)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_PANE_COLUMN_SPACING);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           hbox,
-                                           -1,
-                                           "expand", FALSE,
-                                           "x-fill", FALSE,
-                                           "x-align", MX_ALIGN_MIDDLE,
-                                           "y-fill", TRUE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              hbox,
+                                              -1,
+                                              "expand", FALSE,
+                                              "x-fill", FALSE,
+                                              "x-align", MX_ALIGN_MIDDLE,
+                                              "y-fill", TRUE,
+                                              NULL);
 
   pane = mpd_computer_pane_new ();
   g_signal_connect (pane, "request-hide",

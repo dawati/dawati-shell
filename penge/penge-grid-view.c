@@ -272,7 +272,7 @@ _update_layout (PengeGridView *grid_view)
     }
 
     if (priv->show_email_pane)
-    { 
+    {
       clutter_actor_show (priv->email_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
@@ -462,17 +462,17 @@ penge_grid_view_init (PengeGridView *self)
   self->priv = priv;
 
   /* Currently not shown, remove the frame and its height to reenable it
-  priv->header_label = mx_label_new_with_text ("Myzone");
+     priv->header_label = mx_label_new_with_text ("Myzone");
   */
   priv->header_label = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->header_label), "titleBar");
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->header_label,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "column-span", 2,
-                                      NULL);
+  mx_table_insert_actor_with_properties (MX_TABLE (self),
+                                         priv->header_label,
+                                         0, 0,
+                                         "x-expand", FALSE,
+                                         "y-expand", TRUE,
+                                         "column-span", 2,
+                                         NULL);
 
   priv->top_container = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->top_container),
@@ -484,41 +484,41 @@ penge_grid_view_init (PengeGridView *self)
   clutter_actor_set_width (priv->calendar_pane, 300);
 
 
-  mx_table_add_actor (MX_TABLE (priv->top_container),
-                      priv->calendar_pane,
-                      0,
-                      0);
+  mx_table_insert_actor (MX_TABLE (priv->top_container),
+                         priv->calendar_pane,
+                         0,
+                         0);
 
   priv->email_pane = g_object_new (PENGE_TYPE_EMAIL_PANE,
                                    NULL);
 
-  mx_table_add_actor (MX_TABLE (priv->top_container),
-                      priv->email_pane,
-                      1,
-                      0);
+  mx_table_insert_actor (MX_TABLE (priv->top_container),
+                         priv->email_pane,
+                         1,
+                         0);
 
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->top_container,
-                      1,
-                      0);
+  mx_table_insert_actor (MX_TABLE (self),
+                         priv->top_container,
+                         1,
+                         0);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->favourite_apps_pane,
-                      3,
-                      0);
+  mx_table_insert_actor (MX_TABLE (self),
+                         priv->favourite_apps_pane,
+                         3,
+                         0);
 
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
-  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 1);
+  mx_table_insert_actor (MX_TABLE (self), priv->everything_pane, 1, 1);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   mx_table_set_column_spacing (MX_TABLE (self), 19);
 
-  /* 
+  /*
    * Create a background and parent it to the grid. We paint and allocate this
    * in the overridden vfuncs
    */
@@ -532,7 +532,7 @@ penge_grid_view_init (PengeGridView *self)
   clutter_actor_show (priv->background_fade);
 
   priv->gconf_client = gconf_client_get_default ();
-  priv->show_calendar_notify_id = 
+  priv->show_calendar_notify_id =
     gconf_client_notify_add (priv->gconf_client,
                              DAWATI_MYZONE_SHOW_CALENDAR,
                              _gconf_show_calendar_notify_cb,
@@ -548,7 +548,7 @@ penge_grid_view_init (PengeGridView *self)
     gconf_client_notify (priv->gconf_client, DAWATI_MYZONE_SHOW_CALENDAR);
   }
 
-  priv->show_email_notify_id = 
+  priv->show_email_notify_id =
     gconf_client_notify_add (priv->gconf_client,
                              DAWATI_MYZONE_SHOW_EMAIL,
                              _gconf_show_email_notify_cb,

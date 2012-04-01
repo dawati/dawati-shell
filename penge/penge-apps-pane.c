@@ -241,15 +241,15 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
       if (!priv->vertical)
       {
-        mx_table_add_actor (MX_TABLE (pane),
-                            stack,
-                            count / ROW_SIZE,
-                            count % ROW_SIZE);
+        mx_table_insert_actor (MX_TABLE (pane),
+                               stack,
+                               count / ROW_SIZE,
+                               count % ROW_SIZE);
       } else {
-        mx_table_add_actor (MX_TABLE (pane),
-                            stack,
-                            count / 1,
-                            count % 1);
+        mx_table_insert_actor (MX_TABLE (pane),
+                               stack,
+                               count / 1,
+                               count % 1);
       }
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    stack,

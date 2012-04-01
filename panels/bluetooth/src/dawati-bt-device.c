@@ -52,7 +52,7 @@ enum
   PROP_CONNECTED,
 };
 
-static void 
+static void
 dawati_bt_device_set_name (DawatiBtDevice *device, const char *name)
 {
   DawatiBtDevicePrivate *priv = GET_PRIVATE (device);
@@ -133,7 +133,7 @@ dawati_bt_device_class_init (DawatiBtDeviceClass *klass)
   object_class->set_property = dawati_bt_device_set_property;
   object_class->dispose = dawati_bt_device_dispose;
 
-  signals[SIGNAL_DISCONNECT] = g_signal_new ("disconnect", 
+  signals[SIGNAL_DISCONNECT] = g_signal_new ("disconnect",
                                              G_TYPE_FROM_CLASS (object_class),
                                              G_SIGNAL_RUN_FIRST,
                                              G_STRUCT_OFFSET (DawatiBtDeviceClass, disconnect),
@@ -180,20 +180,20 @@ dawati_bt_device_init (DawatiBtDevice *device)
 
   priv->label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->label), "BtTitle");
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (device), priv->label, -1,
-                                           "expand", TRUE,
-                                           "x-fill", FALSE,
-                                           "y-fill", FALSE,
-                                           "x-align", MX_ALIGN_START,
-                                           "y-align", MX_ALIGN_MIDDLE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (device), priv->label, -1,
+                                              "expand", TRUE,
+                                              "x-fill", FALSE,
+                                              "y-fill", FALSE,
+                                              "x-align", MX_ALIGN_START,
+                                              "y-align", MX_ALIGN_MIDDLE,
+                                              NULL);
 
   button = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (button), "BtCloseButton");
   mx_bin_set_child (MX_BIN (button), mx_icon_new ());
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_disconnect_clicked_cb), device);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (device), button, -1);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (device), button, -1);
 }
 
 

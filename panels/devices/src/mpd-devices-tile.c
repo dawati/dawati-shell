@@ -505,7 +505,7 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_device_tile_request_hide_cb), self);
   g_signal_connect (tile, "request-show",
                     G_CALLBACK (_device_tile_request_show_cb), self);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
 
   insert_storage_tile (self, mount, tile);
 

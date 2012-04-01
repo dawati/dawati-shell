@@ -45,12 +45,12 @@ mwb_utils_table_add (MxTable    *table,
                      gboolean      y_expand,
                      gboolean      y_fill)
 {
-  mx_table_add_actor_with_properties (table, child, row, col,
-                                        "x-expand", x_expand,
-                                        "x-fill", x_fill,
-                                        "y-expand", y_expand,
-                                        "y-fill", y_fill,
-                                        NULL);
+  mx_table_insert_actor_with_properties (table, child, row, col,
+                                         "x-expand", x_expand,
+                                         "x-fill", x_fill,
+                                         "y-expand", y_expand,
+                                         "y-fill", y_fill,
+                                         NULL);
 }
 
 CoglHandle

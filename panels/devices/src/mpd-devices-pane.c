@@ -148,11 +148,11 @@ mpd_devices_pane_init (MpdDevicesPane *self)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stack), tile);
 
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self),
-                                           stack,
-                                           -1,
-                                           "expand", TRUE,
-                                           NULL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+                                              stack,
+                                              -1,
+                                              "expand", TRUE,
+                                              NULL);
 
   if (!mpd_devices_tile_is_empty (MPD_DEVICES_TILE (tile)))
     clutter_actor_hide (priv->filigree);
