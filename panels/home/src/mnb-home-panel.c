@@ -27,7 +27,7 @@
 #define WIDTH 3
 #define HEIGHT 2
 
-G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_BOX_LAYOUT);
+G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_WIDGET);
 
 enum /* properties */
 {
@@ -40,6 +40,7 @@ struct _MnbHomePanelPrivate
 {
   MplPanelClient *panel_client;
   ClutterActor   *background;
+  ClutterActor   *vbox;
   ClutterActor   *grid;
 };
 
@@ -106,52 +107,47 @@ mnb_home_panel_dispose (GObject *self)
 }
 
 static void
+mnb_home_panel_allocate (ClutterActor           *self,
+                         const ClutterActorBox  *box,
+                         ClutterAllocationFlags  flags)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+  ClutterActorBox child_box;
+  MxPadding padding;
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->allocate (self,
+                                                               box, flags);
+
+  child_box.x1 = padding.left;
+  child_box.y1 = padding.top;
+  child_box.x2 = box->x2 - box->x1 - (padding.left + padding.right);
+  child_box.y2 = box->y2 - box->y1 - (padding.top + padding.bottom);
+
+  clutter_actor_allocate (priv->background, &child_box, flags);
+  clutter_actor_allocate (priv->vbox, &child_box, flags);
+}
+
+static void
 mnb_home_panel_paint (ClutterActor *self)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
   clutter_actor_paint (priv->background);
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->paint (self);
+  clutter_actor_paint (priv->vbox);
 }
 
 static void
-mnb_home_panel_map (ClutterActor *self)
+mnb_home_panel_pick (ClutterActor       *self,
+                     const ClutterColor *color)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->map (self);
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->pick (self, color);
 
-  clutter_actor_map (priv->background);
-}
-
-static void
-mnb_home_panel_unmap (ClutterActor *self)
-{
-  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->unmap (self);
-
-  clutter_actor_unmap (priv->background);
-}
-
-static void
-mnb_home_panel_allocate (ClutterActor *self,
-    const ClutterActorBox *box,
-    ClutterAllocationFlags flags)
-{
-  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
-  ClutterActorBox child_box;
-
-  child_box.x1 = 0;
-  child_box.y1 = 0;
-  child_box.x2 = box->x2 - box->x1;
-  child_box.y2 = box->y2 - box->y1;
-
-  clutter_actor_allocate (priv->background, &child_box, flags);
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->allocate (self,
-      box, flags);
+  clutter_actor_paint (priv->background);
+  clutter_actor_paint (priv->vbox);
 }
 
 static void
@@ -165,9 +161,8 @@ mnb_home_panel_class_init (MnbHomePanelClass *klass)
   gobject_class->dispose = mnb_home_panel_dispose;
 
   actor_class->paint = mnb_home_panel_paint;
+  actor_class->pick = mnb_home_panel_pick;
   actor_class->allocate = mnb_home_panel_allocate;
-  actor_class->map = mnb_home_panel_map;
-  actor_class->unmap = mnb_home_panel_unmap;
 
   g_type_class_add_private (gobject_class, sizeof (MnbHomePanelPrivate));
 
@@ -189,19 +184,21 @@ mnb_home_panel_init (MnbHomePanel *self)
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
                                                    MnbHomePanelPrivate);
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-
   /* background */
   /* FIXME: make this awesomer */
-  self->priv->background = clutter_texture_new_from_file (
-      "/usr/share/backgrounds/gnome/Aqua.jpg",
-      NULL);
-  clutter_actor_set_parent (self->priv->background, CLUTTER_ACTOR (self));
+  priv->background = mx_image_new ();
+  mx_image_set_from_file (MX_IMAGE (priv->background),
+                          "/usr/share/backgrounds/gnome/Aqua.jpg", NULL);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->background);
+
+  priv->vbox = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->vbox);
+  clutter_actor_raise_top (priv->vbox);
 
   /* Grid */
   priv->grid = mnb_home_grid_new ();
   mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 14, 7); /* TODO: auto! */
-  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (priv->vbox),
                                               priv->grid,
                                               0,
                                               "expand", TRUE,
@@ -212,7 +209,7 @@ mnb_home_panel_init (MnbHomePanel *self)
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
   mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
-  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (priv->vbox),
                                               edit,
                                               1,
                                               "expand", FALSE,

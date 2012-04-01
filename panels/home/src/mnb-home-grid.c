@@ -339,169 +339,18 @@ mnb_home_grid_scrollable_iface_init (MxScrollableIface *iface)
  */
 
 static void
-mnb_home_grid_add_actor (ClutterContainer *container,
-                         ClutterActor     *actor)
-{
-  MnbHomeGridPrivate *priv = MNB_HOME_GRID (container)->priv;
-
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
-
-  priv->children = g_list_append (priv->children, actor);
-
-  g_signal_emit_by_name (container, "actor-added", actor);
-}
-
-static void
-mnb_home_grid_remove_actor (ClutterContainer *container,
-                            ClutterActor     *actor)
+mnb_home_grid_actor_removed (ClutterContainer *container,
+                             ClutterActor     *actor)
 {
   MnbHomeGrid *grid = MNB_HOME_GRID (container);
-  MnbHomeGridPrivate *priv = grid->priv;
-  GList *item = NULL;
-
-  item = g_list_find (priv->children, actor);
-
-  if (item == NULL)
-    {
-      g_warning ("Widget of type '%s' is not a child of container of type '%s'",
-                 g_type_name (G_OBJECT_TYPE (actor)),
-                 g_type_name (G_OBJECT_TYPE (container)));
-      return;
-    }
-
-  g_object_ref (actor);
 
   mnb_home_grid_remove_item_cells (grid, actor);
-
-  /* if ((ClutterActor *)priv->last_focus == actor) */
-  /*   priv->last_focus = NULL; */
-
-  priv->children = g_list_delete_link (priv->children, item);
-  clutter_actor_unparent (actor);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
-}
-
-static void
-mnb_home_grid_foreach (ClutterContainer *container,
-                       ClutterCallback   callback,
-                       gpointer          callback_data)
-{
-  MnbHomeGridPrivate *priv = MNB_HOME_GRID (container)->priv;
-
-  g_list_foreach (priv->children, (GFunc) callback, callback_data);
-}
-
-static void
-mnb_home_grid_lower (ClutterContainer *container,
-                     ClutterActor     *actor,
-                     ClutterActor     *sibling)
-{
-  MnbHomeGridPrivate *priv = MNB_HOME_GRID (container)->priv;
-  gint i;
-  GList *c, *position, *actor_link = NULL;
-
-  if (priv->children && (priv->children->data == actor))
-    return;
-
-  position = priv->children;
-  for (c = priv->children, i = 0; c; c = c->next, i++)
-    {
-      if (c->data == actor)
-        actor_link = c;
-      if (c->data == sibling)
-        position = c;
-    }
-
-  if (!actor_link)
-    {
-      g_warning (G_STRLOC ": Actor of type '%s' is not a child of container "
-                 "of type '%s'",
-                 g_type_name (G_OBJECT_TYPE (actor)),
-                 g_type_name (G_OBJECT_TYPE (container)));
-      return;
-    }
-
-  priv->children = g_list_delete_link (priv->children, actor_link);
-  priv->children = g_list_insert_before (priv->children, position, actor);
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-}
-
-static void
-mnb_home_grid_raise (ClutterContainer *container,
-                     ClutterActor     *actor,
-                     ClutterActor     *sibling)
-{
-  MnbHomeGridPrivate *priv = MNB_HOME_GRID (container)->priv;
-  gint i;
-  GList *c, *actor_link = NULL;
-  gint position = -1;
-
-  for (c = priv->children, i = 0; c; c = c->next, i++)
-    {
-      if (c->data == actor)
-        actor_link = c;
-      if (c->data == sibling)
-        position = i;
-    }
-
-  if (!actor_link)
-    {
-      g_warning (G_STRLOC ": Actor of type '%s' is not a child of container "
-                 "of type '%s'",
-                 g_type_name (G_OBJECT_TYPE (actor)),
-                 g_type_name (G_OBJECT_TYPE (container)));
-      return;
-    }
-
-  if (!actor_link->next)
-    return;
-
-  priv->children = g_list_delete_link (priv->children, actor_link);
-  priv->children = g_list_insert (priv->children, actor, position);
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
-}
-
-static gint
-mnb_home_grid_depth_sort_cb (gconstpointer a,
-                             gconstpointer b)
-{
-  gfloat depth_a = clutter_actor_get_depth ((ClutterActor *) a);
-  gfloat depth_b = clutter_actor_get_depth ((ClutterActor *) b);
-
-  if (depth_a < depth_b)
-    return -1;
-  else if (depth_a > depth_b)
-    return 1;
-  else
-    return 0;
-}
-
-static void
-mnb_home_grid_sort_depth_order (ClutterContainer *container)
-{
-  MnbHomeGridPrivate *priv = MNB_HOME_GRID (container)->priv;
-
-  priv->children = g_list_sort (priv->children, mnb_home_grid_depth_sort_cb);
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static void
 mnb_home_grid_container_iface_init (ClutterContainerIface *iface)
 {
-  iface->add = mnb_home_grid_add_actor;
-  iface->remove = mnb_home_grid_remove_actor;
-  iface->foreach = mnb_home_grid_foreach;
-  iface->lower = mnb_home_grid_lower;
-  iface->raise = mnb_home_grid_raise;
-  iface->sort_depth_order = mnb_home_grid_sort_depth_order;
+  iface->actor_removed = mnb_home_grid_actor_removed;
   iface->child_meta_type = MNB_TYPE_HOME_GRID_CHILD;
 }
 
@@ -770,21 +619,31 @@ mnb_home_grid_allocate (ClutterActor           *self,
   MnbHomeGridPrivate *priv = grid->priv;
   ClutterActorBox child_box;
   MxPadding padding;
-  GList *child = priv->children;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   CLUTTER_ACTOR_CLASS (mnb_home_grid_parent_class)->allocate (self, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
 
-  while (child)
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActor *child_actor = (ClutterActor *) child->data;
-      ClutterAnimation *animation = clutter_actor_get_animation (child_actor);
+      ClutterAnimation *animation = clutter_actor_get_animation (child);
 
-      if ((animation == NULL) && (child_actor != priv->selection))
+      if (G_UNLIKELY (child == priv->edit_texture))
+        continue;
+
+      if (G_UNLIKELY (child == priv->hint_position ||
+                      child == priv->selection ||
+                      animation != NULL))
+        {
+          clutter_actor_allocate_preferred_size (child, flags);
+        }
+      else
         {
           MnbHomeGridChild *child_meta = (MnbHomeGridChild *)
-            clutter_container_get_child_meta (CLUTTER_CONTAINER (self), child_actor);
+            clutter_container_get_child_meta (CLUTTER_CONTAINER (self), child);
           gdouble x_align_d, y_align_d;
           MxAlign x_align, y_align;
 
@@ -807,22 +666,16 @@ mnb_home_grid_allocate (ClutterActor           *self,
 
           child_box.x1 = padding.left + (UNIT_SIZE + SPACING) * child_meta->col;
           child_box.y1 = padding.top + (UNIT_SIZE + SPACING) * child_meta->row;
-          child_box.x2 = child_box.x1 + clutter_actor_get_width (child_actor);
-          child_box.y2 = child_box.y1 + clutter_actor_get_height (child_actor);
+          child_box.x2 = child_box.x1 + clutter_actor_get_width (child);
+          child_box.y2 = child_box.y1 + clutter_actor_get_height (child);
 
-          mx_allocate_align_fill (child_actor, &child_box,
+          mx_allocate_align_fill (child, &child_box,
                                   x_align, y_align,
                                   child_meta->x_fill, child_meta->y_fill);
 
-          clutter_actor_allocate (child_actor, &child_box, flags);
+          clutter_actor_allocate (child, &child_box, flags);
         }
-      else
-        clutter_actor_allocate_preferred_size (child_actor, flags);
-
-      child = child->next;
     }
-
-  clutter_actor_allocate_preferred_size (priv->hint_position, flags);
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
@@ -899,9 +752,10 @@ static void
 mnb_home_grid_paint (ClutterActor *self)
 {
   MnbHomeGridPrivate *priv = MNB_HOME_GRID (self)->priv;
-  GList *l;
   gdouble x, y;
   ClutterActorBox box_b, child_b;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   CLUTTER_ACTOR_CLASS (mnb_home_grid_parent_class)->paint (self);
 
@@ -931,11 +785,9 @@ mnb_home_grid_paint (ClutterActor *self)
       cogl_set_source (material);
       cogl_rectangles (priv->edition_verts, priv->cols * priv->rows);
 
-      clutter_actor_paint (priv->hint_position);
-      for (l = priv->children; l != NULL; l = g_list_next (l))
+      clutter_actor_iter_init (&iter, self);
+      while (clutter_actor_iter_next (&iter, &child))
         {
-          ClutterActor *child = CLUTTER_ACTOR (l->data);
-
           clutter_actor_get_allocation_box (child, &child_b);
 
           if ((child_b.x1 < box_b.x2) &&
@@ -949,10 +801,9 @@ mnb_home_grid_paint (ClutterActor *self)
     }
   else
     {
-      for (l = priv->children; l != NULL; l = g_list_next (l))
+      clutter_actor_iter_init (&iter, self);
+      while (clutter_actor_iter_next (&iter, &child))
         {
-          ClutterActor *child = CLUTTER_ACTOR (l->data);
-
           clutter_actor_get_allocation_box (child, &child_b);
 
           if ((child_b.x1 < box_b.x2) &&
@@ -971,9 +822,10 @@ mnb_home_grid_pick (ClutterActor       *self,
                     const ClutterColor *color)
 {
   MnbHomeGridPrivate *priv = MNB_HOME_GRID (self)->priv;
-  GList *l;
   gdouble x, y;
   ClutterActorBox box_b, child_b;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   CLUTTER_ACTOR_CLASS (mnb_home_grid_parent_class)->pick (self, color);
 
@@ -997,11 +849,9 @@ mnb_home_grid_pick (ClutterActor       *self,
     {
       cogl_rectangles (priv->edition_verts, priv->cols * priv->rows);
 
-      clutter_actor_paint (priv->hint_position);
-      for (l = priv->children; l != NULL; l = g_list_next (l))
+      clutter_actor_iter_init (&iter, self);
+      while (clutter_actor_iter_next (&iter, &child))
         {
-          ClutterActor *child = CLUTTER_ACTOR (l->data);
-
           clutter_actor_get_allocation_box (child, &child_b);
 
           if ((child_b.x1 < box_b.x2) &&
@@ -1015,10 +865,9 @@ mnb_home_grid_pick (ClutterActor       *self,
     }
   else
     {
-      for (l = priv->children; l != NULL; l = g_list_next (l))
+      clutter_actor_iter_init (&iter, self);
+      while (clutter_actor_iter_next (&iter, &child))
         {
-          ClutterActor *child = CLUTTER_ACTOR (l->data);
-
           clutter_actor_get_allocation_box (child, &child_b);
 
           if ((child_b.x1 < box_b.x2) &&
@@ -1202,13 +1051,13 @@ mnb_home_grid_init (MnbHomeGrid *self)
   priv->hint_position = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->hint_position),
                                "HomeGridHint");
-  clutter_actor_set_parent (priv->hint_position, actor);
+  clutter_actor_add_child (actor, priv->hint_position);
   clutter_actor_set_opacity (priv->hint_position, 0x0);
 
   priv->edit_texture = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->edit_texture),
                                "HomeGridBackgroundTile");
-  clutter_actor_set_parent (priv->edit_texture, actor);
+  clutter_actor_add_child (actor, priv->edit_texture);
 
   priv->cols = priv->rows = 1;
   priv->cells = g_array_new (FALSE, TRUE, sizeof (ClutterActor *));
@@ -1278,13 +1127,12 @@ mnb_home_grid_get_edit_mode (MnbHomeGrid *self)
 /* TODO: might need to return a boolean if insertion is not
    possible. */
 void
-mnb_home_grid_insert_actor (MnbHomeGrid   *self,
+mnb_home_grid_insert_actor (MnbHomeGrid  *self,
                             ClutterActor *actor,
                             gint          col,
                             gint          row)
 {
   MnbHomeGridPrivate *priv;
-  ClutterContainer *container;
   MnbHomeGridChild *meta;
   gfloat width, height;
 
@@ -1296,12 +1144,12 @@ mnb_home_grid_insert_actor (MnbHomeGrid   *self,
   g_return_if_fail (col >= 0 && col < priv->cols);
   g_return_if_fail (row >= 0 && row < priv->rows);
 
-  container = CLUTTER_CONTAINER (self);
-  clutter_container_add_actor (container, actor);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), actor);
   clutter_actor_get_preferred_size (actor, NULL, NULL, &width, &height);
 
-  meta = (MnbHomeGridChild *) clutter_container_get_child_meta (container,
-                                                                actor);
+  meta =
+    (MnbHomeGridChild *) clutter_container_get_child_meta (CLUTTER_CONTAINER (self),
+                                                           actor);
   meta->row = row;
   meta->col = col;
   meta->width = ceilf (width / (UNIT_SIZE + SPACING));
