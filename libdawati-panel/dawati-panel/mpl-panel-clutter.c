@@ -353,7 +353,7 @@ mpl_panel_clutter_constructed (GObject *self)
   mpl_panel_clutter_load_base_style ();
 
   background = (ClutterActor*)mpl_panel_background_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), background);
+  clutter_actor_add_child (stage, background);
 
   clutter_actor_hide (stage);
 }
@@ -701,5 +701,5 @@ mpl_panel_clutter_set_child (MplPanelClutter *panel, ClutterActor *child)
 {
   MplPanelClutterPrivate *priv = panel->priv;
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->stage), child);
+  clutter_actor_add_child (priv->stage, child);
 }

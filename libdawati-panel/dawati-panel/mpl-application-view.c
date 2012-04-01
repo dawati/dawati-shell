@@ -382,7 +382,7 @@ mpl_application_view_init (MplApplicationView *self)
                     G_CALLBACK (activate_clicked), NULL);
 
   priv->title_box = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
-  clutter_actor_set_parent (priv->title_box, actor);
+  clutter_actor_add_child (actor, priv->title_box);
 
   /* title */
   priv->title = mx_label_new ();
@@ -403,7 +403,7 @@ mpl_application_view_init (MplApplicationView *self)
   /* close button */
   priv->close_button = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->close_button), "appCloseButton");
-  clutter_actor_set_parent (priv->close_button, actor);
+  clutter_actor_add_child (actor, priv->close_button);
   g_signal_connect (priv->close_button, "clicked",
                     G_CALLBACK (close_btn_clicked), self);
 
@@ -411,7 +411,7 @@ mpl_application_view_init (MplApplicationView *self)
   priv->app_frame = mx_frame_new ();
   clutter_actor_set_size (priv->app_frame, 250, 100);
   mx_stylable_set_style_class (MX_STYLABLE (priv->app_frame), "appBackground");
-  clutter_actor_set_parent (priv->app_frame, actor);
+  clutter_actor_add_child (actor, priv->app_frame);
 
   /* shadow */
   priv->shadow = mx_frame_new ();
@@ -440,14 +440,14 @@ mpl_application_view_set_icon (MplApplicationView *view,
 
   if (priv->icon)
     {
-      clutter_actor_unparent (priv->icon);
+      clutter_actor_remove_child (CLUTTER_ACTOR (view), priv->icon);
       priv->icon = NULL;
     }
 
   if (icon)
     {
       priv->icon = icon;
-      clutter_actor_set_parent (priv->icon, CLUTTER_ACTOR (view));
+      clutter_actor_add_child (CLUTTER_ACTOR (view), priv->icon);
     }
 }
 
@@ -517,7 +517,7 @@ mpl_application_view_set_thumbnail (MplApplicationView *view,
 
   if (priv->thumbnail)
     {
-      clutter_actor_unparent (priv->thumbnail);
+      mx_bin_set_child (MX_BIN (priv->shadow), NULL);
       priv->thumbnail = NULL;
       clutter_actor_hide (priv->shadow);
     }

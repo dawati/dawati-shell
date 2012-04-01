@@ -65,8 +65,8 @@ typedef struct
 static ClutterContainerIface *_container_parent_implementation = NULL;
 
 static void
-_container_add (ClutterContainer *container,
-                ClutterActor     *actor)
+_container_actor_added (ClutterContainer *container,
+                        ClutterActor     *actor)
 {
   MplContentPanePrivate *priv = GET_PRIVATE (container);
 
@@ -88,7 +88,7 @@ _container_interface_init (ClutterContainerIface *interface)
 {
   _container_parent_implementation = g_type_interface_peek_parent (interface);
 
-  interface->add = _container_add;
+  interface->actor_added = _container_actor_added;
 }
 
 /*
@@ -305,7 +305,7 @@ mpl_content_pane_set_child (MplContentPane  *self,
 {
   g_return_if_fail (MPL_IS_CONTENT_PANE (self));
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), child);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), child);
 
   g_object_notify ((GObject *) self, "child");
 }
@@ -355,7 +355,7 @@ mpl_content_pane_set_header_actor (MplContentPane *self,
 
     if (actor)
     {
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->header), actor);
+      clutter_actor_add_child (CLUTTER_ACTOR (priv->header), actor);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->header), actor,
                                    "expand", FALSE,
                                    "x-align", MX_ALIGN_END,
