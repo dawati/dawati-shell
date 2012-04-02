@@ -3324,7 +3324,6 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
   priv->proxy_url_entry = gtk_entry_new ();
-  gtk_entry_set_max_length (GTK_ENTRY (priv->proxy_url_entry), 15);
   gtk_widget_set_size_request (priv->proxy_url_entry, CARRICK_ENTRY_WIDTH, -1);
   gtk_table_attach (GTK_TABLE (table), priv->proxy_url_entry,
                     0, 2, 4, 5,
@@ -3335,7 +3334,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->proxy_manual_radio = add_proxy_radio_to_table (
       GTK_TABLE (table), 5,
-      priv->proxy_none_radio, _("Manual proxy configuration:"));  
+      priv->proxy_none_radio, _("Manual proxy server configuration:"));
   g_signal_connect (priv->proxy_manual_radio, "toggled",
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
