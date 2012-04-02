@@ -49,6 +49,7 @@ struct _MnbHomePanelPrivate
 
   guint           timeout_switch_tab;
   gint            workspace_dest;
+  MxButton       *workspace_button;
 };
 
 static void
@@ -77,6 +78,7 @@ button_clicked (ClutterActor *button, MnbHomePanel *self)
     {
       if (child == button)
         {
+          priv->workspace_button = MX_BUTTON (button);
           priv->workspace_dest = i;
           break;
         }
@@ -97,6 +99,7 @@ button_hover_timeout (MnbHomePanel *self)
   MxAdjustment *adj;
 
   priv->timeout_switch_tab = 0;
+  mx_button_set_toggled (priv->workspace_button, TRUE);
 
   mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->grid), &adj, NULL);
   mx_adjustment_interpolate (adj,
@@ -139,6 +142,7 @@ button_enter_event (ClutterActor         *button,
     {
       if (child == button)
         {
+          priv->workspace_button = MX_BUTTON (button);
           priv->workspace_dest = i;
           break;
         }
