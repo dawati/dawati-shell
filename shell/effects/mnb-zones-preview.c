@@ -150,8 +150,7 @@ mnb_zones_preview_dispose (GObject *object)
 
   if (priv->workspace_bg)
     {
-      clutter_actor_unparent (priv->workspace_bg);
-      /* g_object_unref (priv->workspace_bg); */
+      clutter_actor_remove_child (CLUTTER_ACTOR (self), priv->workspace_bg);
       priv->workspace_bg = NULL;
     }
 
@@ -399,7 +398,7 @@ mnb_zones_preview_init (MnbZonesPreview *self)
   priv->spacing = 0;
   priv->dest_workspace = -1;
   priv->workspace_bg = meta_background_actor_new_for_screen (screen);
-  clutter_actor_set_parent (priv->workspace_bg, CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->workspace_bg);
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mnb_zones_preview_style_changed_cb), self);
@@ -583,7 +582,7 @@ mnb_zones_preview_get_workspace_group (MnbZonesPreview *preview,
       clutter_actor_set_clip (group, 0, 0, priv->width, priv->height);
       mnb_fancy_bin_set_child (MNB_FANCY_BIN (bin), group);
 
-      clutter_actor_set_parent (bin, CLUTTER_ACTOR (preview));
+      clutter_actor_add_child (CLUTTER_ACTOR (preview), bin);
 
       /* This is a bit of a hack, depending on the fact that GList
        * doesn't change the beginning of the list when appending
@@ -681,7 +680,7 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
   meta_window_get_input_rect (meta_window_actor_get_meta_window (window), &rect);
   clutter_actor_set_position (clone, rect.x, rect.y);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
+  clutter_actor_add_child (group, clone);
 }
 
 void

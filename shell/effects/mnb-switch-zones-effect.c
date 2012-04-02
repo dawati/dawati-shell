@@ -100,7 +100,7 @@ mnb_switch_zones_effect (MetaPlugin         *plugin,
 
       /* Add it to the stage */
       stage = meta_get_stage_for_screen (screen);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), zones_preview);
+      clutter_actor_add_child (stage, zones_preview);
 
       /* Attach to completed signal */
       g_signal_connect (zones_preview, "switch-completed",

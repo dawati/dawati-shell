@@ -59,8 +59,6 @@ struct _NtfTrayPrivate
   gboolean      anim_lock;
 
   gboolean urgent;
-
-  guint disposed : 1;
 };
 
 enum
@@ -257,22 +255,14 @@ ntf_tray_key_press_event (ClutterActor *actor, ClutterKeyEvent *event)
       break;
     default:
       {
-        GList *notifiers;
-        GList *last;
-
-        notifiers =
-          clutter_container_get_children (CLUTTER_CONTAINER (priv->notifiers));
-
-        last = g_list_last (notifiers);
+        ClutterActor *last = clutter_actor_get_last_child (priv->notifiers);
 
         if (last)
           {
-            NtfNotification *ntf = NTF_NOTIFICATION (last->data);
+            NtfNotification *ntf = NTF_NOTIFICATION (last);
 
             retval = ntf_notification_handle_key_event (ntf, event);
           }
-
-        g_list_free (notifiers);
       }
       break;
     }
@@ -352,21 +342,19 @@ ntf_tray_class_init (NtfTrayClass *klass)
 }
 
 static void
-ntf_tray_dismiss_all_foreach (ClutterActor *notifier)
-{
-  g_signal_emit_by_name (notifier, "closed", 0);
-}
-
-static void
 ntf_tray_dismiss_all_cb (ClutterActor *button, NtfTray *tray)
 {
   NtfTrayPrivate *priv = tray->priv;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   clutter_actor_hide (CLUTTER_ACTOR (tray));
 
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->notifiers),
-                             (ClutterCallback)ntf_tray_dismiss_all_foreach,
-                             NULL);
+  clutter_actor_iter_init (&iter, priv->notifiers);
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      g_signal_emit_by_name (child, "closed", 0);
+    }
 }
 
 static void
@@ -382,7 +370,7 @@ ntf_tray_constructed (GObject *object)
 
   priv->notifiers = mx_stack_new ();
 
-  clutter_actor_set_parent (priv->notifiers, actor);
+  clutter_actor_add_child (actor, priv->notifiers);
 
   /* 'Overflow' control */
   priv->control = mx_table_new ();
@@ -401,7 +389,7 @@ ntf_tray_constructed (GObject *object)
   mx_table_insert_actor (MX_TABLE (priv->control),
                          CLUTTER_ACTOR (priv->control_text), 0, 0);
 
-  clutter_actor_set_parent (priv->control, actor);
+  clutter_actor_add_child (actor, priv->control);
 
   clutter_actor_hide (priv->control);
 
@@ -420,14 +408,6 @@ ntf_tray_init (NtfTray *self)
 static void
 ntf_tray_dispose (GObject *object)
 {
-  NtfTray        *self = (NtfTray*) object;
-  NtfTrayPrivate *priv = self->priv;
-
-  if (priv->disposed)
-    return;
-
-  priv->disposed = TRUE;
-
   G_OBJECT_CLASS (ntf_tray_parent_class)->dispose (object);
 }
 
@@ -629,7 +609,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
                     G_CALLBACK (ntf_tray_notification_closed_cb),
                     tray);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), ntfa);
+  clutter_actor_add_child (priv->notifiers, ntfa);
 
   priv->n_notifiers++;
 
