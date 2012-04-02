@@ -459,9 +459,7 @@ ntf_source_get_icon (NtfSource *src)
 
       priv->icon = icon;
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (
-                                   meta_get_stage_for_screen (screen)),
-                                   icon);
+      clutter_actor_add_child (meta_get_stage_for_screen (screen), icon);
       clutter_actor_hide (icon);
     }
 

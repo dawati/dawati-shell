@@ -919,15 +919,11 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
    *
    *  - toolbar hint is below the toolbar (i.e., not visible if panel showing.
    */
-  clutter_container_add (CLUTTER_CONTAINER (overlay),
-                         priv->statusbar,
-                         priv->toolbar,
-                         switcher_overlay,
-                         NULL);
+  clutter_actor_add_child (overlay, priv->statusbar);
+  clutter_actor_add_child (overlay, priv->toolbar);
+  clutter_actor_add_child (overlay, switcher_overlay);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage),
-                         message_overlay,
-                         NULL);
+  clutter_actor_add_child (stage, message_overlay);
 
   clutter_actor_hide (switcher_overlay);
 

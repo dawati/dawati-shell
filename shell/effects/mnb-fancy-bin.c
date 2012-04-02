@@ -399,8 +399,8 @@ mnb_fancy_bin_init (MnbFancyBin *self)
 
   priv->child = clutter_clone_new (NULL);
   priv->clone = clutter_clone_new (NULL);
-  clutter_actor_set_parent (priv->child, CLUTTER_ACTOR (self));
-  clutter_actor_set_parent (priv->clone, CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->child);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->clone);
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mnb_fancy_bin_style_changed_cb), self);
@@ -421,14 +421,14 @@ mnb_fancy_bin_set_child (MnbFancyBin *bin, ClutterActor *child)
     {
       clutter_clone_set_source (CLUTTER_CLONE (priv->child), NULL);
       clutter_clone_set_source (CLUTTER_CLONE (priv->clone), NULL);
-      clutter_actor_unparent (priv->real_child);
+      clutter_actor_remove_child (CLUTTER_ACTOR (bin), priv->real_child);
     }
 
   priv->real_child = child;
 
   if (priv->real_child)
     {
-      clutter_actor_set_parent (priv->real_child, CLUTTER_ACTOR (bin));
+      clutter_actor_add_child (CLUTTER_ACTOR (bin), priv->real_child);
       clutter_clone_set_source (CLUTTER_CLONE (priv->child), priv->real_child);
       clutter_clone_set_source (CLUTTER_CLONE (priv->clone), priv->real_child);
     }

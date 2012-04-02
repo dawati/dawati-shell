@@ -146,8 +146,6 @@ struct _NtfOverlayPrivate
   ClutterActor *lowlight;
 
   gulong        stage_allocation_id;
-
-  guint disposed : 1;
 };
 
 enum
@@ -421,13 +419,13 @@ ntf_overlay_constructed (GObject *object)
     G_OBJECT_CLASS (ntf_overlay_parent_class)->constructed (object);
 
   priv->tray_normal = ntf_tray_new (FALSE);
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->tray_normal), actor);
+  clutter_actor_add_child (actor, CLUTTER_ACTOR (priv->tray_normal));
 
   priv->tray_urgent = ntf_tray_new (TRUE);
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->tray_urgent), actor);
+  clutter_actor_add_child (actor, CLUTTER_ACTOR (priv->tray_urgent));
 
   priv->lowlight = clutter_rectangle_new_with_color (&low_clr);
-  clutter_actor_set_parent (CLUTTER_ACTOR (priv->lowlight), actor);
+  clutter_actor_add_child (actor, CLUTTER_ACTOR (priv->lowlight));
   mnb_input_manager_push_actor (priv->lowlight, MNB_INPUT_LAYER_TOP);
   clutter_actor_hide (priv->lowlight);
 
@@ -472,18 +470,6 @@ ntf_overlay_init (NtfOverlay *self)
 static void
 ntf_overlay_dispose (GObject *object)
 {
-  NtfOverlay        *self = (NtfOverlay*) object;
-  NtfOverlayPrivate *priv = self->priv;
-
-  if (priv->disposed)
-    return;
-
-  priv->disposed = TRUE;
-
-  clutter_actor_destroy (priv->lowlight);
-  clutter_actor_destroy (CLUTTER_ACTOR (priv->tray_normal));
-  clutter_actor_destroy (CLUTTER_ACTOR (priv->tray_urgent));
-
   G_OBJECT_CLASS (ntf_overlay_parent_class)->dispose (object);
 }
 

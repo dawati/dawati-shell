@@ -327,12 +327,6 @@ mnb_statusbar_dispose (GObject *object)
       priv->trigger_timeout_id = 0;
     }
 
-  if (priv->datetime)
-    {
-      clutter_actor_destroy (priv->datetime);
-      priv->datetime = NULL;
-    }
-
   G_OBJECT_CLASS (mnb_statusbar_parent_class)->dispose (object);
 }
 
@@ -393,7 +387,7 @@ mnb_statusbar_init (MnbStatusbar *self)
 
   priv->datetime = mx_button_new ();
   clutter_actor_set_name (priv->datetime, "statusbar-date-button");
-  clutter_actor_set_parent (priv->datetime, CLUTTER_ACTOR (self));
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->datetime);
 
   mnb_statusbar_update_datetime (self);
 

@@ -365,12 +365,6 @@ mnb_toolbar_dispose (GObject *object)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (object)->priv;
 
-  if (priv->light_spot)
-    {
-      clutter_actor_destroy (priv->light_spot);
-      priv->light_spot = NULL;
-    }
-
   if (priv->dbus_conn)
     {
       g_object_unref (priv->dbus_conn);
@@ -1747,10 +1741,9 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
                     toolbar);
 
   /* This is safe, because the Switcher is an actor */
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
-                               CLUTTER_ACTOR (panel));
-  clutter_actor_set_width (CLUTTER_ACTOR (panel),
-                           screen_width);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->hbox_buttons),
+                              CLUTTER_ACTOR (panel), -1);
+  clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
 
   if (tp->button)
     mnb_panel_set_button (panel, MX_BUTTON (tp->button));
@@ -1927,8 +1920,7 @@ mnb_toolbar_dispose_of_panel (MnbToolbar      *toolbar,
     mnb_toolbar_remove_panel_from_pending (toolbar, (MnbPanelOop*)panel);
 
   if (!panel_destroyed && CLUTTER_IS_ACTOR (panel))
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
-                                    CLUTTER_ACTOR (panel));
+    clutter_actor_remove_child (priv->hbox_buttons, CLUTTER_ACTOR (panel));
 }
 
 #if 0
@@ -2150,21 +2142,18 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   if (tp->type == MNB_TOOLBAR_PANEL_NORMAL)
     {
       if (!clutter_actor_get_parent (button))
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_buttons),
-                                     button);
+        mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->hbox_buttons),
+                                    button, -1);
 
-      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_buttons),
-                                         button, NULL);
+      clutter_actor_set_child_below_sibling (priv->hbox_buttons, button, NULL);
     }
   else
     {
       if (!clutter_actor_get_parent (button))
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox_applets),
-                                     button);
+        mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->hbox_applets),
+                                    button, -1);
 
-      clutter_container_raise_child (CLUTTER_CONTAINER (priv->hbox_applets),
-                                     button, NULL);
-
+      clutter_actor_set_child_below_sibling (priv->hbox_applets, button, NULL);
     }
 }
 
@@ -2811,7 +2800,7 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_name (priv->hbox_main, "toolbar-main-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_main),
                                  MX_ORIENTATION_HORIZONTAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->hbox_main);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->hbox_main);
 
   /*
    * The shadow needs to go into the window group, like the lowlight.
@@ -2829,7 +2818,7 @@ mnb_toolbar_constructed (GObject *self)
                                              0  /* left */);
       clutter_actor_set_size (priv->shadow,
                               priv->old_screen_width, TOOLBAR_SHADOW_EXTRA);
-      clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
+      clutter_actor_add_child (CLUTTER_ACTOR (self), priv->shadow);
       clutter_actor_lower (priv->shadow, priv->hbox_main);
       clutter_actor_set_y (priv->shadow, TOOLBAR_HEIGHT - 10);
       clutter_actor_hide (priv->shadow);
@@ -2839,7 +2828,7 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_name (priv->hbox_buttons, "toolbar-left-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_buttons),
                                  MX_ORIENTATION_HORIZONTAL);
-  clutter_actor_set_parent (priv->hbox_buttons, actor);
+  clutter_actor_add_child (actor, priv->hbox_buttons);
   clutter_actor_set_reactive (priv->hbox_buttons, TRUE);
   clutter_actor_raise (priv->hbox_buttons, priv->hbox_main);
 
@@ -2847,7 +2836,7 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_name (priv->hbox_applets, "toolbar-right-box");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->hbox_applets),
                                  MX_ORIENTATION_HORIZONTAL);
-  clutter_actor_set_parent (priv->hbox_applets, actor);
+  clutter_actor_add_child (actor, priv->hbox_applets);
   clutter_actor_set_reactive (priv->hbox_applets, TRUE);
   clutter_actor_raise (priv->hbox_applets, priv->hbox_main);
 
@@ -2864,7 +2853,7 @@ mnb_toolbar_constructed (GObject *self)
 
   clutter_actor_set_size (lowlight,
                           priv->old_screen_width, priv->old_screen_height);
-  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
+  clutter_actor_add_child (wgroup, lowlight);
   clutter_actor_hide (lowlight);
   clutter_actor_set_reactive (lowlight, TRUE);
 
@@ -2887,7 +2876,7 @@ mnb_toolbar_constructed (GObject *self)
                                 priv->old_screen_width / 2 - 512,
                                 STATUSBAR_HEIGHT);
     clutter_actor_set_name (panel_stub, "panel-stub");
-    clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
+    clutter_actor_add_child (wgroup, panel_stub);
     clutter_actor_hide (panel_stub);
     mnb_spinner_stop ((MnbSpinner*)spinner);
     priv->panel_stub = panel_stub;
@@ -2943,7 +2932,7 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_set_size (priv->light_spot,
                           cogl_texture_get_width (priv->selector_texture),
                           cogl_texture_get_height (priv->selector_texture));
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->light_spot);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->light_spot);
   clutter_actor_set_position (priv->light_spot,
                               -clutter_actor_get_width (priv->light_spot),
                               0);

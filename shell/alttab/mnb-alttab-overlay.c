@@ -47,21 +47,6 @@ G_DEFINE_TYPE (MnbAlttabOverlay, mnb_alttab_overlay, MX_TYPE_WIDGET);
                                 MnbAlttabOverlayPrivate))
 
 static void
-mnb_alttab_overlay_dispose (GObject *object)
-{
-  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (object)->priv;
-
-  if (priv->scrollview)
-    {
-      clutter_actor_destroy (priv->scrollview);
-      priv->scrollview = NULL;
-      priv->grid = NULL;
-    }
-
-  G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->dispose (object);
-}
-
-static void
 mnb_alttab_overlay_set_property (GObject      *gobject,
                                  guint         prop_id,
                                  const GValue *value,
@@ -199,8 +184,7 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
           priv->active = app;
         }
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->grid),
-                                   (ClutterActor *) app);
+      clutter_actor_add_child (priv->grid, (ClutterActor *) app);
     }
 
   g_list_free (filtered);
@@ -212,10 +196,12 @@ static void
 mnb_alttab_overlay_depopulate (MnbAlttabOverlay *self)
 {
   MnbAlttabOverlayPrivate *priv = self->priv;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->grid),
-                             (ClutterCallback)clutter_actor_destroy,
-                             NULL);
+  clutter_actor_iter_init (&iter, priv->grid);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_iter_destroy (&iter);
 }
 
 static void
@@ -265,7 +251,7 @@ mnb_alttab_overlay_constructed (GObject *self)
   grid = (MxGrid *) priv->grid;
 
   mx_bin_set_child (MX_BIN (scrollview), priv->grid);
-  clutter_actor_set_parent (priv->scrollview, (ClutterActor*)self);
+  clutter_actor_add_child ((ClutterActor *) self, priv->scrollview);
 
   mx_grid_set_column_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
   mx_grid_set_row_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
@@ -379,7 +365,6 @@ mnb_alttab_overlay_class_init (MnbAlttabOverlayClass *klass)
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
-  object_class->dispose              = mnb_alttab_overlay_dispose;
   object_class->get_property         = mnb_alttab_overlay_get_property;
   object_class->set_property         = mnb_alttab_overlay_set_property;
   object_class->constructed          = mnb_alttab_overlay_constructed;
