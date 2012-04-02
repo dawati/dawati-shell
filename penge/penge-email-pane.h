@@ -46,12 +46,12 @@ G_BEGIN_DECLS
 typedef struct _PengeEmailPanePrivate PengeEmailPanePrivate;
 
 typedef struct {
-  MxTable parent;
+  MxBoxLayout parent;
   PengeEmailPanePrivate *priv;
 } PengeEmailPane;
 
 typedef struct {
-  MxTableClass parent_class;
+  MxBoxLayoutClass parent_class;
 } PengeEmailPaneClass;
 
 GType penge_email_pane_get_type (void);

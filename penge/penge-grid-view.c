@@ -29,7 +29,7 @@
 
 #include "penge-view-background.h"
 
-G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
+G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_WIDGET)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
@@ -43,6 +43,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 #define DAWATI_MYZONE_SHOW_EMAIL "/desktop/dawati/myzone/show_email"
 
 struct _PengeGridViewPrivate {
+  ClutterActor *table;
   ClutterActor *top_container;
   ClutterActor *calendar_pane;
   ClutterActor *email_pane;
@@ -137,33 +138,25 @@ penge_grid_view_paint (ClutterActor *actor)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
 
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->paint (actor);
+
   /* Paint the background */
   clutter_actor_paint (priv->background);
   clutter_actor_paint (priv->background_fade);
-
-  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->paint (actor);
+  clutter_actor_paint (priv->table);
 }
 
 static void
-penge_grid_view_map (ClutterActor *actor)
+penge_grid_view_pick (ClutterActor *actor, const ClutterColor *color)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
 
-  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->map (actor);
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->pick (actor, color);
 
-  clutter_actor_map (priv->background);
-  clutter_actor_map (priv->background_fade);
-}
-
-static void
-penge_grid_view_unmap (ClutterActor *actor)
-{
-  PengeGridViewPrivate *priv = GET_PRIVATE (actor);
-
-  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (priv->background);
-  clutter_actor_unmap (priv->background_fade);
+  /* Paint the background */
+  clutter_actor_paint (priv->background);
+  clutter_actor_paint (priv->background_fade);
+  clutter_actor_paint (priv->table);
 }
 
 static void
@@ -173,7 +166,14 @@ penge_grid_view_allocate (ClutterActor          *actor,
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
   ClutterActorBox child_box;
+  MxPadding padding;
   gint fade_height;
+
+  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
+                                                                box,
+                                                                flags);
+
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   /* Allocate the background to be the same area as the grid view */
   child_box.x1 = 0;
@@ -192,9 +192,11 @@ penge_grid_view_allocate (ClutterActor          *actor,
   child_box.y2 = fade_height;
   clutter_actor_allocate (priv->background_fade, &child_box, flags);
 
-  CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
-                                                                box,
-                                                                flags);
+  child_box.x1 = padding.left;
+  child_box.y1 = padding.top;
+  child_box.x2 = box->x2 - box->x1 - (padding.left + padding.right);
+  child_box.y2 = box->y2 - box->y1 - (padding.top + padding.bottom);
+  clutter_actor_allocate (priv->table, &child_box, flags);
 }
 
 static void
@@ -212,9 +214,8 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
   object_class->finalize = penge_grid_view_finalize;
 
   actor_class->paint = penge_grid_view_paint;
+  actor_class->pick = penge_grid_view_pick;
   actor_class->allocate = penge_grid_view_allocate;
-  actor_class->map = penge_grid_view_map;
-  actor_class->unmap = penge_grid_view_unmap;
 
   signals[ACTIVATED_SIGNAL] =
     g_signal_new ("activated",
@@ -243,7 +244,7 @@ _update_layout (PengeGridView *grid_view)
 
   if (priv->vertical_apps)
   {
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->favourite_apps_pane,
                                  "column", col,
                                  "row", 1,
@@ -260,7 +261,7 @@ _update_layout (PengeGridView *grid_view)
       col++;
 
       clutter_actor_show (priv->calendar_pane);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                    priv->calendar_pane,
                                    "column", col,
                                    "x-expand", FALSE,
@@ -274,7 +275,7 @@ _update_layout (PengeGridView *grid_view)
     if (priv->show_email_pane)
     {
       clutter_actor_show (priv->email_pane);
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                    priv->email_pane,
                                    "column", col,
                                    "y-expand", TRUE,
@@ -289,7 +290,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_hide (priv->email_pane);
     }
 
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->everything_pane,
                                  "row-span", 1,
                                  "column", col,
@@ -301,12 +302,12 @@ _update_layout (PengeGridView *grid_view)
 
     if (priv->show_email_pane)
     {
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                    priv->everything_pane,
                                    "row-span", 2,
                                    NULL);
     } else {
-      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                    priv->everything_pane,
                                    "row-span", 1,
                                    NULL);
@@ -325,7 +326,7 @@ _update_layout (PengeGridView *grid_view)
                     "vertical", FALSE,
                     NULL);
 
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
+    clutter_actor_queue_relayout (priv->table);
   } else {
     /* !vertical_apps */
     if (priv->show_calendar_pane)
@@ -358,7 +359,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_hide (priv->email_pane);
     }
 
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                    priv->top_container,
                                    "column", col,
                                    "x-expand", FALSE,
@@ -369,7 +370,7 @@ _update_layout (PengeGridView *grid_view)
 
 
 
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->favourite_apps_pane,
                                  "column", col,
                                  "row", 3,
@@ -382,13 +383,13 @@ _update_layout (PengeGridView *grid_view)
     /* If we are showing the email then it is responsible for expanding to fill
      * the area. Otherwise the favourites app pane is responsible.
      */
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->favourite_apps_pane,
                                  "y-expand", TRUE,
                                  NULL);
 
     col++;
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->everything_pane,
                                  "row-span", 3,
                                  "column", 1,
@@ -461,12 +462,15 @@ penge_grid_view_init (PengeGridView *self)
 
   self->priv = priv;
 
+  priv->table = mx_table_new ();
+  clutter_actor_add_child ((ClutterActor *) self, priv->table);
+
   /* Currently not shown, remove the frame and its height to reenable it
      priv->header_label = mx_label_new_with_text ("Myzone");
   */
   priv->header_label = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->header_label), "titleBar");
-  mx_table_insert_actor_with_properties (MX_TABLE (self),
+  mx_table_insert_actor_with_properties (MX_TABLE (priv->table),
                                          priv->header_label,
                                          0, 0,
                                          "x-expand", FALSE,
@@ -497,7 +501,7 @@ penge_grid_view_init (PengeGridView *self)
                          1,
                          0);
 
-  mx_table_insert_actor (MX_TABLE (self),
+  mx_table_insert_actor (MX_TABLE (priv->table),
                          priv->top_container,
                          1,
                          0);
@@ -505,7 +509,7 @@ penge_grid_view_init (PengeGridView *self)
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
-  mx_table_insert_actor (MX_TABLE (self),
+  mx_table_insert_actor (MX_TABLE (priv->table),
                          priv->favourite_apps_pane,
                          3,
                          0);
@@ -513,22 +517,22 @@ penge_grid_view_init (PengeGridView *self)
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
-  mx_table_insert_actor (MX_TABLE (self), priv->everything_pane, 1, 1);
+  mx_table_insert_actor (MX_TABLE (priv->table), priv->everything_pane, 1, 1);
 
-  mx_table_set_row_spacing (MX_TABLE (self), 6);
-  mx_table_set_column_spacing (MX_TABLE (self), 19);
+  mx_table_set_row_spacing (MX_TABLE (priv->table), 6);
+  mx_table_set_column_spacing (MX_TABLE (priv->table), 19);
 
   /*
    * Create a background and parent it to the grid. We paint and allocate this
    * in the overridden vfuncs
    */
   priv->background = g_object_new (PENGE_TYPE_VIEW_BACKGROUND, NULL);
-  clutter_actor_set_parent (priv->background, (ClutterActor *)self);
+  clutter_actor_add_child ((ClutterActor *) self, priv->background);
   clutter_actor_show (priv->background);
 
   priv->background_fade = clutter_texture_new_from_file (FADE_BG,
                                                          NULL);
-  clutter_actor_set_parent (priv->background_fade, (ClutterActor *)self);
+  clutter_actor_add_child ((ClutterActor *) self, priv->background_fade);
   clutter_actor_show (priv->background_fade);
 
   priv->gconf_client = gconf_client_get_default ();

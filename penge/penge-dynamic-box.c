@@ -2,7 +2,7 @@
  * Copyright (C) 2010, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -19,11 +19,7 @@
 
 #include "penge-dynamic-box.h"
 
-static void penge_dynamic_box_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (PengeDynamicBox, penge_dynamic_box, MX_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                penge_dynamic_box_iface_init))
+G_DEFINE_TYPE (PengeDynamicBox, penge_dynamic_box, MX_TYPE_WIDGET)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_DYNAMIC_BOX, PengeDynamicBoxPrivate))
@@ -71,13 +67,13 @@ penge_dynamic_box_allocate (ClutterActor          *actor,
                             const ClutterActorBox *box,
                             ClutterAllocationFlags flags)
 {
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (actor);
   gfloat width, height;
   MxPadding padding = { 0, };
   ClutterActorBox child_box;
   ClutterActorBox zero_box = { 0, };
-  GList *l;
   gfloat last_y;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   CLUTTER_ACTOR_CLASS (penge_dynamic_box_parent_class)->allocate (actor,
                                                                   box,
@@ -90,9 +86,9 @@ penge_dynamic_box_allocate (ClutterActor          *actor,
 
   last_y = padding.top;
 
-  for (l = priv->children; l; l = l->next)
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
   {
-    ClutterActor *child = (ClutterActor *)l->data;
     gfloat child_nat_h;
 
     clutter_actor_get_preferred_height (child,
@@ -118,12 +114,12 @@ penge_dynamic_box_allocate (ClutterActor          *actor,
 static void
 penge_dynamic_box_paint (ClutterActor *actor)
 {
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (actor);
-  GList *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  for (l = priv->children; l; l = l->next)
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
   {
-    ClutterActor *child = (ClutterActor *)l->data;
     ClutterActorBox box;
 
     clutter_actor_get_allocation_box (child,
@@ -141,12 +137,12 @@ static void
 penge_dynamic_box_pick (ClutterActor       *actor,
                         const ClutterColor *color)
 {
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (actor);
-  GList *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  for (l = priv->children; l; l = l->next)
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
   {
-    ClutterActor *child = (ClutterActor *)l->data;
     ClutterActorBox box;
 
     clutter_actor_get_allocation_box (child,
@@ -163,10 +159,10 @@ static gfloat
 _calculate_children_height (PengeDynamicBox *box,
                             gfloat           for_width)
 {
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (box);
-  GList *l;
   MxPadding padding = { 0, };
   gfloat height = 0, child_nat_h;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   mx_widget_get_padding (MX_WIDGET (box), &padding);
   height += padding.top + padding.bottom;
@@ -174,21 +170,21 @@ _calculate_children_height (PengeDynamicBox *box,
   /* Subtract padding */
   for_width -= (padding.left + padding.right);
 
-  for (l = priv->children; l; l = l->next)
-  {
-    ClutterActor *child = (ClutterActor *)l->data;
+  if (clutter_actor_get_n_children (CLUTTER_ACTOR (box)) > 1)
+    {
+      clutter_actor_iter_init (&iter, CLUTTER_ACTOR (box));
+      while (clutter_actor_iter_next (&iter, &child))
+        {
+          clutter_actor_get_preferred_height (child,
+                                              for_width,
+                                              NULL,
+                                              &child_nat_h);
 
-    clutter_actor_get_preferred_height (child,
-                                        for_width,
-                                        NULL,
-                                        &child_nat_h);
+          height += child_nat_h + SPACING;
+        }
 
-    height += child_nat_h;
-
-    /* No SPACING on last */
-    if (l->next != NULL)
-      height += SPACING;
-  }
+      height -= SPACING;
+    }
 
   return height;
 }
@@ -244,135 +240,3 @@ penge_dynamic_box_new (void)
 {
   return g_object_new (PENGE_TYPE_DYNAMIC_BOX, NULL);
 }
-
-static void
-penge_dynamic_box_add_actor (ClutterContainer *container,
-                             ClutterActor     *actor)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
-
-  priv->children = g_list_append (priv->children, actor);
-
-  g_signal_emit_by_name (container, "actor-added", actor);
-}
-
-static void
-penge_dynamic_box_remove_actor (ClutterContainer *container,
-                                ClutterActor     *actor)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-  GList *item = NULL;
-
-  item = g_list_find (priv->children, actor);
-
-  if (item == NULL)
-  {
-    g_warning ("Actor of type '%s' is not a child of container of type '%s'",
-               g_type_name (G_OBJECT_TYPE (actor)),
-               g_type_name (G_OBJECT_TYPE (container)));
-    return;
-  }
-
-  g_object_ref (actor);
-
-  priv->children = g_list_delete_link (priv->children, item);
-  clutter_actor_unparent (actor);
-
-  g_signal_emit_by_name (container, "actor-removed", actor);
-
-  g_object_unref (actor);
-}
-
-static void
-penge_dynamic_box_foreach (ClutterContainer *container,
-                           ClutterCallback   callback,
-                           gpointer          callback_data)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-
-  g_list_foreach (priv->children, (GFunc) callback, callback_data);
-}
-
-static void
-penge_dynamic_box_raise (ClutterContainer *container,
-                         ClutterActor     *actor,
-                         ClutterActor     *sibling)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  if (sibling == NULL)
-    priv->children = g_list_append (priv->children, actor);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling) + 1;
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static void
-penge_dynamic_box_lower (ClutterContainer *container,
-                         ClutterActor     *actor,
-                         ClutterActor     *sibling)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-
-  priv->children = g_list_remove (priv->children, actor);
-
-  if (sibling == NULL)
-    priv->children = g_list_prepend (priv->children, actor);
-  else
-    {
-      gint index_ = g_list_index (priv->children, sibling);
-
-      priv->children = g_list_insert (priv->children, actor, index_);
-    }
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static gint
-sort_by_depth (gconstpointer a,
-               gconstpointer b)
-{
-  gfloat depth_a = clutter_actor_get_depth ((ClutterActor *) a);
-  gfloat depth_b = clutter_actor_get_depth ((ClutterActor *) b);
-
-  if (depth_a < depth_b)
-    return -1;
-
-  if (depth_a > depth_b)
-    return 1;
-
-  return 0;
-}
-
-static void
-penge_dynamic_box_sort_depth_order (ClutterContainer *container)
-{
-  PengeDynamicBoxPrivate *priv = GET_PRIVATE (container);
-
-  priv->children = g_list_sort (priv->children, sort_by_depth);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
-}
-
-static void
-penge_dynamic_box_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = penge_dynamic_box_add_actor;
-  iface->remove = penge_dynamic_box_remove_actor;
-
-  iface->foreach = penge_dynamic_box_foreach;
-
-  iface->lower = penge_dynamic_box_lower;
-  iface->raise = penge_dynamic_box_raise;
-  iface->sort_depth_order = penge_dynamic_box_sort_depth_order;
-}
-

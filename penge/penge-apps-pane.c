@@ -182,8 +182,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
       if (actor)
       {
-        clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                        actor);
+        clutter_actor_remove_child (CLUTTER_ACTOR (pane), actor);
       }
 
       continue;
@@ -232,11 +231,12 @@ penge_apps_pane_update (PengeAppsPane *pane)
       overlay = mx_frame_new ();
       mx_stylable_set_style_class (MX_STYLABLE (overlay), "PengeAppTileOverlay");
 
-      clutter_container_add (CLUTTER_CONTAINER (stack), actor, overlay, NULL);
+      clutter_actor_add_child (stack, actor);
+      clutter_actor_add_child (stack, overlay);
       /* actor's sizes have been set in PengeAppTile */
       clutter_actor_set_size (overlay,
-          clutter_actor_get_width (actor),
-          clutter_actor_get_height (actor));
+                              clutter_actor_get_width (actor),
+                              clutter_actor_get_height (actor));
       clutter_actor_set_size (stack, TILE_STACKED_SIZE, TILE_STACKED_SIZE);
 
       if (!priv->vertical)
@@ -278,8 +278,7 @@ penge_apps_pane_update (PengeAppsPane *pane)
   {
     actor = g_hash_table_lookup (priv->uris_to_actors,
                                  (gchar *)(l->data));
-    clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                    actor);
+    clutter_actor_remove_child (CLUTTER_ACTOR (pane), actor);
     g_hash_table_remove (priv->uris_to_actors, (gchar *)(l->data));
   }
 }

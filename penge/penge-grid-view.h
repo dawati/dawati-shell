@@ -46,12 +46,12 @@ G_BEGIN_DECLS
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 typedef struct {
-  MxTable parent;
+  MxWidget parent;
   PengeGridViewPrivate *priv;
 } PengeGridView;
 
 typedef struct {
-  MxTableClass parent_class;
+  MxWidgetClass parent_class;
 } PengeGridViewClass;
 
 GType penge_grid_view_get_type (void);

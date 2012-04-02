@@ -139,9 +139,7 @@ penge_count_tile_set_compact (PengeCountTile *self,
     clutter_actor_set_width (CLUTTER_ACTOR (self), -1);
 
     g_object_ref (priv->count_label);
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->table),
-                                    priv->count_label);
-    clutter_actor_unparent (priv->count_label);
+    clutter_actor_remove_child (priv->table, priv->count_label);
     mx_bin_set_child (MX_BIN (self), priv->count_label);
 
     penge_count_tile_update_tooltip (self);
@@ -149,7 +147,9 @@ penge_count_tile_set_compact (PengeCountTile *self,
   else
   {
     clutter_actor_set_width (CLUTTER_ACTOR (self), 280);
-    clutter_actor_reparent (priv->count_label, priv->table);
+    g_object_ref (priv->count_label);
+    clutter_actor_remove_child (priv->table, priv->count_label);
+    mx_table_insert_actor (MX_TABLE (priv->table), priv->count_label, 0, 0);
     clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->count_label,
                                  "column", 0,
