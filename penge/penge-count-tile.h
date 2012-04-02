@@ -52,7 +52,7 @@ typedef struct
 
 typedef struct
 {
-  MxScrollBarClass parent_class;
+  MxButtonClass parent_class;
 } PengeCountTileClass;
 
 GType         penge_count_tile_get_type (void);

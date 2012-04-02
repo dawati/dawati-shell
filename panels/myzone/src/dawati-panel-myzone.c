@@ -137,7 +137,7 @@ main (int    argc,
                                     "myzone-button",
                                     TRUE);
 
-    mpl_panel_clutter_setup_events_with_gtk (client);
+    mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
@@ -145,8 +145,7 @@ main (int    argc,
                               "panel-client",
                               client,
                               NULL);
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                 (ClutterActor *)grid_view);
+    clutter_actor_add_child (stage, grid_view);
     g_signal_connect (client,
                       "size-changed",
                       (GCallback)_client_set_size_cb,
@@ -167,9 +166,8 @@ main (int    argc,
 
     grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
                               NULL);
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                 (ClutterActor *)grid_view);
-    clutter_actor_set_size ((ClutterActor *)grid_view, 1024, 580);
+    clutter_actor_add_child (stage, grid_view);
+    clutter_actor_set_size (grid_view, 1024, 580);
     clutter_actor_set_size (stage, 1024, 580);
     clutter_actor_show_all (stage);
   }
