@@ -115,8 +115,7 @@ _remove_non_connected_device (ClutterActor *actor, DawatiBtShell *shell)
     g_object_set (actor, "connected", FALSE, NULL);
   } else {
     g_hash_table_remove (priv->devices, path);
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->device_box),
-                                    actor);
+    clutter_actor_remove_child (priv->device_box, actor);
   }
 }
 
@@ -173,8 +172,7 @@ _request_response_cb (DawatiBtRequest *request,
     g_warn_if_reached ();
   }
 
-  clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box),
-                                  CLUTTER_ACTOR (request));
+  clutter_actor_remove_child (priv->request_box, CLUTTER_ACTOR (request));
   g_hash_table_remove (priv->requests, path);
 }
 
@@ -219,14 +217,16 @@ _devices_changed_cb(BluetoothApplet *applet,
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
   GList *devices;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   devices = bluetooth_applet_get_devices (applet);
   g_list_foreach (devices, (GFunc)_handle_device, shell);
   g_list_free_full (devices, _bluetooth_simple_device_free);
 
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->device_box),
-                             (ClutterCallback)_remove_non_connected_device,
-                             shell);
+  clutter_actor_iter_init (&iter, priv->device_box);
+  while (clutter_actor_iter_next (&iter, &child))
+    _remove_non_connected_device (child, shell);
 
   dawati_bt_shell_update (shell);
 }
@@ -290,7 +290,7 @@ _pincode_request_cb (BluetoothApplet *applet,
 
   w = g_hash_table_lookup (priv->requests, path);
   if (w) {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box), w);
+    clutter_actor_remove_child (priv->request_box, w);
     g_hash_table_remove (priv->requests, path);
   }
   dawati_bt_shell_add_request (shell, name, path, type, NULL);
@@ -320,7 +320,7 @@ _confirm_request_cb (BluetoothApplet *applet,
 
   w = g_hash_table_lookup (priv->requests, path);
   if (w) {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box), w);
+    clutter_actor_remove_child (priv->request_box, w);
     g_hash_table_remove (priv->requests, path);
   }
 
@@ -354,7 +354,7 @@ _auth_request_cb (BluetoothApplet *applet,
 
   w = g_hash_table_lookup (priv->requests, path);
   if (w) {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->request_box), w);
+    clutter_actor_remove_child (priv->request_box, w);
     g_hash_table_remove (priv->requests, path);
   }
 
@@ -372,19 +372,16 @@ _auth_request_cb (BluetoothApplet *applet,
 }
 
 static void
-_remove_child_from_container (ClutterActor *actor, ClutterContainer *cont)
-{
-  clutter_container_remove_actor (cont, actor);
-}
-
-static void
 _cancel_request_cb (DawatiBtShell *shell)
 {
   DawatiBtShellPrivate *priv = GET_PRIVATE (shell);
+  ClutterActorIter iter;
+  ClutterActor *child;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->request_box),
-                             (ClutterCallback)_remove_child_from_container,
-                             priv->request_box);
+  clutter_actor_iter_init (&iter, priv->request_box);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_remove_child (priv->request_box, child);
+
   g_hash_table_remove_all (priv->requests);
 
   notify_notification_close (priv->notification, NULL);
@@ -535,8 +532,7 @@ dawati_bt_shell_update (DawatiBtShell *shell)
     mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->button_box), NULL);
   } else {
     if (clutter_actor_get_parent (priv->device_panelbox))
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->content),
-                                      priv->device_panelbox);
+      clutter_actor_remove_child (priv->content, priv->device_panelbox);
     clutter_actor_animate (priv->add_button,
                            CLUTTER_LINEAR, 300, "opacity", 0x00,
                            NULL);

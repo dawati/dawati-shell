@@ -85,7 +85,7 @@ main (int     argc,
                       G_CALLBACK (stage_width_notify_cb), shell);
     clutter_actor_set_size (stage, 325, 620);
 
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
+    clutter_actor_add_child (stage, shell);
 
     clutter_actor_show (stage);
   } else {
