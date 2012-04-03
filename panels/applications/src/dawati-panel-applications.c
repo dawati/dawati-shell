@@ -209,7 +209,7 @@ main (int     argc,
       launcher = mnb_launcher_new ();
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (standalone_launcher_activated_cb), NULL);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+      clutter_actor_add_child (stage, launcher);
 
       g_signal_connect (stage, "notify::width",
                         G_CALLBACK (stage_width_notify_cb), launcher);
@@ -245,7 +245,7 @@ main (int     argc,
       g_signal_connect (panel, "hide-end",
                         G_CALLBACK (panel_hide_end_cb), launcher);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+      clutter_actor_add_child (stage, launcher);
 
       g_signal_connect (panel, "size-changed",
                         G_CALLBACK (panel_set_size_cb), launcher);

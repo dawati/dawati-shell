@@ -42,7 +42,7 @@ main (int argc, char *argv[])
                                       "/usr/share/applications/eog.desktop");
   clutter_actor_set_position (CLUTTER_ACTOR (launcher), 50, 50);
   clutter_actor_set_width (CLUTTER_ACTOR (launcher), 200);
-  clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (launcher), NULL);
+  clutter_actor_add_child (stage, CLUTTER_ACTOR (launcher));
   g_signal_connect (launcher, "activated", G_CALLBACK (clicked_cb), NULL);
   g_signal_connect (launcher, "fav-toggled", G_CALLBACK (fav_toggled_cb), NULL);
 

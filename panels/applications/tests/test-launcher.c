@@ -107,7 +107,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (stage, 800, 600);
 
   launcher = mnb_launcher_new (800, 600);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
+  clutter_actor_add_child (stage, launcher);
 
   clutter_actor_show (stage);
 

@@ -35,7 +35,7 @@ main (int argc, char *argv[])
 
   bar = mnb_launcher_searchbar_new ();
   clutter_actor_set_position (CLUTTER_ACTOR (bar), 50, 50);
-  clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (bar), NULL);
+  clutter_actor_add_child (stage, CLUTTER_ACTOR (bar), NULL);
   g_signal_connect (bar, "activated", G_CALLBACK (search_cb), NULL);
 
   clutter_actor_show (stage);
