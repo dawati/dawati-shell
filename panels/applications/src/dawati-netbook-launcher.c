@@ -325,12 +325,6 @@ mnb_launcher_cancel_search (MnbLauncher     *self)
 }
 
 static void
-_destroy_cat_children_cb (ClutterActor *actor, gpointer data)
-{
-  clutter_actor_destroy (actor);
-}
-
-static void
 mnb_launcher_reset (MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
@@ -340,9 +334,12 @@ mnb_launcher_reset (MnbLauncher     *self)
   /* Clear contents of categories section to refresh them */
   if (priv->category_section)
     {
-      clutter_container_foreach (CLUTTER_CONTAINER (priv->category_section),
-                                 CLUTTER_CALLBACK (_destroy_cat_children_cb),
-                                 NULL);
+      ClutterActorIter iter;
+      ClutterActor *child;
+
+      clutter_actor_iter_init (&iter, priv->category_section);
+      while (clutter_actor_iter_next (&iter, &child))
+        clutter_actor_iter_destroy (&iter);
     }
 
   /* Clear apps */
@@ -598,17 +595,19 @@ mnb_launcher_show_zg_category_cb (GList *apps, gpointer user_data)
   for (iter = priv->launchers; iter; iter = iter->next)
     {
       /* Referencing the button since clutter_container takes over ownership */
-      MnbLauncherButton *button = g_object_ref (MNB_LAUNCHER_BUTTON (iter->data));
+      MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
 
       /* Remove button from grid and append to the end of it */
       exec = g_path_get_basename (mnb_launcher_button_get_desktop_file_path (button));
       if (g_list_find_custom (apps, exec, (GCompareFunc) g_strcmp0) != NULL)
         {
+          g_object_ref (button);
           clutter_container_remove_actor (CLUTTER_CONTAINER (priv->apps_grid),
                                       CLUTTER_ACTOR (button));
           clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
                                    CLUTTER_ACTOR (button));
           clutter_actor_show (CLUTTER_ACTOR (button));
+          g_object_unref (button);
         }
       else
         clutter_actor_hide (CLUTTER_ACTOR (button));
@@ -648,6 +647,8 @@ mnb_launcher_show_zg_category (MnbLauncher *self, gboolean show, const gchar *ca
           clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
                                        CLUTTER_ACTOR (button));
           clutter_actor_show (CLUTTER_ACTOR (button));
+
+          g_object_unref (button);
         }
     }
 }
@@ -901,8 +902,7 @@ mnb_launcher_fill (MnbLauncher  *self)
   mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid), APPS_GRID_ROW_GAP);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
-                               priv->apps_grid);
+  mx_bin_set_child (MX_BIN (priv->scrollview), priv->apps_grid);
 
   while (mnb_launcher_fill_category (self))
         ;
@@ -1065,10 +1065,13 @@ _filter_captured_event_cb (ClutterActor *actor,
       if (CLUTTER_Return == key_event->keyval)
         {
           app_grid_find_single_visible_button_t data = { 0, };
-          clutter_container_foreach (
-                    CLUTTER_CONTAINER (priv->apps_grid),
-                    (ClutterCallback) _apps_grid_find_single_visible_button_cb,
-                    &data);
+          ClutterActorIter iter;
+          ClutterActor *child;
+
+          clutter_actor_iter_init (&iter, priv->apps_grid);
+          while (clutter_actor_iter_next (&iter, &child))
+            _apps_grid_find_single_visible_button_cb (child, &data);
+
           if (data.n_visible == 1)
             {
               gchar const *desktop_file_path =
@@ -1154,12 +1157,12 @@ _constructor (GType                  gtype,
   label = mx_label_new_with_text (_("Applications"));
   clutter_actor_set_name (label, "panel-label");
   mx_stylable_set_style_class (MX_STYLABLE (label), "titleBar");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (self), label, -1);
 
   columns = mx_box_layout_new ();
   mx_stylable_set_style_class (MX_STYLABLE (columns), "panel");
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), PANEL_COLUMN_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), columns);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (self), columns, -1);
   clutter_container_child_set (CLUTTER_CONTAINER (self), columns,
                                "expand", TRUE,
                                "x-fill", TRUE,
@@ -1177,7 +1180,7 @@ _constructor (GType                  gtype,
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (pane),
                                  MX_ORIENTATION_VERTICAL);
   clutter_actor_set_width (pane, CAT_PANE_WIDTH);
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (columns), pane, -1);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (pane), 10);
   mx_stylable_set_style_class (MX_STYLABLE (pane), "contentPanel");
 
@@ -1207,7 +1210,7 @@ _constructor (GType                  gtype,
   clutter_actor_set_width (priv->filter, FILTER_WIDTH);
   g_signal_connect (priv->filter, "captured-event",
                     G_CALLBACK (_filter_captured_event_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->filter);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (pane), priv->filter, -1);
 
 
   /* Auto category section e.g. "Accessories, Internet etc */
@@ -1230,39 +1233,43 @@ _constructor (GType                  gtype,
   mx_stylable_set_style_class (MX_STYLABLE (static_categories),
                                "static-categories-section");
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
-                               mnb_launcher_category_button_new (self, "all"));
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (static_categories),
+                              mnb_launcher_category_button_new (self, "all"),
+                              -1);
 #ifdef WITH_ZEITGEIST
-  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
-                               mnb_launcher_category_button_new (self, "most"));
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (static_categories),
+                              mnb_launcher_category_button_new (self, "most"),
+                              -1);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
-                               mnb_launcher_category_button_new (self, "recent"));
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (static_categories),
+                              mnb_launcher_category_button_new (self, "recent"),
+                              -1);
 #endif /* WITH_ZEITGEIST */
-  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
-                               mnb_launcher_category_button_new (self, "fav"));
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (static_categories),
+                              mnb_launcher_category_button_new (self, "fav"),
+                              -1);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (static_categories),
-                               mnb_launcher_category_button_new (self,
-                                                                 "current"));
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (static_categories),
+                              mnb_launcher_category_button_new (self,
+                                                                "current"),
+                              -1);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), static_categories);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (pane), static_categories, -1);
 
   cat_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (cat_scroll, "fav-pane-content");
   g_object_set (cat_scroll, "clip-to-allocation", TRUE, NULL);
   mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (cat_scroll),
                                     MX_SCROLL_POLICY_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (pane), cat_scroll);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (pane), cat_scroll, -1);
   clutter_container_child_set (CLUTTER_CONTAINER (pane), cat_scroll,
                                "expand", TRUE,
-                              "x-fill", TRUE,
+                               "x-fill", TRUE,
                                "y-fill", TRUE,
                                NULL);
 
   /* add cateogires boxes here */
-  clutter_container_add_actor (CLUTTER_CONTAINER (cat_scroll),
-                               priv->category_section);
+  mx_bin_set_child (MX_BIN (cat_scroll), priv->category_section);
 
   /*
    * Applications
@@ -1273,7 +1280,7 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->scrollview, "allocation-changed",
                     G_CALLBACK (_scrollview_allocation_changed_cb), self);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), priv->scrollview);
+  mx_box_layout_insert_actor (MX_BOX_LAYOUT (columns), priv->scrollview, -1);
   clutter_container_child_set (CLUTTER_CONTAINER (columns), priv->scrollview,
                                "expand", TRUE,
                                "x-fill", TRUE,

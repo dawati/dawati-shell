@@ -43,13 +43,6 @@ typedef struct
   gboolean x_expand_children;
 } MnbLauncherGridPrivate;
 
-static void
-_set_width_cb (ClutterActor *actor,
-               gfloat const *width)
-{
-  clutter_actor_set_width (actor, *width);
-}
-
 static gboolean
 _allocation_changed_idle_cb (MnbLauncherGrid *self)
 {
@@ -57,6 +50,8 @@ _allocation_changed_idle_cb (MnbLauncherGrid *self)
 
   if (priv && priv->x_expand_children)
     {
+      ClutterActorIter iter;
+      ClutterActor *child;
       MxPadding padding;
       gfloat width;
 
@@ -65,9 +60,9 @@ _allocation_changed_idle_cb (MnbLauncherGrid *self)
       width = clutter_actor_get_width ((ClutterActor *) self) -
               padding.left - padding.right;
 
-      clutter_container_foreach (CLUTTER_CONTAINER (self),
-                                 (ClutterCallback) _set_width_cb,
-                                 (gpointer) &width);
+      clutter_actor_iter_init (&iter, CLUTTER_ACTOR (self));
+      while (clutter_actor_iter_next (&iter, &child))
+        clutter_actor_set_width (child, width);
     }
 
   return FALSE;
@@ -185,14 +180,16 @@ mnb_launcher_grid_find_actor_by_point (MnbLauncherGrid *self,
                                        gfloat           y)
 {
   find_actor_by_point_data_t data;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   data.x = x;
   data.y = y;
   data.actor = NULL;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (self),
-                             (ClutterCallback) _find_actor_by_point_cb,
-                             &data);
+  clutter_actor_iter_init (&iter, CLUTTER_ACTOR (self));
+  while (clutter_actor_iter_next (&iter, &child))
+    _find_actor_by_point_cb (child, &data);
 
   return data.actor;
 }
@@ -291,24 +288,15 @@ mnb_launcher_grid_keynav_down (MnbLauncherGrid *self, ClutterActor *old)
 static ClutterActor *
 _find_first_focusable (ClutterActor *self)
 {
-  GList *iter, *children = NULL;
-  ClutterActor *actor = NULL;
+  ClutterActorIter iter;
+  ClutterActor *child = NULL;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
-
-  if (children)
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      for (iter = children; iter; iter = iter->next)
-        {
-          if (CLUTTER_ACTOR_IS_MAPPED (iter->data) &&
-              MX_IS_FOCUSABLE (iter->data))
-            {
-              actor = iter->data;
-              break;
-            }
-        }
-      g_list_free (children);
-      return actor;
+      if (CLUTTER_ACTOR_IS_MAPPED (child) &&
+          MX_IS_FOCUSABLE (child))
+        return child;
     }
   return NULL;
 }
@@ -321,7 +309,7 @@ _find_next_focusable (ClutterActor *self, ClutterActor *from)
   ClutterActor *actor = NULL;
 
   children =
-    clutter_container_get_children (CLUTTER_CONTAINER (self));
+    clutter_actor_get_children (self);
 
   if (!children)
     return NULL;
@@ -353,7 +341,7 @@ _find_previous_focusable (ClutterActor *self, ClutterActor *from)
   ClutterActor *actor = NULL;
 
   children =
-    clutter_container_get_children (CLUTTER_CONTAINER (self));
+    clutter_actor_get_children (self);
 
   list = g_list_find (children, from);
   list = g_list_previous (list);
