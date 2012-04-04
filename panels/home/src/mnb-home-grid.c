@@ -20,6 +20,9 @@
  *
  */
 
+#define COGL_ENABLE_EXPERIMENTAL_API 1
+#define CLUTTER_ENABLE_EXPERIMENTAL_API 1
+
 #include "mnb-home-grid.h"
 #include "mnb-home-grid-child.h"
 #include "mnb-home-grid-private.h"
@@ -70,6 +73,7 @@ struct _MnbHomeGridPrivate
   GArray *cells; /* TODO?: replace gboolean by actual ClutterActors */
 
   /* Grid showing available cells */
+  CoglMaterial *pipeline;
   float *edition_verts;
   ClutterActor *edit_texture;
 
@@ -103,6 +107,8 @@ enum
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
+
+static CoglHandle texture_template_pipeline = NULL;
 
 /**/
 
@@ -857,14 +863,13 @@ mnb_home_grid_paint (ClutterActor *self)
 
   if (priv->in_edit_mode)
     {
-      ClutterActor *bg_actor =
-        mx_widget_get_background_image (MX_WIDGET (priv->edit_texture));
-      CoglHandle material =
-        clutter_texture_get_cogl_material (CLUTTER_TEXTURE (bg_actor));
-      guint8 alpha = clutter_actor_get_paint_opacity (bg_actor);
+      CoglHandle texture =
+        mx_widget_get_background_texture (MX_WIDGET (priv->edit_texture));
+      guint8 alpha = clutter_actor_get_paint_opacity (priv->edit_texture);
 
-      cogl_material_set_color4ub (material, alpha, alpha, alpha, alpha);
-      cogl_set_source (material);
+      cogl_material_set_layer (priv->pipeline, 0, texture);
+      cogl_material_set_color4ub (priv->pipeline, alpha, alpha, alpha, alpha);
+      cogl_set_source (priv->pipeline);
       cogl_rectangles (priv->edition_verts, priv->cols * priv->rows);
 
       clutter_actor_iter_init (&iter, self);
@@ -1050,6 +1055,14 @@ mnb_home_grid_set_property (GObject      *object,
 static void
 mnb_home_grid_dispose (GObject *object)
 {
+  MnbHomeGridPrivate *priv = MNB_HOME_GRID (object)->priv;
+
+  if (priv->pipeline != NULL)
+    {
+      cogl_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_home_grid_parent_class)->dispose (object);
 }
 
@@ -1143,8 +1156,23 @@ mnb_home_grid_init (MnbHomeGrid *self)
   MnbHomeGridPrivate *priv;
   ClutterActor *actor;
 
+  if (G_UNLIKELY (texture_template_pipeline == NULL))
+    {
+      CoglPipeline *pipeline;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+
+      texture_template_pipeline = cogl_pipeline_new (ctx);
+      pipeline = COGL_PIPELINE (texture_template_pipeline);
+      cogl_pipeline_set_layer_null_texture (pipeline,
+                                            0, /* layer_index */
+                                            COGL_TEXTURE_TYPE_2D);
+    }
+
   priv = self->priv = GRID_PRIVATE (self);
   actor = CLUTTER_ACTOR (self);
+
+  priv->pipeline = (CoglHandle) cogl_pipeline_copy (texture_template_pipeline);
 
   clutter_actor_set_reactive (actor, TRUE);
 
