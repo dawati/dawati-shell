@@ -26,6 +26,7 @@
 #include "mnb-home-grid.h"
 #include "mnb-home-grid-child.h"
 #include "mnb-home-grid-private.h"
+#include "mnb-home-widget.h"
 
 #include <math.h>
 #include <string.h>
@@ -773,6 +774,10 @@ mnb_home_grid_button_press_event (ClutterActor       *self,
         clutter_container_get_child_meta (CLUTTER_CONTAINER (self), child);
       gfloat child_width, child_height;
 
+      /* be sure it's a MnbHomeWidget, it's a programming error if we obtain
+       * something else */
+      g_assert (MNB_IS_HOME_WIDGET (child));
+
       priv->pointer_x = event->x;
       priv->pointer_y = event->y;
 
@@ -1416,7 +1421,7 @@ mnb_home_grid_insert_actor (MnbHomeGrid  *self,
   gfloat width, height;
 
   g_return_if_fail (MNB_IS_HOME_GRID (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (MNB_IS_HOME_WIDGET (actor));
 
   priv = self->priv;
 
