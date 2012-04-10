@@ -38,6 +38,10 @@ struct _MnbSpinnerPrivate
 {
   ClutterTimeline *timeline;
 
+  ClutterColor   *bg_color;
+  MxBorderImage  *mx_border_image;
+  CoglHandle      border_image;
+
   guint            frame;
   guint            n_frames;
 
@@ -51,11 +55,6 @@ mnb_spinner_dispose (GObject *object)
 {
   MnbSpinnerPrivate *priv = MNB_SPINNER (object)->priv;
 
-  if (priv->disposed)
-    return;
-
-  priv->disposed = TRUE;
-
   if (priv->timeline)
     {
       g_object_unref (priv->timeline);
@@ -68,25 +67,18 @@ mnb_spinner_dispose (GObject *object)
 static void
 mnb_spinner_finalize (GObject *object)
 {
-  /* MnbSpinnerPrivate *priv = MNB_SPINNER (object)->priv; */
+  MnbSpinnerPrivate *priv = MNB_SPINNER (object)->priv;
+
+  if (priv->mx_border_image)
+    g_boxed_free (MX_TYPE_BORDER_IMAGE, priv->mx_border_image);
+
+  if (priv->border_image)
+    cogl_handle_unref (priv->border_image);
+
+  if (priv->bg_color)
+    clutter_color_free (priv->bg_color);
 
   G_OBJECT_CLASS (mnb_spinner_parent_class)->finalize (object);
-}
-
-static void
-mnb_spinner_map (ClutterActor *actor)
-{
-  /* MnbSpinnerPrivate *priv = MNB_SPINNER (actor)->priv; */
-
-  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->map (actor);
-}
-
-static void
-mnb_spinner_unmap (ClutterActor *actor)
-{
-  /* MnbSpinnerPrivate *priv = MNB_SPINNER (actor)->priv; */
-
-  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->unmap (actor);
 }
 
 void
@@ -165,20 +157,20 @@ mnb_spinner_get_preferred_width (ClutterActor *self,
 
   if ((background = mx_widget_get_background_texture (widget)))
     {
-      gint tx_w;
+      gint tx_h;
 
       /*
        * The background texture is a strip of squares making up the individual
        * frames in the animation, so the width matches the height of the
        * texture.
        */
-      tx_w = cogl_texture_get_width (background);
+      tx_h = cogl_texture_get_height (background);
 
       if (min_width_p)
-        *min_width_p = tx_w;
+        *min_width_p = tx_h;
 
       if (natural_width_p)
-        *natural_width_p = tx_w;
+        *natural_width_p = tx_h;
 
       return;
     }
@@ -238,11 +230,38 @@ mnb_spinner_paint (ClutterActor *self)
   MnbSpinnerPrivate *priv   = MNB_SPINNER (self)->priv;
   MxWidget          *widget = MX_WIDGET (self);
   CoglHandle         background;
+  gfloat             width, height;
+  ClutterActorBox    allocation;
+  guint              alpha = clutter_actor_get_paint_opacity (self);
+
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  width = allocation.x2 - allocation.x1;
+  height = allocation.y2 - allocation.y1;
+
+  /* paint the background color first */
+  if (priv->bg_color && priv->bg_color->alpha != 0)
+    {
+      guint tmp_alpha = alpha * priv->bg_color->alpha / 255;
+
+      cogl_set_source_color4ub (priv->bg_color->red,
+                                priv->bg_color->green,
+                                priv->bg_color->blue,
+                                tmp_alpha);
+      cogl_rectangle (0, 0, width, height);
+    }
 
   /*
    * This paints border-image.
    */
-  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->paint (self);
+  if (priv->border_image)
+    mx_texture_frame_paint_texture (priv->border_image,
+                                    alpha,
+                                    priv->mx_border_image->top,
+                                    priv->mx_border_image->right,
+                                    priv->mx_border_image->bottom,
+                                    priv->mx_border_image->left,
+                                    width, height);
 
   if ((background = mx_widget_get_background_texture (widget)))
     {
@@ -281,6 +300,8 @@ mnb_spinner_paint (ClutterActor *self)
                                           box.x2 - box.x1,
                                           box.y2 - box.y1,
                                           tf_x, tf_y, tf_w, tf_h);
+
+      cogl_handle_unref (material);
     }
 }
 static void
@@ -297,6 +318,37 @@ mnb_spinner_marker_reached_cb (ClutterTimeline *timeline,
     priv->frame = 0;
 
   clutter_actor_queue_redraw ((ClutterActor *) spinner);
+}
+
+static void
+_mnb_spinner_style_changed (MnbSpinner *self, gpointer data)
+{
+  MnbSpinnerPrivate *priv = self->priv;
+  MxTextureCache *texture_cache = mx_texture_cache_get_default ();
+
+  if (priv->mx_border_image)
+    {
+      g_boxed_free (MX_TYPE_BORDER_IMAGE, priv->mx_border_image);
+      priv->mx_border_image = NULL;
+    }
+  if (priv->border_image)
+    {
+      cogl_handle_unref (priv->border_image);
+      priv->border_image = NULL;
+    }
+  if (priv->bg_color)
+    {
+      clutter_color_free (priv->bg_color);
+      priv->bg_color = NULL;
+    }
+
+  mx_stylable_get (MX_STYLABLE (self),
+                   "border-image", &priv->mx_border_image,
+                   "background-color", &priv->bg_color,
+                   NULL);
+  if (priv->mx_border_image)
+    priv->border_image = mx_texture_cache_get_cogl_texture (texture_cache,
+                                                            priv->mx_border_image->uri);
 }
 
 static void
@@ -357,6 +409,11 @@ mnb_spinner_constructed (GObject *self)
   else
     g_warning ("%s did not have background-image set in style !!!",
                G_OBJECT_TYPE_NAME (self));
+
+
+  g_signal_connect (self, "style-changed",
+                    G_CALLBACK (_mnb_spinner_style_changed),
+                    NULL);
 }
 
 static void
@@ -368,8 +425,6 @@ mnb_spinner_class_init (MnbSpinnerClass *klass)
   g_type_class_add_private (klass, sizeof (MnbSpinnerPrivate));
 
   actor_class->allocate             = mnb_spinner_allocate;
-  actor_class->map                  = mnb_spinner_map;
-  actor_class->unmap                = mnb_spinner_unmap;
   actor_class->get_preferred_width  = mnb_spinner_get_preferred_width;
   actor_class->get_preferred_height = mnb_spinner_get_preferred_height;
   actor_class->pick                 = mnb_spinner_pick;
