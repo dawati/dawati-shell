@@ -1241,7 +1241,7 @@ mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
   gboolean              retval = TRUE;
   guint32               timestamp;
 
-  gctx = gdk_app_launch_context_new ();
+  gctx = gdk_display_get_app_launch_context (gdk_display_get_default ());
   ctx  = G_APP_LAUNCH_CONTEXT (gctx);
 
   timestamp = clutter_x11_get_current_event_time ();
@@ -1426,7 +1426,7 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
 
   g_free (uri_scheme);
 
-  gctx = gdk_app_launch_context_new ();
+  gctx = gdk_display_get_app_launch_context (gdk_display_get_default ());
   ctx  = G_APP_LAUNCH_CONTEXT (gctx);
 
   timestamp = clutter_x11_get_current_event_time ();
