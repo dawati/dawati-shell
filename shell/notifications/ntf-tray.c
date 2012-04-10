@@ -455,7 +455,7 @@ ntf_tray_hide_ntf_completed_cb (ClutterAnimation *anim, NtfTray *tray)
   NtfTrayPrivate *priv = tray->priv;
   ClutterActor   *actor = CLUTTER_ACTOR (clutter_animation_get_object (anim));
 
-  clutter_actor_destroy (actor);
+  clutter_actor_remove_child (CLUTTER_ACTOR (tray), actor);
 
   /* Hide ourselves if nothing left to show */
   if (priv->n_notifiers == 0)
