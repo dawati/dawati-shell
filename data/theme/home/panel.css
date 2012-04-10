@@ -1,9 +1,12 @@
 .HomeGridHint {
-  background-image: url("selector.png");
+  border-image: url("selector.png") 10 10 10 10;
 }
 
 .HomeGridBackgroundTile {
-  background-image: url("selector-empty.png");
-  opacity: 0.5;
+  background-image: url("selector-empty.png") 10 10 10 10;
+  opacity: 0.2;
 }
 
+MnbHomeGrid {
+  -mx-spacing: 20;
+}

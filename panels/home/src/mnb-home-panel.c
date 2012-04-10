@@ -24,10 +24,11 @@
 #include "mnb-home-widget.h"
 #include "utils.h"
 
-#define WIDTH 3
-#define HEIGHT 2
+G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_WIDGET);
 
-G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_BOX_LAYOUT);
+#define BUTTON_HOVER_TIMEOUT (750)
+#define TAB_SWITCHING_TIMEOUT (400)
+#define NB_TABS (5)
 
 enum /* properties */
 {
@@ -40,7 +41,15 @@ struct _MnbHomePanelPrivate
 {
   MplPanelClient *panel_client;
   ClutterActor   *background;
+  ClutterActor   *vbox;
+
+  ClutterActor   *scrollview; /* Scroll view for the grid */
   ClutterActor   *grid;
+  MxButtonGroup  *tabs_group; /* Group of button to naviguate the grid */
+
+  guint           timeout_switch_tab;
+  gint            workspace_dest;
+  MxButton       *workspace_button;
 };
 
 static void
@@ -52,13 +61,150 @@ toggle_edit_mode (MxButton *button, MnbHomePanel *self)
                                mx_button_get_toggled (button));
 }
 
+/**/
+
+static void
+button_clicked (ClutterActor *button, MnbHomePanel *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+  ClutterActorIter iter;
+  ClutterActor *child;
+  MxAdjustment *adj;
+  gint i;
+
+  i = 0;
+  clutter_actor_iter_init (&iter, clutter_actor_get_parent (button));
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      if (child == button)
+        {
+          priv->workspace_button = MX_BUTTON (button);
+          priv->workspace_dest = i;
+          break;
+        }
+      i++;
+    }
+
+  mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->grid), &adj, NULL);
+  mx_adjustment_interpolate (adj,
+                             (gdouble) priv->workspace_dest / NB_TABS * (mx_adjustment_get_upper (adj) - mx_adjustment_get_page_size (adj)),
+                             TAB_SWITCHING_TIMEOUT,
+                             CLUTTER_EASE_OUT_BACK);
+}
+
+static gboolean
+button_hover_timeout (MnbHomePanel *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+  MxAdjustment *adj;
+
+  priv->timeout_switch_tab = 0;
+  mx_button_set_toggled (priv->workspace_button, TRUE);
+
+  mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->grid), &adj, NULL);
+  mx_adjustment_interpolate (adj,
+                             (gdouble) priv->workspace_dest / NB_TABS * (mx_adjustment_get_upper (adj) - mx_adjustment_get_page_size (adj)),
+                             TAB_SWITCHING_TIMEOUT,
+                             CLUTTER_EASE_OUT_BACK);
+
+  return FALSE;
+}
+
+static gboolean
+button_leave_event (ClutterActor         *button,
+                    ClutterCrossingEvent *event,
+                    MnbHomePanel         *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+
+  if (priv->timeout_switch_tab)
+    {
+      g_source_remove (priv->timeout_switch_tab);
+      priv->timeout_switch_tab = 0;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+button_enter_event (ClutterActor         *button,
+                    ClutterCrossingEvent *event,
+                    MnbHomePanel         *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+  ClutterActorIter iter;
+  ClutterActor *child;
+  gint i;
+
+  i = 0;
+  clutter_actor_iter_init (&iter, clutter_actor_get_parent (button));
+  while (clutter_actor_iter_next (&iter, &child))
+    {
+      if (child == button)
+        {
+          priv->workspace_button = MX_BUTTON (button);
+          priv->workspace_dest = i;
+          break;
+        }
+      i++;
+    }
+
+  if (priv->timeout_switch_tab)
+    g_source_remove (priv->timeout_switch_tab);
+  priv->timeout_switch_tab = g_timeout_add (BUTTON_HOVER_TIMEOUT,
+                                            (GSourceFunc) button_hover_timeout,
+                                            self);
+
+  return FALSE;
+}
+
+static void
+grid_drag_begin (MnbHomeGrid *grid, ClutterActor *actor, MnbHomePanel *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+  const GSList *buttons = mx_button_group_get_buttons (priv->tabs_group);
+
+  while (buttons)
+    {
+      ClutterActor *button = buttons->data;
+
+      g_signal_connect (button, "enter-event",
+                        G_CALLBACK (button_enter_event), self);
+      g_signal_connect (button, "leave-event",
+                        G_CALLBACK (button_leave_event), self);
+
+      buttons = buttons->next;
+    }
+}
+
+static void
+grid_drag_end (MnbHomeGrid *grid, ClutterActor *actor, MnbHomePanel *self)
+{
+  MnbHomePanelPrivate *priv = self->priv;
+  const GSList *buttons = mx_button_group_get_buttons (priv->tabs_group);
+
+  while (buttons)
+    {
+      ClutterActor *button = buttons->data;
+
+      g_signal_handlers_disconnect_by_func (button,
+                                            G_CALLBACK (button_enter_event),
+                                            self);
+      g_signal_handlers_disconnect_by_func (button,
+                                            G_CALLBACK (button_leave_event),
+                                            self);
+
+      buttons = buttons->next;
+    }
+}
+
 /* Object implementation */
 
 static void
-mnb_home_panel_get_property (GObject *self,
-    guint prop_id,
-    GValue *value,
-    GParamSpec *pspec)
+mnb_home_panel_get_property (GObject    *self,
+                             guint       prop_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
@@ -75,10 +221,10 @@ mnb_home_panel_get_property (GObject *self,
 }
 
 static void
-mnb_home_panel_set_property (GObject *self,
-    guint prop_id,
-    const GValue *value,
-    GParamSpec *pspec)
+mnb_home_panel_set_property (GObject      *self,
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
@@ -106,52 +252,47 @@ mnb_home_panel_dispose (GObject *self)
 }
 
 static void
+mnb_home_panel_allocate (ClutterActor           *self,
+                         const ClutterActorBox  *box,
+                         ClutterAllocationFlags  flags)
+{
+  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
+  ClutterActorBox child_box;
+  MxPadding padding;
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->allocate (self,
+                                                               box, flags);
+
+  child_box.x1 = padding.left;
+  child_box.y1 = padding.top;
+  child_box.x2 = box->x2 - box->x1 - (padding.left + padding.right);
+  child_box.y2 = box->y2 - box->y1 - (padding.top + padding.bottom);
+
+  clutter_actor_allocate (priv->background, &child_box, flags);
+  clutter_actor_allocate (priv->vbox, &child_box, flags);
+}
+
+static void
 mnb_home_panel_paint (ClutterActor *self)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
   clutter_actor_paint (priv->background);
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->paint (self);
+  clutter_actor_paint (priv->vbox);
 }
 
 static void
-mnb_home_panel_map (ClutterActor *self)
+mnb_home_panel_pick (ClutterActor       *self,
+                     const ClutterColor *color)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->map (self);
+  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->pick (self, color);
 
-  clutter_actor_map (priv->background);
-}
-
-static void
-mnb_home_panel_unmap (ClutterActor *self)
-{
-  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->unmap (self);
-
-  clutter_actor_unmap (priv->background);
-}
-
-static void
-mnb_home_panel_allocate (ClutterActor *self,
-    const ClutterActorBox *box,
-    ClutterAllocationFlags flags)
-{
-  MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
-  ClutterActorBox child_box;
-
-  child_box.x1 = 0;
-  child_box.y1 = 0;
-  child_box.x2 = box->x2 - box->x1;
-  child_box.y2 = box->y2 - box->y1;
-
-  clutter_actor_allocate (priv->background, &child_box, flags);
-
-  CLUTTER_ACTOR_CLASS (mnb_home_panel_parent_class)->allocate (self,
-      box, flags);
+  clutter_actor_paint (priv->background);
+  clutter_actor_paint (priv->vbox);
 }
 
 static void
@@ -165,9 +306,8 @@ mnb_home_panel_class_init (MnbHomePanelClass *klass)
   gobject_class->dispose = mnb_home_panel_dispose;
 
   actor_class->paint = mnb_home_panel_paint;
+  actor_class->pick = mnb_home_panel_pick;
   actor_class->allocate = mnb_home_panel_allocate;
-  actor_class->map = mnb_home_panel_map;
-  actor_class->unmap = mnb_home_panel_unmap;
 
   g_type_class_add_private (gobject_class, sizeof (MnbHomePanelPrivate));
 
@@ -183,38 +323,81 @@ static void
 mnb_home_panel_init (MnbHomePanel *self)
 {
   MnbHomePanelPrivate *priv;
-  ClutterActor *edit, *item;
+  ClutterActor *edit, *item, *box;
   ClutterColor *color;
+  gint i;
 
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
                                                    MnbHomePanelPrivate);
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-
   /* background */
   /* FIXME: make this awesomer */
-  self->priv->background = clutter_texture_new_from_file (
-      "/usr/share/backgrounds/gnome/Aqua.jpg",
-      NULL);
-  clutter_actor_set_parent (self->priv->background, CLUTTER_ACTOR (self));
+  priv->background = mx_image_new ();
+  mx_image_set_from_file (MX_IMAGE (priv->background),
+                          "/usr/share/backgrounds/gnome/Aqua.jpg", NULL);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->background);
+
+  priv->vbox = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
+  clutter_actor_add_child (CLUTTER_ACTOR (self), priv->vbox);
+  clutter_actor_raise_top (priv->vbox);
 
   /* Grid */
-  priv->grid = mnb_home_grid_new ();
-  mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 14, 7); /* TODO: auto! */
-  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
-                                              priv->grid,
+  priv->scrollview = mx_scroll_view_new ();
+  mx_scroll_view_set_scroll_visibility (MX_SCROLL_VIEW (priv->scrollview),
+                                        MX_SCROLL_POLICY_NONE);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (priv->vbox),
+                                              priv->scrollview,
                                               0,
                                               "expand", TRUE,
                                               "x-fill", TRUE,
                                               "y-fill", TRUE,
                                               NULL);
 
+  priv->grid = mnb_home_grid_new ();
+  mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 40, 6); /* TODO: auto! */
+  mx_bin_set_child (MX_BIN (priv->scrollview), priv->grid);
+
+  g_signal_connect (priv->grid, "drag-begin",
+                    G_CALLBACK (grid_drag_begin), self);
+  g_signal_connect (priv->grid, "drag-end",
+                    G_CALLBACK (grid_drag_end), self);
+
+
+  /* Tabs */
+  box = mx_box_layout_new_with_orientation (MX_ORIENTATION_HORIZONTAL);
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (priv->vbox),
+                                              box,
+                                              1,
+                                              "expand", FALSE,
+                                              "x-fill", FALSE,
+                                              "y-fill", FALSE,
+                                              "x-align", MX_ALIGN_MIDDLE,
+                                              NULL);
+
+  priv->tabs_group = mx_button_group_new ();
+
+  for (i = 0; i < NB_TABS; i++)
+    {
+      MxButton *button = MX_BUTTON (mx_button_new ());
+      mx_button_set_is_toggle (button, TRUE);
+      mx_button_group_add (priv->tabs_group, button);
+      mx_box_layout_insert_actor (MX_BOX_LAYOUT (box),
+                                  CLUTTER_ACTOR (button),
+                                  -1);
+
+      g_signal_connect (button, "clicked",
+                        G_CALLBACK (button_clicked),
+                        self);
+    }
+  mx_button_group_set_active_button (priv->tabs_group,
+                                     mx_button_group_get_active_button (priv->tabs_group));
+
   /* edit-mode */
   edit = mx_button_new_with_label (_("Edit"));
   mx_button_set_is_toggle (MX_BUTTON (edit), TRUE);
-  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (self),
+  mx_box_layout_insert_actor_with_properties (MX_BOX_LAYOUT (priv->vbox),
                                               edit,
-                                              1,
+                                              2,
                                               "expand", FALSE,
                                               "x-fill", FALSE,
                                               "y-fill", FALSE,

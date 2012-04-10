@@ -20,6 +20,9 @@
  *
  */
 
+#define COGL_ENABLE_EXPERIMENTAL_API 1
+#define CLUTTER_ENABLE_EXPERIMENTAL_API 1
+
 #include "mnb-home-grid.h"
 #include "mnb-home-grid-child.h"
 #include "mnb-home-grid-private.h"
@@ -32,6 +35,7 @@
 
 static void mnb_home_grid_container_iface_init (ClutterContainerIface *iface);
 static void mnb_home_grid_scrollable_iface_init (MxScrollableIface *iface);
+static void mnb_home_grid_stylable_iface_init (MxStylableIface *iface);
 /* static void mnb_home_grid_stylable_iface_init (MxStylableIface *iface); */
 
 G_DEFINE_TYPE_WITH_CODE (MnbHomeGrid, mnb_home_grid, MX_TYPE_WIDGET,
@@ -39,6 +43,8 @@ G_DEFINE_TYPE_WITH_CODE (MnbHomeGrid, mnb_home_grid, MX_TYPE_WIDGET,
                                                 mnb_home_grid_container_iface_init)
                          G_IMPLEMENT_INTERFACE (MX_TYPE_SCROLLABLE,
                                                 mnb_home_grid_scrollable_iface_init)
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE,
+                                                mnb_home_grid_stylable_iface_init)
                          /* G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE, */
                          /*                        mnb_home_grid_focusable_iface_init) */)
 
@@ -68,6 +74,7 @@ struct _MnbHomeGridPrivate
   GArray *cells; /* TODO?: replace gboolean by actual ClutterActors */
 
   /* Grid showing available cells */
+  CoglMaterial *pipeline;
   float *edition_verts;
   ClutterActor *edit_texture;
 
@@ -88,20 +95,42 @@ struct _MnbHomeGridPrivate
   /**/
   MxAdjustment *hadjustment;
   MxAdjustment *vadjustment;
+
+  guint spacing;
 };
+
+enum
+{
+  DRAG_BEGIN,
+  DRAG_END,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
+static CoglHandle texture_template_pipeline = NULL;
+
+/**/
 
 static void
 mnb_home_grid_insert_item_cells (MnbHomeGrid   *grid,
-                                 ClutterActor *child)
+                                 ClutterActor  *child)
 {
   MnbHomeGridPrivate *priv = grid->priv;
   MnbHomeGridChild *meta =
     (MnbHomeGridChild *) clutter_container_get_child_meta (CLUTTER_CONTAINER (grid),
                                                            child);
   gint i, j;
+  gfloat width, height;
 
   if (!meta)
     return;
+
+  clutter_actor_get_preferred_size (child, NULL, NULL, &width, &height);
+
+  meta->width = ceilf (width / (UNIT_SIZE + priv->spacing));
+  meta->height = ceilf (height / (UNIT_SIZE + priv->spacing));
 
   for (i = meta->row; i < (meta->row + meta->height); i++)
     {
@@ -201,11 +230,35 @@ mnb_home_grid_recompute_edition_vertexes (MnbHomeGrid *grid)
     {
       for (j = 0; j < priv->cols; j++)
         {
-          priv->edition_verts[k++] = j * (SPACING + UNIT_SIZE);
-          priv->edition_verts[k++] = i * (SPACING + UNIT_SIZE);
-          priv->edition_verts[k++] = j * (SPACING + UNIT_SIZE) + UNIT_SIZE;
-          priv->edition_verts[k++] = i * (SPACING + UNIT_SIZE) + UNIT_SIZE;
+          priv->edition_verts[k++] = j * (priv->spacing + UNIT_SIZE);
+          priv->edition_verts[k++] = i * (priv->spacing + UNIT_SIZE);
+          priv->edition_verts[k++] = j * (priv->spacing + UNIT_SIZE) + UNIT_SIZE;
+          priv->edition_verts[k++] = i * (priv->spacing + UNIT_SIZE) + UNIT_SIZE;
         }
+    }
+}
+
+/*
+ * Stylable inplementation
+ */
+
+static void
+mnb_home_grid_stylable_iface_init (MxStylableIface *iface)
+{
+  static gboolean is_initialized = FALSE;
+
+  if (G_UNLIKELY (!is_initialized))
+    {
+      GParamSpec *pspec;
+
+      is_initialized = TRUE;
+
+      pspec = g_param_spec_uint ("x-mx-spacing",
+                                 "Spacing",
+                                 "The size of the spacing",
+                                 0, G_MAXUINT, 0,
+                                 G_PARAM_READWRITE);
+      mx_stylable_iface_install_property (iface, MNB_TYPE_HOME_GRID, pspec);
     }
 }
 
@@ -519,14 +572,14 @@ mnb_home_grid_show_hint_position (MnbHomeGrid *grid,
 
   priv->selection_col = col;
   priv->selection_row = row;
-  pos_x = priv->tmp_padding.left + (UNIT_SIZE + SPACING) * col;
-  pos_y = priv->tmp_padding.top + (UNIT_SIZE + SPACING) * row;
+  pos_x = priv->tmp_padding.left + (UNIT_SIZE + priv->spacing) * col;
+  pos_y = priv->tmp_padding.top + (UNIT_SIZE + priv->spacing) * row;
 
   clutter_actor_set_position (priv->hint_position, pos_x, pos_y);
   clutter_actor_set_size (priv->hint_position,
-                          UNIT_SIZE * width + SPACING * (width - 1),
-                          UNIT_SIZE * height + SPACING * (height - 1));
-  clutter_actor_animate (priv->hint_position, CLUTTER_LINEAR, 200,
+                          UNIT_SIZE * width + priv->spacing * (width - 1),
+                          UNIT_SIZE * height + priv->spacing * (height - 1));
+  clutter_actor_animate (priv->hint_position, CLUTTER_LINEAR, 20,
                          "opacity", 0x80,
                          NULL);
 }
@@ -536,13 +589,14 @@ mnb_home_grid_hide_hint_position (MnbHomeGrid *grid)
 {
   MnbHomeGridPrivate *priv = grid->priv;
 
-  clutter_actor_animate (priv->hint_position, CLUTTER_LINEAR, 200,
+  clutter_actor_animate (priv->hint_position, CLUTTER_LINEAR, 20,
                          "opacity", 0x0,
                          NULL);
 }
 
 static void
-mnb_home_grid_animate_hint_position_if_possible (MnbHomeGrid *grid, gint col, gint row)
+mnb_home_grid_animate_hint_position_if_possible (MnbHomeGrid *grid,
+                                                 gint col, gint row)
 {
   MnbHomeGridPrivate *priv = grid->priv;
   gfloat pos_x, pos_y;
@@ -557,8 +611,8 @@ mnb_home_grid_animate_hint_position_if_possible (MnbHomeGrid *grid, gint col, gi
 
   priv->selection_col = col;
   priv->selection_row = row;
-  pos_x = priv->tmp_padding.left + (UNIT_SIZE + SPACING) * col;
-  pos_y = priv->tmp_padding.top + (UNIT_SIZE + SPACING) * row;
+  pos_x = priv->tmp_padding.left + (UNIT_SIZE + priv->spacing) * col;
+  pos_y = priv->tmp_padding.top + (UNIT_SIZE + priv->spacing) * row;
 
   clutter_actor_animate (priv->hint_position, CLUTTER_LINEAR, 20,
                          "x", pos_x,
@@ -566,9 +620,27 @@ mnb_home_grid_animate_hint_position_if_possible (MnbHomeGrid *grid, gint col, gi
                          NULL);
 }
 
-/*
- * Actor Implementation
- */
+static void
+mnb_home_grid_style_changed (MxStylable          *stylable,
+                             MxStyleChangedFlags  flags,
+                             gpointer             data)
+{
+  MnbHomeGrid *self = MNB_HOME_GRID (stylable);
+  MnbHomeGridPrivate *priv = self->priv;
+  guint spacing;
+
+  mx_stylable_get (stylable,
+                   "x-mx-spacing", &spacing,
+                   NULL);
+
+  if (spacing != priv->spacing)
+    {
+      priv->spacing = spacing;
+      mnb_home_grid_recompute_edition_vertexes (self);
+      mnb_home_grid_reinsert_items_cells (self);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+    }
+}
 
 static gboolean
 stage_motion_event_cb (ClutterActor         *stage,
@@ -593,13 +665,16 @@ stage_motion_event_cb (ClutterActor         *stage,
   child_x = event->x - pos_x;
   child_y = event->y - pos_y;
 
-  child_x = MIN (child_x, priv->cols * (UNIT_SIZE + SPACING) - SPACING);
-  child_y = MIN (child_y, priv->rows * (UNIT_SIZE + SPACING) - SPACING);
+  child_x = MIN (child_x, priv->cols * (UNIT_SIZE + priv->spacing) - priv->spacing);
+  child_y = MIN (child_y, priv->rows * (UNIT_SIZE + priv->spacing) - priv->spacing);
 
-  col = MAX (0, MIN (child_x / (UNIT_SIZE + SPACING),
+  col = MAX (0, MIN (child_x / (UNIT_SIZE + priv->spacing),
                      priv->cols - 1));
-  row = MAX (0, MIN (child_y / (UNIT_SIZE + SPACING),
+  row = MAX (0, MIN (child_y / (UNIT_SIZE + priv->spacing),
                      priv->rows - 1));
+
+  col = MIN (col, priv->cols - priv->selection_cols);
+  row = MIN (row, priv->rows - priv->selection_rows);
 
   mnb_home_grid_animate_hint_position_if_possible (self, col, row);
 
@@ -627,13 +702,15 @@ stage_button_release_event_cb (ClutterActor       *stage,
   mnb_home_grid_insert_item_cells (self, priv->selection);
 
   /* Animate selected actor to the final position */
-  pos_x = priv->tmp_padding.left + (UNIT_SIZE + SPACING) * meta->col;
-  pos_y = priv->tmp_padding.top + (UNIT_SIZE + SPACING) * meta->row;
+  pos_x = priv->tmp_padding.left + (UNIT_SIZE + priv->spacing) * meta->col;
+  pos_y = priv->tmp_padding.top + (UNIT_SIZE + priv->spacing) * meta->row;
 
   clutter_actor_animate (priv->selection, CLUTTER_LINEAR, 200,
                          "x", pos_x,
                          "y", pos_y,
                          NULL);
+
+  g_signal_emit (self, signals[DRAG_END], 0, priv->selection);
 
   priv->selection = NULL;
 
@@ -646,6 +723,10 @@ stage_button_release_event_cb (ClutterActor       *stage,
 
   return TRUE;
 }
+
+/*
+ * Actor Implementation
+ */
 
 static gboolean
 mnb_home_grid_button_press_event (ClutterActor       *self,
@@ -700,13 +781,12 @@ mnb_home_grid_button_press_event (ClutterActor       *self,
 
       clutter_actor_get_size (child, &child_width, &child_height);
 
-      priv->selection_cols = ceilf (child_width / (UNIT_SIZE + SPACING));
-      priv->selection_rows = ceilf (child_height / (UNIT_SIZE + SPACING));
+      priv->selection_cols = ceilf (child_width / (UNIT_SIZE + priv->spacing));
+      priv->selection_rows = ceilf (child_height / (UNIT_SIZE + priv->spacing));
 
       mnb_home_grid_show_hint_position (grid,
                                         meta->col, meta->row,
-                                        ceilf ((child_width - priv->selection_cols * SPACING) / UNIT_SIZE),
-                                        ceilf ((child_height - priv->selection_rows * SPACING) / UNIT_SIZE));
+                                        priv->selection_cols, priv->selection_rows);
 
       g_signal_connect (stage, "motion-event",
                         G_CALLBACK (stage_motion_event_cb),
@@ -714,6 +794,8 @@ mnb_home_grid_button_press_event (ClutterActor       *self,
       g_signal_connect (stage, "button-release-event",
                         G_CALLBACK (stage_button_release_event_cb),
                         self);
+
+      g_signal_emit (self, signals[DRAG_BEGIN], 0, priv->selection);
     }
 
   return TRUE;
@@ -732,7 +814,7 @@ mnb_home_grid_get_preferred_width (ClutterActor *self,
   mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   width = padding.left + padding.right +
-    priv->cols * (SPACING + UNIT_SIZE) - SPACING;
+    priv->cols * (priv->spacing + UNIT_SIZE) - priv->spacing;
 
   if (min_width)
     *min_width = width;
@@ -753,7 +835,7 @@ mnb_home_grid_get_preferred_height (ClutterActor *self,
   mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   height = padding.top + padding.bottom +
-    priv->rows * (SPACING + UNIT_SIZE) - SPACING;
+    priv->rows * (priv->spacing + UNIT_SIZE) - priv->spacing;
 
   if (min_height)
     *min_height = height;
@@ -805,8 +887,8 @@ mnb_home_grid_allocate (ClutterActor           *self,
           else
             y_align = MX_ALIGN_MIDDLE;
 
-          child_box.x1 = padding.left + (UNIT_SIZE + SPACING) * child_meta->col;
-          child_box.y1 = padding.top + (UNIT_SIZE + SPACING) * child_meta->row;
+          child_box.x1 = padding.left + (UNIT_SIZE + priv->spacing) * child_meta->col;
+          child_box.y1 = padding.top + (UNIT_SIZE + priv->spacing) * child_meta->row;
           child_box.x2 = child_box.x1 + clutter_actor_get_width (child_actor);
           child_box.y2 = child_box.y1 + clutter_actor_get_height (child_actor);
 
@@ -830,7 +912,7 @@ mnb_home_grid_allocate (ClutterActor           *self,
       g_object_set (G_OBJECT (priv->vadjustment),
                     "lower", 0.0,
                     "upper", (padding.top + padding.bottom +
-                              (UNIT_SIZE + SPACING) * priv->rows - SPACING),
+                              (UNIT_SIZE + priv->spacing) * priv->rows - priv->spacing),
                     "page-size", box->y2 - box->y1,
                     "step-increment", 0.0,
                     "page-increment", 0.0,
@@ -842,7 +924,7 @@ mnb_home_grid_allocate (ClutterActor           *self,
       g_object_set (G_OBJECT (priv->hadjustment),
                     "lower", 0.0,
                     "upper", (padding.left + padding.right +
-                              (UNIT_SIZE + SPACING) * priv->cols - SPACING),
+                              (UNIT_SIZE + priv->spacing) * priv->cols - priv->spacing),
                     "page-size", box->x2 - box->x1,
                     "step-increment", 0.0,
                     "page-increment", 0.0,
@@ -923,12 +1005,13 @@ mnb_home_grid_paint (ClutterActor *self)
 
   if (priv->in_edit_mode)
     {
-      ClutterActor *bg_actor =
-        mx_widget_get_background_image (MX_WIDGET (priv->edit_texture));
-      CoglHandle material =
-        clutter_texture_get_cogl_material (CLUTTER_TEXTURE (bg_actor));
+      CoglHandle texture =
+        mx_widget_get_background_texture (MX_WIDGET (priv->edit_texture));
+      guint8 alpha = clutter_actor_get_paint_opacity (priv->edit_texture);
 
-      cogl_set_source (material);
+      cogl_material_set_layer (priv->pipeline, 0, texture);
+      cogl_material_set_color4ub (priv->pipeline, alpha, alpha, alpha, alpha);
+      cogl_set_source (priv->pipeline);
       cogl_rectangles (priv->edition_verts, priv->cols * priv->rows);
 
       clutter_actor_paint (priv->hint_position);
@@ -1119,6 +1202,14 @@ mnb_home_grid_set_property (GObject      *object,
 static void
 mnb_home_grid_dispose (GObject *object)
 {
+  MnbHomeGridPrivate *priv = MNB_HOME_GRID (object)->priv;
+
+  if (priv->pipeline != NULL)
+    {
+      cogl_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_home_grid_parent_class)->dispose (object);
 }
 
@@ -1186,6 +1277,24 @@ mnb_home_grid_class_init (MnbHomeGridClass *klass)
                                                          FALSE,
                                                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+
+  signals[DRAG_BEGIN] =
+    g_signal_new ("drag-begin",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 1, CLUTTER_TYPE_ACTOR);
+
+  signals[DRAG_END] =
+    g_signal_new ("drag-end",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 1, CLUTTER_TYPE_ACTOR);
 }
 
 static void
@@ -1194,27 +1303,45 @@ mnb_home_grid_init (MnbHomeGrid *self)
   MnbHomeGridPrivate *priv;
   ClutterActor *actor;
 
+  if (G_UNLIKELY (texture_template_pipeline == NULL))
+    {
+      CoglPipeline *pipeline;
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+
+      texture_template_pipeline = cogl_pipeline_new (ctx);
+      pipeline = COGL_PIPELINE (texture_template_pipeline);
+      cogl_pipeline_set_layer_null_texture (pipeline,
+                                            0, /* layer_index */
+                                            COGL_TEXTURE_TYPE_2D);
+    }
+
   priv = self->priv = GRID_PRIVATE (self);
   actor = CLUTTER_ACTOR (self);
+
+  priv->pipeline = (CoglHandle) cogl_pipeline_copy (texture_template_pipeline);
 
   clutter_actor_set_reactive (actor, TRUE);
 
   priv->hint_position = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->hint_position),
                                "HomeGridHint");
-  clutter_actor_set_parent (priv->hint_position, actor);
+  clutter_actor_add_child (actor, priv->hint_position);
   clutter_actor_set_opacity (priv->hint_position, 0x0);
 
   priv->edit_texture = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->edit_texture),
                                "HomeGridBackgroundTile");
-  clutter_actor_set_parent (priv->edit_texture, actor);
+  clutter_actor_add_child (actor, priv->edit_texture);
 
   priv->cols = priv->rows = 1;
   priv->cells = g_array_new (FALSE, TRUE, sizeof (ClutterActor *));
   g_array_set_size (priv->cells, priv->cols * priv->rows);
 
   mnb_home_grid_recompute_edition_vertexes (self);
+
+  g_signal_connect (self, "style-changed",
+                    G_CALLBACK (mnb_home_grid_style_changed), NULL);
 }
 
 ClutterActor *
@@ -1278,7 +1405,7 @@ mnb_home_grid_get_edit_mode (MnbHomeGrid *self)
 /* TODO: might need to return a boolean if insertion is not
    possible. */
 void
-mnb_home_grid_insert_actor (MnbHomeGrid   *self,
+mnb_home_grid_insert_actor (MnbHomeGrid  *self,
                             ClutterActor *actor,
                             gint          col,
                             gint          row)
@@ -1304,8 +1431,8 @@ mnb_home_grid_insert_actor (MnbHomeGrid   *self,
                                                                 actor);
   meta->row = row;
   meta->col = col;
-  meta->width = ceilf (width / (UNIT_SIZE + SPACING));
-  meta->height = ceilf (height / (UNIT_SIZE + SPACING));
+  meta->width = ceilf (width / (UNIT_SIZE + priv->spacing));
+  meta->height = ceilf (height / (UNIT_SIZE + priv->spacing));
   mnb_home_grid_insert_item_cells (self, actor);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
