@@ -722,7 +722,7 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
   if (size > -1 && available_size > -1)
   {
     unsigned int percentage = 100 - (double) available_size / size * 100;
-    char *size_text = g_format_size_for_display (size);
+    char *size_text = g_format_size (size);
     markup = g_strdup_printf (_("%s using %d%% of %s"),
                               priv->name,
                               percentage,

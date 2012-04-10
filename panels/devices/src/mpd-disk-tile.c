@@ -66,7 +66,7 @@ update (MpdDiskTile *self)
   if (percentage == 0)
     percentage++;
 
-  size_text = g_format_size_for_display (size);
+  size_text = g_format_size (size);
   markup = g_strdup_printf (_("You are using %d%% of %s"),
                             percentage,
                             size_text);
