@@ -353,12 +353,12 @@ _active_item_was_visible (CarrickList *list)
 }
 
 /* TODO: its possible that it would make sense to set the adjustment
- * after the whole list allocation-cycle is done... there is a 
+ * after the whole list allocation-cycle is done... there is a
  * potential for a race here */
 static void
 active_item_alloc_cb (GtkWidget     *item,
                       GdkRectangle  *allocation,
-                      CarrickList   *list) 
+                      CarrickList   *list)
 {
   CarrickListPrivate *priv = list->priv;
   GtkAllocation list_alloc;
@@ -369,7 +369,7 @@ active_item_alloc_cb (GtkWidget     *item,
   gtk_widget_get_allocation (GTK_WIDGET (list), &list_alloc);
 
   /* Active item moved or expanded: We can autoscroll to keep
-   * it in the same spot on the screen, but we only want that if 
+   * it in the same spot on the screen, but we only want that if
    * the active item is/was visible */
   if (_active_item_was_visible (list) &&
       allocation->height >= priv->active_item_height)
@@ -385,7 +385,7 @@ active_item_alloc_cb (GtkWidget     *item,
           move = MAX (0, expand - space_below);
         }
 
-      /* scroll so that A) expanded item is visible and B) 
+      /* scroll so that A) expanded item is visible and B)
        * the items position relative to screen stays the same */
       gtk_adjustment_set_value (priv->adjustment,
                                 allocation->y - priv->active_item_rel_pos + move);
@@ -557,7 +557,7 @@ carrick_list_clear_state (CarrickList *list)
                          (GtkCallback) _set_item_inactive,
                          NULL);
   gtk_adjustment_set_value (priv->adjustment,
-                            gtk_adjustment_get_lower (priv->adjustment)); 
+                            gtk_adjustment_get_lower (priv->adjustment));
 }
 
 
@@ -1016,7 +1016,7 @@ carrick_list_set_model (CarrickList         *list,
 
       priv->model = g_object_ref (model);
 
-      /* Keep track of OfflineMode, AvailableTechnologies and 
+      /* Keep track of OfflineMode, AvailableTechnologies and
        * EnabledTechnologies using connman.Manager */
       manager = carrick_network_model_get_proxy (priv->model);
       dbus_g_proxy_connect_signal (manager,
@@ -1188,7 +1188,7 @@ carrick_list_add (CarrickList *list,
                         "drag-end",
                         G_CALLBACK (carrick_list_drag_end),
                         list);
-  
+
   g_signal_connect (widget,
                     "drag-drop",
                     G_CALLBACK (carrick_list_drag_drop),
@@ -1223,14 +1223,14 @@ _append_tech_string (GString *technologies, char *tech, gboolean last)
    * runtime.
    * The conjunction ' or ' will be at the end of a choice of disabled technologies,
    * for example 'You could try enabling WiFi, WiMAX or 3G'.
-   * Note that you need to include spaces on both sides of the word/phrase 
+   * Note that you need to include spaces on both sides of the word/phrase
    * here -- unless you want it joined with previous or next word. */
   gchar              *conjunction = _(" or ");
 
-  /* Translator note: the comma ', ' will be used to join the different 
-   * disabled technologies as in the example: 
+  /* Translator note: the comma ', ' will be used to join the different
+   * disabled technologies as in the example:
    * 'You could try enabling WiFi, WiMAX or 3G'
-   * Note that you need to include spaces in the string, unless you 
+   * Note that you need to include spaces in the string, unless you
    * want the words to appear right next to the comma. */
   gchar              *comma = _(", ");
 
@@ -1292,8 +1292,8 @@ carrick_list_update_fallback (CarrickList *self)
       guint available, enabled;
 
       /* How many strings we're joining */
-      available = priv->have_wifi + priv->have_ethernet + 
-                  priv->have_threeg + priv->have_wimax + 
+      available = priv->have_wifi + priv->have_ethernet +
+                  priv->have_threeg + priv->have_wimax +
                   priv->have_bluetooth;
       enabled = priv->wifi_enabled + priv->ethernet_enabled +
                 priv->threeg_enabled + priv->wimax_enabled +
@@ -1383,7 +1383,7 @@ carrick_list_constructor (GType                  gtype,
   gtk_container_add (GTK_CONTAINER (obj), viewport);
 
 
-  box = gtk_vbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (box);
   gtk_container_add (GTK_CONTAINER (viewport),
                      box);
@@ -1398,13 +1398,13 @@ carrick_list_constructor (GType                  gtype,
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
                       FALSE, FALSE, 2);
 
-  priv->modem_box = gtk_vbox_new (FALSE, 0);
+  priv->modem_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (box), priv->modem_box,
                       FALSE, FALSE, 2);
   gtk_widget_set_vexpand (priv->modem_box, FALSE);
   gtk_widget_set_no_show_all (priv->modem_box, TRUE);
 
-  priv->box = gtk_vbox_new (FALSE, 0);
+  priv->box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (box), priv->box,
                       FALSE, FALSE, 0);
 

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  *
- * 
+ *
  * Written by - Joshua Lock <josh@linux.intel.com>
  *              Jussi Kukkonen <jku@linux.intel.com>
  *
@@ -25,11 +25,11 @@
  */
 
 /* TODO
- * 
+ *
  * The _populate_variables() / _set_state() cycle is
- * inefficient and complex. _set_state() updates everything, 
+ * inefficient and complex. _set_state() updates everything,
  * even if nothing changed since the last update.
- * 
+ *
  * The modem_dummy-related code should really live in another
  * file -- it's now here to get the same layout, but that could be
  * achieved bys common widget names, style classes or a common
@@ -341,12 +341,12 @@ carrick_service_item_set_type (CarrickServiceItem *item, const char *type)
     g_free (item->priv->type);
   item->priv->type = g_strdup (type);
 
-  /* TODO type shouldn't change but disconnecting if it happens 
+  /* TODO type shouldn't change but disconnecting if it happens
    * would still be the right thing */
   _connect_ofono_handlers (item);
 
   g_object_notify (G_OBJECT (item), "type");
-}    
+}
 
 static void
 _populate_variables (CarrickServiceItem *self)
@@ -505,8 +505,8 @@ _populate_variables (CarrickServiceItem *self)
           priv->proxy_excludes = proxy_excludes;
         }
 
-      /* TODO: it would make sense to expand this to cover lot of other 
-       * state transitions so populate_variables() did not have to do so 
+      /* TODO: it would make sense to expand this to cover lot of other
+       * state transitions so populate_variables() did not have to do so
        * much unnecessary work */
       if (priv->state &&
           g_strcmp0 (priv->state, "failure") != 0 &&
@@ -522,7 +522,7 @@ _set_form_modified (CarrickServiceItem *item, gboolean modified)
 {
   item->priv->form_modified = modified;
   gtk_widget_set_sensitive (item->priv->apply_button, modified);
-  if (modified) 
+  if (modified)
     gtk_widget_hide (item->priv->info_bar);
 }
 
@@ -536,7 +536,7 @@ _set_form_state (CarrickServiceItem *self)
 
   combo = GTK_COMBO_BOX (priv->method_combo);
 
-  /* This is a bit of a hack: we don't want to show "Fixed" as 
+  /* This is a bit of a hack: we don't want to show "Fixed" as
    * option if it's not sent by connman */
   if (g_strcmp0 (priv->method, "manual") == 0)
     {
@@ -738,7 +738,7 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
        * see pin entry translations for full list of possible values.  */
       msg = g_strdup_printf (_("The %s code is locked, contact your service provider."),
                              carrick_ofono_prettify_pin (priv->locked_puk_type));
-    } 
+    }
   else if (priv->required_pin_type)
     {
       int retries;
@@ -754,7 +754,7 @@ carrick_service_item_build_pin_required_message (CarrickServiceItem *item)
         {
           if (retries > 0 && retries < 3)
             {
-              /* TRANSLATORS: info message when pin entry is required and 
+              /* TRANSLATORS: info message when pin entry is required and
                * there are less than three retries,
                * Placeholder is pin type, usually "PIN" */
               if (g_strcmp0 (err_name, "org.ofono.Error.InvalidFormat") == 0)
@@ -872,7 +872,7 @@ _request_passphrase (CarrickServiceItem *item)
   switch (priv->passphrase_type)
   {
   case CARRICK_PASSPHRASE_WIFI:
-    /* TRANSLATORS: text is used as a hint in the passphrase entry and 
+    /* TRANSLATORS: text is used as a hint in the passphrase entry and
      * should be 20 characters or less to be entirely visible */
     hint = g_strdup (_("Type password here"));
     /* TRANSLATORS: Button label when connecting with passphrase */
@@ -885,7 +885,7 @@ _request_passphrase (CarrickServiceItem *item)
     pretty_pin = carrick_ofono_prettify_pin (item->priv->required_pin_type);
     /* TRANSLATORS: text is used as a hint in the PIN entry and
      * should be 20 characters or less to be entirely visible
-     * The placeholder is usually "PIN" or "PUK" but it 
+     * The placeholder is usually "PIN" or "PUK" but it
      * can be any of these:
      * "PIN", "PHONE", "FIRSTPHONE", "PIN2", "NETWORK",
      * "NETSUB", "SERVICE", "CORP"
@@ -901,7 +901,7 @@ _request_passphrase (CarrickServiceItem *item)
     break;
   case CARRICK_PASSPHRASE_NEW_PIN:
     pretty_pin = carrick_ofono_prettify_pin (carrick_ofono_pin_for_puk (item->priv->required_pin_type));
-    /* TRANSLATORS: text is used as a hint in the PIN entry when setting 
+    /* TRANSLATORS: text is used as a hint in the PIN entry when setting
      * a new pin. Same rules as above for normal PIN entry. */
     hint = g_strdup_printf (_("Type new %s here"), pretty_pin);
     /* TRANSLATORS: Button label when entering new pin code.
@@ -927,7 +927,7 @@ _request_passphrase (CarrickServiceItem *item)
     {
       gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
                           priv->passphrase);
-    }    
+    }
 
   gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
   gtk_editable_select_region (GTK_EDITABLE (priv->passphrase_entry),
@@ -962,7 +962,7 @@ carrick_service_item_update_cellular_info (CarrickServiceItem *item)
   /* passphrase_type is set already */
   if (priv->required_pin_type)
     _request_passphrase (item);
-  else 
+  else
     gtk_widget_hide (item->priv->passphrase_box);
 }
 
@@ -1006,7 +1006,7 @@ _set_state (CarrickServiceItem *self)
                                     TRUE);
         }
       button = g_strdup (_ ("Disconnect"));
-      /* TRANSLATORS: service state string, will be used as a title 
+      /* TRANSLATORS: service state string, will be used as a title
        * like this: "MyWifiAP - Connected" */
       label = g_strdup_printf ("%s - %s",
                                name,
@@ -1068,7 +1068,7 @@ _set_state (CarrickServiceItem *self)
       gtk_label_set_text (GTK_LABEL (priv->info_label), "");
 
       /* the dummy modem service is always in idle */
-      /* TODO can't trust this to be tru as we want some 
+      /* TODO can't trust this to be tru as we want some
        * updates to happen for cell services -- which might be in
        * other states as well*/
       carrick_service_item_update_cellular_info (self);
@@ -1321,7 +1321,7 @@ _start_connecting (CarrickServiceItem *item)
 
   if (priv->security && g_str_equal (priv->security, "none") == FALSE)
     {
-      /* ask for a passphrase for non-immutable services that 
+      /* ask for a passphrase for non-immutable services that
        * require a password or failed to connect last time */
       if (!priv->immutable &&
           ((g_strcmp0 (priv->state, "failure") == 0) ||
@@ -1367,8 +1367,8 @@ _modem_button_cb (GtkButton          *modem_button,
                     NULL, &pid, &error))
     {
       carrick_shell_hide ();
-    } 
-  else 
+    }
+  else
    {
       g_warning ("Unable to spawn 3g connection wizard");
       g_error_free(error);
@@ -1456,13 +1456,13 @@ _connect_with_password (CarrickServiceItem *item)
   else
     {
       passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
-    
+
       if (util_validate_wlan_passphrase (priv->security,
                                          passphrase,
                                          &label))
         {
           GtkTreeIter iter;
-        
+
           value = g_slice_new0 (GValue);
           g_value_init (value, G_TYPE_STRING);
           g_value_set_string (value, passphrase);
@@ -1589,9 +1589,9 @@ _ofono_agent_enter_pin_cb (CarrickOfonoAgent *agent,
   }
 
   /* it's possible that a pin is still required, but nothing in ofono
-   * API changes so we must ensure the message is shown... but we want 
+   * API changes so we must ensure the message is shown... but we want
    * to avoid e.g. setting an error message and then immediately
-   * changing the message contents: so we wait just a short while 
+   * changing the message contents: so we wait just a short while
    * before we ensure the error is shown */
   g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
 }
@@ -1614,9 +1614,9 @@ _ofono_agent_reset_pin_cb (CarrickOfonoAgent *agent,
   }
 
   /* it's possible that a puk is still required, but nothing in ofono
-   * API changes so we must ensure the message is shown... but we want 
+   * API changes so we must ensure the message is shown... but we want
    * to avoid e.g. setting an error message and then immediately
-   * changing the message contents: so we wait just a short while 
+   * changing the message contents: so we wait just a short while
    * before we ensure the error is shown */
   g_timeout_add (200, (GSourceFunc)_wait_for_ofono_to_settle, item);
 }
@@ -1693,7 +1693,7 @@ _passphrase_button_or_entry_cb (GtkWidget *button_or_entry,
     case CARRICK_PASSPHRASE_NEW_PIN:
       carrick_service_item_reset_pin (item);
       break;
-    }    
+    }
 }
 
 static void
@@ -1856,7 +1856,7 @@ carrick_service_item_set_required_pin_type (CarrickServiceItem *item,
   item->priv->modem_requiring_pin = g_strdup (obj_path);
   item->priv->required_pin_type = g_strdup (pin_type);
 
-  /* need to set passphrase_type here and not later so we do not 
+  /* need to set passphrase_type here and not later so we do not
    * unnecessarily overwrite the CARRICK_PASSPHRASE_NEW_PIN that
    * may be set */
   if (carrick_ofono_is_pin (pin_type))
@@ -1916,7 +1916,7 @@ static void
 _ofono_retries_changed_cb (CarrickOfonoAgent *ofono,
                            CarrickServiceItem *item)
 {
-  /* need to update ui since we may have a error message up showing the 
+  /* need to update ui since we may have a error message up showing the
      retry count */
   carrick_service_item_update (item);
 }
@@ -2107,7 +2107,7 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
     gdk_window_set_cursor (gtk_widget_get_window (widget), priv->hand_cursor);
   else
     gdk_window_set_cursor (gtk_widget_get_window (widget), NULL);
-  
+
   return TRUE;
 }
 
@@ -2436,7 +2436,7 @@ proxy_radio_toggled_cb (GtkWidget *radio,
     gtk_widget_hide (item->priv->proxy_url_entry);
     gtk_widget_hide (item->priv->proxy_manual_entry);
   }
-  
+
   _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
 
@@ -2847,7 +2847,7 @@ add_proxy_radio_to_table (GtkTable *table, guint row,
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
   /* set min width so the label can calculate how many rows it needs */
   gtk_widget_set_size_request (label, CARRICK_MIN_LABEL_WIDTH + CARRICK_ENTRY_WIDTH, -1);
-  
+
   gtk_widget_show (radio);
   gtk_table_attach (table, radio,
                     0, 2, row, row + 1,
@@ -2896,9 +2896,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
   gtk_event_box_set_visible_window (GTK_EVENT_BOX (self), FALSE);
-  
-  box = gtk_hbox_new (FALSE,
-                      6);
+
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_widget_show (box);
   priv->expando = nbtk_gtk_expander_new ();
   gtk_container_add (GTK_CONTAINER (self),
@@ -2918,8 +2917,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       6);
 
-  vbox = gtk_vbox_new (FALSE,
-                       6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
   gtk_box_pack_start (GTK_BOX (box),
                       vbox,
@@ -2927,8 +2925,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
-  hbox = gtk_hbox_new (FALSE,
-                       6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox),
                       hbox,
@@ -2966,7 +2963,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                             FALSE);
 
-  priv->modem_box = gtk_hbox_new (FALSE, 6);
+  priv->modem_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_widget_set_visible (priv->modem_box, priv->is_modem_dummy);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->modem_box,
@@ -2988,7 +2985,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       6);
 
 
-  priv->connect_box = gtk_hbox_new (FALSE, 6);
+  priv->connect_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->connect_box,
                       FALSE,
@@ -3014,7 +3011,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                     self);
   gtk_container_add (GTK_CONTAINER (align), priv->advanced_expander);
 
-  /* TRANSLATORS: button for services that require an additional 
+  /* TRANSLATORS: button for services that require an additional
    * web login (clicking will open browser) */
   priv->portal_button = gtk_button_new_with_label (_("Log in"));
   gtk_widget_set_size_request (priv->portal_button, CARRICK_MIN_BUTTON_WIDTH, -1);
@@ -3067,7 +3064,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                       FALSE,
                       6);*/
 
-  priv->passphrase_box = gtk_hbox_new (FALSE, 6);
+  priv->passphrase_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (vbox), priv->passphrase_box,
                       FALSE, FALSE, 6);
 
@@ -3133,7 +3130,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   /* static IP UI */
   group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
-  priv->advanced_box = gtk_hbox_new (FALSE, 0);
+  priv->advanced_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_show (priv->advanced_box);
   gtk_container_add (GTK_CONTAINER (priv->expando), priv->advanced_box);
 
@@ -3275,7 +3272,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   row++;
 
   /* IP settings done */
-  sep = gtk_vseparator_new ();
+  sep = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
 
   gtk_widget_show (sep);
   gtk_box_pack_start (GTK_BOX (priv->advanced_box), sep,

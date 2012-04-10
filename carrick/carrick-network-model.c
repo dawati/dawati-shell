@@ -588,7 +588,7 @@ network_model_service_changed_cb (DBusGProxy  *service,
       DBusGProxy *service_proxy;
 
       /* HACK: connman (0.61) vpn handling is not consistent, so we
-       * remove the provider on idle (otherwise it'll just hang there). 
+       * remove the provider on idle (otherwise it'll just hang there).
        * But: set the state first, so notifications etc happen. */
 
       state = g_value_get_string (value);
@@ -621,7 +621,7 @@ network_model_service_changed_cb (DBusGProxy  *service,
        * Round to nearest ten, and avoid change notification */
       guint strength = 10 * ((g_value_get_uchar (value) + 5) / 10);
 
-      gtk_tree_model_get (self, &iter,
+      gtk_tree_model_get (GTK_TREE_MODEL (self), &iter,
                           CARRICK_COLUMN_STRENGTH, &current_strength,
                           -1);
       if (current_strength != strength)
@@ -886,7 +886,7 @@ network_model_update_property (const gchar *property,
           else
             {
               guint current_index;
-              gtk_tree_model_get (self, &iter,
+              gtk_tree_model_get (GTK_TREE_MODEL (self), &iter,
                                   CARRICK_COLUMN_INDEX, &current_index,
                                   -1);
               if (current_index != index)

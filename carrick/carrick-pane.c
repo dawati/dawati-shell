@@ -1491,9 +1491,9 @@ get_technology_box (const char *name,
   GtkWidget *switch_label;
   char *title;
 
-  tech_box = gtk_vbox_new (FALSE, 0);
+  tech_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (tech_box);
-  box = gtk_hbox_new (FALSE, 12);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_widget_show (box);
   *tech_switch = gtk_switch_new ();
   gtk_widget_show (*tech_switch);
@@ -1951,7 +1951,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_frame_set_shadow_type (GTK_FRAME (settings_frame), GTK_SHADOW_OUT);
   gtk_widget_show (settings_frame);
 
-  column = gtk_vbox_new (FALSE, 0);
+  column = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (column);
 
   banner = mux_banner_new (_("Settings"));
@@ -1965,7 +1965,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_box_pack_start (GTK_BOX (column), align,
                       FALSE, FALSE, 0);
 
-  box = gtk_vbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (box);
   gtk_container_add (GTK_CONTAINER (align), box);
 
@@ -1980,7 +1980,7 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_wifi_switch_callback),
                     self);
 
-  priv->wifi_sep = gtk_hseparator_new ();
+  priv->wifi_sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (priv->wifi_sep);
   gtk_box_pack_start (GTK_BOX (box), priv->wifi_sep,
                       FALSE, FALSE, 0);
@@ -1994,7 +1994,7 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
 
-  priv->ethernet_sep = gtk_hseparator_new ();
+  priv->ethernet_sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (priv->ethernet_sep);
   gtk_box_pack_start (GTK_BOX (box), priv->ethernet_sep,
                       FALSE, FALSE, 0);
@@ -2008,7 +2008,7 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_threeg_switch_callback),
                     self);
 
-  priv->threeg_sep = gtk_hseparator_new ();
+  priv->threeg_sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (priv->threeg_sep);
   gtk_box_pack_start (GTK_BOX (box), priv->threeg_sep,
                       FALSE, FALSE, 0);
@@ -2022,7 +2022,7 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_wimax_switch_callback),
                     self);
 
-  priv->wimax_sep = gtk_hseparator_new ();
+  priv->wimax_sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (priv->wimax_sep);
   gtk_box_pack_start (GTK_BOX (box), priv->wimax_sep,
                       FALSE, FALSE, 0);
@@ -2037,7 +2037,7 @@ carrick_pane_init (CarrickPane *self)
                     self);
 
   /* wider separator */
-  sep = gtk_hseparator_new ();
+  sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (sep);
   gtk_box_pack_start (GTK_BOX (column), sep,
                       FALSE, FALSE, 0);
@@ -2048,7 +2048,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_box_pack_start (GTK_BOX (column), align,
                       FALSE, FALSE, 0);
 
-  box = gtk_vbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (box);
   gtk_container_add (GTK_CONTAINER (align), box);
 
@@ -2074,7 +2074,7 @@ carrick_pane_init (CarrickPane *self)
                       FALSE,
                       FALSE,
                       0);
-  sep = gtk_hseparator_new ();
+  sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (sep);
   gtk_box_pack_start (GTK_BOX (priv->offline_mode_box), sep,
                       FALSE, FALSE, 6);
@@ -2096,7 +2096,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_frame_set_shadow_type (GTK_FRAME (net_list_frame), GTK_SHADOW_OUT);
   gtk_widget_show (net_list_frame);
 
-  column = gtk_vbox_new (FALSE, 0);
+  column = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_show (column);
 
   banner = mux_banner_new (_("Networks"));
@@ -2129,16 +2129,16 @@ carrick_pane_init (CarrickPane *self)
   gtk_box_pack_start (GTK_BOX (column), priv->service_list, TRUE, TRUE, 0);
 
   /* vpn widgets in the bottom */
-  priv->vpn_box = gtk_vbox_new (FALSE, 0);
+  priv->vpn_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_widget_set_sensitive (priv->vpn_box, FALSE);
   gtk_widget_set_no_show_all (priv->vpn_box, TRUE);
   gtk_box_pack_start (GTK_BOX (column), priv->vpn_box, FALSE, FALSE, 4);
 
-  sep = gtk_hseparator_new ();
+  sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (sep);
   gtk_box_pack_start (GTK_BOX (priv->vpn_box), sep, FALSE, FALSE, 0);
 
-  box = gtk_hbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_show (box);
   gtk_box_pack_start (GTK_BOX (priv->vpn_box), box, FALSE, FALSE, 4);
 

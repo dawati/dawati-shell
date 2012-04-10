@@ -136,7 +136,7 @@ static void ssl_box_add_error(auth_ui_data *ui_data, const char *msg)
 	GtkWidget *hbox, *text, *image;
 	int width;
 
-	hbox = gtk_hbox_new(FALSE, 8);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
 	gtk_box_pack_start(GTK_BOX(ui_data->ssl_box), hbox, FALSE, FALSE, 0);
 
 	image = gtk_image_new_from_stock(GTK_STOCK_DIALOG_ERROR,
@@ -276,7 +276,7 @@ static gboolean ui_write_prompt (ui_fragment_data *data)
 		visible = (data->opt->type == OC_FORM_OPT_TEXT);
 	}
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_box_pack_start(GTK_BOX(data->ui_data->ssl_box), hbox, FALSE, FALSE, 0);
 
 	text = gtk_label_new(label);
@@ -308,7 +308,7 @@ static gboolean ui_add_select (ui_fragment_data *data)
 	struct oc_form_opt_select *sopt = (void *)data->opt;
 	int i;
 
-	hbox = gtk_hbox_new(FALSE, 0);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_box_pack_start(GTK_BOX(data->ui_data->ssl_box), hbox, FALSE, FALSE, 0);
 
 	text = gtk_label_new(data->opt->label);
@@ -319,7 +319,7 @@ static gboolean ui_add_select (ui_fragment_data *data)
 	for (i = 0; i < sopt->nr_choices; i++) {
 		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo),
 		                               sopt->choices[i].label);
-		if (data->entry_text && 
+		if (data->entry_text &&
 		    !strcmp(data->entry_text, sopt->choices[i].name)) {
 			gtk_combo_box_set_active(GTK_COMBO_BOX(combo), i);
 			g_free(data->entry_text);
@@ -327,14 +327,14 @@ static gboolean ui_add_select (ui_fragment_data *data)
 		}
 	}
 	if (gtk_combo_box_get_active(GTK_COMBO_BOX(combo)) < 0) {
-		gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0); 
+		gtk_combo_box_set_active(GTK_COMBO_BOX(combo), 0);
 		data->entry_text = sopt->choices[0].name;
 	}
 
 	if (g_queue_peek_tail(ui_data->form_entries) == data)
 		gtk_widget_grab_focus (combo);
 	g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(combo_changed), data);
-	/* Hook up the 'show' signal to ensure that we override prompts on 
+	/* Hook up the 'show' signal to ensure that we override prompts on
 	   UI elements which may be coming later. */
 	g_signal_connect(G_OBJECT(combo), "show", G_CALLBACK(combo_changed), data);
 
@@ -545,7 +545,7 @@ static gboolean ui_form (struct oc_auth_form *form)
 		data = g_slice_new0 (ui_fragment_data);
 		data->ui_data = ui_data;
 		data->opt = opt;
-		
+
 		if (opt->type == OC_FORM_OPT_PASSWORD ||
 		    opt->type == OC_FORM_OPT_TEXT) {
 			g_mutex_lock (ui_data->form_mutex);
@@ -565,7 +565,7 @@ static gboolean ui_form (struct oc_auth_form *form)
 		} else
 			g_slice_free (ui_fragment_data, data);
 	}
-	
+
 	return ui_show(ui_data);
 }
 
@@ -615,7 +615,7 @@ static int nm_process_auth_form (struct openconnect_info *vpninfo,
 
 
 	g_mutex_unlock(ui_data->form_mutex);
-	
+
 	/* -1 = cancel,
 	 *  0 = failure,
 	 *  1 = success */
@@ -1120,12 +1120,12 @@ static gboolean cookie_obtained(auth_ui_data *ui_data)
 		/* user has chosen a new host, start from beginning */
 		while (ui_data->success_keys) {
 			struct gconf_key *k = ui_data->success_keys;
-			
+
 			ui_data->success_keys = k->next;
 			g_free(k->key);
 			g_free(k->value);
 			g_free(k);
-		}			
+		}
 		connect_host(ui_data);
 		return FALSE;
 	}
@@ -1180,7 +1180,7 @@ static gboolean cookie_obtained(auth_ui_data *ui_data)
 		g_free(k->key);
 		g_free(k->value);
 		g_free(k);
-	}			
+	}
 
 	return FALSE;
 }
@@ -1309,12 +1309,12 @@ static void build_main_dialog(auth_ui_data *ui_data)
 				 G_CALLBACK(gtk_main_quit), NULL);
 	g_free(title);
 
-	vbox = gtk_vbox_new(FALSE, 8);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 8);
 	gtk_box_pack_start(GTK_BOX(content), vbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
 	gtk_widget_show(vbox);
 
-	hbox = gtk_hbox_new(FALSE, 4);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 	gtk_widget_show(hbox);
 
@@ -1350,7 +1350,7 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	gtk_widget_set_size_request(frame, -1, -1);
 	gtk_widget_show(frame);
 
-	frame_box = gtk_vbox_new(FALSE, 4);
+	frame_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
 	gtk_container_set_border_width(GTK_CONTAINER(frame_box), 8);
 	gtk_container_add(GTK_CONTAINER(frame), frame_box);
 	gtk_widget_show(frame_box);
@@ -1364,11 +1364,11 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	gtk_widget_set_sensitive(ui_data->getting_form_label, FALSE);
 	gtk_box_pack_start(GTK_BOX(frame_box), ui_data->getting_form_label, FALSE, FALSE, 0);
 
-	ui_data->ssl_box = gtk_vbox_new(FALSE, 4);
+	ui_data->ssl_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
 	gtk_box_pack_start(GTK_BOX(frame_box), ui_data->ssl_box, FALSE, FALSE, 0);
 	gtk_widget_show(ui_data->ssl_box);
 
-	hbox = gtk_hbox_new (FALSE, 6);
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_box_pack_end(GTK_BOX(frame_box), hbox, FALSE, FALSE, 0);
 	gtk_widget_show(hbox);
 
