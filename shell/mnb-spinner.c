@@ -44,6 +44,8 @@ struct _MnbSpinnerPrivate
   gboolean         disposed : 1;
 };
 
+static CoglHandle template_material = NULL;
+
 static void
 mnb_spinner_dispose (GObject *object)
 {
@@ -158,28 +160,25 @@ mnb_spinner_get_preferred_width (ClutterActor *self,
                                  gfloat       *min_width_p,
                                  gfloat       *natural_width_p)
 {
-  MxWidget       *widget = MX_WIDGET (self);
-  ClutterTexture *background;
+  MxWidget   *widget = MX_WIDGET (self);
+  CoglHandle  background;
 
-  if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
+  if ((background = mx_widget_get_background_texture (widget)))
     {
-      gint tx_w, tx_h;
-
-      if (!CLUTTER_IS_TEXTURE (background))
-        return;
+      gint tx_w;
 
       /*
        * The background texture is a strip of squares making up the individual
        * frames in the animation, so the width matches the height of the
        * texture.
        */
-      clutter_texture_get_base_size (background, &tx_w, &tx_h);
+      tx_w = cogl_texture_get_width (background);
 
       if (min_width_p)
-        *min_width_p = tx_h;
+        *min_width_p = tx_w;
 
       if (natural_width_p)
-        *natural_width_p = tx_h;
+        *natural_width_p = tx_w;
 
       return;
     }
@@ -197,22 +196,19 @@ mnb_spinner_get_preferred_height (ClutterActor *self,
                                   gfloat       *min_height_p,
                                   gfloat       *natural_height_p)
 {
-  MxWidget       *widget = MX_WIDGET (self);
-  ClutterTexture *background;
+  MxWidget   *widget = MX_WIDGET (self);
+  CoglHandle  background;
 
-  if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
+  if ((background = mx_widget_get_background_texture (widget)))
     {
-      gint tx_w, tx_h;
-
-      if (!CLUTTER_IS_TEXTURE (background))
-        return;
+      gint tx_h;
 
       /*
        * The background texture is a strip of squares making up the individual
        * frames in the animation, so the width matches the height of the
        * texture.
        */
-      clutter_texture_get_base_size (background, &tx_w, &tx_h);
+      tx_h = cogl_texture_get_height (background);
 
       if (min_height_p)
         *min_height_p = tx_h;
@@ -241,34 +237,36 @@ mnb_spinner_paint (ClutterActor *self)
 {
   MnbSpinnerPrivate *priv   = MNB_SPINNER (self)->priv;
   MxWidget          *widget = MX_WIDGET (self);
-  ClutterTexture    *background;
+  CoglHandle         background;
 
   /*
    * This paints border-image.
    */
   CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->paint (self);
 
-  if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
+  if ((background = mx_widget_get_background_texture (widget)))
     {
-      gint            tx_w, tx_h;
       gfloat          tf_x, tf_y, tf_w, tf_h;
       guint8          opacity;
       ClutterActorBox box = { 0, };
       CoglHandle      material;
 
-      if (!CLUTTER_IS_TEXTURE (background))
-        return;
+      /* setup the template material */
+      if (!template_material)
+        template_material = cogl_material_new ();
+
+      /* create the material and apply opacity */
+      material = cogl_material_copy (template_material);
 
       opacity = clutter_actor_get_paint_opacity (self);
 
       if (opacity == 0)
         return;
 
-      clutter_texture_get_base_size (background, &tx_w, &tx_h);
-
-      material = clutter_texture_get_cogl_material (background);
-
       cogl_material_set_color4ub (material, opacity, opacity, opacity, opacity);
+
+      /* add the texture */
+      cogl_material_set_layer (material, 0, background);
 
       clutter_actor_get_allocation_box (self, &box);
 
@@ -306,7 +304,7 @@ mnb_spinner_constructed (GObject *self)
 {
   MnbSpinnerPrivate *priv = MNB_SPINNER (self)->priv;
   MxWidget          *widget = MX_WIDGET (self);
-  ClutterTexture    *background;
+  CoglHandle         background;
   ClutterTimeline   *timeline;
 
   /*
@@ -319,24 +317,18 @@ mnb_spinner_constructed (GObject *self)
    */
   mx_stylable_style_changed (MX_STYLABLE (widget), MX_STYLE_CHANGED_FORCE);
 
-  if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
+  if ((background = mx_widget_get_background_texture (widget)))
     {
       gint  tx_w, tx_h;
       guint duration;
-
-      if (!CLUTTER_IS_TEXTURE (background))
-        {
-          g_critical ("Expected ClutterTexture, but got %s",
-                      G_OBJECT_TYPE_NAME (background));
-          return;
-        }
 
       /*
        * The background texture is a strip of squares making up the individual
        * frames in the animation, so the width matches the height of the
        * texture.
        */
-      clutter_texture_get_base_size (background, &tx_w, &tx_h);
+      tx_w = cogl_texture_get_width (background);
+      tx_h = cogl_texture_get_height (background);
 
       priv->n_frames = tx_w / tx_h;
 
