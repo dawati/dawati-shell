@@ -391,7 +391,6 @@ GList *
 _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
                                      ZeitgeistResultSet  *set)
 {
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
   GList *ret = NULL;
   guint i; /* loop index */
 
