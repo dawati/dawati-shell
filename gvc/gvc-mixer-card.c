@@ -26,11 +26,12 @@
 #include <unistd.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <pulse/pulseaudio.h>
 
 #include "gvc-mixer-card.h"
+#include "gvc-mixer-card-private.h"
 
 #define GVC_MIXER_CARD_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_MIXER_CARD, GvcMixerCardPrivate))
 
@@ -143,13 +144,19 @@ gvc_mixer_card_set_icon_name (GvcMixerCard *card,
         return TRUE;
 }
 
+/**
+ * gvc_mixer_card_get_profile: (skip)
+ * @card:
+ *
+ * Returns:
+ */
 GvcMixerCardProfile *
 gvc_mixer_card_get_profile (GvcMixerCard *card)
 {
         GList *l;
 
         g_return_val_if_fail (GVC_IS_MIXER_CARD (card), NULL);
-        g_return_val_if_fail (card->priv->profiles != NULL, FALSE);
+        g_return_val_if_fail (card->priv->profiles != NULL, NULL);
 
         for (l = card->priv->profiles; l != NULL; l = l->next) {
                 GvcMixerCardProfile *p = l->data;
@@ -255,10 +262,15 @@ gvc_mixer_card_change_profile (GvcMixerCard *card,
         return TRUE;
 }
 
+/**
+ * gvc_mixer_card_get_profiles:
+ *
+ * Return value: (transfer none) (element-type GvcMixerCardProfile):
+ */
 const GList *
 gvc_mixer_card_get_profiles (GvcMixerCard *card)
 {
-        g_return_val_if_fail (GVC_IS_MIXER_CARD (card), FALSE);
+        g_return_val_if_fail (GVC_IS_MIXER_CARD (card), NULL);
         return card->priv->profiles;
 }
 
@@ -273,6 +285,10 @@ sort_profiles (GvcMixerCardProfile *a,
         return -1;
 }
 
+/**
+ * gvc_mixer_card_set_profiles:
+ * @profiles: (transfer full) (element-type GvcMixerCardProfile):
+ */
 gboolean
 gvc_mixer_card_set_profiles (GvcMixerCard *card,
                              GList        *profiles)

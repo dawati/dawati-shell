@@ -25,11 +25,13 @@
 #include <unistd.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <pulse/pulseaudio.h>
 
 #include "gvc-mixer-source.h"
+#include "gvc-mixer-stream-private.h"
+#include "gvc-channel-map-private.h"
 
 #define GVC_MIXER_SOURCE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_MIXER_SOURCE, GvcMixerSourcePrivate))
 
@@ -41,7 +43,6 @@ struct GvcMixerSourcePrivate
 static void     gvc_mixer_source_class_init (GvcMixerSourceClass *klass);
 static void     gvc_mixer_source_init       (GvcMixerSource      *mixer_source);
 static void     gvc_mixer_source_finalize   (GObject            *object);
-static void     gvc_mixer_source_dispose    (GObject           *object);
 
 G_DEFINE_TYPE (GvcMixerSource, gvc_mixer_source, GVC_TYPE_MIXER_STREAM)
 
@@ -137,26 +138,12 @@ gvc_mixer_source_change_port (GvcMixerStream *stream,
 #endif /* PA_MICRO > 15 */
 }
 
-static GObject *
-gvc_mixer_source_constructor (GType                  type,
-                            guint                  n_construct_properties,
-                            GObjectConstructParam *construct_params)
-{
-        GObject        *object;
-
-        object = G_OBJECT_CLASS (gvc_mixer_source_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        return object;
-}
-
 static void
 gvc_mixer_source_class_init (GvcMixerSourceClass *klass)
 {
         GObjectClass        *object_class = G_OBJECT_CLASS (klass);
         GvcMixerStreamClass *stream_class = GVC_MIXER_STREAM_CLASS (klass);
 
-        object_class->constructor = gvc_mixer_source_constructor;
-        object_class->dispose = gvc_mixer_source_dispose;
         object_class->finalize = gvc_mixer_source_finalize;
 
         stream_class->push_volume = gvc_mixer_source_push_volume;
@@ -173,15 +160,6 @@ gvc_mixer_source_init (GvcMixerSource *source)
 }
 
 static void
-gvc_mixer_source_dispose (GObject *object)
-{
-        g_return_if_fail (object != NULL);
-        g_return_if_fail (GVC_IS_MIXER_SOURCE (object));
-
-        G_OBJECT_CLASS (gvc_mixer_source_parent_class)->dispose (object);
-}
-
-static void
 gvc_mixer_source_finalize (GObject *object)
 {
         GvcMixerSource *mixer_source;
@@ -195,6 +173,14 @@ gvc_mixer_source_finalize (GObject *object)
         G_OBJECT_CLASS (gvc_mixer_source_parent_class)->finalize (object);
 }
 
+/**
+ * gvc_mixer_source_new: (skip)
+ * @context:
+ * @index:
+ * @map:
+ *
+ * Returns:
+ */
 GvcMixerStream *
 gvc_mixer_source_new (pa_context    *context,
                       guint          index,

@@ -25,7 +25,7 @@
 #include <unistd.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <pulse/pulseaudio.h>
 
@@ -60,25 +60,12 @@ gvc_mixer_source_output_change_is_muted (GvcMixerStream *stream,
         return TRUE;
 }
 
-static GObject *
-gvc_mixer_source_output_constructor (GType                  type,
-                                  guint                  n_construct_properties,
-                                  GObjectConstructParam *construct_params)
-{
-        GObject       *object;
-
-        object = G_OBJECT_CLASS (gvc_mixer_source_output_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        return object;
-}
-
 static void
 gvc_mixer_source_output_class_init (GvcMixerSourceOutputClass *klass)
 {
         GObjectClass        *object_class = G_OBJECT_CLASS (klass);
         GvcMixerStreamClass *stream_class = GVC_MIXER_STREAM_CLASS (klass);
 
-        object_class->constructor = gvc_mixer_source_output_constructor;
         object_class->finalize = gvc_mixer_source_output_finalize;
 
         stream_class->push_volume = gvc_mixer_source_output_push_volume;
@@ -108,6 +95,14 @@ gvc_mixer_source_output_finalize (GObject *object)
         G_OBJECT_CLASS (gvc_mixer_source_output_parent_class)->finalize (object);
 }
 
+/**
+ * gvc_mixer_source_output_new: (skip)
+ * @context:
+ * @index:
+ * @map:
+ *
+ * Returns:
+ */
 GvcMixerStream *
 gvc_mixer_source_output_new (pa_context    *context,
                              guint          index,

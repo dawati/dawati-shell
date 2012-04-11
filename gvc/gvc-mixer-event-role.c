@@ -25,12 +25,14 @@
 #include <unistd.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <pulse/pulseaudio.h>
 #include <pulse/ext-stream-restore.h>
 
 #include "gvc-mixer-event-role.h"
+#include "gvc-mixer-stream-private.h"
+#include "gvc-channel-map-private.h"
 
 #define GVC_MIXER_EVENT_ROLE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_MIXER_EVENT_ROLE, GvcMixerEventRolePrivate))
 
@@ -154,25 +156,12 @@ gvc_mixer_event_role_get_property (GObject     *object,
         }
 }
 
-static GObject *
-gvc_mixer_event_role_constructor (GType                  type,
-                                  guint                  n_construct_properties,
-                                  GObjectConstructParam *construct_params)
-{
-        GObject       *object;
-
-        object = G_OBJECT_CLASS (gvc_mixer_event_role_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        return object;
-}
-
 static void
 gvc_mixer_event_role_class_init (GvcMixerEventRoleClass *klass)
 {
         GObjectClass        *object_class = G_OBJECT_CLASS (klass);
         GvcMixerStreamClass *stream_class = GVC_MIXER_STREAM_CLASS (klass);
 
-        object_class->constructor = gvc_mixer_event_role_constructor;
         object_class->finalize = gvc_mixer_event_role_finalize;
         object_class->set_property = gvc_mixer_event_role_set_property;
         object_class->get_property = gvc_mixer_event_role_get_property;
@@ -215,6 +204,14 @@ gvc_mixer_event_role_finalize (GObject *object)
         G_OBJECT_CLASS (gvc_mixer_event_role_parent_class)->finalize (object);
 }
 
+/**
+ * gvc_mixer_event_role_new: (skip)
+ * @context:
+ * @device:
+ * @channel_map:
+ *
+ * Returns:
+ */
 GvcMixerStream *
 gvc_mixer_event_role_new (pa_context *context,
                           const char *device,

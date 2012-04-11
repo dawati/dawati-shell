@@ -25,11 +25,13 @@
 #include <unistd.h>
 
 #include <glib.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <pulse/pulseaudio.h>
 
 #include "gvc-mixer-stream.h"
+#include "gvc-mixer-stream-private.h"
+#include "gvc-channel-map-private.h"
 
 #define GVC_MIXER_STREAM_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_MIXER_STREAM, GvcMixerStreamPrivate))
 
@@ -126,6 +128,12 @@ gvc_mixer_stream_get_channel_map (GvcMixerStream *stream)
         return stream->priv->channel_map;
 }
 
+/**
+ * gvc_mixer_stream_get_volume:
+ * @stream:
+ *
+ * Returns: (type guint32) (transfer none):
+ */
 pa_volume_t
 gvc_mixer_stream_get_volume (GvcMixerStream *stream)
 {
@@ -143,6 +151,13 @@ gvc_mixer_stream_get_decibel (GvcMixerStream *stream)
                         (pa_volume_t) gvc_channel_map_get_volume(stream->priv->channel_map)[VOLUME]);
 }
 
+/**
+ * gvc_mixer_stream_set_volume:
+ * @stream:
+ * @volume: (type guint32):
+ *
+ * Returns:
+ */
 gboolean
 gvc_mixer_stream_set_volume (GvcMixerStream *stream,
                               pa_volume_t     volume)
@@ -373,6 +388,21 @@ gvc_mixer_stream_get_icon_name (GvcMixerStream *stream)
         return stream->priv->icon_name;
 }
 
+/**
+ * gvc_mixer_stream_get_gicon:
+ * @stream: a #GvcMixerStream
+ *
+ * Returns: (transfer full): a new #GIcon
+ */
+GIcon *
+gvc_mixer_stream_get_gicon (GvcMixerStream *stream)
+{
+        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), NULL);
+        if (stream->priv->icon_name == NULL)
+                return NULL;
+        return g_themed_icon_new_with_default_fallbacks (stream->priv->icon_name);
+}
+
 gboolean
 gvc_mixer_stream_set_icon_name (GvcMixerStream *stream,
                                 const char     *icon_name)
@@ -386,6 +416,12 @@ gvc_mixer_stream_set_icon_name (GvcMixerStream *stream,
         return TRUE;
 }
 
+/**
+ * gvc_mixer_stream_get_base_volume:
+ * @stream:
+ *
+ * Returns: (type guint32) (transfer none):
+ */
 pa_volume_t
 gvc_mixer_stream_get_base_volume (GvcMixerStream *stream)
 {
@@ -394,6 +430,13 @@ gvc_mixer_stream_get_base_volume (GvcMixerStream *stream)
         return stream->priv->base_volume;
 }
 
+/**
+ * gvc_mixer_stream_set_base_volume:
+ * @stream:
+ * @base_volume: (type guint32):
+ *
+ * Returns:
+ */
 gboolean
 gvc_mixer_stream_set_base_volume (GvcMixerStream *stream,
                                   pa_volume_t base_volume)
@@ -461,10 +504,15 @@ gvc_mixer_stream_change_port (GvcMixerStream *stream,
         return GVC_MIXER_STREAM_GET_CLASS (stream)->change_port (stream, port);
 }
 
+/**
+ * gvc_mixer_stream_get_ports:
+ *
+ * Return value: (transfer none) (element-type GvcMixerStreamPort):
+ */
 const GList *
 gvc_mixer_stream_get_ports (GvcMixerStream *stream)
 {
-        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
+        g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), NULL);
         return stream->priv->ports;
 }
 
@@ -479,6 +527,10 @@ sort_ports (GvcMixerStreamPort *a,
         return -1;
 }
 
+/**
+ * gvc_mixer_stream_set_ports:
+ * @ports: (transfer full) (element-type GvcMixerStreamPort):
+ */
 gboolean
 gvc_mixer_stream_set_ports (GvcMixerStream *stream,
                             GList          *ports)
