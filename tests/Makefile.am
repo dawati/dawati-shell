@@ -1,6 +1,6 @@
 
 AM_CPPFLAGS = \
-	$(MUTTER_PLUGIN_CFLAGS) \
+	$(DAWATI_SHELL_CFLAGS) \
 	-I$(top_srcdir)/penge \
 	-I$(top_srcdir)/shell \
 	-I$(top_builddir)/shell \
@@ -19,7 +19,7 @@ AM_CPPFLAGS = \
 #                c&p it into test-launcher.c
 
 LDADD = \
-	$(MUTTER_PLUGIN_LIBS)
+	$(DAWATI_SHELL_LIBS)
 
 noinst_PROGRAMS = \
 	test-screensized \

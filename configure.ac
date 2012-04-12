@@ -81,6 +81,8 @@ MX_DEPS="mx-2.0 >= 1.99.4"
 CLUTTER_GTK_DEPS="clutter-gtk-1.0"
 MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
 ZEITGEIST_DEPS="zeitgeist-1.0 >= 0.3.12"
+GJS_DEPS="gjs-internals-1.0 >= 1.32.0"
+MUTTER_DEPS="libmutter >= 3.4"
 
 GLIB_GSETTINGS
 
@@ -135,17 +137,26 @@ AC_ARG_ENABLE([mutter],
               [enable_mutter=yes])
 
 if test "$enable_mutter" != "no"; then
-PKG_CHECK_MODULES(MUTTER_PLUGIN,
+PKG_CHECK_MODULES(DAWATI_SHELL,
                   [gio-unix-2.0
                    dbus-glib-1
                    gconf-2.0
-                   mutter-plugins >= 3.4
-                   libmutter >= 3.4
+                   $MUTTER_DEPS
                    libstartup-notification-1.0
+                   libgnome-menu-3.0
+                   libsoup-2.4
                    $GTK_DEPS
                    $MX_DEPS
+                   $GJS_DEPS
 		   xrandr
 		   xscrnsaver])
+
+PKG_CHECK_MODULES(DAWATI_SHELL_JS, gio-2.0 $GJS_DEPS)
+
+MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
+MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
+AC_SUBST(MUTTER_GIR_DIR)
+AC_SUBST(MUTTER_TYPELIB_DIR)
 fi
 
 AM_CONDITIONAL([HAVE_MUTTER], [test "$enable_mutter" != "no"])
@@ -253,9 +264,6 @@ AC_SUBST(GLIB_GENMARSHAL)
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)
 
-MUTTER_PLUGIN_DIR=$($PKG_CONFIG mutter-plugins --variable=plugindir)
-AC_SUBST(MUTTER_PLUGIN_DIR)
-
 PLUGIN_LT_CURRENT=lt_current
 PLUGIN_LT_REV=lt_revision
 PLUGIN_AGE=lt_age
@@ -288,12 +296,16 @@ AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                $MX_DEPS
                                libgnome-menu-3.0
                                libwnck-3.0])
+
 # Bluetooth
 AS_DAWATI_PANEL(bluetooth, [$MX_DEPS
                             libnotify
                             gnome-bluetooth-1.0])
-BLUETOOTH_APPLET_LIBS=`$PKG_CONFIG --variable=applet_libs gnome-bluetooth-1.0`
-AC_SUBST(BLUETOOTH_APPLET_LIBS)
+BLUETOOTH_DIR=`$PKG_CONFIG --variable=applet_libdir gnome-bluetooth-1.0`
+BLUETOOTH_LIBS=`$PKG_CONFIG --variable=applet_libs gnome-bluetooth-1.0`
+AC_SUBST([BLUETOOTH_LIBS],["$BLUETOOTH_LIBS"])
+AC_SUBST([BLUETOOTH_DIR],["$BLUETOOTH_DIR"])
+AC_DEFINE_UNQUOTED([BLUETOOTH_DIR],["$BLUETOOTH_DIR"],[Path to installed GnomeBluetooth typelib and library])
 
 # Date & time
 AS_DAWATI_PANEL(datetime, [glib-2.0
@@ -574,6 +586,7 @@ data/theme/web/Makefile
 data/mx/Makefile
 
 shell/Makefile
+shell/js/Makefile
 shell/effects/Makefile
 shell/alttab/Makefile
 shell/notifications/Makefile
@@ -682,7 +695,6 @@ echo "
 
         Configuration:
 
-            Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug}
 	    Profile          :    ${enable_profile}
 	    Scaled background:    ${scale_background}

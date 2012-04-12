@@ -1,10 +1,11 @@
 noinst_LTLIBRARIES = libpresence.la
 
 AM_CFLAGS = \
-	@MUTTER_PLUGIN_CFLAGS@
+	$(DAWATI_SHELL_CFLAGS)
 
-libpresence_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
-libpresence_la_SOURCES = \
+libpresence_la_LIBADD = 	\
+	$(DAWATI_SHELL_LIBS)
+libpresence_la_SOURCES =	\
 	mnb-presence.c		\
 	mnb-presence.h		\
 	gs-idle-monitor.c	\

@@ -13,7 +13,7 @@ BUILT_SOURCES = \
 dawati_panel_bluetooth_LDADD = \
 	$(LIBMPL_LIBS) \
 	$(PANEL_BLUETOOTH_LIBS) \
-	$(BLUETOOTH_APPLET_LIBS) \
+	$(BLUETOOTH_LIBS) \
 	$(top_builddir)/carrick/libcarrick.la \
 	$(NULL)
 

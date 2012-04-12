@@ -1,0 +1,13 @@
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+
+/* The name of this package (not localized) */
+const PACKAGE_NAME = '@PACKAGE_NAME@';
+/* The version of this package */
+const PACKAGE_VERSION = '@PACKAGE_VERSION@';
+/* gettext package */
+const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
+/* locale dir */
+const LOCALEDIR = '@datadir@/locale';
+/* other standard directories */
+const LIBEXECDIR = '@libexecdir@';
+const SYSCONFDIR = '@sysconfdir@';

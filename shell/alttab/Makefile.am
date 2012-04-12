@@ -2,12 +2,12 @@
 noinst_LTLIBRARIES = libalttab.la
 
 AM_CFLAGS = \
-	@MUTTER_PLUGIN_CFLAGS@ \
+	$(DAWATI_SHELL_CFLAGS) \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" 	\
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\"	\
 	-I$(top_srcdir)/libdawati-panel
 
-libalttab_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
+libalttab_la_LIBADD = $(DAWATI_SHELL_LIBS)
 libalttab_la_SOURCES =					\
 			mnb-alttab.c			\
 			mnb-alttab.h			\

@@ -148,6 +148,10 @@
 /po/.intltool-merge-cache
 /po/POTFILES
 /po/stamp-it
+/shell/*.gir
+/shell/*.typelib
+/shell/js/misc/config.js
+/shell/dawati-shell
 /shell/marshal.[ch]
 /shell/mnb-enum-types.c
 /shell/mnb-enum-types.h

@@ -21,6 +21,7 @@ G_END_DECLS
 /*** BEGIN value-header ***/
 GType @enum_name@_get_type (void) G_GNUC_CONST;
 #define MNB_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
+#define SHELL_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
 
 /*** END value-header ***/
 

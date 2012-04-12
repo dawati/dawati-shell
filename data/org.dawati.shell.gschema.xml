@@ -1,11 +1,31 @@
 <schemalist>
-  <schema id="org.dawati.shell.toolbar" path="/org/dawati/shell/toolbar/">
+  <schema id="org.dawati.shell" path="/org/dawati/shell/">
+    <child name="clock" schema="org.dawati.shell.clock"/>
+    <child name="toolbar" schema="org.dawati.shell.toolbar"/>
+  </schema>
 
+  <schema id="org.dawati.shell.toolbar" path="/org/dawati/shell/toolbar/">
     <key name="order" type="as">
       <default>['dawati-panel-myzone','dawati-panel-switcher','dawati-panel-applications','dawati-panel-people','dawati-panel-devices','dawati-panel-datetime','dawati-panel-bluetooth','carrick','dawati-power-icon']</default>
       <summary>Order of panels on toolbar</summary>
       <description> Determines the order of panels on the toolbar.</description>
     </key>
+  </schema>
 
+  <schema id="org.dawati.shell.clock" path="/org/gnome/shell/clock/">
+    <key name="show-seconds" type="b">
+      <default>false</default>
+      <summary>Show time with seconds</summary>
+      <description>
+        If true, display seconds in time.
+      </description>
+    </key>
+    <key name="show-date" type="b">
+      <default>false</default>
+      <summary>Show date in clock</summary>
+      <description>
+        If true, display date in the clock, in addition to time.
+      </description>
+    </key>
   </schema>
 </schemalist>

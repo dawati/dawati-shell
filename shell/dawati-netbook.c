@@ -142,7 +142,7 @@ static const MetaPluginInfo * plugin_info (MetaPlugin *plugin);
 
 static gboolean xevent_filter (MetaPlugin *plugin, XEvent *xev);
 
-META_PLUGIN_DECLARE (DawatiNetbookPlugin, dawati_netbook_plugin);
+G_DEFINE_TYPE (DawatiNetbookPlugin, dawati_netbook_plugin, META_TYPE_PLUGIN);
 
 /*
  * Actor private data accessor

@@ -19,6 +19,7 @@ SUBDIRS = \
 
 themedir = $(DAWATI_THEME_DIR)
 dist_theme_DATA = \
+	dawati-shell.css \
 	mutter-dawati.css \
 	$(NULL)
 

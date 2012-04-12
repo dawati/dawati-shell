@@ -1,11 +1,11 @@
 noinst_LTLIBRARIES = libnotifications.la
 
-AM_CFLAGS = \
-	$(MUTTER_PLUGIN_CFLAGS) \
-	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
+AM_CFLAGS = 						\
+	$(DAWATI_SHELL_CFLAGS)	 			\
+	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" 	\
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\"
 
-libnotifications_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
+libnotifications_la_LIBADD = $(DAWATI_SHELL_LIBS)
 libnotifications_la_SOURCES =				\
 			$(DBUS_GLUE) 			\
 			dawati-netbook-notify-store.c   \

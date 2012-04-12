@@ -2,12 +2,12 @@
 noinst_LTLIBRARIES = libeffects.la
 
 AM_CFLAGS = \
-	@MUTTER_PLUGIN_CFLAGS@ \
+	$(DAWATI_SHELL_CFLAGS) \
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" \
 	-I$(top_srcdir)/shell
 
-libeffects_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
+libeffects_la_LIBADD = $(DAWATI_SHELL_LIBS)
 libeffects_la_SOURCES =					\
 			mnb-switch-zones-effect.c	\
 			mnb-switch-zones-effect.h	\
