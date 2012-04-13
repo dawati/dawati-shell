@@ -60,7 +60,7 @@ load_plugin (const char *filename)
   DEBUG ("Add path: '%s'", path);
   DEBUG ("Module: '%s'", module);
 
-  peas_engine_insert_search_path (PEAS_ENGINE (engine), 0, path, NULL);
+  peas_engine_add_search_path (PEAS_ENGINE (engine), path, NULL);
   app = mnb_home_plugins_engine_create_app (engine, module, "/");
 
   dawati_home_plugins_app_init (app);
