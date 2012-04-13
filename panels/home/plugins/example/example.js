@@ -17,15 +17,20 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+const Lang = imports.lang;
+
 imports.gi.versions.Mx = '2.0';
 
 const Clutter = imports.gi.Clutter;
 const Mx = imports.gi.Mx;
 const Gio = imports.gi.Gio;
 
-function app_plugin () {}
+const Plugins = imports.gi.DawatiHomePlugins;
 
-app_plugin.prototype = {
+const Example = new Lang.Class({
+  Name: 'Example',
+  Implements: [ Plugins.App ],
+
   init: function() {
     print("Init");
     print(this.settings_path);
@@ -61,15 +66,15 @@ app_plugin.prototype = {
 
     this._settings.bind('picture', entry, 'text', 0);
 
-    table.add_actor(label, 0, 0);
-    table.add_actor(entry, 0, 1);
+    table.insert_actor(label, 0, 0);
+    table.insert_actor(entry, 0, 1);
 
     print(this.settings_path);
 
     return table;
   },
-}
+});
 
 var extensions = {
-  'DawatiHomePluginsApp': app_plugin,
+  'DawatiHomePluginsApp': Example,
 };

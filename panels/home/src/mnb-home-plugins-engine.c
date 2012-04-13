@@ -81,6 +81,7 @@ mnb_home_plugins_engine_init (MnbHomePluginsEngine *self)
 
   peas_engine_add_search_path (PEAS_ENGINE (self), plugins_dir, NULL);
 
+  /* FIXME: only set this when required */
   g_irepository_prepend_search_path (".");
 
   if (!g_irepository_require (g_irepository_get_default (),
@@ -124,6 +125,10 @@ mnb_home_plugins_engine_create_app (MnbHomePluginsEngine *self,
   plugin_info = peas_engine_get_plugin_info (PEAS_ENGINE (self), module);
 
   g_return_val_if_fail (plugin_info != NULL, NULL);
+
+  DEBUG ("Loading plugin '%s' from '%s'",
+      peas_plugin_info_get_module_name (plugin_info),
+      peas_plugin_info_get_module_dir (plugin_info));
 
   if (!peas_engine_load_plugin (PEAS_ENGINE (self), plugin_info))
     {

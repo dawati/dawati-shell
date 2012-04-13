@@ -618,6 +618,7 @@ panels/home/Makefile
 panels/home/src/Makefile
 panels/home/data/Makefile
 panels/home/plugins/Makefile
+panels/home/plugins/example/Makefile
 
 panels/music/Makefile
 
