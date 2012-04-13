@@ -48,42 +48,42 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
   /*
    * Bunch of standard Mutter shortcuts that we alias to the Alt+Tab
    */
-  meta_keybindings_set_custom_handler ("switch_windows",
+  meta_keybindings_set_custom_handler ("switch-windows",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_windows_backward",
+  meta_keybindings_set_custom_handler ("switch-windows-backward",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_panels",
+  meta_keybindings_set_custom_handler ("switch-panels",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_panels_backward",
+  meta_keybindings_set_custom_handler ("switch-panels-backward",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_group",
+  meta_keybindings_set_custom_handler ("cycle-group",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_group_backward",
+  meta_keybindings_set_custom_handler ("cycle-group-backward",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_windows",
+  meta_keybindings_set_custom_handler ("cycle-windows",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_windows_backward",
+  meta_keybindings_set_custom_handler ("cycle-windows-backward",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_panels",
+  meta_keybindings_set_custom_handler ("cycle-panels",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("cycle_panels_backward",
+  meta_keybindings_set_custom_handler ("cycle-panels-backward",
                                        mnb_alttab_overlay_alt_tab_key_handler,
                                        overlay, NULL);
 
-  meta_keybindings_set_custom_handler ("tab_popup_select",
+  meta_keybindings_set_custom_handler ("tab-popup-select",
                                        mnb_alttab_overlay_alt_tab_select_handler,
                                        overlay, NULL);
 
-  meta_keybindings_set_custom_handler ("tab_popup_cancel",
+  meta_keybindings_set_custom_handler ("tab-popup-cancel",
                                        mnb_alttab_overlay_alt_tab_cancel_handler,
                                        overlay, NULL);
 
@@ -91,27 +91,27 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
    * Install NOP handler for shortcuts that are related to Alt+Tab that we
    * want disabled.
    */
-  meta_keybindings_set_custom_handler ("switch_group",
+  meta_keybindings_set_custom_handler ("switch-group",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_group_backward",
+  meta_keybindings_set_custom_handler ("switch-group-backward",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_group_backward",
+  meta_keybindings_set_custom_handler ("switch-group-backward",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
 #if 0
-  meta_keybindings_set_custom_handler ("switch_to_workspace_left",
+  meta_keybindings_set_custom_handler ("switch-to-workspace-left",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_to_workspace_right",
+  meta_keybindings_set_custom_handler ("switch-to-workspace-right",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
 #endif
-  meta_keybindings_set_custom_handler ("switch_to_workspace_up",
+  meta_keybindings_set_custom_handler ("switch-to-workspace-up",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("switch_to_workspace_down",
+  meta_keybindings_set_custom_handler ("switch-to-workspace-down",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
 
@@ -119,22 +119,22 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
    * Disable various shortcuts other that are not compatible with dawati UI
    * paradigm -- strictly speaking not alttab related, but for now here.
    */
-  meta_keybindings_set_custom_handler ("activate_window_menu",
+  meta_keybindings_set_custom_handler ("activate-window-menu",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("show_desktop",
+  meta_keybindings_set_custom_handler ("show-desktop",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("toggle_maximized",
+  meta_keybindings_set_custom_handler ("toggle-maximized",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
   meta_keybindings_set_custom_handler ("maximize",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("maximize_vertically",
+  meta_keybindings_set_custom_handler ("maximize-vertically",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("maximize_horizontally",
+  meta_keybindings_set_custom_handler ("maximize-horizontally",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
   meta_keybindings_set_custom_handler ("unmaximize",
@@ -143,7 +143,7 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
   meta_keybindings_set_custom_handler ("minimize",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
-  meta_keybindings_set_custom_handler ("toggle_shadow",
+  meta_keybindings_set_custom_handler ("toggle-shadow",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
   meta_keybindings_set_custom_handler ("close",
