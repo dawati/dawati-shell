@@ -66,8 +66,8 @@ const Example = new Lang.Class({
 
     this._settings.bind('picture', entry, 'text', 0);
 
-    table.add_actor(label, 0, 0);
-    table.add_actor(entry, 0, 1);
+    table.insert_actor(label, 0, 0);
+    table.insert_actor(entry, 0, 1);
 
     print(this.settings_path);
 
