@@ -96,6 +96,8 @@ AC_ARG_WITH([style],
             [style=$withval],
             [style=$PACKAGE])
 
+AM_CONDITIONAL([DAWATI_MX_THEME], [test "$style" = $PACKAGE])
+
 DAWATI_RUNTIME_THEME_DIR="${datadir}/${style}/theme"
 AC_SUBST([DAWATI_RUNTIME_THEME_DIR])
 

@@ -1,4 +1,7 @@
 SUBDIRS = theme
+if DAWATI_MX_THEME
+SUBDIRS += mx
+endif
 
 gsettings_SCHEMAS = org.dawati.shell.gschema.xml
 
