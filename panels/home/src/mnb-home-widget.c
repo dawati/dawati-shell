@@ -173,9 +173,9 @@ mnb_home_widget_dispose (GObject *self)
 {
   MnbHomeWidgetPrivate *priv = MNB_HOME_WIDGET (self)->priv;
 
-  g_object_unref (priv->settings);
-  g_object_unref (priv->engine);
-  g_object_unref (priv->app);
+  g_clear_object (&priv->settings);
+  g_clear_object (&priv->engine);
+  g_clear_object (&priv->app);
 
   G_OBJECT_CLASS (mnb_home_widget_parent_class)->dispose (self);
 }
