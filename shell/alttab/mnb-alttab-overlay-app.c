@@ -35,7 +35,6 @@ struct _MnbAlttabOverlayAppPrivate
 {
   MetaWindowActor *mcw;     /* MetaWindowActor we represent */
 
-  gboolean      disposed : 1; /* disposed guard   */
   gboolean      active   : 1;
 };
 
@@ -58,13 +57,12 @@ mnb_alttab_overlay_app_dispose (GObject *object)
 {
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (object)->priv;
 
-  if (priv->disposed)
-    return;
-
-  priv->disposed = TRUE;
-
-  g_object_weak_unref (G_OBJECT (priv->mcw),
-                       mnb_alttab_overlay_app_origin_weak_notify, object);
+  if (priv->mcw)
+    {
+      g_object_weak_unref (G_OBJECT (priv->mcw),
+                           mnb_alttab_overlay_app_origin_weak_notify, object);
+      priv->mcw = NULL;
+    }
 
   G_OBJECT_CLASS (mnb_alttab_overlay_app_parent_class)->dispose (object);
 }
