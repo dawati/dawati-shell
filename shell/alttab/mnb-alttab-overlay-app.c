@@ -120,7 +120,7 @@ mnb_alttab_overlay_app_origin_weak_notify (gpointer data, GObject *obj)
   /*
    * The original MutterWindow destroyed, destroy self.
    */
-  clutter_actor_destroy (self);
+  clutter_actor_remove_child (clutter_actor_get_parent (self), self);
 }
 
 static void
