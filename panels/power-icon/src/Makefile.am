@@ -11,7 +11,6 @@ libexec_PROGRAMS = \
 
 dawati_power_icon_LDADD = \
 	$(PANEL_POWER_ICON_LIBS) \
-	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(top_builddir)/gpm/libgpm.la \
 	$(NULL)
 

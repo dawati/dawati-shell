@@ -23,12 +23,10 @@ endif
 
 LDADD = \
 	$(PANEL_POWER_ICON_LIBS) \
-	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(NULL)
 
 test_battery_notification_LDADD = \
 	$(PANEL_POWER_ICON_LIBS) \
-	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(top_builddir)/gpm/libgpm.la \
 	$(NULL)
 

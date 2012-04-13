@@ -452,11 +452,6 @@ AM_CONDITIONAL([USE_PENGE_MAILME],
 
 if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel = xyes; then
    #
-   # Egg Console Kit
-   #
-   PKG_CHECK_MODULES(ECK, dbus-glib-1)
-
-   #
    # Gnome Power Manager
    #
    PKG_CHECK_MODULES(GPM, [glib-2.0
@@ -471,7 +466,8 @@ if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel 
    PKG_CHECK_MODULES(GVC, libpulse-mainloop-glib >= 0.9.15)
 
 fi
-AM_CONDITIONAL([USE_ECK_GPM_GVC],
+
+AM_CONDITIONAL([USE_GPM_GVC],
                [test "$dawati_use_devices_panel" = "yes" || test "$dawati_use_power_icon_panel" = "yes"])
 
 if test x$dawati_use_people_panel = xyes || test x$dawati_use_status_panel = xyes; then
@@ -586,8 +582,6 @@ carrick/Makefile
 callouts/3g/Makefile
 callouts/Makefile
 callouts/openconnect/Makefile
-
-egg-console-kit/Makefile
 
 gpm/Makefile
 

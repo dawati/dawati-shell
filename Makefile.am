@@ -5,8 +5,8 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-capplet
 # always built
 SUBDIRS = build libdawati-panel
 
-if USE_ECK_GPM_GVC
-SUBDIRS += egg-console-kit gpm gvc
+if USE_GPM_GVC
+SUBDIRS += gpm gvc
 endif
 
 if USE_PENGE_MAILME

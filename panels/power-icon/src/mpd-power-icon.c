@@ -18,7 +18,6 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <egg-console-kit/egg-console-kit.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <libnotify/notify.h>
@@ -115,19 +114,42 @@ static void
 shutdown (MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  EggConsoleKit *console;
   GError        *error = NULL;
+  GDBusConnection *connection;
+  GVariant *variant;
 
   priv->in_shutdown = true;
 
-  console = egg_console_kit_new ();
-  egg_console_kit_stop (console, &error);
+  connection = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &error);
+
+  if (error)
+  {
+    g_critical ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+
+    return;
+  }
+
+  variant = g_dbus_connection_call_sync (connection,
+                                         "org.freedesktop.login1",
+                                         "/org/freedesktop/login1",
+                                         "org.freedesktop.login1.Manager",
+                                         "PowerOff",
+                                         g_variant_new ("(b)", TRUE), NULL,
+                                         G_DBUS_CALL_FLAGS_NONE, -1, NULL,
+                                         &error);
+
   if (error)
   {
     g_critical ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
-  g_object_unref (console);
+  else
+  {
+    g_variant_unref (variant);
+  }
+
+  g_object_unref (connection);
 }
 
 static bool
