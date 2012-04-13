@@ -24,6 +24,7 @@
 #include <string.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <meta/meta-shaped-texture.h>
 
 #include "mnb-alttab-overlay.h"
 #include "mnb-alttab-overlay-app.h"
@@ -154,17 +155,21 @@ mnb_alttab_overlay_app_new (MetaWindowActor *mcw)
 {
   MetaWindow   *mw;
   GdkPixbuf    *pixbuf = NULL;
-  ClutterActor *icon = NULL, *texture, *thumbnail;
+  CoglHandle    cogl_texture;
+  ClutterActor *meta_texture;
+  ClutterActor *icon = NULL, *thumbnail;
 
   g_return_val_if_fail (META_IS_WINDOW_ACTOR (mcw), NULL);
 
   mw = meta_window_actor_get_meta_window (mcw);
 
-  texture = meta_window_actor_get_texture (mcw);
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (texture),
-                                         TRUE);
-  thumbnail = clutter_clone_new (texture);
+  meta_texture = meta_window_actor_get_texture (mcw);
+  cogl_texture =
+    meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (meta_texture));
 
+  thumbnail = clutter_texture_new ();
+  clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (thumbnail), cogl_texture);
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
 
   g_object_get (mw, "icon", &pixbuf, NULL);
 
