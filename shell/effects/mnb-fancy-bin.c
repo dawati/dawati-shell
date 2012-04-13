@@ -106,21 +106,9 @@ mnb_fancy_bin_dispose (GObject *object)
 {
   MnbFancyBinPrivate *priv = MNB_FANCY_BIN (object)->priv;
 
-  if (priv->clone)
-    {
-      clutter_actor_destroy (priv->clone);
-      priv->clone = NULL;
-    }
-
-  if (priv->child)
-    {
-      clutter_actor_destroy (priv->child);
-      priv->child = NULL;
-    }
-
   if (priv->real_child)
     {
-      clutter_actor_unparent (priv->real_child);
+      clutter_actor_remove_child (CLUTTER_ACTOR (object), priv->real_child);
       priv->real_child = NULL;
     }
 
@@ -194,36 +182,6 @@ mnb_fancy_bin_paint (ClutterActor *actor)
   /* Draw the un-fancy child */
   if ((priv->fanciness < 1.0) && priv->clone)
     clutter_actor_paint (priv->clone);
-}
-
-static void
-mnb_fancy_bin_map (ClutterActor *actor)
-{
-  MnbFancyBinPrivate *priv = MNB_FANCY_BIN (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_fancy_bin_parent_class)->map (actor);
-
-  if (priv->child)
-    clutter_actor_map (priv->child);
-  if (priv->clone)
-    clutter_actor_map (priv->clone);
-  if (priv->real_child)
-    clutter_actor_map (priv->real_child);
-}
-
-static void
-mnb_fancy_bin_unmap (ClutterActor *actor)
-{
-  MnbFancyBinPrivate *priv = MNB_FANCY_BIN (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_fancy_bin_parent_class)->unmap (actor);
-
-  if (priv->child)
-    clutter_actor_unmap (priv->child);
-  if (priv->clone)
-    clutter_actor_unmap (priv->clone);
-  if (priv->real_child)
-    clutter_actor_unmap (priv->real_child);
 }
 
 static void
@@ -326,8 +284,6 @@ mnb_fancy_bin_class_init (MnbFancyBinClass *klass)
   object_class->finalize = mnb_fancy_bin_finalize;
 
   actor_class->paint = mnb_fancy_bin_paint;
-  actor_class->map = mnb_fancy_bin_map;
-  actor_class->unmap = mnb_fancy_bin_unmap;
   actor_class->get_preferred_width = mnb_fancy_bin_get_preferred_width;
   actor_class->get_preferred_height = mnb_fancy_bin_get_preferred_height;
   actor_class->allocate = mnb_fancy_bin_allocate;

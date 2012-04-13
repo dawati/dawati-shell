@@ -702,8 +702,8 @@ ntf_notification_add_button (NtfNotification *ntf,
   if (button != priv->dismiss_button)
     mx_stylable_set_style_class (MX_STYLABLE (priv->dismiss_button), "");
 
-  mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->button_box),
-                              CLUTTER_ACTOR (button), -1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                               CLUTTER_ACTOR (button));
 
   if (keysym)
     {
@@ -744,7 +744,8 @@ ntf_notification_remove_button (NtfNotification *ntf, ClutterActor *button)
       priv->focused_keyname = NULL;
     }
 
-  clutter_actor_remove_child (priv->button_box, CLUTTER_ACTOR (button));
+  clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
+                                  CLUTTER_ACTOR (button));
 }
 
 void
@@ -775,13 +776,14 @@ ntf_notification_remove_all_buttons (NtfNotification *ntf)
        l;
        l = g_list_delete_link (l, l))
     {
-      clutter_actor_remove_child (priv->button_box, CLUTTER_ACTOR (l->data));
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
+                                      CLUTTER_ACTOR (l->data));
     }
 
   if (priv->dismiss_button)
     {
-      mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->button_box),
-                                  priv->dismiss_button, -1);
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                   priv->dismiss_button);
 
       g_object_unref (priv->dismiss_button);
     }

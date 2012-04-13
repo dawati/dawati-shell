@@ -49,8 +49,6 @@ struct _NtfSourcePrivate
   ClutterActor *icon;
 
   gulong window_unmanaged_id;
-
-  guint disposed : 1;
 };
 
 enum {
@@ -288,11 +286,6 @@ ntf_source_dispose (GObject *object)
 {
   NtfSource        *self = NTF_SOURCE (object);
   NtfSourcePrivate *priv = self->priv;
-
-  if (priv->disposed)
-    return;
-
-  priv->disposed = TRUE;
 
   if (priv->window_unmanaged_id)
     {

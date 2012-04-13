@@ -184,7 +184,8 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
           priv->active = app;
         }
 
-      clutter_actor_add_child (priv->grid, (ClutterActor *) app);
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->grid),
+                                   (ClutterActor *) app);
     }
 
   g_list_free (filtered);
@@ -193,15 +194,19 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 }
 
 static void
+_remove_child (ClutterActor *child, ClutterActor *grid)
+{
+  clutter_actor_destroy (child);
+}
+
+static void
 mnb_alttab_overlay_depopulate (MnbAlttabOverlay *self)
 {
   MnbAlttabOverlayPrivate *priv = self->priv;
-  ClutterActorIter iter;
-  ClutterActor *child;
 
-  clutter_actor_iter_init (&iter, priv->grid);
-  while (clutter_actor_iter_next (&iter, &child))
-    clutter_actor_iter_destroy (&iter);
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->grid),
+                             CLUTTER_CALLBACK (_remove_child),
+                             priv->grid);
 }
 
 static void
