@@ -324,7 +324,6 @@ mpl_panel_clutter_load_base_style (void)
 #endif
 
       /* Won't override MX_RC_FILE env if it's alread set */
-      g_print ("rc: %s", DAWATI_MX_THEME "/default.css");
       envset = g_setenv ("MX_RC_FILE", DAWATI_MX_THEME "/default.css", FALSE);
 
       if (!envset)
