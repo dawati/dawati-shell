@@ -23,6 +23,8 @@
 /carrick/carrick-marshal.h
 /carrick/connman-service-bindings.h
 /carrick/connman-technology-bindings.h
+/gvc/*.gir
+/gvc/*.typelib
 /config.rpath
 /configure.ac.orig
 *.gschema.valid
