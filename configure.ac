@@ -96,7 +96,10 @@ AC_ARG_WITH([style],
             [style=$withval],
             [style=$PACKAGE])
 
-AM_CONDITIONAL([DAWATI_MX_THEME], [test "$style" = $PACKAGE])
+AM_CONDITIONAL([MX_THEME], [test "$style" = $PACKAGE])
+
+DAWATI_MX_THEME=$style
+AC_SUBST([DAWATI_MX_THEME])
 
 DAWATI_RUNTIME_THEME_DIR="${datadir}/${style}/theme"
 AC_SUBST([DAWATI_RUNTIME_THEME_DIR])
@@ -559,6 +562,8 @@ data/theme/shared/Makefile
 data/theme/status/Makefile
 data/theme/switcher/Makefile
 data/theme/web/Makefile
+
+data/mx/Makefile
 
 shell/Makefile
 shell/effects/Makefile

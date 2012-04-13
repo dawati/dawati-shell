@@ -1,5 +1,5 @@
 SUBDIRS = theme
-if DAWATI_MX_THEME
+if MX_THEME
 SUBDIRS += mx
 endif
 

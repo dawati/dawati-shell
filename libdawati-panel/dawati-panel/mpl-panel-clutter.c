@@ -313,6 +313,7 @@ mpl_panel_clutter_load_base_style (void)
   if (!already_loaded)
     {
       GError *error = NULL;
+      gboolean envset;
 
       /* Load in a base cache and a base style */
       mx_texture_cache_load_cache (mx_texture_cache_get_default (),
@@ -321,6 +322,14 @@ mpl_panel_clutter_load_base_style (void)
       mx_style_load_from_file (mx_style_get_default (),
                                  THEMEDIR "/theme.css", NULL);
 #endif
+
+      /* Won't override MX_RC_FILE env if it's alread set */
+      g_print ("rc: %s", DAWATI_MX_THEME "/default.css");
+      envset = g_setenv ("MX_RC_FILE", DAWATI_MX_THEME "/default.css", FALSE);
+
+      if (!envset)
+        g_message ("MX_RC_FILE not set");
+
       mx_style_load_from_file (mx_style_get_default (),
                                DAWATI_RUNTIME_THEME_DIR "/shared/shared.css",
                                &error);
