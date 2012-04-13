@@ -6,14 +6,26 @@ AM_CFLAGS = \
 	-DPLUGINS_DIR=\"$(datadir)/dawati-shell/plugins/\" \
 	$(NULL)
 
-libexec_PROGRAMS = dawati-panel-home
+libexec_PROGRAMS = \
+	dawati-panel-home \
+	$(NULL)
 
-noinst_LTLIBRARIES = libdawati-home-plugins.la
+noinst_PROGRAMS = \
+	dawati-plugin-launcher \
+	$(NULL)
 
-dawati_panel_home_LDADD = \
-	$(PANEL_HOME_LIBS) \
+noinst_LTLIBRARIES = \
+	libmnb-home.la \
 	libdawati-home-plugins.la \
 	$(NULL)
+
+DAWATI_HOME_LIBS = \
+	$(PANEL_HOME_LIBS) \
+	libmnb-home.la \
+	libdawati-home-plugins.la \
+	$(NULL)
+
+dawati_panel_home_LDADD = $(DAWATI_HOME_LIBS)
 
 dawati_panel_home_SOURCES = \
 	dawati-panel-home.c \
@@ -26,12 +38,21 @@ dawati_panel_home_SOURCES = \
 	mnb-home-new-widget-dialog.h \
 	mnb-home-panel.c \
 	mnb-home-panel.h \
-	mnb-home-plugins-engine.c \
-	mnb-home-plugins-engine.h \
 	mnb-home-widget.c \
 	mnb-home-widget.h \
 	mnb-home-widget-preview.c \
 	mnb-home-widget-preview.h \
+	$(NULL)
+
+dawati_plugin_launcher_LDADD = $(DAWATI_HOME_LIBS)
+
+dawati_plugin_launcher_SOURCES = \
+	dawati-plugin-launcher.c \
+	$(NULL)
+
+libmnb_home_la_SOURCES = \
+	mnb-home-plugins-engine.c \
+	mnb-home-plugins-engine.h \
 	utils.c \
 	utils.h \
 	$(NULL)
