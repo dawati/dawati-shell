@@ -37,9 +37,7 @@ enum
 
   PROP_BRIGHTNESS_ENABLED,
   PROP_BRIGHTNESS_VALUE,
-  PROP_BRIGHTNESS_VALUE_BATTERY,
-  PROP_LID_ACTION,
-  PROP_SUSPEND_IDLE_TIME
+  PROP_BRIGHTNESS_VALUE_BATTERY
 };
 
 typedef struct
@@ -52,8 +50,6 @@ typedef struct
 #define MPD_CONF_BRIGHTNESS_ENABLED       MPD_CONF_DIR"/panel-devices/brightness_enabled"
 #define MPD_CONF_BRIGHTNESS_VALUE         MPD_CONF_DIR"/panel-devices/brightness_value"
 #define MPD_CONF_BRIGHTNESS_VALUE_BATTERY MPD_CONF_DIR"/panel-devices/brightness_value_battery"
-#define MPD_CONF_LID_ACTION               MPD_CONF_DIR"/panel-devices/buttons/lid"
-#define MPD_CONF_SUSPEND_IDLE_TIME        MPD_CONF_DIR"/panel-devices/timeout/sleep_computer"
 
 #define MPD_CONF_MIN_SUSPEND_DELAY  15
 
@@ -66,11 +62,6 @@ _gconf_mpd_notify_cb (GConfClient   *client,
   char const  *key;
 
   key = gconf_entry_get_key (entry);
-
-  if (0 == g_strcmp0 (key, MPD_CONF_SUSPEND_IDLE_TIME))
-  {
-    g_object_notify (G_OBJECT (self), "suspend-idle-time");
-  }
 
   if (0 == g_strcmp0 (key, MPD_CONF_BRIGHTNESS_ENABLED))
   {
@@ -85,11 +76,6 @@ _gconf_mpd_notify_cb (GConfClient   *client,
   if (0 == g_strcmp0 (key, MPD_CONF_BRIGHTNESS_VALUE_BATTERY))
   {
     g_object_notify (G_OBJECT (self), "brightness-value-battery");
-  }
-
-  if (0 == g_strcmp0 (key, MPD_CONF_LID_ACTION))
-  {
-    g_object_notify (G_OBJECT (self), "lid-action");
   }
 }
 
@@ -108,14 +94,6 @@ _get_property (GObject      *object,
   case PROP_BRIGHTNESS_VALUE:
     g_value_set_float (value,
                        mpd_conf_get_brightness_value (MPD_CONF (object)));
-    break;
-  case PROP_LID_ACTION:
-    g_value_set_uint (value,
-                      mpd_conf_get_lid_action (MPD_CONF (object)));
-    break;
-  case PROP_SUSPEND_IDLE_TIME:
-    g_value_set_int (value,
-                     mpd_conf_get_suspend_idle_time (MPD_CONF (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -214,26 +192,6 @@ mpd_conf_class_init (MpdConfClass *klass)
                                                        "Display brightness value on battery",
                                                        0.0, 1.0, 1.0,
                                                        param_flags | G_PARAM_WRITABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_LID_ACTION,
-                                   g_param_spec_uint ("lid-action",
-                                                      "Lid action",
-                                                      "Action when lid is closed",
-                                                      MPD_CONF_LID_ACTION_NONE,
-                                                      MPD_CONF_LID_ACTION_SUSPEND,
-                                                      MPD_CONF_LID_ACTION_SUSPEND,
-                                                      param_flags));
-
-  g_object_class_install_property (object_class,
-                                   PROP_SUSPEND_IDLE_TIME,
-                                   g_param_spec_int ("suspend-idle-time",
-                                                     "Suspend idle time",
-                                                     "Time to suspend when idle",
-                                                     -1,
-                                                     3600, /* whatever */
-                                                     30,
-                                                     param_flags));
 }
 
 static void
@@ -387,60 +345,3 @@ mpd_conf_set_brightness_value_battery (MpdConf *self,
     }
   }
 }
-
-int
-mpd_conf_get_suspend_idle_time (MpdConf *self)
-{
-  MpdConfPrivate *priv = GET_PRIVATE (self);
-  GError  *error = NULL;
-  int      suspend_idle_time;
-
-  g_return_val_if_fail (MPD_IS_CONF (self), -1);
-
-  suspend_idle_time = gconf_client_get_int (priv->client,
-                                            MPD_CONF_SUSPEND_IDLE_TIME,
-                                            &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-
-  /* Suspend now but leave a few seconds for gnome-screensaver:
-   * otherwise may get a screensave _after_ resuming. This
-   * also lets screensaver finish any fading it wants to do,
-   * not to mention giving the user a few seconds to break idle */
-  if (suspend_idle_time > 0 && suspend_idle_time < MPD_CONF_MIN_SUSPEND_DELAY)
-    suspend_idle_time = MPD_CONF_MIN_SUSPEND_DELAY;
-
-  return suspend_idle_time;
-}
-
-MpdConfLidAction
-mpd_conf_get_lid_action (MpdConf *self)
-{
-  MpdConfPrivate *priv = GET_PRIVATE (self);
-  char              *action;
-  MpdConfLidAction   lid_action = MPD_CONF_LID_ACTION_SUSPEND;
-  GError            *error = NULL;
-
-  g_return_val_if_fail (MPD_IS_CONF (self), MPD_CONF_LID_ACTION_SUSPEND);
-
-  action = gconf_client_get_string (priv->client,
-                                    MPD_CONF_LID_ACTION,
-                                    &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  } else {
-    if (0 == g_strcmp0 ("suspend", action))
-      lid_action = MPD_CONF_LID_ACTION_SUSPEND;
-    else if (0 == g_strcmp0 ("none", action))
-      lid_action = MPD_CONF_LID_ACTION_NONE;
-  }
-
-  /* FIXME: maybe clamp to property boundaries? */
-  return lid_action;
-}
-

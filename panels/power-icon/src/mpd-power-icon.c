@@ -18,6 +18,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
+
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <libnotify/notify.h>
@@ -26,12 +28,8 @@
 #include <X11/XF86keysym.h>
 
 #include "mpd-battery-device.h"
-#include "mpd-conf.h"
-#include "mpd-display-device.h"
 #include "mpd-gobject.h"
 #include "mpd-global-key.h"
-#include "mpd-idle-manager.h"
-#include "mpd-lid-device.h"
 #include "mpd-power-icon.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
@@ -45,16 +43,9 @@ typedef struct
 {
   MplPanelClient      *panel;
   MpdBatteryDevice    *battery;
-  MpdDisplayDevice    *display;
-  MpdLidDevice        *lid;
-  MpdIdleManager      *idle_manager;
   MxAction            *shutdown_key;
-  MxAction            *sleep_key;
-  MxAction            *brightness_up_key;
-  MxAction            *brightness_down_key;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
-  unsigned int         suspend_timeout_id;
   bool                 in_shutdown;
 } MpdPowerIconPrivate;
 
@@ -89,26 +80,6 @@ static const struct
     NULL },
   { NULL, NULL, NULL }
 };
-
-static MpdDisplayDeviceMode
-get_display_device_mode (MpdPowerIcon *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  MpdBatteryDeviceState battery_state;
-  MpdDisplayDeviceMode  mode;
-
-  battery_state = mpd_battery_device_get_state (priv->battery);
-  if (MPD_BATTERY_DEVICE_STATE_CHARGING == battery_state ||
-      MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED == battery_state)
-  {
-    mode = MPD_DISPLAY_DEVICE_MODE_AC;
-  } else {
-    mode = MPD_DISPLAY_DEVICE_MODE_BATTERY;
-  }
-
-  return mode;
-}
-
 
 static void
 shutdown (MpdPowerIcon *self)
@@ -150,70 +121,6 @@ shutdown (MpdPowerIcon *self)
   }
 
   g_object_unref (connection);
-}
-
-static bool
-_battery_suspend_timeout_cb (MpdPowerIcon *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  MpdBatteryDeviceState  state;
-
-  priv->suspend_timeout_id = 0;
-
-  state = mpd_battery_device_get_state (priv->battery);
-  if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
-  {
-    GError *error = NULL;
-    mpd_idle_manager_suspend (priv->idle_manager, &error);
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
-  }
-
-  return false;
-}
-
-static void
-_notification_closed_cb (NotifyNotification *note,
-                         MpdPowerIcon       *self)
-{
-  g_object_unref (note);
-}
-
-static void
-do_notification (MpdPowerIcon       *self,
-                 NotificationLevel   level,
-                 NotifyUrgency       urgency)
-{
-  NotifyNotification  *note;
-  GError              *error = NULL;
-
-  g_return_if_fail (level > NOTIFICATION_NONE);
-
-#ifdef HAVE_NOTIFY_0_7
-  note = notify_notification_new (_(_messages[level].title),
-                                  _(_messages[level].message),
-                                  _messages[level].icon);
-#else
-  note = notify_notification_new (_(_messages[level].title),
-                                  _(_messages[level].message),
-                                  _messages[level].icon,
-                                  NULL);
-#endif
-  notify_notification_set_urgency (note, urgency);
-  g_signal_connect (note, "closed",
-                    G_CALLBACK (_notification_closed_cb), self);
-
-  notify_notification_show (note, &error);
-  if (error)
-  {
-    g_warning ("%s : Error showing notification: %s",
-               G_STRLOC,
-               error->message);
-    g_clear_error (&error);
-  }
 }
 
 /*
@@ -273,59 +180,6 @@ update (MpdPowerIcon *self,
   mpl_panel_client_request_tooltip (priv->panel, description);
 
   g_free (description);
-
-  if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
-  {
-    /* Do notifications at various levels */
-    if (percentage > 0 && percentage < 5 &&
-        priv->last_notification_displayed != NOTIFICATION_5_PERCENT)
-    {
-      do_notification (self,
-                        NOTIFICATION_5_PERCENT,
-                        NOTIFY_URGENCY_CRITICAL);
-      priv->last_notification_displayed = NOTIFICATION_5_PERCENT;
-
-      if (0 == priv->suspend_timeout_id)
-      {
-        priv->suspend_timeout_id = g_timeout_add_seconds (
-                                60,
-                                (GSourceFunc) _battery_suspend_timeout_cb,
-                                self);
-      }
-    } else if (percentage < 10 &&
-               priv->last_notification_displayed != NOTIFICATION_10_PERCENT)
-    {
-      do_notification (self,
-                        NOTIFICATION_10_PERCENT,
-                        NOTIFY_URGENCY_CRITICAL);
-      priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
-
-    } else if (percentage < 20 &&
-               priv->last_notification_displayed != NOTIFICATION_20_PERCENT)
-    {
-      do_notification (self,
-                        NOTIFICATION_20_PERCENT,
-                        NOTIFY_URGENCY_NORMAL);
-      priv->last_notification_displayed = NOTIFICATION_20_PERCENT;
-
-    } else
-    {
-      /* Reset the notification */
-      priv->last_notification_displayed = NOTIFICATION_NONE;
-    }
-  } else
-  {
-    /* Not discharging, reset so we start over correctly when
-     * plugged out again immediately. */
-
-    if (priv->suspend_timeout_id)
-    {
-      g_source_remove (priv->suspend_timeout_id);
-      priv->suspend_timeout_id = 0;
-    }
-
-    priv->last_notification_displayed = NOTIFICATION_NONE;
-  }
 }
 
 static void
@@ -341,53 +195,7 @@ _battery_state_notify_cb (MpdBatteryDevice *battery,
                           GParamSpec       *pspec,
                           MpdPowerIcon     *self)
 {
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  MpdConf               *conf;
-  MpdBatteryDeviceState  battery_state;
-  float                  brightness;
-
-  /* Plugged state changed, update brightness to stored value for new state. */
-  conf = mpd_conf_new ();
-  battery_state = mpd_battery_device_get_state (priv->battery);
-  if (MPD_BATTERY_DEVICE_STATE_CHARGING == battery_state ||
-      MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED == battery_state)
-  {
-    brightness = mpd_conf_get_brightness_value (conf);
-  } else {
-    brightness = mpd_conf_get_brightness_value_battery (conf);
-  }
-  g_object_unref (conf);
-
-  mpd_display_device_set_brightness (priv->display,
-                                     brightness,
-                                     get_display_device_mode (self));
-
   update (self, -1);
-}
-
-static void
-_lid_closed_cb (MpdLidDevice    *lid,
-                GParamSpec      *pspec,
-                MpdPowerIcon    *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-
-  if (mpd_lid_device_get_closed (lid) &&
-      !priv->in_shutdown)
-  {
-    MpdConf *conf = mpd_conf_new ();
-    if (MPD_CONF_LID_ACTION_SUSPEND == mpd_conf_get_lid_action (conf))
-    {
-      GError  *error = NULL;
-      mpd_idle_manager_suspend (priv->idle_manager, &error);
-      if (error)
-      {
-        g_warning ("%s : %s", G_STRLOC, error->message);
-        g_clear_error (&error);
-      }
-    }
-    g_object_unref (conf);
-  }
 }
 
 static void
@@ -436,66 +244,12 @@ _shutdown_key_activated_cb (MxAction      *action,
 }
 
 static void
-_sleep_key_activated_cb (MxAction     *action,
-                         MpdPowerIcon *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  GError  *error = NULL;
-
-  mpd_idle_manager_suspend (priv->idle_manager, &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-}
-
-static void
-_brightness_up_key_activated_cb (MxAction     *action,
-                                 MpdPowerIcon *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-
-  g_debug ("%s()", __FUNCTION__);
-
-  mpd_display_device_increase_brightness (priv->display,
-                                          get_display_device_mode (self));
-}
-
-static void
-_brightness_down_key_activated_cb (MxAction     *action,
-                                   MpdPowerIcon *self)
-{
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-
-  g_debug ("%s()", __FUNCTION__);
-
-  mpd_display_device_decrease_brightness (priv->display,
-                                          get_display_device_mode (self));
-}
-
-static void
 _dispose (GObject *object)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (object);
 
-  mpd_gobject_detach (object, (GObject **) &priv->idle_manager);
-
   mpd_gobject_detach (object, (GObject **) &priv->battery);
-
-  /* There's some bug in GpmBrightnessXRandR (not freeing the filter?)
-   * so we're leaking this here.
-   * mpd_gobject_detach (object, (GObject **) &priv->display); */
-
-  mpd_gobject_detach (object, (GObject **) &priv->lid);
-
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_key);
-
-  mpd_gobject_detach (object, (GObject **) &priv->sleep_key);
-
-  mpd_gobject_detach (object, (GObject **) &priv->brightness_up_key);
-  mpd_gobject_detach (object, (GObject **) &priv->brightness_down_key);
-
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_note);
 
   G_OBJECT_CLASS (mpd_power_icon_parent_class)->dispose (object);
@@ -534,9 +288,6 @@ mpd_power_icon_init (MpdPowerIcon *self)
 
   update (self, -1);
 
-  /* Idle manager */
-  priv->idle_manager = mpd_idle_manager_new ();
-
   display = gdk_display_get_default ();
 
   /* Shutdown key. */
@@ -550,55 +301,6 @@ mpd_power_icon_init (MpdPowerIcon *self)
   } else {
     g_warning ("Failed to query XF86XK_PowerOff key code.");
   }
-
-  /* Sleep key. */
-  key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display), XF86XK_Sleep);
-  if (key_code)
-  {
-    priv->sleep_key = mpd_global_key_new (key_code);
-    g_object_ref_sink (priv->sleep_key);
-    g_signal_connect (priv->sleep_key, "activated",
-                      G_CALLBACK (_sleep_key_activated_cb), self);
-  } else {
-    g_warning ("Failed to query XF86XK_PowerOff key code.");
-  }
-
-  /* Display */
-  priv->display = mpd_display_device_new ();
-  if (mpd_display_device_is_enabled (priv->display))
-  {
-    mpd_display_device_restore_brightness (priv->display,
-                                           get_display_device_mode (self));
-
-    /* Brightness keys. */
-    key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display),
-                                 XF86XK_MonBrightnessUp);
-    if (key_code)
-    {
-      priv->brightness_up_key = mpd_global_key_new (key_code);
-      g_object_ref_sink (priv->brightness_up_key);
-      g_signal_connect (priv->brightness_up_key, "activated",
-                        G_CALLBACK (_brightness_up_key_activated_cb), self);
-    } else {
-      g_warning ("Failed to query XF86XK_MonBrightnessUp key code.");
-    }
-    key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display),
-                                 XF86XK_MonBrightnessDown);
-    if (key_code)
-    {
-      priv->brightness_down_key = mpd_global_key_new (key_code);
-      g_object_ref_sink (priv->brightness_down_key);
-      g_signal_connect (priv->brightness_down_key, "activated",
-                        G_CALLBACK (_brightness_down_key_activated_cb), self);
-    } else {
-      g_warning ("Failed to query XF86XK_MonBrightnessDown key code.");
-    }
-  }
-
-  /* Lid. */
-  priv->lid = mpd_lid_device_new ();
-  g_signal_connect (priv->lid, "notify::closed",
-                    G_CALLBACK (_lid_closed_cb), self);
 }
 
 MpdPowerIcon *

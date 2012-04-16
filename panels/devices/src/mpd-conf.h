@@ -76,18 +76,6 @@ void
 mpd_conf_set_brightness_value_battery (MpdConf *self,
                                        float    value);
 
-int
-mpd_conf_get_suspend_idle_time (MpdConf *self);
-
-typedef enum
-{
-  MPD_CONF_LID_ACTION_NONE,     /* Must be first. */
-  MPD_CONF_LID_ACTION_SUSPEND   /* Must be last. */
-} MpdConfLidAction;
-
-MpdConfLidAction
-mpd_conf_get_lid_action (MpdConf *self);
-
 G_END_DECLS
 
 #endif /* MPD_CONF_H */

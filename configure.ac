@@ -455,7 +455,7 @@ fi
 AM_CONDITIONAL([USE_PENGE_MAILME],
                [test "$dawati_use_myzone_panel" = "yes" || test "$dawati_use_datetime_panel" = "yes"])
 
-if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel = xyes; then
+if test x$dawati_use_devices_panel = xyes; then
    #
    # Gnome Power Manager
    #
@@ -473,7 +473,7 @@ if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel 
 fi
 
 AM_CONDITIONAL([USE_GPM_GVC],
-               [test "$dawati_use_devices_panel" = "yes" || test "$dawati_use_power_icon_panel" = "yes"])
+               [test "$dawati_use_devices_panel" = "yes"])
 
 if test x$dawati_use_people_panel = xyes || test x$dawati_use_status_panel = xyes; then
    AC_MSG_CHECKING([how to detect we are online])

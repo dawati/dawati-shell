@@ -46,30 +46,6 @@ print_brightness_value (MpdConf *conf)
 }
 
 static void
-print_lid_action (MpdConf *conf)
-{
-  char const        *name = "lid-action";
-  MpdConfLidAction   lid_action;
-
-  g_object_get (conf, name, &lid_action, NULL);
-
-  printf ("%s: %s\n", name,
-                      lid_action == MPD_CONF_LID_ACTION_SUSPEND ?
-                        "suspend" : "none");
-}
-
-static void
-print_suspend_idle_time (MpdConf *conf)
-{
-  char const  *name = "suspend-idle-time";
-  int          suspend_idle_time;
-
-  g_object_get (conf, name, &suspend_idle_time, NULL);
-
-  printf ("%s: %i\n", name, suspend_idle_time);
-}
-
-static void
 _conf_property_notify_cb (GObject     *object,
                           GParamSpec  *pspec,
                           MpdConf     *conf)
@@ -81,10 +57,6 @@ _conf_property_notify_cb (GObject     *object,
     print_brightness_enabled (conf);
   else if (0 == g_strcmp0 (name, "brightness-value"))
     print_brightness_value (conf);
-  else if (0 == g_strcmp0 (name, "lid-action"))
-    print_lid_action (conf);
-  else if (0 == g_strcmp0 (name, "suspend-idle-time"))
-    print_suspend_idle_time (conf);
   else
     g_warning ("%s : Unknown property \"%s\"", G_STRLOC, name);
 }
@@ -109,14 +81,6 @@ main (int     argc,
 
   print_brightness_value (conf);
   g_signal_connect (conf, "notify::brightness-value",
-                    G_CALLBACK (_conf_property_notify_cb), conf);
-
-  print_lid_action (conf);
-  g_signal_connect (conf, "notify::lid-action",
-                    G_CALLBACK (_conf_property_notify_cb), conf);
-
-  print_suspend_idle_time (conf);
-  g_signal_connect (conf, "notify::suspend-idle-time",
                     G_CALLBACK (_conf_property_notify_cb), conf);
 
   clutter_main ();
