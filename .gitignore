@@ -182,6 +182,8 @@
 /tests/test-launcher-tree
 /tests/test-pasteboard
 /tests/test-screensized
+/tests/test-spinner
+/tests/test-statusbar
 /tests/test-tray
 Desktop.ini
 Makefile
