@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS = -I build/autotools
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-capplet
 
 # always built
-SUBDIRS = build libdawati-panel
+SUBDIRS = build libdawati-panel st
 
 if USE_GPM_GVC
 SUBDIRS += gpm gvc

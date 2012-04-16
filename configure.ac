@@ -91,6 +91,13 @@ PKG_CHECK_MODULES(LIBMPL,
                   $GTK_DEPS
                   $MX_DEPS)
 
+# St
+PKG_CHECK_MODULES(ST,
+                  $GTK_DEPS
+                  $CLUTTER_DEPS
+                  libcroco-0.6 >= 0.6.2
+                  x11)
+
 AC_ARG_WITH([style],
             [AS_HELP_STRING([--with-style], [])],
             [style=$withval],
@@ -598,6 +605,8 @@ gvc/Makefile
 mailme/Makefile
 
 penge/Makefile
+
+st/Makefile
 
 panels/Makefile
 

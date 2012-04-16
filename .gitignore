@@ -161,6 +161,14 @@
 /shell/stamp-mnb-enum-types.h
 /shell/systray/stamp-na-marshal.h
 /shell/systray/tray/na-marshal.[ch]
+/st/St-1.0.gir
+/st/St-1.0.typelib
+/st/st-enum-types.c
+/st/st-enum-types.h
+/st/st.h
+/st/stamp-st-enum-types.h
+/st/stamp-st.h
+/st/test-theme
 /tests/test-entry
 /tests/test-expander
 /tests/test-launcher-button
