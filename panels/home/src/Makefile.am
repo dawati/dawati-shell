@@ -50,12 +50,16 @@ dawati_plugin_launcher_SOURCES = \
 	dawati-plugin-launcher.c \
 	$(NULL)
 
+libmnb_home_la_LIBADD = $(PANEL_HOME_LIBS)
+
 libmnb_home_la_SOURCES = \
 	mnb-home-plugins-engine.c \
 	mnb-home-plugins-engine.h \
 	utils.c \
 	utils.h \
 	$(NULL)
+
+libdawati_home_plugins_la_LIBADD = $(PANEL_HOME_LIBS)
 
 libdawati_home_plugins_la_SOURCES = \
 	dawati-home-plugins-app.c \
