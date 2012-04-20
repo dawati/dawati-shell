@@ -3336,6 +3336,8 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (proxy_radio_toggled_cb), self);
 
   priv->proxy_manual_entry = gtk_entry_new ();
+  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->proxy_manual_entry),
+                                  _("Server:Port"));
   gtk_widget_set_size_request (priv->proxy_manual_entry, CARRICK_ENTRY_WIDTH, -1);
   gtk_table_attach (GTK_TABLE (table), priv->proxy_manual_entry,
                     0, 2, 6, 7,
