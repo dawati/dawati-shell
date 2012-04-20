@@ -45,6 +45,8 @@ libcarrick_la_SOURCES = \
 	mux-banner.h \
 	nbtk-gtk-expander.c \
 	nbtk-gtk-expander.h \
+	carrick-proxy-gsettings.c \
+	carrick-proxy-gsettings.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
