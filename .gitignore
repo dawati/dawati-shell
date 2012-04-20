@@ -29,6 +29,11 @@
 /configure.ac.orig
 *.gschema.valid
 /gtk-doc.make
+/mutter-stub/Meta-3.0.gir
+/mutter-stub/Meta-3.0.typelib
+/mutter-stub/mutter-enum-types.c
+/mutter-stub/mutter-enum-types.h
+/mutter-stub/stamp-mutter-enum-types.h
 /libdawati-panel/*.pc
 /libdawati-panel/dawati-panel/DawatiPanel-*.gir
 /libdawati-panel/dawati-panel/DawatiPanel-*.typelib

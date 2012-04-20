@@ -5,6 +5,10 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --disable-capplet
 # always built
 SUBDIRS = build libdawati-panel st
 
+if !HAVE_MUTTER
+SUBDIRS += mutter-stub
+endif
+
 if USE_GPM_GVC
 SUBDIRS += gpm gvc
 endif
@@ -17,9 +21,7 @@ if USE_CARRICK_CALLOUTS
 SUBDIRS += carrick callouts
 endif
 
-if HAVE_MUTTER
 SUBDIRS += shell
-endif
 
 # extra
 SUBDIRS += po data panels

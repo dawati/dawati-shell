@@ -296,6 +296,9 @@ main (int argc, char **argv)
   shell_prefs_init ();
 
   g_irepository_prepend_search_path (DAWATI_SHELL_PKGLIBDIR);
+#ifdef HAVE_MUTTER
+  g_irepository_prepend_search_path (MUTTER_STUB_LIBDIR);
+#endif
   g_irepository_prepend_search_path (BLUETOOTH_DIR);
 
   g_log_set_default_handler (default_log_handler, NULL);

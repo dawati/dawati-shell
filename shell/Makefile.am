@@ -1,4 +1,4 @@
-SUBDIRS = effects alttab notifications presence js
+SUBDIRS = js # effects alttab notifications presence js
 
 bin_PROGRAMS = dawati-shell
 
@@ -20,39 +20,41 @@ shell_private_sources = \
 	gactionobservable.c			\
 	gactionobserver.h			\
 	gactionobserver.c			\
-	$(top_srcdir)/libdawati-panel/dawati-panel/mpl-panel-common.h \
-	dawati-netbook.h			\
-	dawati-netbook-mutter-hints.h		\
-	mnb-spinner.h				\
-	mnb-input-manager.h			\
-	mnb-statusbar.h         	      	\
-	mnb-toolbar.h                 		\
-	mnb-toolbar-applet.h          		\
-	mnb-toolbar-background.h      		\
-	mnb-toolbar-button.h          		\
-	mnb-toolbar-clock.h           		\
-	mnb-toolbar-icon.h            		\
-	mnb-toolbar-shadow.h          		\
-	mnb-panel.h				\
-	mnb-panel-frame.h			\
-	mnb-panel-oop.h				\
-	dawati-netbook.c			\
-	dawati-netbook-mutter-hints.c		\
-	mnb-spinner.c				\
-	marshal.c                   		\
-	mnb-input-manager.c			\
-	mnb-statusbar.c               		\
-	mnb-toolbar.c                 		\
-	mnb-toolbar-applet.c          		\
-	mnb-toolbar-background.c      		\
-	mnb-toolbar-button.c          		\
-	mnb-toolbar-icon.c           	 	\
-	mnb-toolbar-clock.c           		\
-	mnb-toolbar-shadow.c          		\
-	mnb-panel.c         			\
-	mnb-panel-frame.c         		\
-	mnb-panel-oop.c				\
 	dawati-shell-plugin.c
+
+# $(top_srcdir)/libdawati-panel/dawati-panel/mpl-panel-common.h \
+# dawati-netbook.h			\
+# dawati-netbook-mutter-hints.h		\
+# mnb-spinner.h				\
+# mnb-input-manager.h			\
+# mnb-statusbar.h         	      	\
+# mnb-toolbar.h                 		\
+# mnb-toolbar-applet.h          		\
+# mnb-toolbar-background.h      		\
+# mnb-toolbar-button.h          		\
+# mnb-toolbar-clock.h           		\
+# mnb-toolbar-icon.h            		\
+# mnb-toolbar-shadow.h          		\
+# mnb-panel.h				\
+# mnb-panel-frame.h			\
+# mnb-panel-oop.h				\
+# dawati-netbook.c			\
+# dawati-netbook-mutter-hints.c		\
+# mnb-spinner.c				\
+# marshal.c                   		\
+# mnb-input-manager.c			\
+# mnb-statusbar.c               		\
+# mnb-toolbar.c                 		\
+# mnb-toolbar-applet.c          		\
+# mnb-toolbar-background.c      		\
+# mnb-toolbar-button.c          		\
+# mnb-toolbar-icon.c           	 	\
+# mnb-toolbar-clock.c           		\
+# mnb-toolbar-shadow.c          		\
+# mnb-panel.c         			\
+# mnb-panel-frame.c         		\
+# mnb-panel-oop.c
+
 
 shell_public_headers_h =			\
 						\
@@ -101,7 +103,7 @@ libdawati_shell_la_CPPFLAGS =				\
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" 	\
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" 	\
 	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" 		\
-	-DJSDIR=\"$(pkgdatadir)/js\"			\
+	-DJSDIR=\"$(pkgdatadir)/js\" 			\
 	-DDAWATI_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-I$(top_srcdir)/libdawati-panel			\
 	-I$(top_srcdir)/st
@@ -109,12 +111,13 @@ libdawati_shell_la_CPPFLAGS =				\
 libdawati_shell_la_LDFLAGS  = 				\
 	-avoid-version
 
-libdawati_shell_la_LIBADD = 						\
-	$(DAWATI_SHELL_LIBS)						\
-	$(BLUETOOTH_LIBS)						\
-	$(top_builddir)/gvc/libgvc.la					\
-	$(top_builddir)/st/libst-1.0.la					\
-	effects/libeffects.la						\
+libdawati_shell_la_LIBADD = 				\
+	$(DAWATI_SHELL_LIBS)				\
+	$(BLUETOOTH_LIBS)				\
+	$(top_builddir)/gvc/libgvc.la			\
+	$(top_builddir)/st/libst-1.0.la
+
+#	effects/libeffects.la						\
 	alttab/libalttab.la						\
 	presence/libpresence.la						\
 	notifications/libnotifications.la				\
@@ -122,6 +125,15 @@ libdawati_shell_la_LIBADD = 						\
 
 libdawati_shell_la_gir_sources = \
 	$(filter-out %-private.h $(shell_private_sources) $(shell_built_sources), $(shell_public_headers_h) $(libdawati_shell_la_SOURCES))
+
+if HAVE_MUTTER
+libdawati_shell_la_CPPFLAGS += $(MUTTER_CFLAGS)
+libdawati_shell_la_LIBADD += $(MUTTER_LIBS)
+else
+libdawati_shell_la_CPPFLAGS += $(MUTTER_STUB_CFLAGS) -I$(top_srcdir)/mutter-stub
+libdawati_shell_la_LIBADD += $(top_builddir)/mutter-stub/libmutter-stub.la
+endif
+
 
 ########################################
 
@@ -152,7 +164,8 @@ dawati_shell_CPPFLAGS =					\
 	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" 	\
 	-DTHEMEDIR=\"$(DAWATI_RUNTIME_THEME_DIR)\" 	\
 	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\"		\
-	-DDAWATI_SHELL_PKGLIBDIR=\"$(pkglibdir)\"
+	-DDAWATI_SHELL_PKGLIBDIR=\"$(pkglibdir)\"	\
+	-DMUTTER_STUB_LIBDIR=\"$(pkglibdir)/mutter-stub\"
 
 dawati_shell_LDADD =	 				\
 	libdawati-shell.la				\
@@ -162,7 +175,16 @@ dawati_shell_LDADD =	 				\
 dawati_shell_DEPENDENCIES =				\
 	libdawati-shell.la
 
+if HAVE_MUTTER
+dawati_shell_CPPFLAGS += $(MUTTER_CFLAGS)
+dawati_shell_LDADD += $(MUTTER_LIBS)
+else
+dawati_shell_CPPFLAGS += $(MUTTER_STUB_CFLAGS) -I$(top_srcdir)/mutter-stub
+dawati_shell_LDADD += $(top_builddir)/mutter-stub/libmutter-stub.la
+endif
+
 ########################################
+
 
 DBUS_GLUE = \
 	mnb-panel-dbus-glue.h		\
@@ -233,13 +255,19 @@ marshal.c: marshal.h Makefile
 	&& rm -f xgen-cmc
 
 include $(top_srcdir)/build/autotools/Makefile.am.introspec
+
 INTROSPECTION_SCANNER_ARGS += \
 	--add-include-path=$(srcdir) \
-	--add-include-path=$(MUTTER_GIR_DIR) \
 	$(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
-INTROSPECTION_COMPILER_ARGS += \
-	--includedir=$(srcdir) \
-	--includedir=$(MUTTER_TYPELIB_DIR)
+INTROSPECTION_COMPILER_ARGS += --includedir=$(srcdir)
+
+if HAVE_MUTTER
+INTROSPECTION_SCANNER_ARGS += --add-include-path=$(MUTTER_GIR_DIR)
+INTROSPECTION_COMPILER_ARGS += --includedir=$(MUTTER_TYPELIB_DIR)
+else
+INTROSPECTION_SCANNER_ARGS += --add-include-path=$(top_builddir)/mutter-stub
+INTROSPECTION_COMPILER_ARGS += --includedir=$(top_builddir)/mutter-stub
+endif
 
 BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS) $(ENUMS)
 
@@ -252,7 +280,7 @@ EXTRA_DIST =	marshal.list \
 		$(NULL)
 
 Shell-0.1.gir: libdawati-shell.la $(top_builddir)/st/St-1.0.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 Soup-2.4 Mx-2.0 GMenu-3.0
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Soup-2.4 GMenu-3.0 Meta-3.0
 Shell_0_1_gir_CFLAGS = $(libdawati_shell_la_CPPFLAGS) -I $(srcdir) -I $(top_srcdir) -I $(top_builddir)
 Shell_0_1_gir_LIBS = libdawati-shell.la
 Shell_0_1_gir_FILES = $(libdawati_shell_la_gir_sources)

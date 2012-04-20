@@ -136,12 +136,10 @@ AC_ARG_ENABLE([mutter],
               [],
               [enable_mutter=yes])
 
-if test "$enable_mutter" != "no"; then
 PKG_CHECK_MODULES(DAWATI_SHELL,
                   [gio-unix-2.0
                    dbus-glib-1
                    gconf-2.0
-                   $MUTTER_DEPS
                    libstartup-notification-1.0
                    libgnome-menu-3.0
                    libsoup-2.4
@@ -153,13 +151,21 @@ PKG_CHECK_MODULES(DAWATI_SHELL,
 
 PKG_CHECK_MODULES(DAWATI_SHELL_JS, gio-2.0 $GJS_DEPS)
 
+if test "$enable_mutter" != "no"; then
+PKG_CHECK_MODULES(MUTTER, $MUTTER_DEPS)
 MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
 MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
 AC_SUBST(MUTTER_GIR_DIR)
 AC_SUBST(MUTTER_TYPELIB_DIR)
+else
+PKG_CHECK_MODULES(MUTTER_STUB,
+                  gsettings-desktop-schemas
+                  libcanberra
+                  $CLUTTER_GTK_DEPS)
 fi
 
 AM_CONDITIONAL([HAVE_MUTTER], [test "$enable_mutter" != "no"])
+AC_DEFINE(HAVE_MUTTER, [test "$enable_mutter" != "no"], [Whether we use a mutter stub])
 
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
@@ -616,6 +622,8 @@ gpm/Makefile
 gvc/Makefile
 
 mailme/Makefile
+
+mutter-stub/Makefile
 
 penge/Makefile
 
