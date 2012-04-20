@@ -48,8 +48,8 @@ struct _MnbHomeWidgetPrivate
   MnbHomePluginsEngine *engine;
   DawatiHomePluginsApp *app;
 
-  guint row;
-  guint column;
+  gint row;
+  gint column;
   gchar *settings_path;
   gboolean edit_mode;
   gchar *module;
@@ -69,11 +69,11 @@ mnb_home_widget_get_property (GObject *self,
   switch (prop_id)
     {
       case PROP_ROW:
-        g_value_set_uint (value, priv->row);
+        g_value_set_int (value, priv->row);
         break;
 
       case PROP_COLUMN:
-        g_value_set_uint (value, priv->column);
+        g_value_set_int (value, priv->column);
         break;
 
       case PROP_SETTINGS_PATH:
@@ -105,11 +105,11 @@ mnb_home_widget_set_property (GObject *self,
   switch (prop_id)
     {
       case PROP_ROW:
-        priv->row = g_value_get_uint (value);
+        priv->row = g_value_get_int (value);
         break;
 
       case PROP_COLUMN:
-        priv->column = g_value_get_uint (value);
+        priv->column = g_value_get_int (value);
         break;
 
       case PROP_SETTINGS_PATH:
@@ -189,11 +189,11 @@ mnb_home_widget_constructed (GObject *self)
       G_SETTINGS_BIND_DEFAULT);
 
   /* update from the property to GSettings (in order to store it) */
-  priv->column = g_settings_get_uint (priv->settings, "column");
+  priv->column = g_settings_get_int (priv->settings, "column");
   g_settings_bind (priv->settings, "column", self, "column", G_SETTINGS_BIND_SET);
 
   /* update from the property to GSettings (in order to store it) */
-  priv->row = g_settings_get_uint (priv->settings, "row");
+  priv->row = g_settings_get_int (priv->settings, "row");
   g_settings_bind (priv->settings, "row", self, "row", G_SETTINGS_BIND_SET);
 
   /* force the widget to go into not-edit-mode */
@@ -238,17 +238,17 @@ mnb_home_widget_class_init (MnbHomeWidgetClass *klass)
   g_type_class_add_private (gobject_class, sizeof (MnbHomeWidgetPrivate));
 
   g_object_class_install_property (gobject_class, PROP_ROW,
-      g_param_spec_uint ("row",
+      g_param_spec_int ("row",
         "Row",
         "",
-        0, G_MAXUINT, 0,
+        -1, G_MAXINT, -1,
         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_COLUMN,
-      g_param_spec_uint ("column",
+      g_param_spec_int ("column",
         "Column",
         "",
-        0, G_MAXUINT, 0,
+        -1, G_MAXINT, -1,
         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_SETTINGS_PATH,
