@@ -151,20 +151,21 @@ const DateMenuButton = new Lang.Class({
         let showDate = this._clockSettings.get_boolean(CLOCK_SHOW_DATE_KEY);
         let showSeconds = this._clockSettings.get_boolean(CLOCK_SHOW_SECONDS_KEY);
 
-        let clockFormat;
         let dateFormat;
+
+        dateFormat = _("%A %B %e ");
 
         switch (format) {
             case '24h':
                 if (showDate)
                     /* Translators: This is the time format with date used
                        in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %b %e, %R:%S")
+                    dateFormat += showSeconds ? _("%a %b %e, %R:%S")
                                               : _("%a %b %e, %R");
                 else
                     /* Translators: This is the time format without date used
                        in 24-hour mode. */
-                    clockFormat = showSeconds ? _("%a %R:%S")
+                    dateFormat += showSeconds ? _("%a %R:%S")
                                               : _("%a %R");
                 break;
             case '12h':
@@ -172,24 +173,23 @@ const DateMenuButton = new Lang.Class({
                 if (showDate)
                     /* Translators: This is a time format with date used
                        for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
-                                              : _("%a %b %e, %l:%M %p");
+                    dateFormat = showSeconds ? _("%a %b %e, %l:%M:%S %p")
+                                             : _("%a %b %e, %l:%M %p");
                 else
                     /* Translators: This is a time format without date used
                        for AM/PM. */
-                    clockFormat = showSeconds ? _("%a %l:%M:%S %p")
-                                              : _("%a %l:%M %p");
+                    dateFormat = showSeconds ? _("%a %l:%M:%S %p")
+                                             : _("%a %l:%M %p");
                 break;
         }
 
         let displayDate = new Date();
 
-        this._clock.set_text(displayDate.toLocaleFormat(clockFormat));
+        this._clock.set_text(displayDate.toLocaleFormat(dateFormat));
 
         /* Translators: This is the date format to use when the calendar popup is
          * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
          */
-        dateFormat = _("%A %B %e, %Y");
         this._date.set_text(displayDate.toLocaleFormat(dateFormat));
 
         Mainloop.timeout_add_seconds(1, Lang.bind(this, this._updateClockAndDate));
