@@ -37,6 +37,7 @@
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 #include "carrick-shell.h"
+#include "carrick-proxy-gsettings.h"
 #include "carrick-util.h"
 #include "mux-banner.h"
 
@@ -1411,6 +1412,7 @@ model_emit_change (GtkTreeModel *tree_model,
                                              connection_name,
                                              strength);
 
+  carrick_proxy_gsettings_update_proxy ();
   pane_update_vpn_ui (self, connection_type, connection_state);
 }
 
