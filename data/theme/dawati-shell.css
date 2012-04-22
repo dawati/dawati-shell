@@ -332,7 +332,7 @@ StScrollBar StButton#vhandle:hover
 
 #panel {
     background-color: black;
-    font-weight: bold;
+    font-weight: normal;
     height: 1.86em;
 }
 
@@ -429,6 +429,167 @@ StScrollBar StButton#vhandle:hover
 
 .panel-menu {
     -boxpointer-gap: 4px
+}
+
+/* Toolbar */
+
+#toolbar {
+    background-color: black;
+    font-weight: bold;
+    height: 50px;
+    color: white;
+}
+
+#toolbarButtonBox {
+    spacing: 15px;
+}
+
+/* Toolbar button myzone */
+#dawati-panel-myzone StBin {
+    background-image: url("toolbar/icon-myzone.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-myzone:hover StBin {
+    background-image: url("toolbar/icon-myzone-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-myzone:checked StBin {
+    background-image: url("toolbar/icon-myzone-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+/* Toolbar button applications */
+#dawati-panel-applications StBin {
+    background-image: url("toolbar/icon-apps.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-applications:hover StBin {
+    background-image: url("toolbar/icon-apps-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-applications:checked StBin {
+    background-image: url("toolbar/icon-apps-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+/* Toolbar button im/people */
+#dawati-panel-people StBin {
+    background-image: url("toolbar/icon-im.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-people:hover StBin {
+    background-image: url("toolbar/icon-im-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-people:checked StBin {
+    background-image: url("toolbar/icon-im-highlight.png");
+    width: 87px;
+    height: 64px;
+}
+
+/* Toolbar switcher im/people */
+#dawati-panel-switcher StBin {
+    background-image: url("toolbar/icon-switcher-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:hover StBin {
+    background-image: url("toolbar/icon-switcher-highlight-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:checked StBin {
+    background-image: url("toolbar/icon-switcher-highlight-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher .workspace-1 StBin {
+    background-image: url("toolbar/icon-switcher-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:hover .workspace-1 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:checked .workspace-1 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-1.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher .workspace-2 StBin {
+    background-image: url("toolbar/icon-switcher-2.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:hover .workspace-2 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-2.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:checked .workspace-2 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-2.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher .workspace-3 StBin {
+    background-image: url("toolbar/icon-switcher-3.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:hover .workspace-3 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-3.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:checked .workspace-3 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-3.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher .workspace-4 StBin {
+    background-image: url("toolbar/icon-switcher-4.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:hover .workspace-4 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-4.png");
+    width: 87px;
+    height: 64px;
+}
+
+#dawati-panel-switcher:checked .workspace-4 StBin {
+    background-image: url("toolbar/icon-switcher-highlight-4.png");
+    width: 87px;
+    height: 64px;
 }
 
 /* User Menu */

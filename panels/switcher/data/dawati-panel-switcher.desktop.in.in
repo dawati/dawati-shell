@@ -13,4 +13,4 @@ OnlyShowIn=dawati;
 X-Meego-Priority=Highest
 X-Dawati-Service=com.dawati.UX.Shell.Panels.switcher
 X-Dawati-Panel-Optional=false
-X-Dawati-Panel-Button-Style=switcher-button
+X-Dawati-Panel-Button-Style=switcher-button-1

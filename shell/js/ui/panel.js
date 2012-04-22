@@ -21,21 +21,22 @@ const Layout = imports.ui.layout;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const DateMenu = imports.ui.dateMenu;
+const Toolbar = imports.ui.toolbar;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const PANEL_ICON_SIZE = 24;
 
-const TRIGGER_THRESHOLD = 1;
-const TRIGGER_ADJUSTMENT = 2;
-const TRIGGER_TIMEOUT = 500;
+const TOOLBAR_TRIGGER_THRESHOLD = 1;
+const TOOLBAR_TRIGGER_ADJUSTMENT = 2;
+const TOOLBAR_TRIGGER_TIMEOUT = 500;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const SPINNER_ANIMATION_TIME = 0.2;
 
-const STANDARD_STATUS_AREA_ORDER = ['a11y', 'keyboard', 'volume', 'bluetooth', 'battery'];
+const STANDARD_STATUS_AREA_ORDER = ['a11y', 'bluetooth', 'keyboard', 'volume', 'battery'];
 const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
@@ -102,10 +103,6 @@ function _unpremultiply(color) {
     let blue = Math.min((color.blue * 255 + 127) / color.alpha, 255);
     return new Clutter.Color({ red: red, green: green,
                                blue: blue, alpha: color.alpha });
-};
-
-function _pointerInZone(y) {
-    return ((y >= 0) && (y <= TRIGGER_THRESHOLD));
 };
 
 const AnimatedIcon = new Lang.Class({
@@ -352,6 +349,10 @@ const Panel = new Lang.Class({
         this._menus.addMenu(this._dateMenu.menu);
 
         /* center (listen to events) */
+        this._isToolbarVisible = false;
+        this._isToolbarInShowTransition = false;
+        this._toolbarTriggerTimeoutId = 0;
+        this._toolbarTriggerThreshold = TOOLBAR_TRIGGER_THRESHOLD;
         this._centerBox.set_reactive(true);
         this._centerBox.connect('event', Lang.bind(this, this._onCenterEvent));
 
@@ -368,6 +369,10 @@ const Panel = new Lang.Class({
         Main.layoutManager.panelBox.add(this.actor);
         // Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here',
         //                                 { sortGroup: CtrlAltTab.SortGroup.TOP });
+
+        /* Add the toolbar only once the panel has been added to the
+         * stage. */
+        this._toolbar = new Toolbar.Toolbar();
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -465,6 +470,17 @@ const Panel = new Lang.Class({
         return true;
     },
 
+    _triggerToolbar: function() {
+        this._toolbar.show();
+        this._toolbarTriggerTimeoutId = 0;
+
+        return false;
+    },
+
+    _pointerInZone: function(y) {
+        return ((y >= 0) && (y <= this._toolbarTriggerThreshold));
+    },
+
     _onCenterEvent: function(actor, event) {
         let ev_type = event.type();
 
@@ -474,11 +490,42 @@ const Panel = new Lang.Class({
             return false;
 
         let [x, y] = event.get_coords();
-        let show_toolbar = (ev_type == Clutter.EventType.ENTER) && _pointerInZone(y);
-        show_toolbar |= (ev_type == Clutter.EventType.LEAVE) && _pointerInZone(y);
-        show_toolbar |= (ev_type == Clutter.EventType.MOTION) && _pointerInZone(y);
-        log ("Event -> " + show_toolbar);
+        let show_toolbar = ((ev_type == Clutter.EventType.ENTER) &&
+                            this._pointerInZone(y));
+        show_toolbar |= ((ev_type == Clutter.EventType.LEAVE) &&
+                         this._pointerInZone(y));
+        show_toolbar |= ((ev_type == Clutter.EventType.MOTION) &&
+                         this._pointerInZone(y));
 
+        if (show_toolbar) {
+            if (!this._isToolbarVisible &&
+                !this._isToolbarInShowTransition) {
+
+                if (this._toolbarTriggerTimeoutId == 0) {
+                    /*
+                     * Increase sensitivity -- increasing size of the
+                     * trigger zone while the timeout reduces the
+                     * effect of a shaking hand.
+                     */
+                    this._toolbarTriggerThreshold = TOOLBAR_TRIGGER_ADJUSTMENT;
+                    this._toolbarTriggerTimeoutId =
+                        Mainloop.timeout_add(TOOLBAR_TRIGGER_TIMEOUT,
+                                             Lang.bind(this, this._triggerToolbar));
+                }
+            }
+
+            this._inTriggerZone = true;
+        } else {
+            if (this._toolbarTriggerTimeoutId != 0) {
+                Mainloop.source_remove(this._toolbarTriggerTimeoutId);
+                this._toolbarTriggerTimeoutId = 0;
+            } else if (this.isToolbarVisible) {
+                this._toolbarTriggerThreshold = TOOLBAR_TRIGGER_THRESHOLD;
+                this._toolbar.hide();
+            }
+
+            this._inTriggerZone = false;
+        }
 
         return true;
     },

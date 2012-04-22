@@ -136,7 +136,7 @@ update_toolbar_icon (WnckScreen    *screen,
       break;
 
     default:
-      mpl_panel_client_request_button_style (client, "switcher-button");
+      mpl_panel_client_request_button_style (client, "switcher-button-1");
       break;
     }
 }

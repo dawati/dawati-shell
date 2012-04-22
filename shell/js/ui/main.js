@@ -271,7 +271,6 @@ function popModal(actor, timestamp) {
  * Plugin startup function
  */
 function start() {
-    log('Fuckoff1');
     // Monkey patch utility functions into the global proxy;
     // This is easier and faster than indirecting down into global
     // if we want to call back up into JS.
@@ -284,7 +283,6 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
-    log("load default theme");
     _defaultCssStylesheet = global.datadir + '/theme/dawati-shell.css';
     loadTheme();
 
@@ -311,9 +309,7 @@ function start() {
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
 
-    log("loading layout manager");
     layoutManager = new Layout.LayoutManager();
-    log("loading panel");
     panel = new Panel.Panel();
 
     panel.startStatusArea();

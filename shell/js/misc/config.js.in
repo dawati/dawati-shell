@@ -11,3 +11,4 @@ const LOCALEDIR = '@datadir@/locale';
 /* other standard directories */
 const LIBEXECDIR = '@libexecdir@';
 const SYSCONFDIR = '@sysconfdir@';
+const PANELS_DIR = '@DAWATI_PANELS_DIR@';

@@ -70,8 +70,6 @@ dist_theme_panel_DATA = \
 	toolbar/icon-im.png \
 	toolbar/icon-im-active-highlight.png \
 	toolbar/icon-im-active.png \
-	toolbar/icon-switcher-highlight.png \
-	toolbar/icon-switcher.png \
 	toolbar/icon-switcher-highlight-1.png \
 	toolbar/icon-switcher-1.png \
 	toolbar/icon-switcher-highlight-2.png \

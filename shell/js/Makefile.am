@@ -9,6 +9,7 @@ misc/config.js: misc/config.js.in Makefile
 	    -e "s|[@]datadir@|$(datadir)|g" \
 	    -e "s|[@]libexecdir@|$(libexecdir)|g" \
 	    -e "s|[@]sysconfdir@|$(sysconfdir)|g" \
+	    -e "s|[@]DAWATI_PANELS_DIR@|$(DAWATI_PANELS_DIR)|g" \
                $< > $@
 
 jsdir = $(pkgdatadir)/js
@@ -19,7 +20,7 @@ nobase_dist_js_DATA =	 		\
 	misc/params.js			\
 	misc/screenSaver.js		\
 	misc/util.js			\
-	\
+					\
 	ui/boxpointer.js		\
 	ui/dateMenu.js			\
 	ui/dnd.js			\
@@ -34,4 +35,5 @@ nobase_dist_js_DATA =	 		\
 	ui/status/keyboard.js		\
 	ui/status/power.js		\
 	ui/status/volume.js		\
+	ui/toolbar.js			\
 	ui/tweener.js
