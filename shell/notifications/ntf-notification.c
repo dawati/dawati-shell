@@ -280,8 +280,6 @@ ntf_notification_constructed (GObject *object)
   NtfNotificationPrivate *priv = self->priv;
   ClutterText            *txt;
 
-  g_assert (self->priv->source);
-
   if (G_OBJECT_CLASS (ntf_notification_parent_class)->constructed)
     G_OBJECT_CLASS (ntf_notification_parent_class)->constructed (object);
 
@@ -420,7 +418,6 @@ ntf_notification_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_SOURCE:
-      g_assert (!priv->source);
       priv->source = g_value_get_object (value);
 
       if (priv->source)
