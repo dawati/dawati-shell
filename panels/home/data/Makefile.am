@@ -8,6 +8,7 @@ service_DATA = $(service_in_files:.service.in=.service)
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 gsettings_SCHEMAS = \
+	org.dawati.shell.home.gschema.xml \
 	org.dawati.shell.home.plugin.gschema.xml \
 	$(NULL)
 

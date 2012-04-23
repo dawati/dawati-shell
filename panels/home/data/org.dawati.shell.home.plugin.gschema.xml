@@ -1,5 +1,18 @@
 <schemalist>
   <schema id="org.dawati.shell.home.plugin">
+
+    <key name="column" type="u">
+      <default>0</default>
+      <summary>Column position for the plugin</summary>
+      <description>The column on the grid where the plugin has been placed.</description>
+    </key>
+
+    <key name="row" type="u">
+      <default>0</default>
+      <summary>Row position for the plugin</summary>
+      <description>The row on the grid where the plugin has been placed.</description>
+    </key>
+
     <key name="module" type="s">
       <default>''</default>
       <summary>The plugin module providing this widget</summary>
