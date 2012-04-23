@@ -12,6 +12,7 @@
 #include <meta/compositor-mutter.h>
 #include <meta/meta-plugin.h>
 #include <meta/main.h>
+#include <meta/keybindings.h>
 
 #include <stdlib.h>
 
@@ -892,4 +893,19 @@ ClutterActor *
 meta_get_background_actor_for_screen (MetaScreen *screen)
 {
   return NULL; /**/
+}
+
+
+
+/**
+ * Keybinding stuff
+ */
+
+gboolean
+meta_keybindings_set_custom_handler (const gchar        *name,
+                                     MetaKeyHandlerFunc  handler,
+                                     gpointer            user_data,
+                                     GDestroyNotify      free_data)
+{
+  return TRUE;
 }

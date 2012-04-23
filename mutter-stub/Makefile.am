@@ -23,6 +23,7 @@ libmutter_stub_la_SOURCES =		\
 	meta/compositor.h		\
 	meta/compositor-mutter.h	\
 	meta/display.h			\
+	meta/keybindings.h		\
 	meta/meta-background-actor.h	\
 	meta/meta-plugin.h		\
 	meta/meta-window-actor.h	\

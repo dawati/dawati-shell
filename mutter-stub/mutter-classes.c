@@ -138,6 +138,12 @@ G_DEFINE_TYPE (MetaDisplay, meta_display, G_TYPE_OBJECT);
 static void
 meta_display_class_init (MetaDisplayClass *klass)
 {
+  g_signal_new ("overlay-key",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL, NULL,
+                G_TYPE_NONE, 0);
 }
 
 static void
