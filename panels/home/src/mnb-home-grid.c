@@ -700,6 +700,10 @@ stage_button_release_event_cb (ClutterActor       *stage,
   mnb_home_grid_remove_item_cells (self, priv->selection);
   meta->col = priv->selection_col;
   meta->row = priv->selection_row;
+  g_object_set (priv->selection,
+      "column", meta->col,
+      "row", meta->row,
+      NULL);
   mnb_home_grid_insert_item_cells (self, priv->selection);
 
   /* Animate selected actor to the final position */
