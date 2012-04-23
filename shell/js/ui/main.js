@@ -315,4 +315,13 @@ function start() {
     panel.startStatusArea();
 
     layoutManager.init();
+
+    Meta.keybindings_set_custom_handler('panel-main-menu', function () {
+        panel.toggleToolbar();
+    });
+
+    global.display.connect('overlay-key',
+                           Lang.bind(this, function() {
+                               panel.toggleToolbar();
+                           }));
 }

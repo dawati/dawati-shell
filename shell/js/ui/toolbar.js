@@ -53,6 +53,8 @@ const Toolbar = new Lang.Class({
                                        this._reposition();
                                    }));
 
+        this.visible = false;
+
         /* Position toolbar */
         this._reposition();
 
@@ -228,6 +230,8 @@ const Toolbar = new Lang.Class({
                                //Main.layoutManager.trackChrome(this.actor);
                            }
                          });
+
+        this.visible = true;
     },
 
     hide: function() {
@@ -239,6 +243,8 @@ const Toolbar = new Lang.Class({
                            transition: 'linear',
                            time: TOOLBAR_ANIMATION_TIME,
                          });
+
+        this.visible = false;
     }
 });
 

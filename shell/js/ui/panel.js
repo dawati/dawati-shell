@@ -561,6 +561,29 @@ const Panel = new Lang.Class({
         actor._rolePosition = position;
     },
 
+    _onTrayIconAdded: function(o, icon, role) {
+        if (this._status_area_shell_implementation[role]) {
+            // This icon is legacy, and replaced by a Shell version
+            // Hide it
+            return;
+        }
+
+        icon.height = PANEL_ICON_SIZE;
+        let buttonBox = new PanelMenu.ButtonBox();
+        let box = buttonBox.actor;
+        box.add_actor(icon);
+
+        this._insertStatusItem(box, this._status_area_order.indexOf(role));
+    },
+
+    _onTrayIconRemoved: function(o, icon) {
+        let box = icon.get_parent();
+        if (box && box._delegate instanceof PanelMenu.ButtonBox)
+            box.destroy();
+    },
+
+    /* Public */
+
     addToStatusArea: function(role, indicator, position) {
         if (this._statusArea[role])
             throw new Error('Extension point conflict: there is already a status indicator for role ' + role);
@@ -582,24 +605,15 @@ const Panel = new Lang.Class({
         return indicator;
     },
 
-    _onTrayIconAdded: function(o, icon, role) {
-        if (this._status_area_shell_implementation[role]) {
-            // This icon is legacy, and replaced by a Shell version
-            // Hide it
-            return;
+    toggleToolbar: function() {
+        if (this._toolbarTriggerTimeoutId != 0) {
+            Mainloop.source_remove(this._toolbarTriggerTimeoutId);
+            this._toolbarTriggerTimeoutId = 0;
         }
 
-        icon.height = PANEL_ICON_SIZE;
-        let buttonBox = new PanelMenu.ButtonBox();
-        let box = buttonBox.actor;
-        box.add_actor(icon);
-
-        this._insertStatusItem(box, this._status_area_order.indexOf(role));
-    },
-
-    _onTrayIconRemoved: function(o, icon) {
-        let box = icon.get_parent();
-        if (box && box._delegate instanceof PanelMenu.ButtonBox)
-            box.destroy();
-    },
+        if (this._toolbar.visible)
+            this._toolbar.hide();
+        else
+            this._toolbar.show();
+    }
 });
