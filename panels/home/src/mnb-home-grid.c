@@ -1379,6 +1379,8 @@ mnb_home_grid_set_edit_mode (MnbHomeGrid *self, gboolean value)
     return;
 
   priv->in_edit_mode = value;
+  g_object_notify (G_OBJECT (self), "edit-mode");
+
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
@@ -1443,6 +1445,8 @@ mnb_home_grid_insert_actor (MnbHomeGrid  *self,
   meta->width = ceilf (width / (UNIT_SIZE + priv->spacing));
   meta->height = ceilf (height / (UNIT_SIZE + priv->spacing));
   mnb_home_grid_insert_item_cells (self, actor);
+
+  g_object_bind_property (self, "edit-mode", actor, "edit-mode", G_BINDING_DEFAULT);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
