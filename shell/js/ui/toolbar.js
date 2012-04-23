@@ -47,13 +47,14 @@ const Toolbar = new Lang.Class({
         this.actor.connect('enter-event', Lang.bind(this, this._enterEvent));
         this.actor.connect('leave-event', Lang.bind(this, this._leaveEvent));
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.layoutManager.addChrome(this.actor);
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, function() {
+                                       this._reposition();
+                                   }));
 
         /* Position toolbar */
-        this.actor.lower(Main.layoutManager.panelBox);
-        let [toolbarMinHeight, toolbarNaturalHeight] =
-            this.actor.get_preferred_height(-1);
-        this.actor.y = -toolbarNaturalHeight;
+        this._reposition();
 
         /* Grab settings */
         this._settings = new Gio.Settings({ schema: 'org.dawati.shell.toolbar' });
@@ -65,13 +66,26 @@ const Toolbar = new Lang.Class({
         this._fixupPanels(this._settings.get_strv('order'));
     },
 
+    _reposition: function() {
+        /* position & size */
+        let monitor = Main.layoutManager.primaryMonitor;
+        let [toolbarMinHeight, toolbarNaturalHeight] =
+            this.actor.get_preferred_height(-1);
+        this.actor.x = monitor.x;
+        this.actor.y = -toolbarNaturalHeight;
+        this.actor.width = monitor.width;
+
+        /* depth */
+        this.actor.lower(Main.layoutManager.panelBox);
+    },
+
     _getPreferredWidth: function(actor, forHeight, alloc) {
         alloc.min_size = -1;
         alloc.natural_size = Main.layoutManager.primaryMonitor.width;
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        // We don't need to implement this; it's forced by the CSS
+        /* We don't need to implement this; it's forced by the CSS */
         alloc.min_size = -1;
         alloc.natural_size = -1;
     },
@@ -88,10 +102,10 @@ const Toolbar = new Lang.Class({
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
 
-        childBox.x1 = Math.max(0,
-                               (allocWidth / 2) - (buttonBoxNaturalWidth / 2));
-        childBox.x2 = Math.min(allocWidth - childBox.x1,
-                               childBox.x1 + buttonBoxNaturalWidth);
+        childBox.x1 = Math.floor(Math.max(0,
+                                          (allocWidth / 2) - (buttonBoxNaturalWidth / 2)));
+        childBox.x2 = Math.ceil(Math.min(allocWidth - childBox.x1,
+                                         childBox.x1 + buttonBoxNaturalWidth));
         this._buttonBox.allocate(childBox, flags);
     },
 
@@ -200,17 +214,26 @@ const Toolbar = new Lang.Class({
     show: function() {
         let [toolbarMinHeight, toolbarNaturalHeight] =
             this.actor.get_preferred_height(-1);
-        this.actor.y = (Main.panel.actor.height - toolbarNaturalHeight);
+        /* This catches the very first initial position of the toolbar
+         * (slightly too much off screen) */
+        if (this.actor.y < (Main.panel.actor.height - toolbarNaturalHeight))
+            this.actor.y = (Main.panel.actor.height - toolbarNaturalHeight);
         Tweener.addTween(this.actor,
                          { y: Main.panel.actor.height,
                            transition: 'linear',
                            time: TOOLBAR_ANIMATION_TIME,
+                           onCompleteScope: this,
+                           onComplete: function() {
+                               log("ask tracking for " + this.actor.name);
+                               //Main.layoutManager.trackChrome(this.actor);
+                           }
                          });
     },
 
     hide: function() {
         let [toolbarMinHeight, toolbarNaturalHeight] =
             this.actor.get_preferred_height(-1);
+        //Main.layoutManager.untrackChrome(this.actor);
         Tweener.addTween(this.actor,
                          { y:  (Main.panel.actor.height - toolbarNaturalHeight),
                            transition: 'linear',
@@ -392,7 +415,7 @@ const ToolbarButton = new Lang.Class({
     },
 
     _pingReply: function() {
-        let monitor = Main.layoutManager.primaryMonitor;
+        let monitor = Main.layoutManager.findMonitorForActor(this.actor);
         this._dbusProxy.InitPanelRemote(0, 0,
                                         monitor.width,
                                         Math.round(monitor.height - Main.panel.actor.height),
