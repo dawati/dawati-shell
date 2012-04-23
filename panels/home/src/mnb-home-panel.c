@@ -57,6 +57,7 @@ struct _MnbHomePanelPrivate
   MxButton       *workspace_button;
 
   GSettings      *settings;
+  GList          *widgets;
 };
 
 static void
@@ -257,6 +258,11 @@ mnb_home_panel_dispose (GObject *self)
   g_clear_object (&priv->background);
   g_clear_object (&priv->grid);
   g_clear_object (&priv->settings);
+  if (priv->widgets != NULL)
+    {
+      g_list_free_full (priv->widgets, g_object_unref);
+      priv->widgets = NULL;
+    }
 
   G_OBJECT_CLASS (mnb_home_panel_parent_class)->dispose (self);
 }
@@ -334,7 +340,10 @@ mnb_home_panel_init (MnbHomePanel *self)
 {
   MnbHomePanelPrivate *priv;
   ClutterActor *edit, *item, *box;
-  ClutterColor *color;
+  GVariant *as;
+  GVariantIter iter;
+  guint col, row;
+  gchar *path;
   gint i;
   guint grid_width, grid_height;
 
@@ -425,34 +434,26 @@ mnb_home_panel_init (MnbHomePanel *self)
                     G_CALLBACK (toggle_edit_mode),
                     self);
 
-  /* TODO: Demo, to remove when we have actual tiles */
-  color = clutter_color_new (0x0, 0, 0, 0xff);
+  /* Load all widgets added to the panel */
+  as = g_settings_get_value (priv->settings, "widgets-list");
 
-  /**/
-  clutter_color_from_string (color, "red");
-  item = clutter_rectangle_new_with_color (color);
-  clutter_actor_set_size (item, 64, 64);
-  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 0, 0);
+  g_variant_iter_init (&iter, as);
+  while (g_variant_iter_next (&iter, "s", &path))
+    {
+      item = mnb_home_widget_new (path);
 
-  /**/
-  clutter_color_from_string (color, "green");
-  item = clutter_rectangle_new_with_color (color);
-  clutter_actor_set_size (item, 64, 64);
-  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 3, 0);
+      g_object_get (item, "column", &col, "row", &row, NULL);
+      /* TODO: get the size of the widget from the object, which should have a
+       * resonable default */
+      clutter_actor_set_size (item, 138, 138);
 
-  /**/
-  clutter_color_from_string (color, "black");
-  item = clutter_rectangle_new_with_color (color);
-  clutter_actor_set_size (item, 50, 50);
-  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 3, 3);
+      mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, col, row);
+      priv->widgets = g_list_prepend (priv->widgets, item);
 
-  /**/
-  clutter_color_from_string (color, "grey");
-  item = clutter_rectangle_new_with_color (color);
-  clutter_actor_set_size (item, 138, 138);
-  mnb_home_grid_insert_actor (MNB_HOME_GRID (priv->grid), item, 5, 3);
+      g_free (path);
+    }
 
-  clutter_color_free (color);
+  g_variant_unref (as);
 
   clutter_actor_show_all (CLUTTER_ACTOR (self));
 }
