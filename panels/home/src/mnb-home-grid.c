@@ -1039,7 +1039,7 @@ mnb_home_grid_paint (ClutterActor *self)
             }
         }
     }
-  else
+  else /* !edit_mode */
     {
       for (l = priv->children; l != NULL; l = g_list_next (l))
         {
