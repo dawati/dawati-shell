@@ -312,7 +312,7 @@ const PanelIface = <interface name="com.dawati.UX.Shell.Panel">
 
 </interface>;
 
-const PanelProxy = Gio.DBusProxy.makeProxyWrapper(PanelIface);
+const PanelInfo  = Gio.DBusInterfaceInfo.new_for_xml(PanelIface);
 
 const ToolbarButton = new Lang.Class({
     Name: 'ToolbarButton',
@@ -358,15 +358,14 @@ const ToolbarButton = new Lang.Class({
         this._running = false;
         this._needShow = false;
         this._dbusProxy =
-            new PanelProxy(Gio.DBus.session, serviceName, objectPath);
-
-// ({ g_connection: Gio.DBus.session,
-//                                 g_interface_name: 'com.dawati.UX.Shell.Panel',
-//                                 g_interface_info: PanelInfo,
-//                                 g_name: serviceName,
-//                                 g_object_path: objectPath,
-//                                 g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
-//                                           Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+            new Gio.DBusProxy({ g_connection: Gio.DBus.session,
+				g_interface_name: PanelInfo.name,
+				g_interface_info: PanelInfo,
+				g_name: serviceName,
+				g_object_path: objectPath,
+                                g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
+                                          Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+        this._dbusProxy.init(null);
 
         this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
             if (this._dbusProxy.g_name_owner)
@@ -434,8 +433,6 @@ const ToolbarButton = new Lang.Class({
     show: function() {
         if (!this._running) {
             this._needShow = true;
-            this._dbusProxy.PingRemote(Lang.bind(this, this._pingReply),
-                                       Gio.DBusCallFlags.NONE);
         } else {
             this._dbusProxy.ShowRemote();
         }
