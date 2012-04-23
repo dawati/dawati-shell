@@ -246,7 +246,9 @@ mnb_home_panel_dispose (GObject *self)
 {
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
-  g_object_unref (priv->panel_client);
+  g_clear_object (&priv->panel_client);
+  g_clear_object (&priv->background);
+  g_clear_object (&priv->grid);
 
   G_OBJECT_CLASS (mnb_home_panel_parent_class)->dispose (self);
 }
