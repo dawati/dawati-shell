@@ -26,6 +26,11 @@
 
 G_DEFINE_TYPE (MnbHomePanel, mnb_home_panel, MX_TYPE_WIDGET);
 
+#define GSETTINGS_HOME_ID "org.dawati.shell.home"
+#define GSETTINGS_HOME_PATH_PREFIX "/org/dawati/shell/home/"
+#define GSETTINGS_HOME_BACKGROUND_KEY "background-image"
+#define GSETTINGS_HOME_SIZE_KEY "size"
+
 #define BUTTON_HOVER_TIMEOUT (750)
 #define TAB_SWITCHING_TIMEOUT (400)
 #define NB_TABS (5)
@@ -50,6 +55,8 @@ struct _MnbHomePanelPrivate
   guint           timeout_switch_tab;
   gint            workspace_dest;
   MxButton       *workspace_button;
+
+  GSettings      *settings;
 };
 
 static void
@@ -249,6 +256,7 @@ mnb_home_panel_dispose (GObject *self)
   g_clear_object (&priv->panel_client);
   g_clear_object (&priv->background);
   g_clear_object (&priv->grid);
+  g_clear_object (&priv->settings);
 
   G_OBJECT_CLASS (mnb_home_panel_parent_class)->dispose (self);
 }
@@ -328,15 +336,19 @@ mnb_home_panel_init (MnbHomePanel *self)
   ClutterActor *edit, *item, *box;
   ClutterColor *color;
   gint i;
+  guint grid_width, grid_height;
 
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MNB_TYPE_HOME_PANEL,
                                                    MnbHomePanelPrivate);
 
+  priv->settings = g_settings_new_with_path (GSETTINGS_HOME_ID,
+      GSETTINGS_HOME_PATH_PREFIX);
+
   /* background */
-  /* FIXME: make this awesomer */
   priv->background = mx_image_new ();
-  mx_image_set_from_file (MX_IMAGE (priv->background),
-                          "/usr/share/backgrounds/gnome/Aqua.jpg", NULL);
+  g_settings_bind (priv->settings, GSETTINGS_HOME_BACKGROUND_KEY,
+      priv->background, "filename",
+      G_SETTINGS_BIND_GET);
   clutter_actor_add_child (CLUTTER_ACTOR (self), priv->background);
 
   priv->vbox = mx_box_layout_new_with_orientation (MX_ORIENTATION_VERTICAL);
@@ -356,7 +368,11 @@ mnb_home_panel_init (MnbHomePanel *self)
                                               NULL);
 
   priv->grid = mnb_home_grid_new ();
-  mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), 40, 6); /* TODO: auto! */
+
+  g_settings_get (priv->settings, GSETTINGS_HOME_SIZE_KEY,
+      "(uu)", &grid_width, &grid_height);
+
+  mnb_home_grid_set_grid_size (MNB_HOME_GRID (priv->grid), grid_width, grid_height); /* TODO: auto! */
   mx_bin_set_child (MX_BIN (priv->scrollview), priv->grid);
 
   g_signal_connect (priv->grid, "drag-begin",
