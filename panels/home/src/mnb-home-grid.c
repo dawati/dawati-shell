@@ -27,6 +27,7 @@
 #include "mnb-home-grid-child.h"
 #include "mnb-home-grid-private.h"
 #include "mnb-home-widget.h"
+#include "utils.h"
 
 #include <math.h>
 #include <string.h>
