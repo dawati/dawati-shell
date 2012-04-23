@@ -30,6 +30,7 @@
 #include "ntf-overlay.h"
 #include "ntf-libnotify.h"
 #include "ntf-wm.h"
+#include "ntf-gio.h"
 
 /*
  * MeeGo 1.1 Notification Framework
@@ -144,6 +145,8 @@ struct _NtfOverlayPrivate
   NtfTray      *tray_normal;
   NtfTray      *tray_urgent;
   ClutterActor *lowlight;
+
+  NtfGIO       *gio_ntf;
 
   gulong        stage_allocation_id;
 };
@@ -465,11 +468,17 @@ ntf_overlay_init (NtfOverlay *self)
    */
   ntf_libnotify_init ();
   ntf_wm_init ();
+  self->priv->gio_ntf = ntf_gio_new ();
 }
 
 static void
 ntf_overlay_dispose (GObject *object)
 {
+  NtfOverlay        *self = (NtfOverlay*) object;
+  NtfOverlayPrivate *priv = self->priv;
+
+  g_object_unref (priv->gio_ntf);
+
   G_OBJECT_CLASS (ntf_overlay_parent_class)->dispose (object);
 }
 
