@@ -260,18 +260,36 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
     {
       GtkIconTheme *theme;
       GtkIconInfo  *info;
+      gchar        *filename = NULL;
 
       theme = gtk_icon_theme_get_default ();
       info = gtk_icon_theme_lookup_icon (theme, details->icon_name, 24, 0);
 
       if (info)
         {
-          icon = clutter_texture_new ();
-
-          clutter_texture_set_from_file (CLUTTER_TEXTURE(icon),
-                                         gtk_icon_info_get_filename (info),
-                                         NULL);
+          filename = g_strdup (gtk_icon_info_get_filename (info));
           gtk_icon_info_free (info);
+        }
+      else
+        {
+          char *scheme;
+
+          scheme = g_uri_parse_scheme (details->icon_name);
+          if (!g_strcmp0 ("file", scheme))
+            {
+              filename = g_filename_from_uri (details->icon_name,
+                                              NULL,
+                                              NULL);
+            }
+          g_free (scheme);
+        }
+      if (filename)
+        {
+          icon = clutter_texture_new ();
+          clutter_texture_set_from_file (CLUTTER_TEXTURE(icon),
+                                         filename,
+                                         NULL);
+          g_free (filename);
         }
     }
 
