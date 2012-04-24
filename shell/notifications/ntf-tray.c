@@ -345,19 +345,16 @@ static void
 ntf_tray_dismiss_all_cb (ClutterActor *button, NtfTray *tray)
 {
   NtfTrayPrivate *priv = tray->priv;
-  GList *child, *children;
+  ClutterActorIter iter;
+  ClutterActor *child;
 
   clutter_actor_hide (CLUTTER_ACTOR (tray));
 
-  child = children =
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->notifiers));
-  while (child != NULL)
+  clutter_actor_iter_init (&iter, priv->notifiers);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      g_signal_emit_by_name (child->data, "closed", 0);
-      child = child->next;
+      g_signal_emit_by_name (child, "closed", 0);
     }
-
-  g_list_free (children);
 }
 
 static void
@@ -612,7 +609,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
                     G_CALLBACK (ntf_tray_notification_closed_cb),
                     tray);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->notifiers), ntfa);
+  clutter_actor_add_child (priv->notifiers, ntfa);
 
   priv->n_notifiers++;
 
