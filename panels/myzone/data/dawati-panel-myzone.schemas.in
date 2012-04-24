@@ -36,7 +36,7 @@
       <applyto>/desktop/dawati/myzone/background_filename</applyto>
       <owner>dawati-panel-myzone</owner>
       <type>string</type>
-      <default>/usr/share/backgrounds/images/myzone-default-background.png</default>
+      <default>@DAWATI_RUNTIME_THEME_DIR@/theme/myzone/myzone-default-background.png</default>
       <locale name="C">
         <short/>
       </locale>

@@ -16,7 +16,8 @@ do_subst = sed -e 's|@abs_top_srcdir[@]|$(abs_top_srcdir)|g' \
                -e 's|@DAWATI_THEME_DIR[@]|$(DAWATI_THEME_DIR)|g' \
                -e 's|@PANEL_BLUETOOTH_THEMEDIR[@]|$(PANEL_BLUETOOTH_THEMEDIR)|g' \
                -e 's|@PANEL_POWER_ICON_THEMEDIR[@]|$(PANEL_POWER_ICON_THEMEDIR)|g' \
-               -e 's|@PANEL_MUSIC_DATADIR[@]|$(PANEL_MUSIC_DATADIR)|g'
+               -e 's|@PANEL_MUSIC_DATADIR[@]|$(PANEL_MUSIC_DATADIR)|g' \
+               -e 's|@DAWATI_RUNTIME_THEME_DIR[@]|$(DAWATI_RUNTIME_THEME_DIR)|g'
 
 
 %.desktop.in: %.desktop.in.in Makefile
