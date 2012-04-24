@@ -26,6 +26,8 @@
 #include "mnb-home-grid.h"
 #include "mnb-home-grid-child.h"
 #include "mnb-home-grid-private.h"
+#include "mnb-home-widget.h"
+#include "utils.h"
 
 #include <math.h>
 #include <string.h>
@@ -699,6 +701,10 @@ stage_button_release_event_cb (ClutterActor       *stage,
   mnb_home_grid_remove_item_cells (self, priv->selection);
   meta->col = priv->selection_col;
   meta->row = priv->selection_row;
+  g_object_set (priv->selection,
+      "column", meta->col,
+      "row", meta->row,
+      NULL);
   mnb_home_grid_insert_item_cells (self, priv->selection);
 
   /* Animate selected actor to the final position */
@@ -772,6 +778,10 @@ mnb_home_grid_button_press_event (ClutterActor       *self,
       MnbHomeGridChild *meta = (MnbHomeGridChild *)
         clutter_container_get_child_meta (CLUTTER_CONTAINER (self), child);
       gfloat child_width, child_height;
+
+      /* be sure it's a MnbHomeWidget, it's a programming error if we obtain
+       * something else */
+      g_assert (MNB_IS_HOME_WIDGET (child));
 
       priv->pointer_x = event->x;
       priv->pointer_y = event->y;
@@ -1030,7 +1040,7 @@ mnb_home_grid_paint (ClutterActor *self)
             }
         }
     }
-  else
+  else /* !edit_mode */
     {
       for (l = priv->children; l != NULL; l = g_list_next (l))
         {
@@ -1370,6 +1380,8 @@ mnb_home_grid_set_edit_mode (MnbHomeGrid *self, gboolean value)
     return;
 
   priv->in_edit_mode = value;
+  g_object_notify (G_OBJECT (self), "edit-mode");
+
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
@@ -1416,7 +1428,7 @@ mnb_home_grid_insert_actor (MnbHomeGrid  *self,
   gfloat width, height;
 
   g_return_if_fail (MNB_IS_HOME_GRID (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (MNB_IS_HOME_WIDGET (actor));
 
   priv = self->priv;
 
@@ -1434,6 +1446,8 @@ mnb_home_grid_insert_actor (MnbHomeGrid  *self,
   meta->width = ceilf (width / (UNIT_SIZE + priv->spacing));
   meta->height = ceilf (height / (UNIT_SIZE + priv->spacing));
   mnb_home_grid_insert_item_cells (self, actor);
+
+  g_object_bind_property (self, "edit-mode", actor, "edit-mode", G_BINDING_DEFAULT);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
@@ -1471,7 +1485,7 @@ mnb_home_grid_set_grid_size (MnbHomeGrid *self, guint cols, guint rows)
 }
 
 /**
- * mnb_home_grid_set_grid_size:
+ * mnb_home_grid_get_grid_size:
  * @grid: a #MnbHomeGrid
  * @cols: (out): the number of columns
  * @rows: (out): the number of rows
