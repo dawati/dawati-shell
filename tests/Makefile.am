@@ -23,7 +23,6 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-screensized \
-	test-spinner \
 	test-statusbar
 
 test_screensized_SOURCES = \
@@ -33,12 +32,5 @@ test_statusbar_SOURCES = \
 	test-statusbar.c \
 	$(top_srcdir)/shell/mnb-statusbar.c
 test_statusbar_CFLAGS = \
-	-I$(top_srcdir)/shell \
-	-I$(top_srcdir)/libdawati-panel
-
-test_spinner_SOURCES = \
-	test-spinner.c \
-	$(top_srcdir)/shell/mnb-spinner.c
-test_spinner_CFLAGS = \
 	-I$(top_srcdir)/shell \
 	-I$(top_srcdir)/libdawati-panel
