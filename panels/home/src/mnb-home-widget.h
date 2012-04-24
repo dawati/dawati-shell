@@ -49,7 +49,7 @@ struct _MnbHomeWidgetClass
 };
 
 GType mnb_home_widget_get_type (void);
-ClutterActor *mnb_home_widget_new (guint row, guint column);
+ClutterActor *mnb_home_widget_new (const char *object_path);
 void mnb_home_widget_set_edit_mode (MnbHomeWidget *self, gboolean edit_mode);
 
 G_END_DECLS

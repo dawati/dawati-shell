@@ -1,0 +1,23 @@
+<schemalist>
+  <schema path="/org/dawati/shell/home/" id="org.dawati.shell.home">
+
+    <key name="widgets-list" type="as">
+      <default>[]</default>
+      <summary>List of widgets' object path</summary>
+      <description>The list of widgets' object path registered to the Panel.</description>
+    </key>
+
+    <key name="size" type="(uu)">
+      <default>(14, 7)</default>
+      <summary>The size of the panel's grid</summary>
+      <description>The width and height iof the panel's grid.</description>
+    </key>
+
+    <key name="background-image" type="s">
+      <default>'/usr/share/backgrounds/gnome/Aqua.jpg'</default>
+      <summary>Background image</summary>
+      <description>The file name for the panel's background image.</description>
+    </key>
+
+  </schema>
+</schemalist>

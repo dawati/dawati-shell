@@ -22,7 +22,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#define DEBUG g_debug
+#define DEBUG(format, ...)  \
+  g_debug ("%s: " format, G_STRFUNC, ##__VA_ARGS__)
 #define STR_EMPTY(s) ((s) == NULL || *(s) == '\0')
 
 G_BEGIN_DECLS

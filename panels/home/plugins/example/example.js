@@ -33,45 +33,48 @@ const Example = new Lang.Class({
 
   init: function() {
     print("Init");
-    print(this.settings_path);
 
     this._settings = new Gio.Settings({
         schema: 'org.dawati.shell.home.plugin.example',
         path: this.settings_path,
       });
+
+    /* Init Widget actor */
+    this.widget = new Mx.Stack();
+
+    let bg = new Clutter.Texture({
+        width: 1,
+        height: 1,
+    });
+    this._settings.bind('picture', bg, 'filename', 1);
+
+    let label = new Mx.Label({text: "Example Plugin"});
+
+    this.widget.add_actor(bg);
+    this.widget.add_actor(label);
+
+
+    /* Init Configuration actor */
+    this.configuration = new Mx.Table();
+    let label = new Mx.Label({ text: "Picture" });
+    let entry = new Mx.Entry();
+    this._settings.bind ("picture", entry, "text", 1);
+
+    this.configuration.insert_actor(label, 0, 0);
+    this.configuration.insert_actor(entry, 0, 1);
   },
 
   get_widget: function() {
-    let stack = new Mx.Stack();
-    let bg = new Clutter.Texture({
-        // FIXME: hack to limit the size of the widget
-        width: 1,
-        height: 1,
-      });
-    let label = new Mx.Label({ text: "Example Plugin" });
-
-    this._settings.bind('picture', bg, 'filename', 0);
-
-    stack.add_actor (bg);
-    stack.add_actor (label);
-
-    return stack;
+    return this.widget;
   },
 
   get_configuration: function() {
-    let table = new Mx.Table();
+    return this.configuration;
+  },
 
-    let label = new Mx.Label({ text: "Picture" });
-    let entry = new Mx.Entry();
-
-    this._settings.bind('picture', entry, 'text', 0);
-
-    table.insert_actor(label, 0, 0);
-    table.insert_actor(entry, 0, 1);
-
-    print(this.settings_path);
-
-    return table;
+  deinit: function() {
+  	this.widget.unref();
+	this.configuration.unref();
   },
 });
 
