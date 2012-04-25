@@ -304,7 +304,7 @@ home_widget_add_module_response (ClutterActor *dialog,
       home_widget_set_module (self, module);
     }
 
-  g_object_unref (dialog);
+  clutter_actor_remove_child (clutter_actor_get_stage (dialog), dialog);
   /* FIXME: why do I need this */
   clutter_actor_queue_redraw (clutter_actor_get_stage (CLUTTER_ACTOR (self)));
 }
