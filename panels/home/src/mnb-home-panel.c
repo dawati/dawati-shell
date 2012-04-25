@@ -50,7 +50,7 @@ struct _MnbHomePanelPrivate
 
   ClutterActor   *scrollview; /* Scroll view for the grid */
   ClutterActor   *grid;
-  MxButtonGroup  *tabs_group; /* Group of button to naviguate the grid */
+  MxButtonGroup  *tabs_group; /* Group of button to navigate the grid */
 
   guint           timeout_switch_tab;
   gint            workspace_dest;
@@ -255,14 +255,11 @@ mnb_home_panel_dispose (GObject *self)
   MnbHomePanelPrivate *priv = MNB_HOME_PANEL (self)->priv;
 
   g_clear_object (&priv->panel_client);
-  g_clear_object (&priv->background);
-  g_clear_object (&priv->grid);
   g_clear_object (&priv->settings);
-  if (priv->widgets != NULL)
-    {
-      g_list_free_full (priv->widgets, g_object_unref);
-      priv->widgets = NULL;
-    }
+  g_clear_object (&priv->tabs_group);
+
+  g_list_free (priv->widgets);
+  priv->widgets = NULL;
 
   G_OBJECT_CLASS (mnb_home_panel_parent_class)->dispose (self);
 }
