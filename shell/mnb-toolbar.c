@@ -2145,7 +2145,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
         mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->hbox_buttons),
                                     button, -1);
 
-      clutter_actor_set_child_below_sibling (priv->hbox_buttons, button, NULL);
+      clutter_actor_set_child_above_sibling (priv->hbox_buttons, button, NULL);
     }
   else
     {
@@ -2153,7 +2153,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
         mx_box_layout_insert_actor (MX_BOX_LAYOUT (priv->hbox_applets),
                                     button, -1);
 
-      clutter_actor_set_child_below_sibling (priv->hbox_applets, button, NULL);
+      clutter_actor_set_child_above_sibling (priv->hbox_applets, button, NULL);
     }
 }
 
