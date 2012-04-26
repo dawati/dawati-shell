@@ -462,6 +462,7 @@ if test x$dawati_use_devices_panel = xyes; then
    PKG_CHECK_MODULES(GPM, [glib-2.0
                            gobject-2.0
                            $GDK_DEPS
+                           x11
                            xrandr
                            xext])
 
